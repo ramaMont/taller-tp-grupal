@@ -12,8 +12,7 @@ addons:
       - cppcheck
 
 script:
-  - chmod +x execute.sh
-  - ./execute.sh
+  - python ./cpplint.py --filter=`cat filter_options` `ls *_src/*.cpp *_src/*.h`
   - cppcheck --enable=all ./server_src/*.cpp ./client_src/*.cpp ./common_src/*.cpp ./editor_src/*.cpp
   - mkdir build
   - cd build
