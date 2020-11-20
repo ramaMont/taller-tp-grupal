@@ -9,8 +9,11 @@ addons:
       - qt5-default
       - libsdl2-dev
       - libsdl2-image-dev
+      - cppcheck
 
 script:
+  - sh execute.sh
+  - cppcheck --enable=all ./server_src/*.cpp ./client_src/*.cpp ./common_src/*.cpp ./editor_src/*.cpp
   - mkdir build
   - cd build
   - cmake ..

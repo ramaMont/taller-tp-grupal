@@ -11,3 +11,8 @@ Trabajo practico final Taller Fiuba
     cd build 
     cmake ..
     make
+
+# Cada nueva clase agregada
+    cd build
+    cmake ..
+    make
