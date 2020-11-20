@@ -1,4 +1,5 @@
 set(BINARY ${CMAKE_PROJECT_NAME}_tests)
+set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno-inline")
 
 file(GLOB_RECURSE TEST_SOURCES LIST_DIRECTORIES false *.h *.cpp)
 
