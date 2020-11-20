@@ -6,6 +6,6 @@ set(SOURCES ${TEST_SOURCES})
 
 add_executable(${BINARY} ${TEST_SOURCES})
 
-add_test(NAME ${BINARY} COMMAND ${BINARY})
+add_test(NAME unit COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/${BINARY})
 
-target_link_libraries(${BINARY} PUBLIC ${CMAKE_PROJECT_NAME}_server_lib ${CMAKE_PROJECT_NAME}_client_lib ${CMAKE_PROJECT_NAME}_common_lib ${CMAKE_PROJECT_NAME}_editor_lib gtest)
+target_link_libraries(${BINARY} PUBLIC ${CMAKE_PROJECT_NAME}_server_lib ${CMAKE_PROJECT_NAME}_client_lib ${CMAKE_PROJECT_NAME}_common_lib ${CMAKE_PROJECT_NAME}_editor_lib gtest_main)
