@@ -9,8 +9,12 @@ addons:
       - qt5-default
       - libsdl2-dev
       - libsdl2-image-dev
+      - cppcheck
+      - python
 
 script:
+  - python ./cpplint.py --filter=`cat filter_options` `ls *_src/*.cpp *_src/*.h`
+  - cppcheck --enable=all ./server_src/*.cpp ./client_src/*.cpp ./common_src/*.cpp ./editor_src/*.cpp
   - mkdir build
   - cd build
   - cmake ..
