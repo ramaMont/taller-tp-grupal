@@ -1,0 +1,18 @@
+langauge: cpp
+sudo: required
+dist: focal
+
+addons:
+  apt:
+    packages:
+      - libusb-1.0-0-dev
+      - qt5-default
+      - libsdl2-dev
+      - libsdl2-image-dev
+
+script:
+  - mkdir build
+  - cd build
+  - cmake
+  - make
+  - ./tests/TPWOLFSTEIN_tests
