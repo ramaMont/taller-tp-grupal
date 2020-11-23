@@ -1,12 +1,17 @@
 #ifndef __JUGADOR__
 #define __JUGADOR__
 
-class Jugador {
-private:
+#include "Posicionable.h"
+#include "Posicion.h"
+class Mapa;
+#include "Mapa.h"
 
+class Jugador final : public Posicionable{
+private:
+    Mapa &mapa;
 public:
-    Jugador();
-    void movArriba();
+    explicit Jugador(Posicion posicion, Mapa& mapa);
+    void movAdelante();
     ~Jugador();
 };
 
