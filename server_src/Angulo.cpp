@@ -27,7 +27,7 @@ int Angulo::getY(){
     if (angulo >= 23.578 && angulo <= 156.422)
         return 1;
     if ((angulo > -23.578 && angulo < 23.578) || 
-            (angulo > 156.422  && angulo > -156.422))
+            (angulo > 156.422))
         return 0;
     if (angulo >= -156.422 && angulo <= -23.578)
         return -1;

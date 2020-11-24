@@ -1,7 +1,7 @@
 #include "Partida.h"
 #include <string>
 
-Partida::Partida(std::string params): params(params){
+Partida::Partida(const std::string& params): params(params){
 }
 void Partida::run(){
 }

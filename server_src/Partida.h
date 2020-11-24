@@ -10,7 +10,7 @@ private:
     std::string params;
     std::vector<Jugador *> jugadores;
 public:
-    explicit Partida(std::string params);
+    explicit Partida(const std::string& params);
     void run();
     ~Partida();
 };

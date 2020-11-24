@@ -13,14 +13,14 @@ public:
 class DirAdelante : public Direccion{
 public:
     DirAdelante();
-    virtual Posicion mover(Jugador* jugador);
+    virtual Posicion mover(Jugador* jugador) override;
     ~DirAdelante();
 };
 
 class DirAtras : public Direccion{
 public:
     DirAtras();
-    virtual Posicion mover(Jugador* jugador);
+    virtual Posicion mover(Jugador* jugador) override;
     ~DirAtras();
 };
 

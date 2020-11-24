@@ -16,7 +16,6 @@ void Mapa::agregarPosicionable(Posicionable* posicionable, Posicion posicion){
         retorno = NULL;
         throw -1;
     }
-    std::cout << "voy a insertar\n";
     mapaJuego.insert(std::pair<Posicion, Posicionable*>
         (posicion, posicionable));
 }
