@@ -40,7 +40,7 @@ void Mapa::moveme(Jugador* jugador, Posicion& posicion){
         throw -1;
     Posicion posJugador = jugador->getPosicion();
     agregarPosicionable(jugador, posicion);
-//    sacarPosicionable(posJugador);
+    sacarPosicionable(posJugador);
 }
 
 Mapa::~Mapa(){
