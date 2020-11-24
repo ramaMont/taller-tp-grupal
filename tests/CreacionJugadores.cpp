@@ -4,7 +4,7 @@
 
 TEST(CreacionJugadoresTests, creacionExitosa) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     Posicion posicion(11,15);
     Jugador jugador(posicion, mapa);
     //act

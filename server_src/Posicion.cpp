@@ -1,4 +1,5 @@
 #include "Posicion.h"
+#include <functional>
 
 Posicion::Posicion(int posX, int posY): 
     posX(posX), posY(posY), angulo(){
@@ -20,4 +21,10 @@ Angulo Posicion::getAngulo(){
 }
 
 Posicion::~Posicion(){
+}
+
+size_t Posicion::Hash::operator()(const Posicion& pos) const{
+    size_t rowHash = std::hash<int>()(pos.posX);
+    size_t colHash = std::hash<int>()(pos.posY) << 1;
+    return rowHash ^ colHash;
 }

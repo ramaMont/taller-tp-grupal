@@ -6,8 +6,6 @@ class Jugador;
 #include "Jugador.h"
 
 class Direccion{
-private:
-
 public:
     virtual Posicion mover(Jugador* jugador) = 0;
 };

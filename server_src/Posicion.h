@@ -2,6 +2,8 @@
 #define __POSICION__
 
 #include "Angulo.h"
+#include <cstddef>
+
 
 class Posicion{
 private:
@@ -21,6 +23,9 @@ public:
         return (this->posX < t.posX && this->posY < t.posY); 
     } 
     ~Posicion();
+    struct Hash{
+        size_t operator()(const Posicion& pos) const;
+    };
 };
 
 #endif

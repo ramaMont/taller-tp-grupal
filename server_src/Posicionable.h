@@ -7,7 +7,7 @@ class Posicionable{
 protected:
     Posicion posicion;
 public:
-    Posicionable(Posicion posicion);
+    explicit Posicionable(Posicion posicion);
     virtual Posicion getPosicion();
     ~Posicionable();
 };

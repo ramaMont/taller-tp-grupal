@@ -8,7 +8,7 @@
 //-------------------- Hacia adelante ------------------------------------
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerecha) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia la derecha
     Angulo angulo(0.0);
     Posicion posicionIni(11,15, angulo);
@@ -23,7 +23,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerecha) {
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeArriba) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia la arriba
     Angulo angulo(90.0);
     Posicion posicionIni(11,15, angulo);
@@ -38,7 +38,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeArriba) {
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierda) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia la izquierda
     //Poner 00 despues de la coma
     Angulo angulo(180.00);
@@ -54,7 +54,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierda) {
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeAbajo) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia abajo
     //Poner 00 despues de la coma
     Angulo angulo(-90.00);
@@ -70,7 +70,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeAbajo) {
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaArriba) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia arriba y a la derecha
     //Poner 00 despues de la coma
     Angulo angulo(45.00);
@@ -86,7 +86,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaArriba) {
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaAbajo) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia abajo y hacia la derecha
     //Poner 00 despues de la coma
     Angulo angulo(-45.00);
@@ -102,7 +102,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaAbajo) {
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaArriba) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia arriba y hacia la izquierda
     //Poner 00 despues de la coma
     Angulo angulo(135.00);
@@ -118,7 +118,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaArriba) {
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaAbajo) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia abajo y hacia la izquierda
     //Poner 00 despues de la coma
     Angulo angulo(-135.00);
@@ -139,7 +139,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaAbajo) {
 
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerecha) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia la derecha
     Angulo angulo(0.0);
     Posicion posicionIni(11,15, angulo);
@@ -154,7 +154,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerecha) {
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeArriba) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia la arriba
     Angulo angulo(90.0);
     Posicion posicionIni(11,15, angulo);
@@ -169,7 +169,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeArriba) {
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierda) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia la izquierda
     //Poner 00 despues de la coma
     Angulo angulo(180.00);
@@ -185,7 +185,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierda) {
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeAbajo) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia abajo
     //Poner 00 despues de la coma
     Angulo angulo(-90.00);
@@ -201,7 +201,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeAbajo) {
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaArriba) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia arriba y a la derecha
     //Poner 00 despues de la coma
     Angulo angulo(45.00);
@@ -217,7 +217,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaArriba) {
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaAbajo) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia abajo y hacia la derecha
     //Poner 00 despues de la coma
     Angulo angulo(-45.00);
@@ -233,7 +233,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaAbajo) {
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaArriba) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia arriba y hacia la izquierda
     //Poner 00 despues de la coma
     Angulo angulo(135.00);
@@ -249,7 +249,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaArriba) {
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaAbajo) {
     //arrange
-    Mapa mapa;
+    Mapa mapa(20,20);
     //Mirando hacia abajo y hacia la izquierda
     //Poner 00 despues de la coma
     Angulo angulo(-135.00);
@@ -262,4 +262,114 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaAbajo) {
     //assert
     EXPECT_EQ (posicionIni.getPosX() + 1, resultado->getPosicion().getPosX());
     EXPECT_EQ (posicionIni.getPosY() + 1, resultado->getPosicion().getPosY());
+}
+
+// ---------------------------------------------------------
+// ---------------------- Fuera del mapa -------------------
+// ---------------------------------------------------------
+
+TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaFuera) {
+    //arrange
+    Mapa mapa(20,20);
+    //Mirando hacia derecha
+    //Poner 00 despues de la coma
+    Angulo angulo(0.00);
+    Posicion posicionIni(20,15, angulo);
+    Jugador jugador(posicionIni, mapa);
+    DirAdelante dir;
+    //act
+    try {
+        jugador.mover(&dir);
+    } catch (...){
+    }
+    Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
+    //assert
+    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
+    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+}
+
+TEST(MovimientoJugadoresTests, adelanteFallaIrArribaFuera) {
+    //arrange
+    Mapa mapa(20,20);
+    //Mirando hacia arriba
+    //Poner 00 despues de la coma
+    Angulo angulo(90.00);
+    Posicion posicionIni(11,20, angulo);
+    Jugador jugador(posicionIni, mapa);
+    DirAdelante dir;
+    //act
+    try {
+        jugador.mover(&dir);
+    } catch (...){
+    }
+    Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
+    //assert
+    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
+    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+}
+
+TEST(MovimientoJugadoresTests, adelanteFallaIrIzquierdaFuera) {
+    //arrange
+    Mapa mapa(20,20);
+    //Mirando hacia izquierda
+    //Poner 00 despues de la coma
+    Angulo angulo(180.00);
+    Posicion posicionIni(0,15, angulo);
+    Jugador jugador(posicionIni, mapa);
+    DirAdelante dir;
+    //act
+    try {
+        jugador.mover(&dir);
+    } catch (...){
+    }
+    Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
+    //assert
+    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
+    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+}
+
+TEST(MovimientoJugadoresTests, adelanteFallaIrAbajoFuera) {
+    //arrange
+    Mapa mapa(20,20);
+    //Mirando hacia abajo
+    //Poner 00 despues de la coma
+    Angulo angulo(-90.00);
+    Posicion posicionIni(11,0, angulo);
+    Jugador jugador(posicionIni, mapa);
+    DirAdelante dir;
+    //act
+    try {
+        jugador.mover(&dir);
+    } catch (...){
+    }
+    Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
+    //assert
+    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
+    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+}
+
+// ---------------------------------------------------------
+// ------------- Colisiones entre posicionables ------------
+// ---------------------------------------------------------
+
+TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaEncimaDeOtroJugador) {
+    //arrange
+    Mapa mapa(20,20);
+    //Mirando hacia derecha
+    //Poner 00 despues de la coma
+    Angulo angulo(0.00);
+    Posicion posicionIni2(12,0, angulo);
+    Jugador jugador2(posicionIni2, mapa);
+    Posicion posicionIni(11,0, angulo);
+    Jugador jugador(posicionIni, mapa);
+    DirAdelante dir;
+    //act
+    try {
+        jugador.mover(&dir);
+    } catch (...){
+    }
+    Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
+    //assert
+    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
+    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
 }
