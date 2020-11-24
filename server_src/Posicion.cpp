@@ -1,7 +1,11 @@
 #include "Posicion.h"
 
 Posicion::Posicion(int posX, int posY): 
-    posX(posX), posY(posY){
+    posX(posX), posY(posY), angulo(){
+}
+
+Posicion::Posicion(int posX, int posY, Angulo angulo):
+    posX(posX), posY(posY), angulo(angulo){
 }
 
 int Posicion::getPosX(){
@@ -11,11 +15,9 @@ int Posicion::getPosY(){
     return posY;
 }
 
-bool Posicion::operator==(const Posicion& other){
-    return (this->posX == other.posX && this->posY == other.posY);
+Angulo Posicion::getAngulo(){
+    return angulo;
 }
-
-
 
 Posicion::~Posicion(){
 }

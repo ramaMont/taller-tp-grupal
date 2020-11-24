@@ -22,5 +22,11 @@ Posicionable* Mapa::obtenerPosicionableEn(Posicion posicion){
     return mapaJuego.at(posicion);
 }
 
+void Mapa::moveme(Jugador* jugador, Posicion& posicion){
+    Posicion posJugador = jugador->getPosicion();
+    sacarPosicionable(posJugador);
+    agregarPosicionable(jugador, posicion);
+}
+
 Mapa::~Mapa(){
 }
