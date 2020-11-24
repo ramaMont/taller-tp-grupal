@@ -1,9 +1,10 @@
 #include <iostream>
-#include "ParamReaderServer.h"
+#include "ServerHolder.h"
 
 int main(int argc, char** argv){
     try {
-        ParamReaderServer paramReader(argc, argv);
+        ServerHolder serverHolder(argc, argv);
+        serverHolder.run();
     } catch(...) {
         std::cout << "Hubo un error" << std::endl;
     }

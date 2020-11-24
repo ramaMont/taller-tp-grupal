@@ -8,7 +8,7 @@ private:
     std::vector<std::string> args;
     std::vector<std::string> configs;
 public:
-    ParamReaderServer(int argc, char** argv);
+    explicit ParamReaderServer(int argc, char** argv);
     ~ParamReaderServer();
 };
 
