@@ -12,3 +12,16 @@ Posicion DirAdelante::mover(Jugador* jugador){
 
 DirAdelante::~DirAdelante(){
 }
+
+DirAtras::DirAtras(){
+}
+
+Posicion DirAtras::mover(Jugador* jugador){
+    Posicion posActual = jugador->getPosicion();
+    Posicion posNueva(posActual.getPosX()-posActual.getAngulo().getX(),
+      posActual.getPosY()-posActual.getAngulo().getY(), posActual.getAngulo());
+    return posNueva;
+}
+
+DirAtras::~DirAtras(){
+}

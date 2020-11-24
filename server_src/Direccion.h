@@ -19,4 +19,11 @@ public:
     ~DirAdelante();
 };
 
+class DirAtras : public Direccion{
+public:
+    DirAtras();
+    virtual Posicion mover(Jugador* jugador);
+    ~DirAtras();
+};
+
 #endif
