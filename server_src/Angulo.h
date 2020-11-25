@@ -10,6 +10,9 @@ public:
     double getAngulo();
     int getX();
     int getY();
+    Angulo operator +(const double& other);
+    Angulo operator -(const double& other);
+    bool operator ==(const Angulo& other) const;
     ~Angulo();
 };
 

@@ -24,4 +24,18 @@ public:
     ~DirAtras();
 };
 
+class DirRotIzq : public Direccion{
+public:
+    DirRotIzq();
+    virtual Posicion mover(Jugador* jugador) override;
+    ~DirRotIzq();
+};
+
+class DirRotDer : public Direccion{
+public:
+    DirRotDer();
+    virtual Posicion mover(Jugador* jugador) override;
+    ~DirRotDer();
+};
+
 #endif

@@ -20,6 +20,10 @@ Angulo Posicion::getAngulo(){
     return angulo;
 }
 
+bool Posicion::operator!=(const Posicion& t) const{ 
+    return (this->posX != t.posX || this->posY != t.posY); 
+} 
+
 Posicion::~Posicion(){
 }
 

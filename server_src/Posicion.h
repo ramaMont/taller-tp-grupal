@@ -22,6 +22,7 @@ public:
     bool operator<(const Posicion& t) const{ 
         return (this->posX < t.posX && this->posY < t.posY); 
     } 
+    bool operator!=(const Posicion& t) const;
     ~Posicion();
     struct Hash{
         size_t operator()(const Posicion& pos) const;
