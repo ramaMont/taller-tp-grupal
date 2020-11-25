@@ -14,9 +14,5 @@ void Jugador::mover(Direccion* direccion){
     }
 }
 
-void Jugador::setPosicion(Posicion posicion){
-    this->posicion = posicion;
-}
-
 Jugador::~Jugador(){
 }

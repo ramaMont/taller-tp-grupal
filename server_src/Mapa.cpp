@@ -18,7 +18,7 @@ void Mapa::agregarPosicionable(Posicionable* posicionable, Posicion posicion){
     try{
         obtenerPosicionableEn(posicion);
         throw -2;
-    } catch (int e){
+    } catch(int e){
         if (e == -1){
             mapaJuego.insert(std::pair<Posicion, Posicionable*>
                 (posicion, posicionable));
@@ -26,7 +26,6 @@ void Mapa::agregarPosicionable(Posicionable* posicionable, Posicion posicion){
         if (e == -2)
             throw -2;
     }
-
 }
 
 void Mapa::sacarPosicionable(Posicion posicion){
@@ -54,7 +53,7 @@ void Mapa::moveme(Jugador* jugador, Posicion& posicion){
         agregarPosicionable(jugador, posicion);
         sacarPosicionable(posJugador);
     } catch(int e){
-        throw e;
+        throw;
     }
 }
 

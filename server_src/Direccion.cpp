@@ -31,7 +31,6 @@ DirRotIzq::DirRotIzq(){
 }
 
 Posicion DirRotIzq::mover(Jugador* jugador){
-
     Posicion posActual = jugador->getPosicion();
     Angulo nuevo_angulo = posActual.getAngulo() + GRADOS_ROTACION;
     Posicion posNueva(posActual.getPosX(), posActual.getPosY(), nuevo_angulo);
@@ -45,7 +44,6 @@ DirRotDer::DirRotDer(){
 }
 
 Posicion DirRotDer::mover(Jugador* jugador){
-
     Posicion posActual = jugador->getPosicion();
     Angulo nuevo_angulo = posActual.getAngulo() - GRADOS_ROTACION;
     Posicion posNueva(posActual.getPosX(), posActual.getPosY(), nuevo_angulo);

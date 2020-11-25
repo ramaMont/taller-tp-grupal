@@ -22,10 +22,9 @@ void ServerHolder::run(){
     //act
     jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
-
     try{
         mapa.obtenerPosicionableEn(posicionIni);
-    } catch (...){
+    } catch(...){
         lugar_vacio = true;
     }
     //assert

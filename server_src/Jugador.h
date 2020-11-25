@@ -14,7 +14,6 @@ private:
 public:
     explicit Jugador(Posicion posicion, Mapa& mapa);
     void mover(Direccion* direccion);
-    void setPosicion(Posicion posicion);
     ~Jugador();
 };
 
