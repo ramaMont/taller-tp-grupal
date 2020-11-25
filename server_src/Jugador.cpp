@@ -7,8 +7,11 @@ Jugador::Jugador(Posicion posicion, Mapa& mapa):
 
 void Jugador::mover(Direccion* direccion){
     Posicion nuevaPos = direccion->mover(this);
-    mapa.moveme(this, nuevaPos);
-    this->posicion = nuevaPos;
+    try{
+        mapa.moveme(this, nuevaPos);
+        this->posicion = nuevaPos;
+    } catch(...){
+    }
 }
 
 Jugador::~Jugador(){

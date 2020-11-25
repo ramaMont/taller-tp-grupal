@@ -1,4 +1,5 @@
 #include "Angulo.h"
+#include <cmath>
 
 Angulo::Angulo():angulo(0.0){
 }
@@ -32,6 +33,30 @@ int Angulo::getY(){
     if (angulo >= -156.422 && angulo <= -23.578)
         return -1;
     return 255;
+}
+
+Angulo Angulo::operator +(const double& other){
+    double nuevo_angulo = this->angulo + other;
+    if (nuevo_angulo > 180.00){
+        double calculo = std::fmod(nuevo_angulo,180.00);
+        nuevo_angulo = -180.00 + calculo;
+    }
+    this->angulo = nuevo_angulo;
+    return *this;
+}
+
+Angulo Angulo::operator -(const double& other){
+    double nuevo_angulo = this->angulo - other;
+    if (nuevo_angulo < -180.00){
+        double calculo = std::fmod(nuevo_angulo, -180.00);
+        nuevo_angulo = 180.00 + calculo;
+    }
+    this->angulo = nuevo_angulo;
+    return *this;
+}
+
+bool Angulo::operator ==(const Angulo& other) const{
+    return (this->angulo==other.angulo);
 }
 
 Angulo::~Angulo(){
