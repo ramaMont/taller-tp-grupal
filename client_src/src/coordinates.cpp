@@ -7,6 +7,27 @@ Coordinates::Coordinates(){}
 
 Coordinates::Coordinates(float a_x, float a_y): x(a_x), y(a_y) {}
 
+void Coordinates::increment_on_direction(Coordinates movement_direction, float inc){
+	x+= movement_direction.x*inc;
+    y+= movement_direction.y*inc;
+}
+
+bool Coordinates::x_positive()const {
+	return(this->x > 0);
+}
+
+bool Coordinates::y_positive()const {
+	return(this->y > 0);
+}
+
+bool Coordinates::x_whole()const{
+	return( (this->x == floor(this->x)) and (this->x == ceil(this->x)));
+}
+
+bool Coordinates::y_whole()const{
+	return( (this->y == floor(this->y)) and (this->y == ceil(this->y)));
+}
+
 void Coordinates::normalice_direction(){
     float length = sqrt(this->x * this->x + this->y * this->y);
     this->x/=length;
@@ -25,6 +46,54 @@ Coordinates Coordinates::get_perpendicular_direction(){//Perpendicular a la dire
 	}
 	return perpendicular;
 }    
+
+bool Coordinates::has_element(const std::vector<std::vector<int>> &map){
+	return (map[(int)this->y][(int)this->x]!=0);
+}
+
+void Coordinates::inc_x(float a_x){
+	this->x+=a_x;
+}
+
+void Coordinates::inc_y(float a_y){
+	this->y+=a_y;
+}
+
+float Coordinates::get_distance_to_lower_side_x()const{
+	return (floor(x+1) - x);
+}
+
+float Coordinates::get_distance_to_higher_side_x()const{
+	return (ceil(x-1) - x);
+}
+
+float Coordinates::get_distance_to_lower_side_y()const{
+	return (floor(y+1) - y);
+}
+
+float Coordinates::get_distance_to_higher_side_y()const{
+	return (ceil(y-1) - y);
+}
+
+float Coordinates::calculate_distance(const Coordinates &a_position) const{
+	return (sqrt(pow(std::abs(x-a_position.x),2) + pow(std::abs(y-a_position.y),2)));
+}
+
+int Coordinates::get_increase_x()const{
+	int increase = 0;
+	if(!x_positive()){
+		increase = -1;
+	}
+	return increase;
+}
+
+int Coordinates::get_increase_y()const{
+	int increase = 0;
+	if(!y_positive()){
+		increase = -1;
+	}
+	return increase;
+}
 
 void Coordinates::set_x(float a_x){
     this->x = a_x;
