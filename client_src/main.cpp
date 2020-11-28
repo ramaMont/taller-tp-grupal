@@ -14,7 +14,7 @@
 
 int main(int argc, char* argv[]) {
 
-    std::vector<std::vector<int>> a_map{
+  std::vector<std::vector<int>> a_map{
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -71,6 +71,8 @@ int main(int argc, char* argv[]) {
     DirAtras backward;
     DirIzquierda left;
     DirDerecha right;
+    DirRotIzquierda leftRot;
+    DirRotDerecha rightRot;
 
     SDL_bool done = SDL_FALSE;
     while (!done) {
@@ -105,13 +107,13 @@ int main(int argc, char* argv[]) {
                 window.render();  
                 break;
               case SDLK_q:
-                player.rotate_left();
+                player.mover(&leftRot);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();  
                 window.render();
                 break;
               case SDLK_e:
-                player.rotate_right();
+                player.mover(&rightRot);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();  
                 window.render();

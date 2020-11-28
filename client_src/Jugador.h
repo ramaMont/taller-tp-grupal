@@ -15,11 +15,7 @@ private:
 public:
     explicit Jugador(Coordinates posicion,Coordinates direction ,Mapa& mapa);
     void mover(Direccion* direccion);
-
-    void rotate_left();
-
-    void rotate_right();
-
+    void set_direction(Coordinates direction);
     Coordinates get_coordinates();
 
     Coordinates get_direction();

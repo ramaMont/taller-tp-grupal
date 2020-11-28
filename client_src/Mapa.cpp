@@ -7,12 +7,11 @@
 // -2 lugar ocupado
 
 Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,std::vector<Posicionable*>(alto)){
-for(int i=0; i<ancho; i++){
-	for(int j=0; j<alto; j++){
-			mapaJuego[i][j]=nullptr;
-	}	
-}
-
+    for(int i=0; i<ancho; i++){
+        for(int j=0; j<alto; j++){
+            mapaJuego[i][j]=nullptr;
+        }
+    }
 }
 
 void Mapa::agregarJugador(Jugador* jugador){
@@ -36,9 +35,8 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion){
 }
 
 void Mapa::moveme(Jugador* jugador, Coordinates& posicion){
-
-    for(int i=0; i<24; i++){
-    	for(int j=0; j<24; j++){
+    for(int i=0; i<alto; i++){
+    	for(int j=0; j<ancho; j++){
     		if(mapaJuego[i][j]!=0){
     			printf("P");
     		}else{

@@ -38,4 +38,18 @@ public:
     ~DirDerecha();
 };
 
+class DirRotDerecha : public Direccion{
+public:
+    DirRotDerecha();
+    virtual Coordinates mover(Jugador* jugador, Coordinates direction) override;
+    ~DirRotDerecha();
+};
+
+class DirRotIzquierda : public Direccion{
+public:
+    DirRotIzquierda();
+    virtual Coordinates mover(Jugador* jugador, Coordinates direction) override;
+    ~DirRotIzquierda();
+};
+
 #endif

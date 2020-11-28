@@ -1,6 +1,7 @@
 #include "Direccion.h"
 
 static const float step_size=0.1;
+static float inc = 0.05;
 
 DirAdelante::DirAdelante(){
 }
@@ -60,4 +61,34 @@ Coordinates DirDerecha::mover(Jugador* jugador, Coordinates direction){
 }
 
 DirDerecha::~DirDerecha(){
+}
+
+//------------------------------------------------------------------------------------------------
+
+DirRotDerecha::DirRotDerecha(){
+}
+
+Coordinates DirRotDerecha::mover(Jugador* jugador, Coordinates direction){
+    Coordinates dirActual = jugador->get_direction();
+    dirActual.rotate(-inc);
+    jugador->set_direction(dirActual);
+    return jugador->get_coordinates();
+}
+
+DirRotDerecha::~DirRotDerecha(){
+}
+
+//------------------------------------------------------------------------------------------------
+
+DirRotIzquierda::DirRotIzquierda(){
+}
+
+Coordinates DirRotIzquierda::mover(Jugador* jugador, Coordinates direction){
+    Coordinates dirActual = jugador->get_direction();
+    dirActual.rotate(inc);
+    jugador->set_direction(dirActual);
+    return jugador->get_coordinates();
+}
+
+DirRotIzquierda::~DirRotIzquierda(){
 }

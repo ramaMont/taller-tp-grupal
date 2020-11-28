@@ -1,6 +1,5 @@
 #include "Jugador.h"
 #include <stdio.h>
-static float inc = 0.05;
 
 Jugador::Jugador(Coordinates position,Coordinates direction ,Mapa& mapa):
         Posicionable(position),direction(direction), mapa(mapa){
@@ -16,21 +15,17 @@ void Jugador::mover(Direccion* direccion){
     }
 }
 
-void Jugador::rotate_left(){
-	direction.rotate(inc);
-}
-
-void Jugador::rotate_right(){
-	direction.rotate(-inc);	
-}
-
-Jugador::~Jugador(){
-}
-
 Coordinates Jugador::get_coordinates(){
     return posicion;
 }
 
 Coordinates Jugador::get_direction(){
     return direction;
+}
+
+void Jugador::set_direction(Coordinates direction){
+    this->direction = direction;
+}
+
+Jugador::~Jugador(){
 }
