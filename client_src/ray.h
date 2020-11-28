@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "Mapa.h"
 #include "coordinates.h"
 
 
@@ -23,12 +24,8 @@ const float PI= 3.14159265358979323;
 		const Coordinates &player_position;
 		const Coordinates &ray_direction;
 		const float &direction_relative_to_player;
-		const std::vector<std::vector<int>> &map;
+		Mapa &map;
 
-		bool es_entero(const float &number);
-
-		// Según la direccion a la que apunta mi rayo, me fijo en una celda distinta
-		int get_increase(const float &direction);
 
 
 		// Me fijo si una posicion en el mapa tiene algún elemento(es decir, su valor en la matriz NO es 0)
@@ -42,12 +39,18 @@ const float PI= 3.14159265358979323;
 		se queda con el mas chico (es decir, el que choca primero con una pared),
 		 y se fija si toca un objeto, caso contrario, se llama a si misma con 
 		 ésta nueva posicion*/
-		float search_ray_distance(const Coordinates &coordinatess);
+		float search_ray_distance(Coordinates coordinatess);
+
+		// Calcula la distancia desde mi posicion en x, hasta el borde de mi casillero según la direccion de mi rayo
+		float get_x_distance_to_side(const Coordinates &ray_position);
+
+		// Calcula la distancia desde mi posicion en y, hasta el borde de mi casillero según la direccion de mi rayo
+		float get_y_distance_to_side(const Coordinates &ray_position);
 
 
 	public:
 		//Ray angle y ray_direction NO es lo mismo, la primera es relativa al plano de la camara y la segunda NO
-		Ray(const float &ray_angle,const Coordinates &ray_direction,const Coordinates &player_position,const Coordinates &player_direction, const std::vector<std::vector<int>> &map);
+		Ray(const float &ray_angle,const Coordinates &ray_direction,const Coordinates &player_position,const Coordinates &player_direction, Mapa &map);
 
 		/*Llama a la funcion recursiva que encuentra al objeto con 
 		el que choca el rayo, partiendo de la posicion inicial, player_position*/

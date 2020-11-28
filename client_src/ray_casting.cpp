@@ -7,23 +7,17 @@
 #include "window.h"
 
 #include "camera.h"
-#include "player.h"
+#include "Jugador.h"
 #include "coordinates.h"
 
 #include "ray.h"
 
 
-Raycasting::Raycasting(Player &a_player,const std::vector<std::vector<int>> &a_map,const Window &window)
+Raycasting::Raycasting(Jugador &a_player,Mapa &a_map,const Window &window)
     : player(a_player), map(a_map),renderer(window.getRenderer()) 
     {
     h=480;
     n_rays = 160;
-
-    roof.x = 00;
-	roof.y = 240;
-	roof.w = 640;
-	roof.h = 240;
-
 }
 
 
@@ -49,8 +43,8 @@ void Raycasting::draw(float distance_player_plane,float pos_x){
 void Raycasting::calculate_ray_casting(){
     //Ademas del raycasting, estas funciones sirven 
     // para hacer el techo oscuro, y el piso claro con un triangulo (despues pasar a otra clase)
-    SDL_SetRenderDrawColor(renderer, 0x6E, 0x6E, 0x6E, 0 );
-    SDL_RenderFillRect( renderer, &roof );
+    //SDL_SetRenderDrawColor(renderer, 0x6E, 0x6E, 0x6E, 0 );
+    //SDL_RenderFillRect( renderer, &roof );
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
     /* Futuro mutex acá (en un thread proceso 

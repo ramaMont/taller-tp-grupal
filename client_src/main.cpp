@@ -3,38 +3,74 @@
 #include <iostream>
 #include <exception>
 
-
+#include "Direccion.h"
 
 #include "window.h"
 #include "texture.h"
-
+#include "Mapa.h"
 #include "ray_casting.h"
-#include "player.h"
+#include "Jugador.h"
+#include "Posicionable.h"
 
 int main(int argc, char* argv[]) {
 
-    std::vector<std::vector<int>> a_map{  {1,1,1,1,1,1,1,1,1,1},
-                                          {1,0,0,0,0,0,0,0,0,1},
-                                          {1,0,0,0,0,0,0,0,0,1},
-                                          {1,1,0,0,1,0,0,0,0,1},
-                                          {1,0,0,0,1,1,1,0,0,1},
-                                          {1,0,0,0,1,0,1,0,0,1},
-                                          {1,0,0,0,1,0,1,0,0,1},
-                                          {1,0,0,0,1,0,1,0,0,1},
-                                          {1,0,0,0,1,1,1,0,0,1},
-                                          {1,1,1,1,1,1,1,1,1,1}};
+    std::vector<std::vector<int>> a_map{
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
+    
+    Mapa map(24, 24);
 
+    Coordinates initial_position(2.5,2.5);
+    Coordinates initial_direction(0,-1);
+    Jugador player(initial_position,initial_direction,map);
 
+    for(int i=0; i<24; i++){
+    	for(int j=0; j<24; j++){
+    		if(a_map[i][j]!=0){
+		      Coordinates position((float)i,(float)j);
+		      Posicionable *posicionable = new Posicionable(position);
+		      map.agregarPosicionable(posicionable,position);
+    		}
+    	}
+    }
 
     Window window(640,480);
-    Player player(3.5,3,0,-1);
-    Raycasting ray_casting(player,a_map,window);
+
+    Raycasting ray_casting(player,map,window);
 
     window.set_no_color();
 
     ray_casting.calculate_ray_casting();
 
     window.render();  
+
+    DirAdelante forward;
+    DirAtras backward;
+    DirIzquierda left;
+    DirDerecha right;
 
     SDL_bool done = SDL_FALSE;
     while (!done) {
@@ -45,25 +81,25 @@ int main(int argc, char* argv[]) {
             SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
             switch (keyEvent.keysym.sym) {
               case SDLK_LEFT:
-              player.move_left();
+              player.mover(&left);
               window.set_no_color();
               ray_casting.calculate_ray_casting();
               window.render();  
                 break;
               case SDLK_RIGHT:
-                player.move_right();
+                player.mover(&right);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();
                 window.render();  
                 break;
               case SDLK_UP:
-                player.move_forward();
+                player.mover(&forward);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();
                 window.render();  
                 break;
               case SDLK_DOWN:
-                player.move_backward();
+                player.mover(&backward);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();
                 window.render();  
