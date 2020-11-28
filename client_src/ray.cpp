@@ -24,16 +24,14 @@ bool Ray::has_element(const Coordinates &map_coordinates){
 	}else{ //Por descarte: y_whole()
 		whole_coordinates.inc_y(aumento_y);
 	}
-
-	whole_coordinates.x = (int)whole_coordinates.x;
-	whole_coordinates.y = (int)whole_coordinates.y;
 	try{
+		whole_coordinates.x = (int)whole_coordinates.x;
+		whole_coordinates.y = (int)whole_coordinates.y;
 		map.obtenerPosicionableEn(whole_coordinates);
 		return true;
-	}catch(...){
+	}catch(...){ //No encontré nada;
 		return false;
 	}
-
 }
 
 float Ray::get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle){

@@ -33,8 +33,11 @@ void Mapa::sacarPosicionable(Coordinates posicion){
 }
 
 Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion){
-    return mapaJuego.at(posicion);
-
+    try{
+        return mapaJuego.at(posicion);
+    } catch(...) {
+        throw -1;
+    }
 }
 
 void Mapa::moveme(Jugador* jugador, Coordinates& posicion){
