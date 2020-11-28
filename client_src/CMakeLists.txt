@@ -1,45 +1,15 @@
-cmake_minimum_required(VERSION 2.8)
+set(BINARY ${CMAKE_PROJECT_NAME}_client)
+set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno-inline")
 
-project(qt-sdl)
-find_package(Qt5Widgets)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
 
-add_library(sdldemo
-  src/texture.cpp
-  src/exception.cpp
-  src/window.cpp
-  src/camera.cpp
-  src/coordinates.cpp
-  src/player.cpp
-  src/ray.cpp
-  src/ray_casting.cpp
-)
+set(SOURCES ${SOURCES})
 
-# Agrego la carpeta con los headers autogenerados a los includes
-message("Agregando '${PROJECT_BINARY_DIR}' como directorio de includes")
-include_directories(${PROJECT_BINARY_DIR})
+add_executable(${BINARY}_run ${SOURCES})
 
-add_executable (show_animation
-  src/mainshow_animation.cpp  
-)
+add_library(${BINARY}_lib STATIC ${SOURCES})
 
-add_executable (show_image
-  src/mainshow_image.cpp  
-)
-
-add_executable (ray_casting
-  src/mainray_casting.cpp
-)
-
-
-target_link_libraries(show_image Qt5::Widgets)
-target_link_libraries(show_image sdldemo SDL2 SDL2_image)
-
-target_link_libraries(show_animation sdldemo SDL2 SDL2_image)
-target_link_libraries(show_animation Qt5::Widgets)
-
-target_link_libraries(ray_casting sdldemo SDL2 SDL2_image)
-target_link_libraries(ray_casting Qt5::Widgets)
+target_link_libraries(${BINARY}_run SDL2 SDL2_image)
 
 install(FILES textures/wolfstein.jpg DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES textures/wolfenstein0.jpg DESTINATION ${CMAKE_BINARY_DIR})
