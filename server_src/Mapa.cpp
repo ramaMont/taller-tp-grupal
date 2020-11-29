@@ -57,5 +57,8 @@ void Mapa::moveme(Jugador* jugador, Posicion& posicion){
     }
 }
 
+void Mapa::soltar(Posicionable* objeto){
+}
+
 Mapa::~Mapa(){
 }

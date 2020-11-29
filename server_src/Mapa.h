@@ -20,6 +20,7 @@ public:
     void sacarPosicionable(Posicion posicion);
     Posicionable* obtenerPosicionableEn(Posicion posicion);
     void moveme(Jugador* jugador, Posicion& posicion);
+    void soltar(Posicionable* objeto);
     ~Mapa();
 };
 
