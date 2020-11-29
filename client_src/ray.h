@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "Mapa.h"
-#include "coordinates.h"
+#include <Mapa.h>
+#include <coordinates.h>
 
 
 // Implementa un único rayo del raycasting

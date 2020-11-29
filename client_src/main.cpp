@@ -3,14 +3,14 @@
 #include <iostream>
 #include <exception>
 
-#include "Direccion.h"
+#include <Direccion.h>
 
 #include "window.h"
 #include "texture.h"
-#include "Mapa.h"
+#include <Mapa.h>
 #include "ray_casting.h"
-#include "Jugador.h"
-#include "Posicionable.h"
+#include <Jugador.h>
+#include <Posicionable.h>
 
 int main(int argc, char* argv[]) {
 
@@ -51,8 +51,8 @@ int main(int argc, char* argv[]) {
     	for(int j=0; j<24; j++){
     		if(a_map[i][j]!=0){
 		      Coordinates position((float)i,(float)j);
-		      Posicionable *posicionable = new Posicionable(position);
-		      map.agregarPosicionable(posicionable,position);
+		      Posicionable posicionable(position);
+		      map.agregarPosicionable(&posicionable,position);
     		}
     	}
     }

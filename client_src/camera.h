@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 #include <string>
-#include "coordinates.h"
+#include <coordinates.h>
 #include <math.h>
 
 

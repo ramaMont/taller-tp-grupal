@@ -12,10 +12,11 @@
 #include <string>
 #include <vector>
 
-#include "Mapa.h"
+
 #include "camera.h"
-#include "Jugador.h"
-#include "coordinates.h"
+#include <Mapa.h>
+#include <Jugador.h>
+#include <coordinates.h>
 
 #include "ray.h"
 

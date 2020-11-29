@@ -8,11 +8,14 @@
 class Jugador;
 #include "coordinates.h"
 
+
 class Mapa{
 private:
     int alto;
     int ancho;
     std::vector<std::vector<Posicionable*>> mapaJuego;
+
+    float round(float number);
 public:
     explicit Mapa(int alto, int ancho);
     void agregarJugador(Jugador* jugador);

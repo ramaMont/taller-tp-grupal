@@ -1,6 +1,7 @@
 #include "Mapa.h"
 #include <iostream>
 #include <utility>
+#include <cmath>
 
 // Codigo de errores en int (despues cambiar a excepciones)
 // -1 lugar no encontrado
@@ -19,8 +20,8 @@ void Mapa::agregarJugador(Jugador* jugador){
 }
 
 void Mapa::agregarPosicionable(Posicionable* posicionable, Coordinates posicion){
-	if(mapaJuego[(int)posicion.x][(int)posicion.y]==nullptr){//Vacío
-		mapaJuego[(int)posicion.x][(int)posicion.y]=posicionable;
+	if(mapaJuego[(int)round(posicion.x)][(int)round(posicion.y)]==nullptr){//Vacío
+		mapaJuego[(int)round(posicion.x)][(int)round(posicion.y)]=posicionable;
 	}else{
 		throw -2;//Quiero guardar algo donde ya hay otra cosa
 	}
@@ -31,21 +32,21 @@ void Mapa::sacarPosicionable(Coordinates posicion){
 }
 
 Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion){
-	return mapaJuego[(int)posicion.x][(int)posicion.y];
+	return mapaJuego[(int)round(posicion.x)][(int)round(posicion.y)];
 }
 
 void Mapa::moveme(Jugador* jugador, Coordinates& posicion){
-    for(int i=0; i<alto; i++){
-    	for(int j=0; j<ancho; j++){
-    		if(mapaJuego[i][j]!=0){
-    			printf("P");
-    		}else{
-    			printf("_");
-    		}
-    	}
-    	printf("\n");
-    }
-    printf("\n\n\n");
+    // for(int i=0; i<alto; i++){
+    // 	for(int j=0; j<ancho; j++){
+    // 		if(mapaJuego[i][j]!=0){
+    // 			printf("P");
+    // 		}else{
+    // 			printf("_");
+    // 		}
+    // 	}
+    // 	printf("\n");
+    // }
+    // printf("\n\n\n");
 	
     if (posicion.x > ancho || posicion.y > alto)
         throw -1;
@@ -61,6 +62,12 @@ void Mapa::moveme(Jugador* jugador, Coordinates& posicion){
     } catch(int e){
         throw;
     }
+}
+
+float Mapa::round(float number){
+	if (std::ceil(number) - number < 0.001)
+		return std::ceil(number);
+	return std::floor(number);
 }
 
 Mapa::~Mapa(){

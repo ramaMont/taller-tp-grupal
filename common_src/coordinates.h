@@ -71,7 +71,7 @@ public:
 
     bool operator<(const Coordinates& t) const{ 
         return (this->x < t.x && this->y < t.y); 
-    } 
+    }
 
     struct Hash{
         size_t operator()(const Coordinates& pos) const;
