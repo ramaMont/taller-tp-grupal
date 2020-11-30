@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <exception>
+
 #include <vector>
 #include <Direccion.h>
 
@@ -43,15 +44,16 @@ int main(int argc, char* argv[]) {
     Mapa map(24, 24);
 
     Coordinates initial_position(2.5,2.5);
-    Coordinates initial_direction(0,-1);
+    Coordinates initial_direction(0,1);
     Jugador player(initial_position,initial_direction,map);
 
-    for (int i=0; i<24; i++){
-    	for (int j=0; j<24; j++){
-    		if (a_map[i][j]!=0){
+    for(int i=0; i<24; i++){
+    	for(int j=0; j<24; j++){
+    		if(a_map[i][j]!=0){
 		      Coordinates position((float)i,(float)j);
-		      Posicionable posicionable(position);
-		      map.agregarPosicionable(&posicionable,position);
+		      Posicionable *posicionable = new Posicionable(position);
+		      map.agregarPosicionable(posicionable,position);
+
     		}
     	}
     }
@@ -127,4 +129,6 @@ int main(int argc, char* argv[]) {
       }
     }
     return 0;
+
 }
+
