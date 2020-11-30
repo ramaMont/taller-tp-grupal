@@ -13,6 +13,7 @@ class Mapa;
 
 class Jugador final : public Posicionable{
 private:
+	Posicion posicion_inicial;
     Mapa &mapa;
     SetArmas setArmas;
     Arma* armaEquipada;
@@ -38,6 +39,7 @@ public:
     bool estaPorMorir();
     void morir();
     bool revivir();
+    bool estaVivo();
     ~Jugador();
     
     // Para pruebas
