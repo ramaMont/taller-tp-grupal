@@ -40,29 +40,25 @@ int main(int argc, char* argv[]) {
   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
+    
     Mapa map(24, 24);
+
+    Coordinates initial_position(2.5,2.5);
+    Coordinates initial_direction(0,1);
+    Jugador player(initial_position,initial_direction,map);
+
     for(int i=0; i<24; i++){
     	for(int j=0; j<24; j++){
     		if(a_map[i][j]!=0){
-		      Coordinates position(i,j);
+		      Coordinates position((float)i,(float)j);
 		      Posicionable *posicionable = new Posicionable(position);
 		      map.agregarPosicionable(posicionable,position);
     		}
     	}
     }
 
-    /*for(int i=0; i<20; i++){
-      Coordinates position(i,0);
-      Posicionable *posicionable = new Posicionable(position);
-      map.agregarPosicionable(posicionable,position);
-    }*///Arreglo esto, rodeo mi mapa con estas cosas, y despuees me aseguro q no explote el ray al llamarlos
-
-   	Coordinates initial_position(3.5,3);
-	  Coordinates initial_direction(0,-1);
-
     Window window(640,480);
 
-    Jugador player(initial_position,initial_direction,map);
     Raycasting ray_casting(player,map,window);
 
     window.set_no_color();
@@ -75,6 +71,8 @@ int main(int argc, char* argv[]) {
     DirAtras backward;
     DirIzquierda left;
     DirDerecha right;
+    DirRotDerecha rotRight;
+    DirRotIzquierda rotLeft;
 
     SDL_bool done = SDL_FALSE;
     while (!done) {
@@ -109,13 +107,13 @@ int main(int argc, char* argv[]) {
                 window.render();  
                 break;
               case SDLK_q:
-                player.rotate_left();
+                player.mover(&rotLeft);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();  
                 window.render();
                 break;
               case SDLK_e:
-                player.rotate_right();
+                player.mover(&rotRight);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();  
                 window.render();

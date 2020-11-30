@@ -12,7 +12,8 @@
 
 #include "Mapa.h"
 #include "coordinates.h"
-
+#include "Posicionable.h"
+#include "intersected_object.h"
 
 // Implementa un único rayo del raycasting
 class Ray {
@@ -29,7 +30,7 @@ const float PI= 3.14159265358979323;
 
 
 		// Me fijo si una posicion en el mapa tiene algún elemento(es decir, su valor en la matriz NO es 0)
-		bool has_element(const Coordinates &map_coordinates);
+		Posicionable* get_element(const Coordinates &map_coordinates);
 
 		// Calcula la distancia desde el jugador al objeto con el que impactó el rayo
 		float get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle);
@@ -39,7 +40,7 @@ const float PI= 3.14159265358979323;
 		se queda con el mas chico (es decir, el que choca primero con una pared),
 		 y se fija si toca un objeto, caso contrario, se llama a si misma con 
 		 ésta nueva posicion*/
-		float search_ray_distance(Coordinates coordinatess);
+		Intersected_object search_object(Coordinates coordinatess);
 
 		// Calcula la distancia desde mi posicion en x, hasta el borde de mi casillero según la direccion de mi rayo
 		float get_x_distance_to_side(const Coordinates &ray_position);
@@ -54,7 +55,7 @@ const float PI= 3.14159265358979323;
 
 		/*Llama a la funcion recursiva que encuentra al objeto con 
 		el que choca el rayo, partiendo de la posicion inicial, player_position*/
-		float calculate_ray_distance();
+		Intersected_object get_colisioned_object();
 
 };
 #endif

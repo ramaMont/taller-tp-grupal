@@ -6,16 +6,19 @@
 void Player::move_side(float inc){//-1 or +1
     Coordinates movement_direction = dir.get_perpendicular_direction();
     if(dir.y>=0){
-        pos.increment_on_direction(movement_direction,inc);
+        pos.x+= movement_direction.x*inc;
+        pos.y+= movement_direction.y*inc;
     }else{
-        pos.increment_on_direction(movement_direction,-inc);
+        pos.x-= movement_direction.x*inc;
+        pos.y-= movement_direction.y*inc;
     }
 }
 
-void Player::move_front(float inc){//-step or +step
+void Player::move_front(float inc){//-1 or +1
     Coordinates movement_direction = dir;
     movement_direction.normalice_direction();
-    pos.increment_on_direction(movement_direction,inc);
+    pos.x+= movement_direction.x*inc;
+    pos.y+= movement_direction.y*inc;
 }
 
 void Player::rotate_player(float inc){ //mayor o menor

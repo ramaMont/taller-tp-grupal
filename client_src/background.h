@@ -17,20 +17,9 @@ class Background {
 		SDL_Rect roof;
 
 	public:
-		Background(const Window &window) : renderer(window.getRenderer()) 
-		{
-		    roof.x = 00;
-			roof.y = 240;
-			roof.w = 640;
-			roof.h = 240;	
-		}
+		Background(const Window &window);
 
 		// Muestra el fondo
-		void show(){
-		    // para hacer el techo oscuro, y el piso claro con un triangulo (despues pasar a otra clase)
-		    SDL_SetRenderDrawColor(renderer, 0x6E, 0x6E, 0x6E, 0 );
-		    SDL_RenderFillRect( renderer, &roof );
-		    //SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-		}
+		void show();
 };
 #endif

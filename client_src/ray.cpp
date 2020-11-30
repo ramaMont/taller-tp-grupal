@@ -1,5 +1,8 @@
 #include "ray.h"
 
+static const int X_SIDE = 1;
+static const int Y_SIDE = 2;
+
 Ray::Ray(const float &ray_angle,const Coordinates &ray_direction,\
 	const Coordinates &player_position,const Coordinates &player_direction,\
 	Mapa &map):
@@ -9,8 +12,8 @@ Ray::Ray(const float &ray_angle,const Coordinates &ray_direction,\
 	direction_relative_to_player(ray_angle) ,
 	map(map) {}
 
-
-bool Ray::has_element(const Coordinates &map_coordinates){
+//Eventualmente en lugar de devolver bool, va a devolver el puntero
+Posicionable* Ray::get_element(const Coordinates &map_coordinates){
 	int aumento_x = ray_direction.get_increase_x();
 	int aumento_y = ray_direction.get_increase_y();
 
@@ -24,14 +27,11 @@ bool Ray::has_element(const Coordinates &map_coordinates){
 	}else{ //Por descarte: y_whole()
 		whole_coordinates.inc_y(aumento_y);
 	}
-	try{
-		whole_coordinates.x = (int)whole_coordinates.x;
-		whole_coordinates.y = (int)whole_coordinates.y;
-		map.obtenerPosicionableEn(whole_coordinates);
-		return true;
-	}catch(...){ //No encontré nada;
-		return false;
-	}
+
+	whole_coordinates.x = (int)whole_coordinates.x;
+	whole_coordinates.y = (int)whole_coordinates.y;
+
+	return (map.obtenerPosicionableEn(whole_coordinates));
 }
 
 float Ray::get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle){
@@ -64,7 +64,7 @@ float Ray::get_y_distance_to_side(const Coordinates &ray_position){
 
 
 
-float Ray::search_ray_distance(Coordinates ray_position){
+Intersected_object Ray::search_object(Coordinates ray_position){
 	bool first_triangle = false; //qué triangulo use despues me afecta en calcular la distancia y el ángulo
 
 	float x_distance = get_x_distance_to_side(ray_position);
@@ -83,14 +83,21 @@ float Ray::search_ray_distance(Coordinates ray_position){
 		coordinates_map.y=ray_position.y + y_distance;
 		first_triangle = false;
 	}
-	if(has_element(coordinates_map)){
+	Posicionable* object;
+	if((object = get_element(coordinates_map))!=nullptr){
 		float distance_player_plane = get_distance_to_player_plane(coordinates_map,first_triangle);
-		return distance_player_plane;
+		//Intersected_object *intersected_object = new Intersected_object(distance_player_plane);//Despues cambiarlo, q no sea un puntero
+		if(first_triangle){
+			return Intersected_object(distance_player_plane,coordinates_map.y,X_SIDE);
+		}else{
+			return Intersected_object(distance_player_plane,coordinates_map.x,Y_SIDE);
+		}
+		
 	}else{
-		return search_ray_distance(coordinates_map);
+		return search_object(coordinates_map);
 	}	
 }
 
-float Ray::calculate_ray_distance(){
-	return search_ray_distance(player_position);
+Intersected_object Ray::get_colisioned_object(){
+	return search_object(player_position);
 }
