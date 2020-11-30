@@ -2,20 +2,20 @@
 #define DRAGWIDGET_H
 
 #include <QFrame>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 
-class QDragEnterEvent;
-class QDropEvent;
 
 class DragWidget : public QFrame
 {
-public:
-    explicit DragWidget(QWidget *parent = nullptr, bool acceptDrops = false);
+ public:
+    explicit DragWidget(QWidget *parent = nullptr, bool accept_drops = false);
 
-protected:
+ protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
 };
 
-#endif // DRAGWIDGET_H
+#endif  // DRAGWIDGET_H

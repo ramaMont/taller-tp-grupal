@@ -3,24 +3,27 @@
 #include <map>
 #include <fstream>
 
-#define FILAS 20
-#define COLUMNAS 20
+#define MAX_FC 50
+#define MIN_FC 8
+#define CARGAR_DESDE_ARCHIVO 1
+#define NUEVO_MAPA 0
 
 class MapaEditable {
  public:
-    MapaEditable(const std::string& flag,
+    MapaEditable(const int& flag,
+                 const std::string& nombre,
                  const std::string& archivo_mapa,
                  const int& filas, const int& columnas)
                  : archivo_mapa(archivo_mapa), filas(filas),
-                 columnas(columnas) {
-      if (filas > FILAS || columnas > COLUMNAS) throw -1;
-      if (flag == "--crear") {
-         iniciarNuevoMapa(filas, columnas);
-      }
-      if (flag == "--editar") {
+                 nombre(nombre), columnas(columnas) {
+      if (flag == CARGAR_DESDE_ARCHIVO) {
          cargarMapaExistente();
+      } else {
+         if (filas > MAX_FC || columnas > MAX_FC ||
+             filas < MIN_FC || columnas < MIN_FC) throw -1;
       }
     }
+    ~MapaEditable();
     void iniciarNuevoMapa(const int& rows, const int& columns);
     void cargarMapaExistente();
     void cargarElemento(const std::string& posicion,
@@ -30,6 +33,8 @@ class MapaEditable {
     void guardarMapa();
     int getColumnas();
     int getFilas();
+    void limpiar();
+    std::string getNombre();
 
  private:
     std::map<std::string, std::string> mapa;

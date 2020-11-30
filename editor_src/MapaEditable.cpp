@@ -2,9 +2,6 @@
 #include <algorithm>
 #include <utility>
 
-void MapaEditable::iniciarNuevoMapa(const int& rows, const int& columns) {
-}
-
 void MapaEditable::cargarMapaExistente() {
     std::ifstream file;
     file.open(archivo_mapa);
@@ -15,7 +12,6 @@ void MapaEditable::cargarMapaExistente() {
             file >> key >> rows;
             file >> key >> cols;
             file >> key;
-            std::cout << map_name << " " << rows << " " << cols << std::endl;
             while (file >> key) {
                 file >> pos;
                 pos.pop_back();
@@ -36,12 +32,19 @@ void MapaEditable::cargarMapaExistente() {
 
 void MapaEditable::guardarMapa() {
     std::ofstream file;
-    file.open(archivo_mapa);
+    std::string nombre_archivo;
+    if (archivo_mapa.length() > 0)
+        nombre_archivo = archivo_mapa;
+    else
+        nombre_archivo = "../" + nombre + ".yaml";
+    std::cout << nombre_archivo;
+    file.open(nombre_archivo);
     file << "nombre: " << nombre << std::endl;
     file << "filas: " << filas << std::endl;
     file << "columnas: " << columnas << std::endl;
+    file << "elementos: " << std::endl;
     for (auto const& element : mapa) {
-        file << element.first << ": " << element.second << std::endl;
+        file << "   - " << element.first << ": " << element.second << std::endl;
     }
     file.close();
 }
@@ -61,10 +64,22 @@ void MapaEditable::cargarElemento(const std::string& posicion,
                                                     elemento));
 }
 
+std::string MapaEditable::getNombre() {
+    return nombre;
+}
+
 int MapaEditable::getColumnas() {
     return columnas;
 }
 
 int MapaEditable::getFilas() {
     return filas;
+}
+
+void MapaEditable::limpiar() {
+    mapa.clear();
+}
+
+MapaEditable::~MapaEditable() {
+    limpiar();
 }
