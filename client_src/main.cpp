@@ -2,7 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <exception>
-
+#include <vector>
 #include <Direccion.h>
 
 #include "window.h"
@@ -13,7 +13,6 @@
 #include <Posicionable.h>
 
 int main(int argc, char* argv[]) {
-
   std::vector<std::vector<int>> a_map{
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -47,9 +46,9 @@ int main(int argc, char* argv[]) {
     Coordinates initial_direction(0,-1);
     Jugador player(initial_position,initial_direction,map);
 
-    for(int i=0; i<24; i++){
-    	for(int j=0; j<24; j++){
-    		if(a_map[i][j]!=0){
+    for (int i=0; i<24; i++){
+    	for (int j=0; j<24; j++){
+    		if (a_map[i][j]!=0){
 		      Coordinates position((float)i,(float)j);
 		      Posicionable posicionable(position);
 		      map.agregarPosicionable(&posicionable,position);
@@ -78,7 +77,7 @@ int main(int argc, char* argv[]) {
     while (!done) {
       SDL_Event event;
       while (SDL_PollEvent(&event)) {
-        switch(event.type) {
+        switch (event.type) {
           case SDL_KEYDOWN: {
             SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
             switch (keyEvent.keysym.sym) {
@@ -128,6 +127,4 @@ int main(int argc, char* argv[]) {
       }
     }
     return 0;
-
 }
-

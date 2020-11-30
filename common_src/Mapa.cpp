@@ -2,25 +2,29 @@
 #include <iostream>
 #include <utility>
 #include <cmath>
+#include <vector>
 
 // Codigo de errores en int (despues cambiar a excepciones)
 // -1 lugar no encontrado
 // -2 lugar ocupado
 
-Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,std::vector<Posicionable*>(alto)){
-    for(int i=0; i<ancho; i++){
-        for(int j=0; j<alto; j++){
+Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
+        std::vector<Posicionable*>(alto)){
+    for (int i=0; i<ancho; i++){
+        for (int j=0; j<alto; j++){
             mapaJuego[i][j]=nullptr;
         }
     }
 }
 
 void Mapa::agregarJugador(Jugador* jugador){
-	mapaJuego[(int)jugador->getPosicion().x][(int)jugador->getPosicion().y]=jugador;
+	mapaJuego[(int)jugador->getPosicion().x]
+        [(int)jugador->getPosicion().y]=jugador;
 }
 
-void Mapa::agregarPosicionable(Posicionable* posicionable, Coordinates posicion){
-	if(mapaJuego[(int)round(posicion.x)][(int)round(posicion.y)]==nullptr){//Vacío
+void Mapa::agregarPosicionable(Posicionable* posicionable, 
+        Coordinates posicion){
+	if(mapaJuego[(int)round(posicion.x)][(int)round(posicion.y)]==nullptr){
 		mapaJuego[(int)round(posicion.x)][(int)round(posicion.y)]=posicionable;
 	}else{
 		throw -2;//Quiero guardar algo donde ya hay otra cosa
@@ -35,7 +39,7 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion){
 	return mapaJuego[(int)round(posicion.x)][(int)round(posicion.y)];
 }
 
-void Mapa::moveme(Jugador* jugador, Coordinates& posicion){
+void Mapa::moveme(Jugador* jugador, const Coordinates& posicion){
     // for(int i=0; i<alto; i++){
     // 	for(int j=0; j<ancho; j++){
     // 		if(mapaJuego[i][j]!=0){

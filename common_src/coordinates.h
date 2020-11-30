@@ -9,7 +9,6 @@ accedidos con tanta frecuencia que conviene hacerlos
 publicos en lugar de llenar mi código de getters y setters, capaz me conviene convertir esto en un struct*/
 class Coordinates{
 public:
-
     float x;
     float y;
 
@@ -55,9 +54,9 @@ public:
 
     int get_increase_y()const;
 
-    void set_x(float a_x);
+    // void set_x(float a_x);
 
-    void set_y(float a_y);
+    // void set_y(float a_y);
 
     //Compara nomas la parte "entera" de las coordenadas
     bool operator==(const Coordinates& other) const{
@@ -76,7 +75,6 @@ public:
     struct Hash{
         size_t operator()(const Coordinates& pos) const;
     };
-
 };    
 
 #endif

@@ -1,13 +1,14 @@
 
 #include "coordinates.h"
-
+#include <vector>
 #include <math.h>
 
 Coordinates::Coordinates(){}
 
 Coordinates::Coordinates(float a_x, float a_y): x(a_x), y(a_y) {}
 
-void Coordinates::increment_on_direction(Coordinates movement_direction, float inc){
+void Coordinates::increment_on_direction(Coordinates movement_direction,
+		float inc){
 	x+= movement_direction.x*inc;
     y+= movement_direction.y*inc;
 }
@@ -39,7 +40,8 @@ void Coordinates::normalice_direction(){
     this->y/=length;        
 }
 
-Coordinates Coordinates::get_perpendicular_direction(){//Perpendicular a la direccion q reciba
+Coordinates Coordinates::get_perpendicular_direction(){
+	//Perpendicular a la direccion q reciba
 	Coordinates perpendicular;
 	if(this->y!=0){
     	perpendicular.x = 1;
@@ -81,7 +83,8 @@ float Coordinates::get_distance_to_higher_side_y()const{
 }
 
 float Coordinates::calculate_distance(const Coordinates &a_position) const{
-	return (sqrt(pow(std::abs(x-a_position.x),2) + pow(std::abs(y-a_position.y),2)));
+	return (sqrt(pow(std::abs(x-a_position.x),2) + 
+		pow(std::abs(y-a_position.y),2)));
 }
 
 int Coordinates::get_increase_x()const{
@@ -100,13 +103,13 @@ int Coordinates::get_increase_y()const{
 	return increase;
 }
 
-void Coordinates::set_x(float a_x){
-    this->x = a_x;
-}
+// void Coordinates::set_x(float a_x){
+//     this->x = a_x;
+// }
 
-void Coordinates::set_y(float a_y){
-	this->y = a_y;
-}
+// void Coordinates::set_y(float a_y){
+// 	this->y = a_y;
+// }
 
 size_t Coordinates::Hash::operator()(const Coordinates& pos) const{
     size_t rowHash = std::hash<int>()((int)pos.x);

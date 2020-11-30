@@ -22,7 +22,7 @@ public:
     void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);
     void sacarPosicionable(Coordinates posicion);
     Posicionable* obtenerPosicionableEn(Coordinates posicion);
-    void moveme(Jugador* jugador, Coordinates& posicion);
+    void moveme(Jugador* jugador, const Coordinates& posicion);
     ~Mapa();
 };
 

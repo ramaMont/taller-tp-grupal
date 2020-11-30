@@ -5,7 +5,6 @@
 #include <SDL2/SDL_image.h>
 
 class Window{
-
 private:
     int width;
     int height;
