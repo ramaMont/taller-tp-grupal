@@ -14,7 +14,7 @@ Coordinates DirAdelante::mover(Jugador* jugador, Coordinates direction){
 
 DirAdelante::~DirAdelante(){
 }
-//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 DirAtras::DirAtras(){
 }
 
@@ -26,15 +26,14 @@ Coordinates DirAtras::mover(Jugador* jugador, Coordinates direction){
 
 DirAtras::~DirAtras(){
 }
-//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 DirIzquierda::DirIzquierda(){
-
 }
 
 Coordinates DirIzquierda::mover(Jugador* jugador, Coordinates direction){
     Coordinates posActual = jugador->getPosicion();
     Coordinates new_direction = direction.get_perpendicular_direction();
-    if(direction.y_positive()){
+    if (direction.y_positive()){
         posActual.increment_on_direction(new_direction,-step_size);
     }else{
         posActual.increment_on_direction(new_direction,step_size);
@@ -44,15 +43,14 @@ Coordinates DirIzquierda::mover(Jugador* jugador, Coordinates direction){
 
 DirIzquierda::~DirIzquierda(){
 }
-//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 DirDerecha::DirDerecha(){
-
 }
 
 Coordinates DirDerecha::mover(Jugador* jugador, Coordinates direction){
     Coordinates posActual = jugador->getPosicion();
     Coordinates new_direction = direction.get_perpendicular_direction();
-    if(direction.y_positive()){
+    if (direction.y_positive()){
         posActual.increment_on_direction(new_direction,step_size);
     }else{
         posActual.increment_on_direction(new_direction,-step_size);
@@ -63,7 +61,7 @@ Coordinates DirDerecha::mover(Jugador* jugador, Coordinates direction){
 DirDerecha::~DirDerecha(){
 }
 
-//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 DirRotDerecha::DirRotDerecha(){
 }
@@ -78,7 +76,7 @@ Coordinates DirRotDerecha::mover(Jugador* jugador, Coordinates direction){
 DirRotDerecha::~DirRotDerecha(){
 }
 
-//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 DirRotIzquierda::DirRotIzquierda(){
 }

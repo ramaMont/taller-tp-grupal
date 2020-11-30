@@ -10,13 +10,11 @@
 #include <string>
 #include <vector>
 
-#include "Mapa.h"
-#include "coordinates.h"
-
+#include <Mapa.h>
+#include <coordinates.h>
 
 // Implementa un único rayo del raycasting
 class Ray {
-
 const float PI= 3.14159265358979323;
 
 	private:
@@ -26,35 +24,43 @@ const float PI= 3.14159265358979323;
 		const float &direction_relative_to_player;
 		Mapa &map;
 
-
-
-		// Me fijo si una posicion en el mapa tiene algún elemento(es decir, su valor en la matriz NO es 0)
+		// Me fijo si una posicion en el mapa tiene algún elemento
+		// (es decir, su valor en la matriz NO es 0)
 		bool has_element(const Coordinates &map_coordinates);
 
-		// Calcula la distancia desde el jugador al objeto con el que impactó el rayo
-		float get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle);
+		// Calcula la distancia desde el jugador al objeto 
+		// con el que impactó el rayo
+		float get_distance_to_player_plane
+			(const Coordinates &object_coordinates,const bool &first_triangle);
 
-		/* Recursiva,Calculo el triangulo formado por mi posicion y 
+		/* 
+		Recursiva,Calculo el triangulo formado por mi posicion y 
 		el borde en el eje x, y el de la posicion y el borde en el eje y,
-		se queda con el mas chico (es decir, el que choca primero con una pared),
-		 y se fija si toca un objeto, caso contrario, se llama a si misma con 
-		 ésta nueva posicion*/
+		se queda con el mas chico (es decir, el que choca primero con una 
+		pared) y se fija si toca un objeto, caso contrario, se llama a 
+		si misma con ésta nueva posicion
+		*/
 		float search_ray_distance(Coordinates coordinatess);
 
-		// Calcula la distancia desde mi posicion en x, hasta el borde de mi casillero según la direccion de mi rayo
+		// Calcula la distancia desde mi posicion en x, hasta el borde de mi 
+		// casillero según la direccion de mi rayo
 		float get_x_distance_to_side(const Coordinates &ray_position);
 
-		// Calcula la distancia desde mi posicion en y, hasta el borde de mi casillero según la direccion de mi rayo
+		// Calcula la distancia desde mi posicion en y, hasta el borde de mi
+		// casillero según la direccion de mi rayo
 		float get_y_distance_to_side(const Coordinates &ray_position);
 
-
 	public:
-		//Ray angle y ray_direction NO es lo mismo, la primera es relativa al plano de la camara y la segunda NO
-		Ray(const float &ray_angle,const Coordinates &ray_direction,const Coordinates &player_position,const Coordinates &player_direction, Mapa &map);
+		//Ray angle y ray_direction NO es lo mismo, la primera es relativa al
+		// plano de la camara y la segunda NO
+		Ray(const float &ray_angle,const Coordinates &ray_direction,
+			const Coordinates &player_position,
+			const Coordinates &player_direction, Mapa &map);
 
-		/*Llama a la funcion recursiva que encuentra al objeto con 
-		el que choca el rayo, partiendo de la posicion inicial, player_position*/
+		/*
+		Llama a la funcion recursiva que encuentra al objeto con 
+		el que choca el rayo, partiendo de la posicion inicial, player_position
+		*/
 		float calculate_ray_distance();
-
 };
 #endif

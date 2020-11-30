@@ -20,10 +20,7 @@ public:
 
     Coordinates get_direction();
 
-    ~Jugador();
-
-
-    
+    ~Jugador();  
 };
 
 #endif

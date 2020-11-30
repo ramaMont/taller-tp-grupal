@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "Jugador.h"
+#include <Jugador.h>
 
 class Partida{
 private:
