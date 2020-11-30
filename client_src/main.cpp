@@ -3,18 +3,18 @@
 #include <iostream>
 #include <exception>
 
-#include "Direccion.h"
+#include <vector>
+#include <Direccion.h>
 
 #include "window.h"
 #include "texture.h"
-#include "Mapa.h"
+#include <Mapa.h>
 #include "ray_casting.h"
-#include "Jugador.h"
-#include "Posicionable.h"
+#include <Jugador.h>
+#include <Posicionable.h>
 
 int main(int argc, char* argv[]) {
-
-    std::vector<std::vector<int>> a_map{
+  std::vector<std::vector<int>> a_map{
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -53,6 +53,7 @@ int main(int argc, char* argv[]) {
 		      Coordinates position((float)i,(float)j);
 		      Posicionable *posicionable = new Posicionable(position);
 		      map.agregarPosicionable(posicionable,position);
+
     		}
     	}
     }
@@ -71,14 +72,14 @@ int main(int argc, char* argv[]) {
     DirAtras backward;
     DirIzquierda left;
     DirDerecha right;
-    DirRotDerecha rotRight;
-    DirRotIzquierda rotLeft;
+    DirRotIzquierda leftRot;
+    DirRotDerecha rightRot;
 
     SDL_bool done = SDL_FALSE;
     while (!done) {
       SDL_Event event;
       while (SDL_PollEvent(&event)) {
-        switch(event.type) {
+        switch (event.type) {
           case SDL_KEYDOWN: {
             SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
             switch (keyEvent.keysym.sym) {
@@ -107,13 +108,13 @@ int main(int argc, char* argv[]) {
                 window.render();  
                 break;
               case SDLK_q:
-                player.mover(&rotLeft);
+                player.mover(&leftRot);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();  
                 window.render();
                 break;
               case SDLK_e:
-                player.mover(&rotRight);
+                player.mover(&rightRot);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();  
                 window.render();

@@ -23,6 +23,7 @@ Posicionable* Ray::get_element(const Coordinates &map_coordinates){
 		whole_coordinates.inc_x(aumento_x);
 		whole_coordinates.inc_y(aumento_y);
 	}else if(map_coordinates.x_whole()){
+
 		whole_coordinates.inc_x(aumento_x);
 	}else{ //Por descarte: y_whole()
 		whole_coordinates.inc_y(aumento_y);
@@ -46,7 +47,9 @@ float Ray::get_distance_to_player_plane(const Coordinates &object_coordinates,co
 }
 
 float Ray::get_x_distance_to_side(const Coordinates &ray_position){
-	if(ray_direction.x_positive()){ //La direccion de mi rayo influye en qué pared tengo que mirar, ya que siempre estoy entre 2
+	// La direccion de mi rayo influye en qué pared tengo que 
+	// mirar, ya que siempre estoy entre 2
+	if(ray_direction.x_positive()){ 
 		return ray_position.get_distance_to_lower_side_x();
 	}else{
 	    return ray_position.get_distance_to_higher_side_x();
@@ -54,13 +57,14 @@ float Ray::get_x_distance_to_side(const Coordinates &ray_position){
 }
 
 float Ray::get_y_distance_to_side(const Coordinates &ray_position){
-	if(ray_direction.y_positive()){ //La direccion de mi rayo influye en qué pared tengo que mirar, ya que siempre estoy entre 2
+	// La direccion de mi rayo influye en qué pared tengo que mirar,
+	// ya que siempre estoy entre 2
+	if(ray_direction.y_positive()){ 
 		return ray_position.get_distance_to_lower_side_y();
 	}else{
 	    return ray_position.get_distance_to_higher_side_y();
 	}
 }
-
 
 
 
@@ -71,7 +75,9 @@ Intersected_object Ray::search_object(Coordinates ray_position){
 	float y_height = x_distance * (ray_direction.y/ray_direction.x);
 
 	float y_distance  = get_y_distance_to_side(ray_position);
-	float x_height = y_distance * tan(PI/2 - atan((ray_direction.y/ray_direction.x)));
+
+	float x_height = y_distance * tan(PI/2 - atan(
+		(ray_direction.y/ray_direction.x)));
 
 	Coordinates coordinates_map;
 	if(std::abs(x_distance*y_height) < std::abs(y_distance*x_height)){
@@ -100,4 +106,5 @@ Intersected_object Ray::search_object(Coordinates ray_position){
 
 Intersected_object Ray::get_colisioned_object(){
 	return search_object(player_position);
+
 }

@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 #include <string>
-#include "coordinates.h"
+#include <coordinates.h>
 #include <math.h>
 
 
@@ -17,6 +17,7 @@ public:
 	Camera(Coordinates &player_position, Coordinates &player_direction);
 
 	// Calculo un rayo que partiendo del jugador, "choque" con un punto en el plano.
+
 	Coordinates calculate_ray_direction(int i, int n_rays);
 };
 

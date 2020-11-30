@@ -1,8 +1,10 @@
 #include <math.h>
 #include <string>
 #include <vector>
+
 #include <fstream>
 #include <iostream>
+
 
 #include "ray_casting.h"
 
@@ -110,6 +112,7 @@ void Raycasting::draw(Intersected_object intersected_object,float pos_x){
 		SDL_SetRenderDrawColor(renderer,red , green, blue, SDL_ALPHA_OPAQUE);
 	   	pixel.y = initial_position_y + ceil((i*pixel_lenght));
 	    SDL_RenderFillRect( renderer, &pixel );    	
+
 	}
 }
 
@@ -117,6 +120,7 @@ void Raycasting::draw(Intersected_object intersected_object,float pos_x){
 void Raycasting::calculate_ray_casting(){
 
     background.show();
+
 
     /* Futuro mutex acá (en un thread proceso 
     botones, actualizo la posicion, etc y en otro 

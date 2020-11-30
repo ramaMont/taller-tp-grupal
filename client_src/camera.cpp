@@ -1,6 +1,6 @@
 
 #include <string>
-#include "coordinates.h"
+#include <coordinates.h>
 #include <math.h>
 
 #include "camera.h"
@@ -19,6 +19,7 @@ Camera::Camera(Coordinates &player_position, Coordinates &player_direction):
 	// Calculo un rayo que partiendo del jugador, "choque" con un punto en el plano.
 Coordinates Camera::calculate_ray_direction(int i, int n_rays){
 	Coordinates ray; //Punto del "plano" de la camara por el cual tiene que pasar mi rayo
+
 	ray.x = coordinates_camera.x + camera_plane.x*(float)i/(float)n_rays;
 	ray.y = coordinates_camera.y + camera_plane.y*(float)i/(float)n_rays;
 	Coordinates ray_direction; 

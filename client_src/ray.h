@@ -10,14 +10,13 @@
 #include <string>
 #include <vector>
 
-#include "Mapa.h"
-#include "coordinates.h"
+#include <Mapa.h>
+#include <coordinates.h>
 #include "Posicionable.h"
 #include "intersected_object.h"
 
 // Implementa un único rayo del raycasting
 class Ray {
-
 const float PI= 3.14159265358979323;
 
 	private:
@@ -26,7 +25,6 @@ const float PI= 3.14159265358979323;
 		const Coordinates &ray_direction;
 		const float &direction_relative_to_player;
 		Mapa &map;
-
 
 
 		// Me fijo si una posicion en el mapa tiene algún elemento(es decir, su valor en la matriz NO es 0)

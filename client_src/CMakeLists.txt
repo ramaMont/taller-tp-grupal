@@ -21,3 +21,4 @@ install(FILES textures/bluestone_b.txt DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES textures/greystone_r.txt DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES textures/greystone_g.txt DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES textures/greystone_b.txt DESTINATION ${CMAKE_BINARY_DIR})
+

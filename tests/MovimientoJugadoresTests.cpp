@@ -1,200 +1,190 @@
 #include "gtest/gtest.h"
-#include "Jugador.h"
-#include "Mapa.h"
-#include "Direccion.h"
-#include "Angulo.h"
-#include "Posicion.h"
-#include "Posicionable.h"
+#include <Jugador.h>
+#include <Mapa.h>
+#include <Direccion.h>
+#include <coordinates.h>
+#include <Posicionable.h>
+
+#include <cmath>
+
+static float inc = 0.05;
+static const float step_size = 0.1;
 //-------------------- Hacia adelante ------------------------------------
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerecha) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     bool lugar_vacio = false;
     //Mirando hacia la derecha
-    Angulo angulo(0.0);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(1,0);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
 
-    try{
-        mapa.obtenerPosicionableEn(posicionIni);
-    } catch (...){
+    Posicionable* vacio = mapa.obtenerPosicionableEn(posicionIni);
+    if (vacio == nullptr)
         lugar_vacio = true;
-    }
     //assert
     EXPECT_EQ (lugar_vacio, true);
-    EXPECT_EQ (posicionIni.getPosX() + 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) (int) posicionIni.x + i, (int) (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) (int) posicionIni.y, (int) (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeArriba) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     bool lugar_vacio = false;
     //Mirando hacia la arriba
-    Angulo angulo(90.0);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(0,1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
-
-    try{
-        mapa.obtenerPosicionableEn(posicionIni);
-    } catch (...){
+    Posicionable* vacio = mapa.obtenerPosicionableEn(posicionIni);
+    if (vacio == nullptr)
         lugar_vacio = true;
-    }
     //assert
     EXPECT_EQ (lugar_vacio, true);
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() + 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y + i, (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierda) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     bool lugar_vacio = false;
     //Mirando hacia la izquierda
     //Poner 00 despues de la coma
-    Angulo angulo(180.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(-1,0);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
-
-    try{
-        mapa.obtenerPosicionableEn(posicionIni);
-    } catch (...){
+    Posicionable* vacio = mapa.obtenerPosicionableEn(posicionIni);
+    if (vacio == nullptr)
         lugar_vacio = true;
-    }
     //assert
     EXPECT_EQ (lugar_vacio, true);
-    EXPECT_EQ (posicionIni.getPosX() - 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x - i, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeAbajo) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     bool lugar_vacio = false;
     //Mirando hacia abajo
     //Poner 00 despues de la coma
-    Angulo angulo(-90.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(0,-1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
-
-    try{
-        mapa.obtenerPosicionableEn(posicionIni);
-    } catch (...){
+    Posicionable* vacio = mapa.obtenerPosicionableEn(posicionIni);
+    if (vacio == nullptr)
         lugar_vacio = true;
-    }
     //assert
     EXPECT_EQ (lugar_vacio, true);
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() - 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y - i, (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaArriba) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     bool lugar_vacio = false;
     //Mirando hacia arriba y a la derecha
     //Poner 00 despues de la coma
-    Angulo angulo(45.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(1,1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
-
-    try{
-        mapa.obtenerPosicionableEn(posicionIni);
-    } catch (...){
+    Posicionable* vacio = mapa.obtenerPosicionableEn(posicionIni);
+    if (vacio == nullptr)
         lugar_vacio = true;
-    }
     //assert
     EXPECT_EQ (lugar_vacio, true);
-    EXPECT_EQ (posicionIni.getPosX() + 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() + 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x + i, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y + i, (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaAbajo) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     bool lugar_vacio = false;
     //Mirando hacia abajo y hacia la derecha
     //Poner 00 despues de la coma
-    Angulo angulo(-45.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(1,-1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
-
-    try{
-        mapa.obtenerPosicionableEn(posicionIni);
-    } catch (...){
+    Posicionable* vacio = mapa.obtenerPosicionableEn(posicionIni);
+    if (vacio == nullptr)
         lugar_vacio = true;
-    }
     //assert
     EXPECT_EQ (lugar_vacio, true);
-    EXPECT_EQ (posicionIni.getPosX() + 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() - 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x + i, (int) std::round(resultado->getPosicion().x));
+    EXPECT_EQ ((int) posicionIni.y - i, (int) std::round(resultado->getPosicion().y));
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaArriba) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     bool lugar_vacio = false;
     //Mirando hacia arriba y hacia la izquierda
     //Poner 00 despues de la coma
-    Angulo angulo(135.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(-1,1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
-
-    try{
-        mapa.obtenerPosicionableEn(posicionIni);
-    } catch (...){
+    Posicionable* vacio = mapa.obtenerPosicionableEn(posicionIni);
+    if (vacio == nullptr)
         lugar_vacio = true;
-    }
     //assert
     EXPECT_EQ (lugar_vacio, true);
-    EXPECT_EQ (posicionIni.getPosX() - 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() + 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x - i, (int) std::round(resultado->getPosicion().x));
+    EXPECT_EQ ((int) posicionIni.y + i, (int) std::round(resultado->getPosicion().y));
 }
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaAbajo) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     bool lugar_vacio = false;
     //Mirando hacia abajo y hacia la izquierda
     //Poner 00 despues de la coma
-    Angulo angulo(-135.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(-1,-1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
-
-    try{
-        mapa.obtenerPosicionableEn(posicionIni);
-    } catch (...){
+    Posicionable* vacio = mapa.obtenerPosicionableEn(posicionIni);
+    if (vacio == nullptr)
         lugar_vacio = true;
-    }
     //assert
     EXPECT_EQ (lugar_vacio, true);
-    EXPECT_EQ (posicionIni.getPosX() - 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() - 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x - i, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y - i, (int) resultado->getPosicion().y);
 }
 
 // ---------------------------------------------------------
@@ -204,128 +194,136 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaAbajo) {
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerecha) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia la derecha
-    Angulo angulo(0.0);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(1,0);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAtras dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX() - 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x - i, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeArriba) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia la arriba
-    Angulo angulo(90.0);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(0,1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAtras dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() - 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y - i, (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierda) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia la izquierda
     //Poner 00 despues de la coma
-    Angulo angulo(180.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(-1,0);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAtras dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX() + 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x + i, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeAbajo) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia abajo
     //Poner 00 despues de la coma
-    Angulo angulo(-90.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(0,-1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAtras dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() + 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y + i, (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaArriba) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia arriba y a la derecha
     //Poner 00 despues de la coma
-    Angulo angulo(45.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(1,1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAtras dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX() - 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() - 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x - i, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y - i, (int) resultado->getPosicion().y);
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaAbajo) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia abajo y hacia la derecha
     //Poner 00 despues de la coma
-    Angulo angulo(-45.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(1,-1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAtras dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX() - 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() + 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x - i, (int) std::round(resultado->getPosicion().x));
+    EXPECT_EQ ((int) posicionIni.y + i, (int) std::round(resultado->getPosicion().y));
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaArriba) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia arriba y hacia la izquierda
     //Poner 00 despues de la coma
-    Angulo angulo(135.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(-1,1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAtras dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX() + 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() - 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x + i, (int) std::round(resultado->getPosicion().x));
+    EXPECT_EQ ((int) posicionIni.y - i, (int) std::round(resultado->getPosicion().y));
 }
 TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaAbajo) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia abajo y hacia la izquierda
     //Poner 00 despues de la coma
-    Angulo angulo(-135.00);
-    Posicion posicionIni(11,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(-1,-1);
+    Coordinates posicionIni(11, 15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAtras dir;
-    //act
-    jugador.mover(&dir);
+    for (i = 0.0; i < 1.0; i+=step_size)
+        jugador.mover(&dir);
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX() + 1, resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY() + 1, resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x + i, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y + i, (int) resultado->getPosicion().y);
 }
 
 // ---------------------------------------------------------
@@ -335,81 +333,89 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaAbajo) {
 TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaFuera) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia derecha
     //Poner 00 despues de la coma
-    Angulo angulo(0.00);
-    Posicion posicionIni(20,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(1,0);
+    Coordinates posicionIni(19,15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size)
+            jugador.mover(&dir);
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
 }
 
 TEST(MovimientoJugadoresTests, adelanteFallaIrArribaFuera) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia arriba
     //Poner 00 despues de la coma
-    Angulo angulo(90.00);
-    Posicion posicionIni(11,20, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(0,1);
+    Coordinates posicionIni(11,20);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size)
+            jugador.mover(&dir);
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
 }
 
 TEST(MovimientoJugadoresTests, adelanteFallaIrIzquierdaFuera) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia izquierda
     //Poner 00 despues de la coma
-    Angulo angulo(180.00);
-    Posicion posicionIni(0,15, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(-1,0);
+    Coordinates posicionIni(0,15);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size)
+            jugador.mover(&dir);
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
 }
 
 TEST(MovimientoJugadoresTests, adelanteFallaIrAbajoFuera) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia abajo
     //Poner 00 despues de la coma
-    Angulo angulo(-90.00);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(0,-1);
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size)
+            jugador.mover(&dir);
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
 }
 
 // ---------------------------------------------------------
@@ -419,23 +425,25 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrAbajoFuera) {
 TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaEncimaDeOtroJugador) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia derecha
     //Poner 00 despues de la coma
-    Angulo angulo(0.00);
-    Posicion posicionIni2(12,0, angulo);
-    Jugador jugador2(posicionIni2, mapa);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
+    Coordinates angulo(1,0);
+    Coordinates posicionIni2(12,0);
+    Jugador jugador2(posicionIni2, angulo,  mapa);
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size)
+            jugador.mover(&dir);
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
 }
 
 // ---------------------------------------------------------
@@ -445,85 +453,110 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaEncimaDeOtroJugador) {
 TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeDerecha) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia derecha
     //Poner 00 despues de la coma
-    Angulo angulo(0.00);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
-    DirRotIzq dir;
+    Coordinates angulo(1,0);
+    Coordinates angulo_rotado = angulo;
+
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
+    DirRotIzquierda dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size){
+            jugador.mover(&dir);
+            angulo_rotado.rotate(inc);
+        }
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
-    EXPECT_EQ (posicionIni.getAngulo() + 10.00, resultado->getPosicion().getAngulo());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
+    EXPECT_EQ (angulo_rotado.x, jugador.get_direction().x);
+    EXPECT_EQ (angulo_rotado.y, jugador.get_direction().y);
 }
 
 TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeArriba) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia arriba
     //Poner 00 despues de la coma
-    Angulo angulo(90.00);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
-    DirRotIzq dir;
+    Coordinates angulo(0,1);
+    Coordinates angulo_rotado = angulo;
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
+    DirRotIzquierda dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size){
+            jugador.mover(&dir);
+            angulo_rotado.rotate(inc);
+        }
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
-    EXPECT_EQ (posicionIni.getAngulo() + 10.00, resultado->getPosicion().getAngulo());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
+    EXPECT_EQ (angulo_rotado.x, jugador.get_direction().x);
+    EXPECT_EQ (angulo_rotado.y, jugador.get_direction().y);
 }
 
 TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeIzquierda) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia izquierda
     //Poner 00 despues de la coma
-    Angulo angulo(180.00);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
-    DirRotIzq dir;
+    Coordinates angulo(-1,0);
+    Coordinates angulo_rotado = angulo;
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
+    DirRotIzquierda dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size){
+            jugador.mover(&dir);
+            angulo_rotado.rotate(inc);
+        }
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
-    EXPECT_EQ (posicionIni.getAngulo() + 10.00, resultado->getPosicion().getAngulo());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
+    EXPECT_EQ (angulo_rotado.x, jugador.get_direction().x);
+    EXPECT_EQ (angulo_rotado.y, jugador.get_direction().y);
 }
 
 TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeAbajo) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia derecha
     //Poner 00 despues de la coma
-    Angulo angulo(-90.00);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
-    DirRotIzq dir;
+    Coordinates angulo(0,-1);
+    Coordinates angulo_rotado = angulo;
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
+    DirRotIzquierda dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size){
+            jugador.mover(&dir);
+            angulo_rotado.rotate(inc);
+        }
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
-    EXPECT_EQ (posicionIni.getAngulo() + 10.00, resultado->getPosicion().getAngulo());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
+    EXPECT_EQ (angulo_rotado.x, jugador.get_direction().x);
+    EXPECT_EQ (angulo_rotado.y, jugador.get_direction().y);
 }
 
 
@@ -535,83 +568,107 @@ TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeAbajo) {
 TEST(MovimientoJugadoresTests, giroADerechaExitoso) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia derecha
     //Poner 00 despues de la coma
-    Angulo angulo(0.00);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
-    DirRotDer dir;
+    Coordinates angulo(1,0);
+    Coordinates angulo_rotado = angulo;
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
+    DirRotDerecha dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size){
+            jugador.mover(&dir);
+            angulo_rotado.rotate(-inc);
+        }
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
-    EXPECT_EQ (posicionIni.getAngulo() - 10.00, resultado->getPosicion().getAngulo());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
+    EXPECT_EQ (angulo_rotado.x, jugador.get_direction().x);
+    EXPECT_EQ (angulo_rotado.y, jugador.get_direction().y);
 }
 
 TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeArriba) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia arriba
     //Poner 00 despues de la coma
-    Angulo angulo(90.00);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
-    DirRotDer dir;
+    Coordinates angulo(0,1);
+    Coordinates angulo_rotado = angulo;
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
+    DirRotDerecha dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size){
+            jugador.mover(&dir);
+            angulo_rotado.rotate(-inc);
+        }
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
-    EXPECT_EQ (posicionIni.getAngulo() - 10.00, resultado->getPosicion().getAngulo());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
+    EXPECT_EQ (angulo_rotado.x, jugador.get_direction().x);
+    EXPECT_EQ (angulo_rotado.y, jugador.get_direction().y);
 }
 
 TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeIzquierda) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia izquierda
     //Poner 00 despues de la coma
-    Angulo angulo(180.00);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
-    DirRotDer dir;
+    Coordinates angulo(-1,0);
+    Coordinates angulo_rotado = angulo;
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
+    DirRotDerecha dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size){
+            jugador.mover(&dir);
+            angulo_rotado.rotate(-inc);
+        }
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
-    EXPECT_EQ (posicionIni.getAngulo() - 10.00, resultado->getPosicion().getAngulo());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
+    EXPECT_EQ (angulo_rotado.x, jugador.get_direction().x);
+    EXPECT_EQ (angulo_rotado.y, jugador.get_direction().y);
 }
 
 TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeAbajo) {
     //arrange
     Mapa mapa(20,20);
+    float i;
     //Mirando hacia derecha
     //Poner 00 despues de la coma
-    Angulo angulo(-90.00);
-    Posicion posicionIni(11,0, angulo);
-    Jugador jugador(posicionIni, mapa);
-    DirRotDer dir;
+    Coordinates angulo(0,-1);
+    Coordinates angulo_rotado = angulo;
+    Coordinates posicionIni(11,0);
+    Jugador jugador(posicionIni, angulo, mapa);
+    DirRotDerecha dir;
     //act
     try {
-        jugador.mover(&dir);
+        for (i = 0.0; i < 1.0; i+=step_size){
+            jugador.mover(&dir);
+            angulo_rotado.rotate(-inc);
+        }
     } catch (...){
     }
     Posicionable* resultado = mapa.obtenerPosicionableEn(jugador.getPosicion());
     //assert
-    EXPECT_EQ (posicionIni.getPosX(), resultado->getPosicion().getPosX());
-    EXPECT_EQ (posicionIni.getPosY(), resultado->getPosicion().getPosY());
-    EXPECT_EQ (posicionIni.getAngulo() - 10.00, resultado->getPosicion().getAngulo());
+    EXPECT_EQ ((int) posicionIni.x, (int) resultado->getPosicion().x);
+    EXPECT_EQ ((int) posicionIni.y, (int) resultado->getPosicion().y);
+    EXPECT_EQ (angulo_rotado.x, jugador.get_direction().x);
+    EXPECT_EQ (angulo_rotado.y, jugador.get_direction().y);
 }

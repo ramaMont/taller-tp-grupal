@@ -13,10 +13,11 @@
 #include <vector>
 
 #include "background.h"
-#include "Mapa.h"
 #include "camera.h"
-#include "Jugador.h"
-#include "coordinates.h"
+#include <Mapa.h>
+#include <Jugador.h>
+#include <coordinates.h>
+
 
 #include "ray.h"
 #include "intersected_object.h"
@@ -47,7 +48,9 @@ private:
 public:
     Raycasting(Jugador &a_player, Mapa &map, const Window &window);
 
-    //Llama a Ray por cada rayo nuevo, y una vez obtenida su longitud la manda a draw
+
+    // Llama a Ray por cada rayo nuevo, y una vez obtenida su longitud
+	// la manda a draw
     void calculate_ray_casting();
 };
 

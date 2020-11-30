@@ -6,7 +6,7 @@
 
 
 class Texture {
-
+  
 private:
     SDL_Renderer* renderer;
     SDL_Texture* texture;
@@ -20,7 +20,8 @@ public:
     ~Texture();
 
     // Carga la textura en windows
-    void show_image(int pos_x, int pos_y, int width, int height) const;
+
+    //void show_image(int pos_x, int pos_y, int width, int height) const;
 };
 
 #endif

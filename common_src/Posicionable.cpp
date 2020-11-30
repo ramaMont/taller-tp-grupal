@@ -1,10 +1,10 @@
 #include "Posicionable.h"
 
-Posicionable::Posicionable(Posicion posicion):
+Posicionable::Posicionable(Coordinates posicion):
     posicion(posicion){
 }
 
-Posicion Posicionable::getPosicion(){
+Coordinates Posicionable::getPosicion(){
     return posicion;
 }
 
