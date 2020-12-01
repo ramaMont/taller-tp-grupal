@@ -15,9 +15,5 @@ add_library(${BINARY}_lib STATIC ${SOURCES})
 target_link_libraries(${BINARY}_run SDL2 SDL2_image ${CMAKE_PROJECT_NAME}_common_lib)
 
 
-install(FILES textures/bluestone_r.txt DESTINATION ${CMAKE_BINARY_DIR})
-install(FILES textures/bluestone_g.txt DESTINATION ${CMAKE_BINARY_DIR})
-install(FILES textures/bluestone_b.txt DESTINATION ${CMAKE_BINARY_DIR})
-install(FILES textures/greystone_r.txt DESTINATION ${CMAKE_BINARY_DIR})
-install(FILES textures/greystone_g.txt DESTINATION ${CMAKE_BINARY_DIR})
-install(FILES textures/greystone_b.txt DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES textures/bluestone.mat DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES textures/greystone.mat DESTINATION ${CMAKE_BINARY_DIR})

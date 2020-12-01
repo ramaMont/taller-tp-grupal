@@ -17,55 +17,30 @@
 void Raycasting::init_textures(){
 
 //Cargo pared gris
-  std::ifstream greystone_red_file("textures/greystone_r.txt");
+  std::ifstream greystone_file("textures/greystone.mat");
   std::string number;
-  for(int i=0; i<64; i++){
-	  for(int j=0; j<64; j++){
-	  	getline(greystone_red_file,number);
-	  	textures[0][0][i][j] = stoi(number);
-	  }  	
+
+  for(int k=0; k<3; k++){
+	  for(int i=0; i<64; i++){
+		  for(int j=0; j<64; j++){
+		  	getline(greystone_file,number);
+		  	textures[0][k][i][j] = stoi(number);
+		  }  	
+	  }
   }
 
 
-  std::ifstream greystone_green_file("textures/greystone_g.txt");
-  for(int i=0; i<64; i++){
-	  for(int j=0; j<64; j++){
-	  	getline(greystone_green_file,number);
-	  	textures[0][1][i][j] = stoi(number);
-	  }  	
-  }
-
-  std::ifstream greystone_blue_file("textures/greystone_b.txt");
-  for(int i=0; i<64; i++){
-	  for(int j=0; j<64; j++){
-	  	getline(greystone_blue_file,number);
-	  	textures[0][2][i][j] = stoi(number);
-	  }  	
-  }
 //Cargo pared azul
-  std::ifstream bluestone_red_file("textures/bluestone_r.txt");
-  for(int i=0; i<64; i++){
-	  for(int j=0; j<64; j++){
-	  	getline(bluestone_red_file,number);
-	  	textures[1][0][i][j] = stoi(number);
-	  }  	
-  }
+  std::ifstream bluestone_file("textures/bluestone.mat");
 
-  std::ifstream bluestone_green_file("textures/bluestone_g.txt");
-  for(int i=0; i<64; i++){
-	  for(int j=0; j<64; j++){
-	  	getline(bluestone_green_file,number);
-	  	textures[1][1][i][j] = stoi(number);
-	  }  	
+  for(int k=0; k<3; k++){
+	  for(int i=0; i<64; i++){
+		  for(int j=0; j<64; j++){
+		  	getline(bluestone_file,number);
+		  	textures[1][k][i][j] = stoi(number);
+		  }  	
+	  }
   }
-
-  std::ifstream bluestone_blue_file("textures/bluestone_b.txt");
-  for(int i=0; i<64; i++){
-	  for(int j=0; j<64; j++){
-	  	getline(bluestone_blue_file,number);
-	  	textures[1][2][i][j] = stoi(number);
-	  }  	
-  }  
 
 }
 
