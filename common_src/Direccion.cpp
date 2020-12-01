@@ -1,7 +1,7 @@
 #include "Direccion.h"
 #include "math.h"
-static const float step_size=0.15;
-static float inc = 0.15;
+static const double step_size=0.15;
+static double inc = 0.15;
 
 DirAdelante::DirAdelante(){
 }

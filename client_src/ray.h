@@ -18,13 +18,13 @@
 // Implementa un único rayo del raycasting
 class Ray {
 
-const float PI= 3.14159265358979323;
+const double PI= 3.14159265358979323;
 
 	private:
 		const Coordinates &player_direction;
 		const Coordinates &player_position;
 		const Coordinates &ray_direction;
-		const float &direction_relative_to_player;
+		const double &direction_relative_to_player;
 		Mapa &map;
 
 
@@ -33,7 +33,7 @@ const float PI= 3.14159265358979323;
 		Posicionable* get_element(const Coordinates &map_coordinates);
 
 		// Calcula la distancia desde el jugador al objeto con el que impactó el rayo
-		float get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle);
+		double get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle);
 
 		/* Recursiva,Calculo el triangulo formado por mi posicion y 
 		el borde en el eje x, y el de la posicion y el borde en el eje y,
@@ -43,15 +43,15 @@ const float PI= 3.14159265358979323;
 		Intersected_object search_object(Coordinates coordinatess);
 
 		// Calcula la distancia desde mi posicion en x, hasta el borde de mi casillero según la direccion de mi rayo
-		float get_x_distance_to_side(const Coordinates &ray_position);
+		double get_x_distance_to_side(const Coordinates &ray_position);
 
 		// Calcula la distancia desde mi posicion en y, hasta el borde de mi casillero según la direccion de mi rayo
-		float get_y_distance_to_side(const Coordinates &ray_position);
+		double get_y_distance_to_side(const Coordinates &ray_position);
 
 
 	public:
 		//Ray angle y ray_direction NO es lo mismo, la primera es relativa al plano de la camara y la segunda NO
-		Ray(const float &ray_angle,const Coordinates &ray_direction,const Coordinates &player_position,const Coordinates &player_direction, Mapa &map);
+		Ray(const double &ray_angle,const Coordinates &ray_direction,const Coordinates &player_position,const Coordinates &player_direction, Mapa &map);
 
 		/*Llama a la funcion recursiva que encuentra al objeto con 
 		el que choca el rayo, partiendo de la posicion inicial, player_position*/

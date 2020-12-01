@@ -12,7 +12,6 @@ void Jugador::mover(Direccion* direccion){
         mapa.moveme(this, nuevaPos);
         this->posicion = nuevaPos;
     } catch(...){
-        printf("catchannnn\n");
     }
 }
 

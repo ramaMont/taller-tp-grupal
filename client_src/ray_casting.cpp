@@ -79,9 +79,9 @@ void Raycasting::draw(Intersected_object intersected_object,float pos_x){
     }
 	pixel.x = x_initial_pos;	
 	for(int i=0; i<64; i++){
-		int red = textures[0][0][number_line_texture][i]/side_division;
-		int green = textures[0][1][number_line_texture][i]/side_division;
-		int blue = textures[0][2][number_line_texture][i]/side_division;
+		int red = textures[1][0][number_line_texture][i]/side_division;
+		int green = textures[1][1][number_line_texture][i]/side_division;
+		int blue = textures[1][2][number_line_texture][i]/side_division;
 		SDL_SetRenderDrawColor(renderer,red , green, blue, SDL_ALPHA_OPAQUE);
 	   	pixel.y = initial_position_y + ceil((i*pixel_lenght));
 	    SDL_RenderFillRect( renderer, &pixel );    	

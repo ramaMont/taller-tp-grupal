@@ -5,15 +5,15 @@
 #include "stdio.h"
 Coordinates::Coordinates(){}
 
-Coordinates::Coordinates(float a_x, float a_y): x(a_x), y(a_y) {}
+Coordinates::Coordinates(double a_x, double a_y): x(a_x), y(a_y) {}
 
 void Coordinates::increment_on_direction(Coordinates movement_direction,
-		float inc){
+		double inc){
 	x+= movement_direction.x*inc;
     y+= movement_direction.y*inc;
 }
 
-void Coordinates::rotate(float inc){
+void Coordinates::rotate(double inc){
 	this->x = this->x*cos(inc) - this->y*sin(inc);
     this->y = this->x*sin(inc) + this->y*cos(inc);
     normalice_direction();
@@ -36,7 +36,7 @@ bool Coordinates::y_whole()const{
 }
 
 void Coordinates::normalice_direction(){
-    float length = sqrt(this->x * this->x + this->y * this->y);
+    double length = sqrt(this->x * this->x + this->y * this->y);
     this->x/=length;
     this->y/=length;        
 }
@@ -59,31 +59,31 @@ bool Coordinates::has_element(const std::vector<std::vector<int>> &map){
 	return (map[(int)this->y][(int)this->x]!=0);
 }
 
-void Coordinates::inc_x(float a_x){
+void Coordinates::inc_x(double a_x){
 	this->x+=a_x;
 }
 
-void Coordinates::inc_y(float a_y){
+void Coordinates::inc_y(double a_y){
 	this->y+=a_y;
 }
 
-float Coordinates::get_distance_to_lower_side_x()const{
+double Coordinates::get_distance_to_lower_side_x()const{
 	return (floor(x+1) - x);
 }
 
-float Coordinates::get_distance_to_higher_side_x()const{
+double Coordinates::get_distance_to_higher_side_x()const{
 	return (ceil(x-1) - x);
 }
 
-float Coordinates::get_distance_to_lower_side_y()const{
+double Coordinates::get_distance_to_lower_side_y()const{
 	return (floor(y+1) - y);
 }
 
-float Coordinates::get_distance_to_higher_side_y()const{
+double Coordinates::get_distance_to_higher_side_y()const{
 	return (ceil(y-1) - y);
 }
 
-float Coordinates::calculate_distance(const Coordinates &a_position) const{
+double Coordinates::calculate_distance(const Coordinates &a_position) const{
 	return (sqrt(pow(std::abs(x-a_position.x),2) + 
 		pow(std::abs(y-a_position.y),2)));
 }
@@ -104,11 +104,11 @@ int Coordinates::get_increase_y()const{
 	return increase;
 }
 
-// void Coordinates::set_x(float a_x){
+// void Coordinates::set_x(double a_x){
 //     this->x = a_x;
 // }
 
-// void Coordinates::set_y(float a_y){
+// void Coordinates::set_y(double a_y){
 // 	this->y = a_y;
 // }
 

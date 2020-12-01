@@ -7,8 +7,8 @@
 
 #include <cmath>
 
-static float inc = 0.05;
-static const float step_size = 0.1;
+static float inc = 0.15;
+static const float step_size = 0.15;
 //-------------------- Hacia adelante ------------------------------------
 TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerecha) {
     //arrange
