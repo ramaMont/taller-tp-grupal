@@ -2,7 +2,7 @@
 #include "coordinates.h"
 #include <vector>
 #include <math.h>
-
+#include "stdio.h"
 Coordinates::Coordinates(){}
 
 Coordinates::Coordinates(float a_x, float a_y): x(a_x), y(a_y) {}
@@ -16,6 +16,7 @@ void Coordinates::increment_on_direction(Coordinates movement_direction,
 void Coordinates::rotate(float inc){
 	this->x = this->x*cos(inc) - this->y*sin(inc);
     this->y = this->x*sin(inc) + this->y*cos(inc);
+    normalice_direction();
 }
 
 bool Coordinates::x_positive()const {

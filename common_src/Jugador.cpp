@@ -9,9 +9,10 @@ Jugador::Jugador(Coordinates position,Coordinates direction ,Mapa& mapa):
 void Jugador::mover(Direccion* direccion){
     Coordinates nuevaPos = direccion->mover(this,direction);
     try{
-        mapa.moveme(this, nuevaPos);//Esto explota
+        mapa.moveme(this, nuevaPos);
         this->posicion = nuevaPos;
     } catch(...){
+        printf("catchannnn\n");
     }
 }
 
