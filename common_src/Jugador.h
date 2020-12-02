@@ -7,24 +7,24 @@
 class Mapa;
 #include "Direccion.h"
 class Direccion;
-#include "SetArmas.h"
+class EstadoSoldado;
+#include "Soldado.h"
 #include "Item.h"
-#include "Arma.h"
+
 
 class Jugador final : public Posicionable{
 private:
-    Coordinates direction;
     Mapa &mapa;
+    Coordinates direction;
     Coordinates posicion_inicial;
-    SetArmas setArmas;
-    Arma* armaEquipada;
     int vidasRestantes;
     int vida;
-    size_t puntuacion;
-    int balas_disparadas;
     int balas_restantes;
-    int enemigos_matados;
     bool llave;
+    EstadoSoldado soldado;
+    size_t puntuacion;
+    size_t balas_disparadas;
+    size_t enemigos_matados;
     
 public:
     explicit Jugador(Coordinates posicion,Coordinates direction ,Mapa& mapa);
@@ -33,25 +33,30 @@ public:
     Coordinates get_coordinates();
 
     Coordinates get_direction();
-    explicit Jugador(Posicion posicion, Mapa& mapa);
+   // explicit Jugador(Posicion posicion, Mapa& mapa);
     void disparar();
-    void recibirDanio(int danio);
+    bool recibirDanio(int danio);
     bool usar(Item* item);
     bool agregarArma(Arma* arma);
+    void cambiarArma(int numero_arma);
     bool agregarVida(int cantidad);
     void agregarPuntos(int cantidad);
     bool agregarBalas(int cantidad);
     bool agregarLlave();
+    void agregarEnemigoMuerto();
     bool estaPorMorir();
     void morir();
     bool revivir();
     bool estaVivo();
+    Mapa& getMapa();
+    size_t getBalasDisparadas();
+    size_t getEnemigosMatados();
+    size_t getPuntuacion();    
+    ~Jugador();
     
     // Para pruebas
     int getVida();
-    int getBalas();
-    size_t getPuntuacion();
-    ~Jugador();  
+    int getBalas(); 
 };
 
 #endif

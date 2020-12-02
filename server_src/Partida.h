@@ -25,6 +25,9 @@ public:
     void recibirEventos();
     bool todosMuertos();
     void mostrarGanadores();
+    void mayoresEnemigosMatados(std::string& buffer);
+    void mayorPuntuacion(std::string& buffer);
+    void mayoresBalasDisparadas(std::string& buffer);
     ~Partida();
 };
 

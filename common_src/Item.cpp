@@ -27,11 +27,11 @@ bool Sangre::usar(Jugador* jugador){
 }
 
 
-Balas::Balas(Posicion p): Item(p){
+Balas::Balas(Coordinates p): Item(p){
 	this->cantidad = CANT_BALAS;
 }
 
-Balas::Balas(Posicion p, int cant): Item(p){
+Balas::Balas(Coordinates p, int cant): Item(p){
 	this->cantidad = cant;
 }
 
@@ -45,7 +45,7 @@ bool Llave::usar(Jugador* jugador){
 }
 
 
-Tesoro::Tesoro(int puntuacion, Posicion p): Item(p), puntuacion(puntuacion){
+Tesoro::Tesoro(int puntuacion, Coordinates p): Item(p), puntuacion(puntuacion){
 }
 
 bool Tesoro::usar(Jugador* jugador){
@@ -53,15 +53,15 @@ bool Tesoro::usar(Jugador* jugador){
 	return true;
 }
 
-Cruz::Cruz(Posicion p): Tesoro(PUNTOS_CRUZ, p){
+Cruz::Cruz(Coordinates p): Tesoro(PUNTOS_CRUZ, p){
 }
 
-Copa::Copa(Posicion p): Tesoro(PUNTOS_COPA, p){
+Copa::Copa(Coordinates p): Tesoro(PUNTOS_COPA, p){
 }
 
-Cofre::Cofre(Posicion p): Tesoro(PUNTOS_COFRE, p){
+Cofre::Cofre(Coordinates p): Tesoro(PUNTOS_COFRE, p){
 }
 
-Corona::Corona(Posicion p): Tesoro(PUNTOS_CORONA, p){
+Corona::Corona(Coordinates p): Tesoro(PUNTOS_CORONA, p){
 }
 

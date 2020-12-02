@@ -1,14 +1,15 @@
 #include "gtest/gtest.h"
-#include "Jugador.h"
 #include "Mapa.h"
-#include "Posicion.h"
+#include "Jugador.h"
+#include "Item.h"
 #include "Posicionable.h"
 
 TEST(ItemsTests, comidaRecupera10puntosDeVida) {
     //arrange
     Mapa mapa(20,20);
-    Posicion posicion(11,15, Angulo(0.0));
-    Jugador jugador(posicion, mapa);
+    Coordinates posicion(11, 15);
+    Coordinates direccion(1, 0);
+    Jugador jugador(posicion, direccion,  mapa);
     Comida comida(posicion);
     int vida_maxima = jugador.getVida();
     
@@ -29,8 +30,9 @@ TEST(ItemsTests, comidaRecupera10puntosDeVida) {
 TEST(ItemsTests, kitMedicoRecupera20puntosDeVida) {
     //arrange
     Mapa mapa(20,20);
-    Posicion posicion(11,15, Angulo(0.0));
-    Jugador jugador(posicion, mapa);
+    Coordinates posicion(11, 15);
+    Coordinates direccion(1, 0);
+    Jugador jugador(posicion, direccion,  mapa);
     KitMedico kit(posicion);
     int vida_maxima = jugador.getVida();
     
@@ -51,8 +53,9 @@ TEST(ItemsTests, kitMedicoRecupera20puntosDeVida) {
 TEST(ItemsTests, sangreRecupera1PuntoDeVidaSiEstaBaja) {
     //arrange
     Mapa mapa(20,20);
-    Posicion posicion(11,15, Angulo(0.0));
-    Jugador jugador(posicion, mapa);
+    Coordinates posicion(11, 15);
+    Coordinates direccion(1, 0);
+    Jugador jugador(posicion, direccion,  mapa);
     Sangre sangre(posicion);
     
     //act
@@ -76,8 +79,9 @@ TEST(ItemsTests, sangreRecupera1PuntoDeVidaSiEstaBaja) {
 TEST(ItemsTests, noUsaSangreSiTieneMuchaVida) {
     //arrange
     Mapa mapa(20,20);
-    Posicion posicion(11,15, Angulo(0.0));
-    Jugador jugador(posicion, mapa);
+    Coordinates posicion(11, 15);
+    Coordinates direccion(1, 0);
+    Jugador jugador(posicion, direccion,  mapa);
     Sangre sangre(posicion);
     
     //act
@@ -106,8 +110,9 @@ TEST(ItemsTests, noUsaSangreSiTieneMuchaVida) {
 TEST(ItemsTests, noPuedeRecuperarMasDelMaximoDeVida) {
     //arrange
     Mapa mapa(20,20);
-    Posicion posicion(11,15, Angulo(0.0));
-    Jugador jugador(posicion, mapa);
+    Coordinates posicion(11, 15);
+    Coordinates direccion(1, 0);
+    Jugador jugador(posicion, direccion,  mapa);
     KitMedico kit(posicion);
     int vida_maxima = jugador.getVida();
     
@@ -124,8 +129,9 @@ TEST(ItemsTests, noPuedeRecuperarMasDelMaximoDeVida) {
 TEST(ItemsTests, agarrarBalasAumentaEn5laCantidad) {
     //arrange
     Mapa mapa(20,20);
-    Posicion posicion(11,15, Angulo(0.0));
-    Jugador jugador(posicion, mapa);
+    Coordinates posicion(11, 15);
+    Coordinates direccion(1, 0);
+    Jugador jugador(posicion, direccion,  mapa);
     Balas balas(posicion);
     int balas_iniciales = jugador.getBalas();
     
@@ -140,8 +146,9 @@ TEST(ItemsTests, agarrarBalasAumentaEn5laCantidad) {
 TEST(ItemsTests, tesorosAumentanLaPuntuacionCorrectamente) {
     //arrange
     Mapa mapa(20,20);
-    Posicion posicion(11,15, Angulo(0.0));
-    Jugador jugador(posicion, mapa);
+    Coordinates posicion(11, 15);
+    Coordinates direccion(1, 0);
+    Jugador jugador(posicion, direccion,  mapa);
     size_t puntaje = jugador.getPuntuacion();
     Cruz cruz(posicion);
     Copa copa(posicion);

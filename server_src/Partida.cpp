@@ -1,6 +1,7 @@
 #include "Partida.h"
 #include <string>
 #include <iostream>
+#include <set>
 
 #define ALTO 20	/* cambiar por yaml */
 #define ANCHO 20
@@ -8,6 +9,7 @@
 #define MINUTOS_PARTIDA 20
 
 #define SEGUNDOS_POR_MINUTOS 60
+#define CANT_GANADORES 5
 
 Partida::Partida(const std::string& params): params(params){
 }
@@ -79,7 +81,59 @@ bool Partida::todosMuertos(){
 }
 
 
-void Partida::mostrarGanadores(){
+void Partida::mayoresEnemigosMatados(std::string& buffer){
+	buffer.append("Enemigos Matados:\n");
+	std::set<std::pair<size_t, std::string>> enemigos;
+	for (std::pair<std::string, Jugador*> j: this->jugadores){
+		std::pair<size_t, std::string> p(j.second->getEnemigosMatados(), j.first);
+		enemigos.insert(p);
+	}
+	std::set<std::pair<size_t, std::string>>::reverse_iterator it;
+	int i = 0;
+	for (it = enemigos.rbegin(); it != enemigos.rend() && i<CANT_GANADORES; it++, i++)
+		buffer.append((*it).first + "\t" + (*it).second + "\n");
+	buffer.append("\n");	
+}
+
+
+void Partida::mayorPuntuacion(std::string& buffer){
+	buffer.append("Puntuacion:\n");
+	std::set<std::pair<size_t, std::string>> enemigos;
+	for (std::pair<std::string, Jugador*> j: this->jugadores){
+		std::pair<size_t, std::string> p(j.second->getPuntuacion(), j.first);
+		enemigos.insert(p);
+	}
+	std::set<std::pair<size_t, std::string>>::reverse_iterator it;
+	int i = 0;
+	for (it = enemigos.rbegin(); it != enemigos.rend() && i<CANT_GANADORES; it++, i++)
+		buffer.append((*it).first + "\t" + (*it).second + "\n");
+	buffer.append("\n");	
+}
+
+
+void Partida::mayoresBalasDisparadas(std::string& buffer){
+	buffer.append("Balas Disparadas:\n");
+	std::set<std::pair<size_t, std::string>> enemigos;
+	
+	for (std::pair<std::string, Jugador*> j: this->jugadores){
+		std::pair<size_t, std::string> p(j.second->getBalasDisparadas(), j.first);
+		enemigos.insert(p);
+	}
+	
+	std::set<std::pair<size_t, std::string>>::reverse_iterator it;
+	int i = 0;
+	for (it = enemigos.rbegin(); it != enemigos.rend() && i<CANT_GANADORES; it++, i++)
+		buffer.append((*it).first + "\t" + (*it).second + "\n");
+	buffer.append("\n");	
+}
+
+
+void Partida::mostrarGanadores(){ /* Cambiar por puntero a funcion */
+	std::string str;
+	mayoresEnemigosMatados(str);
+	mayorPuntuacion(str);
+	mayoresBalasDisparadas(str);
+	std::cout << str;
 }
 
 
