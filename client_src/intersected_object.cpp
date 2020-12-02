@@ -2,11 +2,11 @@
 
 #include <cmath>
 
-Intersected_object::Intersected_object(float distance_player_plane, float position, int side){
-    distance = distance_player_plane;
-    number_line_texture = floor ((position - floor(position))*64);
-    side_division = side;
-}
+Intersected_object::Intersected_object(float distance_player_plane,Posicionable* object ,float position, int side):
+	number_line_texture(floor ((position - floor(position))*64)),
+	distance(distance_player_plane),
+	object(object),
+	side_division(side) {}
 
 float Intersected_object::get_distance_player_plane(){
 	return distance;

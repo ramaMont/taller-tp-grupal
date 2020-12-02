@@ -17,3 +17,9 @@ target_link_libraries(${BINARY}_run SDL2 SDL2_image ${CMAKE_PROJECT_NAME}_common
 
 install(FILES textures/bluestone.mat DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES textures/greystone.mat DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES textures/colorstone.mat DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES textures/eagle.mat DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES textures/mossy.mat DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES textures/redbrick.mat DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES textures/wood.mat DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES textures/purplestone.mat DESTINATION ${CMAKE_BINARY_DIR})

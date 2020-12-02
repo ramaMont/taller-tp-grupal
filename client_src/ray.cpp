@@ -88,9 +88,9 @@ Intersected_object Ray::search_object(Coordinates ray_position){
 		double distance_player_plane = get_distance_to_player_plane(coordinates_map,first_triangle);
 		//Intersected_object *intersected_object = new Intersected_object(distance_player_plane);//Despues cambiarlo, q no sea un puntero
 		if(first_triangle){
-			return Intersected_object(distance_player_plane,coordinates_map.y,X_SIDE);
+			return Intersected_object(distance_player_plane,object,coordinates_map.y,X_SIDE);
 		}else{
-			return Intersected_object(distance_player_plane,coordinates_map.x,Y_SIDE);
+			return Intersected_object(distance_player_plane,object,coordinates_map.x,Y_SIDE);
 		}
 		
 	}else{

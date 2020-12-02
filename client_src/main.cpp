@@ -52,6 +52,7 @@ int main(int argc, char* argv[]) {
     		if(a_map[i][j]!=0){
 		      Coordinates position((float)i,(float)j);
 		      Posicionable *posicionable = new Posicionable(position);
+          posicionable->set_texture(a_map[i][j]-1);
 		      map.agregarPosicionable(posicionable,position);
     		}
     	}

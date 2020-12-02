@@ -37,6 +37,8 @@ private:
 	float h;
 	int n_rays;
 
+	void load_texture(std::string file_name,int number_texture);
+
 	void init_textures();
 
 	//Dibuja un rayo del ra#include "intersected_object.h"ycasting

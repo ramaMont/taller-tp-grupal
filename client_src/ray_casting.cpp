@@ -14,33 +14,31 @@
 
 #include "ray.h"
 
-void Raycasting::init_textures(){
-
-//Cargo pared gris
-  std::ifstream greystone_file("textures/greystone.mat");
+void Raycasting::load_texture(std::string file_name,int number_texture){
+  std::ifstream file("textures/"+file_name);
   std::string number;
 
   for(int k=0; k<3; k++){
 	  for(int i=0; i<64; i++){
 		  for(int j=0; j<64; j++){
-		  	getline(greystone_file,number);
-		  	textures[0][k][i][j] = stoi(number);
+		  	getline(file,number);
+		  	textures[number_texture][k][i][j] = stoi(number);
 		  }  	
 	  }
-  }
+  }	
+  file.close();
+}
 
+void Raycasting::init_textures(){
 
-//Cargo pared azul
-  std::ifstream bluestone_file("textures/bluestone.mat");
-
-  for(int k=0; k<3; k++){
-	  for(int i=0; i<64; i++){
-		  for(int j=0; j<64; j++){
-		  	getline(bluestone_file,number);
-		  	textures[1][k][i][j] = stoi(number);
-		  }  	
-	  }
-  }
+	load_texture("greystone.mat",0);
+	load_texture("bluestone.mat",1);
+	load_texture("purplestone.mat",2);
+	load_texture("colorstone.mat",3);
+	load_texture("eagle.mat",4);
+	load_texture("mossy.mat",5);
+	load_texture("redbrick.mat",6);
+	load_texture("wood.mat",7);
 
 }
 
@@ -77,11 +75,14 @@ void Raycasting::draw(Intersected_object intersected_object,float pos_x){
     }else{
     	x_initial_pos = 640 - x_lenght_ray*(pos_x+n_rays);
     }
+    printf("quiero obtener textura\n");
+    int num_texture = intersected_object.get_texture();
+    printf("textura obtenida\n");
 	pixel.x = x_initial_pos;	
 	for(int i=0; i<64; i++){
-		int red = textures[1][0][number_line_texture][i]/side_division;
-		int green = textures[1][1][number_line_texture][i]/side_division;
-		int blue = textures[1][2][number_line_texture][i]/side_division;
+		int red = textures[num_texture][0][number_line_texture][i]/side_division;
+		int green = textures[num_texture][1][number_line_texture][i]/side_division;
+		int blue = textures[num_texture][2][number_line_texture][i]/side_division;
 		SDL_SetRenderDrawColor(renderer,red , green, blue, SDL_ALPHA_OPAQUE);
 	   	pixel.y = initial_position_y + ceil((i*pixel_lenght));
 	    SDL_RenderFillRect( renderer, &pixel );    	
