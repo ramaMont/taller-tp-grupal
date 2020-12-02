@@ -22,7 +22,6 @@ public:
     explicit Intersected_object(float distance_player_plane,Posicionable* object ,float position, int side);
 
     int get_texture(){
-        printf("dentro del get_texture en el Intersected_object\n");
     	return object->get_texture();
     }
 

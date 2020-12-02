@@ -75,9 +75,7 @@ void Raycasting::draw(Intersected_object intersected_object,float pos_x){
     }else{
     	x_initial_pos = 640 - x_lenght_ray*(pos_x+n_rays);
     }
-    printf("quiero obtener textura\n");
     int num_texture = intersected_object.get_texture();
-    printf("textura obtenida\n");
 	pixel.x = x_initial_pos;	
 	for(int i=0; i<64; i++){
 		int red = textures[num_texture][0][number_line_texture][i]/side_division;
