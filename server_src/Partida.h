@@ -5,9 +5,9 @@
 #include <vector>
 #include <map>
 #include <ctime>
+#include <Jugador.h>
+#include <Mapa.h>
 
-#include "Jugador.h"
-#include "Mapa.h"
 
 class Partida{
 private:

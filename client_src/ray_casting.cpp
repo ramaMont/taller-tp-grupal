@@ -1,6 +1,8 @@
 #include <math.h>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
 #include "ray_casting.h"
 
@@ -12,40 +14,83 @@
 
 #include "ray.h"
 
+void Raycasting::load_texture(std::string file_name,int number_texture){
+  std::ifstream file("textures/"+file_name);
+  std::string number;
 
-Raycasting::Raycasting(Jugador &a_player,Mapa &a_map,const Window &window)
-    : player(a_player), map(a_map),renderer(window.getRenderer()) 
-    {
-    h=480;
-    n_rays = 160;
+  for(int k=0; k<3; k++){
+	  for(int i=0; i<64; i++){
+		  for(int j=0; j<64; j++){
+		  	getline(file,number);
+		  	textures[number_texture][k][i][j] = stoi(number);
+		  }  	
+	  }
+  }	
+  file.close();
+}
+
+void Raycasting::init_textures(){
+
+	load_texture("greystone.mat",0);
+	load_texture("bluestone.mat",1);
+	load_texture("purplestone.mat",2);
+	load_texture("colorstone.mat",3);
+	load_texture("eagle.mat",4);
+	load_texture("mossy.mat",5);
+	load_texture("redbrick.mat",6);
+	load_texture("wood.mat",7);
+
 }
 
 
-void Raycasting::draw(float distance_player_plane,float pos_x){
-	int lineHeight = (int)(h / distance_player_plane);
-	int drawStart = -lineHeight / 2 + h / 2;
-	if(drawStart < 0)drawStart = 0;
-	int drawEnd = lineHeight / 2 + h / 2;
-	if(drawEnd >= h)drawEnd = h - 1;
+Raycasting::Raycasting(Jugador &a_player,Mapa &a_map,const Window &window)
+    : player(a_player), map(a_map),renderer(window.getRenderer()), background(window)
+    {
+    h = 480;
+    n_rays = 160;
+    init_textures();
+}
 
+
+void Raycasting::draw(Intersected_object intersected_object,float pos_x){
+
+
+	float distance_player_plane = intersected_object.get_distance_player_plane();
+	float lineHeight = (h / distance_player_plane);
+	int number_line_texture = intersected_object.get_number_line_texture();
+	int side_division = intersected_object.get_side_division();
+	float initial_position_y =  -lineHeight/2 + h/2;
+
+	SDL_Rect pixel;
+
+	float pixel_lenght = lineHeight/64;
+	float x_lenght_ray = 640/(2*n_rays);//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
+
+	pixel.w = x_lenght_ray;
+	pixel.h = ceil(pixel_lenght);
+
+	int x_initial_pos;
     if(player.get_direction().y>0){
-	    for(int i=0; i<640/(2*n_rays);i++){
-			SDL_RenderDrawLine(renderer,i+ 640*(pos_x+n_rays)/(2*n_rays), drawStart,i+ 640*(pos_x+n_rays)/(2*n_rays), drawEnd);
-		}
-	}else{//Si estoy aca empiezo x la derecha
-	    for(int i=0; i<640/(2*n_rays);i++){
-			SDL_RenderDrawLine(renderer,i+ 640 - 640*(pos_x+n_rays)/(2*n_rays), drawStart,i+640- 640*(pos_x+n_rays)/(2*n_rays), drawEnd);
-		}		
+    	x_initial_pos = x_lenght_ray*(pos_x+n_rays);
+    }else{
+    	x_initial_pos = 640 - x_lenght_ray*(pos_x+n_rays);
+    }
+    int num_texture = intersected_object.get_texture();
+	pixel.x = x_initial_pos;	
+	for(int i=0; i<64; i++){
+		int red = textures[num_texture][0][number_line_texture][i]/side_division;
+		int green = textures[num_texture][1][number_line_texture][i]/side_division;
+		int blue = textures[num_texture][2][number_line_texture][i]/side_division;
+		SDL_SetRenderDrawColor(renderer,red , green, blue, SDL_ALPHA_OPAQUE);
+	   	pixel.y = initial_position_y + ceil((i*pixel_lenght));
+	    SDL_RenderFillRect( renderer, &pixel );    	
 	}
 }
 
 
 void Raycasting::calculate_ray_casting(){
-    //Ademas del raycasting, estas funciones sirven 
-    // para hacer el techo oscuro, y el piso claro con un triangulo (despues pasar a otra clase)
-    //SDL_SetRenderDrawColor(renderer, 0x6E, 0x6E, 0x6E, 0 );
-    //SDL_RenderFillRect( renderer, &roof );
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+
+    background.show();
 
     /* Futuro mutex acá (en un thread proceso 
     botones, actualizo la posicion, etc y en otro 
@@ -59,7 +104,6 @@ void Raycasting::calculate_ray_casting(){
 		Coordinates ray_direction = camera.calculate_ray_direction(i,n_rays);
 		float ray_angle = atan(std::abs((float)i/(float)n_rays));
 		Ray ray(ray_angle, ray_direction,player_coordinates,player_direction,map);
-		float wall_distance = ray.calculate_ray_distance();
-		draw(wall_distance,i);
+		draw(ray.get_colisioned_object(),i);
 	}
 }

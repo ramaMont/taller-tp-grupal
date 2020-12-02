@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     Mapa map(24, 24);
 
     Coordinates initial_position(2.5,2.5);
-    Coordinates initial_direction(0,-1);
+    Coordinates initial_direction(0,1);
     Jugador player(initial_position,initial_direction,map);
 
     for(int i=0; i<24; i++){
@@ -52,6 +52,7 @@ int main(int argc, char* argv[]) {
     		if(a_map[i][j]!=0){
 		      Coordinates position((float)i,(float)j);
 		      Posicionable *posicionable = new Posicionable(position);
+          posicionable->set_texture(a_map[i][j]-1);
 		      map.agregarPosicionable(posicionable,position);
     		}
     	}
@@ -71,6 +72,8 @@ int main(int argc, char* argv[]) {
     DirAtras backward;
     DirIzquierda left;
     DirDerecha right;
+    DirRotDerecha rotRight;
+    DirRotIzquierda rotLeft;
 
     SDL_bool done = SDL_FALSE;
     while (!done) {
@@ -105,13 +108,13 @@ int main(int argc, char* argv[]) {
                 window.render();  
                 break;
               case SDLK_q:
-                player.rotate_left();
+                player.mover(&rotLeft);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();  
                 window.render();
                 break;
               case SDLK_e:
-                player.rotate_right();
+                player.mover(&rotRight);
                 window.set_no_color();
                 ray_casting.calculate_ray_casting();  
                 window.render();
