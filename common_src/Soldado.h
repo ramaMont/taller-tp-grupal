@@ -11,7 +11,7 @@ class Soldado {
     public:
     Soldado(int &balas): balas(balas) { }
 	virtual void disparar(Jugador *jugador) = 0;
-	virtual void soltarArma(Mapa &mapa) = 0;
+	virtual void soltarArma(Jugador *jugador) = 0;
 	virtual bool estaListo() = 0;
 };
 
@@ -24,7 +24,7 @@ class Perro: public Soldado {
 	public:
 	Perro(int& n);
 	void disparar(Jugador *jugador) override;
-	void soltarArma(Mapa &mapa) override;
+	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
 
@@ -36,7 +36,7 @@ class Guardia: public Soldado {
 	public:
 	Guardia(int& balas);
 	void disparar(Jugador *jugador) override;
-	void soltarArma(Mapa &mapa) override;
+	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
 
@@ -49,7 +49,7 @@ class SS: public Soldado {
 	SS(int &balas);
 	bool agregarArma(Ametralladora *ametralladora);
 	void disparar(Jugador *jugador) override;	
-	void soltarArma(Mapa &mapa) override;
+	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
 
@@ -62,7 +62,7 @@ class Oficial: public Soldado {
 	Oficial(int &balas);
 	bool agregarArma(CanionDeCadena *canion);
 	void disparar(Jugador *jugador) override;
-	void soltarArma(Mapa &mapa) override;
+	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
 
@@ -75,7 +75,7 @@ class Mutante: public Soldado {
 	Mutante(int &balas);
 	bool agregarArma(Lanzacohetes *lanzacohetes);
 	void disparar(Jugador *jugador) override;	
-	void soltarArma(Mapa &mapa) override;
+	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
 
@@ -95,7 +95,7 @@ class EstadoSoldado {
 	explicit EstadoSoldado(Jugador *jugador, int& balas);
 	bool agregarArma(Arma* arma);
 	void cambiarArma(int numero_arma);
-	void soltarArma(Mapa &mapa);
+	void soltarArma();
 	void disparar(Jugador *jugador);
 };
 

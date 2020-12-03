@@ -49,8 +49,8 @@ void EstadoSoldado::cambiarArma(int numero_arma){
 }
 
 
-void EstadoSoldado::soltarArma(Mapa &mapa){
-	this->soldado->soltarArma(mapa);
+void EstadoSoldado::soltarArma(){
+	this->soldado->soltarArma(this->jugador);
 }
 
 void EstadoSoldado::disparar(Jugador *jugador){
@@ -69,7 +69,7 @@ void Perro::disparar(Jugador *jugador){
 	this->cuchillo.disparar(jugador);
 }
 
-void Perro::soltarArma(Mapa &mapa){
+void Perro::soltarArma(Jugador *jugador){
 }
 
 bool Perro::estaListo(){
@@ -87,7 +87,7 @@ void Guardia::disparar(Jugador *jugador){
 	this->balas --;
 }
 
-void Guardia::soltarArma(Mapa &mapa){
+void Guardia::soltarArma(Jugador *jugador){
 }
 
 bool Guardia::estaListo(){
@@ -115,12 +115,14 @@ void SS::disparar(Jugador *jugador){
 	}
 }
 
-void SS::soltarArma(Mapa &mapa){
-	mapa.soltar(this->ametralladora);
+void SS::soltarArma(Jugador *jugador){
+	Mapa &mapa = jugador->getMapa();
+	mapa.soltar(this->ametralladora, jugador->get_coordinates());
+	this->ametralladora = nullptr;
 }
 
 bool SS::estaListo(){
-	return this->balas > 0;
+	return this->balas > 0 && this->ametralladora != nullptr;
 }
 
 
@@ -144,12 +146,14 @@ void Oficial::disparar(Jugador *jugador){
 	}	
 }
 
-void Oficial::soltarArma(Mapa &mapa){
-	mapa.soltar(this->canion);
+void Oficial::soltarArma(Jugador *jugador){
+	Mapa &mapa = jugador->getMapa();
+	mapa.soltar(this->canion, jugador->get_coordinates());
+	this->canion = nullptr;
 }
 
 bool Oficial::estaListo(){
-	return this->balas > 0;
+	return this->balas > 0 && this->canion != nullptr;
 }
 
 
@@ -170,11 +174,13 @@ void Mutante::disparar(Jugador *jugador){
 	this->balas -= BALAS_LANZACOHETES;
 }
 
-void Mutante::soltarArma(Mapa &mapa){
-	mapa.soltar(this->lanzacohetes);
+void Mutante::soltarArma(Jugador *jugador){
+	Mapa &mapa = jugador->getMapa();
+	mapa.soltar(this->lanzacohetes, jugador->get_coordinates());
+	this->lanzacohetes = nullptr;
 }
 
 bool Mutante::estaListo(){
-	return this->balas > BALAS_LANZACOHETES;
+	return this->balas > BALAS_LANZACOHETES && this->lanzacohetes != nullptr;
 }
 

@@ -2,6 +2,7 @@
 #define __MAPA__
 
 #include <vector>
+#include <stack>
 #include <utility>
 #include "Posicionable.h"
 #include "Jugador.h"
@@ -13,7 +14,7 @@ class Mapa{
 private:
     int alto;
     int ancho;
-    std::vector<std::vector<Posicionable*>> mapaJuego;
+    std::vector<std::vector<std::stack<Posicionable*>>> mapaJuego;
 public:
     explicit Mapa(int alto, int ancho);
     void agregarJugador(Jugador* jugador);
@@ -21,7 +22,8 @@ public:
     void sacarPosicionable(Coordinates posicion);
     Posicionable* obtenerPosicionableEn(Coordinates posicion);
     void moveme(Jugador* jugador, const Coordinates& posicion);
-    void soltar(Posicionable* objeto);
+    void soltar(Posicionable* objeto, const Coordinates& posicion);
+    void soltar(Posicionable objeto);
     ~Mapa();
 };
 

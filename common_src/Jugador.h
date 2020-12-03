@@ -43,6 +43,7 @@ public:
     void agregarPuntos(int cantidad);
     bool agregarBalas(int cantidad);
     bool agregarLlave();
+    bool usarLlave();
     void agregarEnemigoMuerto();
     bool estaPorMorir();
     void morir();

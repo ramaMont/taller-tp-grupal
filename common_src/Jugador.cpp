@@ -9,19 +9,6 @@
 #define BALAS_MAXIMAS 30
 #define VIDA_MINIMA 11
 
-/*
-Jugador::Jugador(Coordinates posicion, Mapa& mapa): 
-	Posicionable(posicion), posicion_inicial(posicion), mapa(mapa),
-    soldado(EstadoSoldado(this, this->balas_restantes)){
-    mapa.agregarJugador(this);
-    this->vida = VIDA_MAXIMA;
-    this->vidasRestantes = CANTIDAD_DE_VIDAS;
-    this->balas_restantes = BALAS_INICIALES;
-	this->puntuacion = 0;
-    this->balas_disparadas = 0;
-    this->enemigos_matados = 0;
-    this->llave = false;
-}*/
 
 Jugador::Jugador(Coordinates position, Coordinates direction, Mapa& mapa):
     Posicionable(position), mapa(mapa), direction(direction),
@@ -108,6 +95,12 @@ bool Jugador::agregarLlave(){
 	return true;
 }
 
+bool Jugador::usarLlave(){
+	bool aux = this->llave;
+	this->llave = false;
+	return aux;
+}
+
 void Jugador::agregarEnemigoMuerto(){
 	this->enemigos_matados ++;
 }
@@ -117,12 +110,10 @@ bool Jugador::estaPorMorir(){
 }
 
 void Jugador::morir(){
-	this->soldado.soltarArma(this->mapa);
-	Balas balas(this->posicion, 10);
-	this->mapa.soltar(&balas);
+	this->soldado.soltarArma();
+	this->mapa.soltar(Balas(this->posicion, 10));
 	if (this->llave){
-		Llave llave(this->posicion);
-		this->mapa.soltar(&llave);
+		this->mapa.soltar(Llave(this->posicion));
 		this->llave = false;
 	}
 	revivir();
