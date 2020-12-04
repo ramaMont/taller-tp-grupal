@@ -9,7 +9,7 @@
 #include "window.h"
 
 #include "camera.h"
-#include "Jugador.h"
+#include "Player.h"
 #include "coordinates.h"
 
 #include "ray.h"
@@ -45,7 +45,7 @@ void Raycasting::init_textures(){
 }
 
 
-Raycasting::Raycasting(Jugador &a_player,Mapa &a_map,const Window &window)
+Raycasting::Raycasting(Player &a_player,Mapa &a_map,const Window &window)
     : player(a_player), map(a_map),renderer(window.getRenderer()), background(window)
     {
     h = 480;

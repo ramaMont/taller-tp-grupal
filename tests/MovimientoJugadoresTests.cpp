@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include <Jugador.h>
+#include <Player.h>
 #include <Mapa.h>
 #include <Direccion.h>
 #include <coordinates.h>
@@ -10,7 +10,7 @@
 static float inc = 0.15;
 static const float step_size = 0.15;
 //-------------------- Hacia adelante ------------------------------------
-TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerecha) {
+TEST(MovimientoPlayeresTests, adelanteExitosoDesdeDerecha) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -18,7 +18,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerecha) {
     //Mirando hacia la derecha
     Coordinates angulo(1,0);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     for (i = 0.0; i < 1.0; i+=step_size)
@@ -33,7 +33,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerecha) {
     EXPECT_EQ (floor(posicionIni.x + i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, adelanteExitosoDesdeArriba) {
+TEST(MovimientoPlayeresTests, adelanteExitosoDesdeArriba) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -41,7 +41,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeArriba) {
     //Mirando hacia la arriba
     Coordinates angulo(0,1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -54,7 +54,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeArriba) {
     EXPECT_EQ (floor(posicionIni.x), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y + i), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierda) {
+TEST(MovimientoPlayeresTests, adelanteExitosoDesdeIzquierda) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -63,7 +63,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierda) {
     //Poner 00 despues de la coma
     Coordinates angulo(-1,0);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -76,7 +76,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierda) {
     EXPECT_EQ (floor(posicionIni.x - i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, adelanteExitosoDesdeAbajo) {
+TEST(MovimientoPlayeresTests, adelanteExitosoDesdeAbajo) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -85,7 +85,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeAbajo) {
     //Poner 00 despues de la coma
     Coordinates angulo(0,-1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -98,7 +98,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeAbajo) {
     EXPECT_EQ (floor(posicionIni.x),  floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y - i), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaArriba) {
+TEST(MovimientoPlayeresTests, adelanteExitosoDesdeDerechaArriba) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -107,7 +107,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaArriba) {
     //Poner 00 despues de la coma
     Coordinates angulo(1,1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -120,7 +120,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaArriba) {
     EXPECT_EQ (floor(posicionIni.x + i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y + i), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaAbajo) {
+TEST(MovimientoPlayeresTests, adelanteExitosoDesdeDerechaAbajo) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -129,7 +129,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaAbajo) {
     //Poner 00 despues de la coma
     Coordinates angulo(1,-1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -142,7 +142,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeDerechaAbajo) {
     EXPECT_EQ (floor(posicionIni.x + i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y - i), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaArriba) {
+TEST(MovimientoPlayeresTests, adelanteExitosoDesdeIzquierdaArriba) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -151,7 +151,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaArriba) {
     //Poner 00 despues de la coma
     Coordinates angulo(-1,1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -164,7 +164,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaArriba) {
     EXPECT_EQ (floor(posicionIni.x - i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y + i), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaAbajo) {
+TEST(MovimientoPlayeresTests, adelanteExitosoDesdeIzquierdaAbajo) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -173,7 +173,7 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaAbajo) {
     //Poner 00 despues de la coma
     Coordinates angulo(-1,-1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -191,14 +191,14 @@ TEST(MovimientoJugadoresTests, adelanteExitosoDesdeIzquierdaAbajo) {
 // ---------------------- Hacia atras ----------------------
 // ---------------------------------------------------------
 
-TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerecha) {
+TEST(MovimientoPlayeresTests, atrasExitosoDesdeDerecha) {
     //arrange
     Mapa mapa(20,20);
     float i;
     //Mirando hacia la derecha
     Coordinates angulo(1,0);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAtras dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -207,14 +207,14 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerecha) {
     EXPECT_EQ (floor(posicionIni.x - i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y), floor(resultado->getPosicion().y));    
 }
-TEST(MovimientoJugadoresTests, atrasExitosoDesdeArriba) {
+TEST(MovimientoPlayeresTests, atrasExitosoDesdeArriba) {
     //arrange
     Mapa mapa(20,20);
     float i;
     //Mirando hacia la arriba
     Coordinates angulo(0,1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAtras dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -223,7 +223,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeArriba) {
     EXPECT_EQ (floor(posicionIni.x), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y - i), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierda) {
+TEST(MovimientoPlayeresTests, atrasExitosoDesdeIzquierda) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -231,7 +231,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierda) {
     //Poner 00 despues de la coma
     Coordinates angulo(-1,0);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAtras dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -240,7 +240,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierda) {
     EXPECT_EQ (floor(posicionIni.x + i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y), floor(resultado->getPosicion().y));  
 }
-TEST(MovimientoJugadoresTests, atrasExitosoDesdeAbajo) {
+TEST(MovimientoPlayeresTests, atrasExitosoDesdeAbajo) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -248,7 +248,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeAbajo) {
     //Poner 00 despues de la coma
     Coordinates angulo(0,-1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAtras dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -257,7 +257,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeAbajo) {
     EXPECT_EQ (floor(posicionIni.x), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y + i), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaArriba) {
+TEST(MovimientoPlayeresTests, atrasExitosoDesdeDerechaArriba) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -265,7 +265,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaArriba) {
     //Poner 00 despues de la coma
     Coordinates angulo(1,1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAtras dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -274,7 +274,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaArriba) {
     EXPECT_EQ (floor(posicionIni.x - i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y - i), floor(resultado->getPosicion().y));    
 }
-TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaAbajo) {
+TEST(MovimientoPlayeresTests, atrasExitosoDesdeDerechaAbajo) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -282,7 +282,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaAbajo) {
     //Poner 00 despues de la coma
     Coordinates angulo(1,-1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAtras dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -291,7 +291,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeDerechaAbajo) {
     EXPECT_EQ (floor(posicionIni.x - i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y + i), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaArriba) {
+TEST(MovimientoPlayeresTests, atrasExitosoDesdeIzquierdaArriba) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -299,7 +299,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaArriba) {
     //Poner 00 despues de la coma
     Coordinates angulo(-1,1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAtras dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -308,7 +308,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaArriba) {
     EXPECT_EQ (floor(posicionIni.x + i), floor(resultado->getPosicion().x));
     EXPECT_EQ (floor(posicionIni.y - i), floor(resultado->getPosicion().y));
 }
-TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaAbajo) {
+TEST(MovimientoPlayeresTests, atrasExitosoDesdeIzquierdaAbajo) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -316,7 +316,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaAbajo) {
     //Poner 00 despues de la coma
     Coordinates angulo(-1,-1);
     Coordinates posicionIni(11, 15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAtras dir;
     for (i = 0.0; i < 1.0; i+=step_size)
         jugador.mover(&dir);
@@ -330,7 +330,7 @@ TEST(MovimientoJugadoresTests, atrasExitosoDesdeIzquierdaAbajo) {
 // ---------------------- Fuera del mapa -------------------
 // ---------------------------------------------------------
 
-TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaFuera) {
+TEST(MovimientoPlayeresTests, adelanteFallaIrDerechaFuera) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -338,7 +338,7 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaFuera) {
     //Poner 00 despues de la coma
     Coordinates angulo(1,0);
     Coordinates posicionIni(19,15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
@@ -352,7 +352,7 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaFuera) {
     EXPECT_EQ (floor(posicionIni.y), floor(resultado->getPosicion().y));    
 }
 
-TEST(MovimientoJugadoresTests, adelanteFallaIrArribaFuera) {
+TEST(MovimientoPlayeresTests, adelanteFallaIrArribaFuera) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -360,7 +360,7 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrArribaFuera) {
     //Poner 00 despues de la coma
     Coordinates angulo(0,1);
     Coordinates posicionIni(11,20);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
@@ -375,7 +375,7 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrArribaFuera) {
     EXPECT_EQ (floor(posicionIni.y), floor(resultado->getPosicion().y)); 
 }
 
-TEST(MovimientoJugadoresTests, adelanteFallaIrIzquierdaFuera) {
+TEST(MovimientoPlayeresTests, adelanteFallaIrIzquierdaFuera) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -383,7 +383,7 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrIzquierdaFuera) {
     //Poner 00 despues de la coma
     Coordinates angulo(-1,0);
     Coordinates posicionIni(0,15);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
@@ -397,7 +397,7 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrIzquierdaFuera) {
     EXPECT_EQ (floor(posicionIni.y), floor(resultado->getPosicion().y)); 
 }
 
-TEST(MovimientoJugadoresTests, adelanteFallaIrAbajoFuera) {
+TEST(MovimientoPlayeresTests, adelanteFallaIrAbajoFuera) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -405,7 +405,7 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrAbajoFuera) {
     //Poner 00 despues de la coma
     Coordinates angulo(0,-1);
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
@@ -423,7 +423,7 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrAbajoFuera) {
 // ------------- Colisiones entre posicionables ------------
 // ---------------------------------------------------------
 
-TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaEncimaDeOtroJugador) {
+TEST(MovimientoPlayeresTests, adelanteFallaIrDerechaEncimaDeOtroPlayer) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -431,9 +431,9 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrDerechaEncimaDeOtroJugador) {
     //Poner 00 despues de la coma
     Coordinates angulo(1,0);
     Coordinates posicionIni2(12,0);
-    Jugador jugador2(posicionIni2, angulo,  mapa);
+    Player jugador2(posicionIni2, angulo,  mapa);
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act
     try {
@@ -458,7 +458,7 @@ int first_n_decimals(float number){
 }
 
 
-TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeDerecha) {
+TEST(MovimientoPlayeresTests, giroAIzquierdaExitosoDesdeDerecha) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -468,7 +468,7 @@ TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeDerecha) {
     Coordinates angulo_rotado = angulo;
 
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirRotIzquierda dir;
     //act
     try {
@@ -487,7 +487,7 @@ TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeDerecha) {
     EXPECT_EQ (first_n_decimals(angulo_rotado.y), first_n_decimals(jugador.get_direction().y));
 }
 
-TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeArriba) {
+TEST(MovimientoPlayeresTests, giroAIzquierdaExitosoDesdeArriba) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -496,7 +496,7 @@ TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeArriba) {
     Coordinates angulo(0,1);
     Coordinates angulo_rotado = angulo;
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirRotIzquierda dir;
     //act
     try {
@@ -514,7 +514,7 @@ TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeArriba) {
     EXPECT_EQ (first_n_decimals(angulo_rotado.y), first_n_decimals(jugador.get_direction().y));
 }
 
-TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeIzquierda) {
+TEST(MovimientoPlayeresTests, giroAIzquierdaExitosoDesdeIzquierda) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -523,7 +523,7 @@ TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeIzquierda) {
     Coordinates angulo(-1,0);
     Coordinates angulo_rotado = angulo;
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirRotIzquierda dir;
     //act
     try {
@@ -541,7 +541,7 @@ TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeIzquierda) {
     EXPECT_EQ (first_n_decimals(angulo_rotado.y), first_n_decimals(jugador.get_direction().y));
 }
 
-TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeAbajo) {
+TEST(MovimientoPlayeresTests, giroAIzquierdaExitosoDesdeAbajo) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -550,7 +550,7 @@ TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeAbajo) {
     Coordinates angulo(0,-1);
     Coordinates angulo_rotado = angulo;
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirRotIzquierda dir;
     //act
     try {
@@ -574,7 +574,7 @@ TEST(MovimientoJugadoresTests, giroAIzquierdaExitosoDesdeAbajo) {
 // ---------------------------------------------------------
 
 
-TEST(MovimientoJugadoresTests, giroADerechaExitoso) {
+TEST(MovimientoPlayeresTests, giroADerechaExitoso) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -583,7 +583,7 @@ TEST(MovimientoJugadoresTests, giroADerechaExitoso) {
     Coordinates angulo(1,0);
     Coordinates angulo_rotado = angulo;
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirRotDerecha dir;
     //act
     try {
@@ -601,7 +601,7 @@ TEST(MovimientoJugadoresTests, giroADerechaExitoso) {
     EXPECT_EQ (first_n_decimals(angulo_rotado.y), first_n_decimals(jugador.get_direction().y));
 }
 
-TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeArriba) {
+TEST(MovimientoPlayeresTests, giroADerechaExitosoDesdeArriba) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -610,7 +610,7 @@ TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeArriba) {
     Coordinates angulo(0,1);
     Coordinates angulo_rotado = angulo;
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirRotDerecha dir;
     //act
     try {
@@ -628,7 +628,7 @@ TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeArriba) {
     EXPECT_EQ (first_n_decimals(angulo_rotado.y), first_n_decimals(jugador.get_direction().y));
 }
 
-TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeIzquierda) {
+TEST(MovimientoPlayeresTests, giroADerechaExitosoDesdeIzquierda) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -637,7 +637,7 @@ TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeIzquierda) {
     Coordinates angulo(-1,0);
     Coordinates angulo_rotado = angulo;
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirRotDerecha dir;
     //act
     try {
@@ -655,7 +655,7 @@ TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeIzquierda) {
     EXPECT_EQ (first_n_decimals(angulo_rotado.y), first_n_decimals(jugador.get_direction().y));
 }
 
-TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeAbajo) {
+TEST(MovimientoPlayeresTests, giroADerechaExitosoDesdeAbajo) {
     //arrange
     Mapa mapa(20,20);
     float i;
@@ -664,7 +664,7 @@ TEST(MovimientoJugadoresTests, giroADerechaExitosoDesdeAbajo) {
     Coordinates angulo(0,-1);
     Coordinates angulo_rotado = angulo;
     Coordinates posicionIni(11,0);
-    Jugador jugador(posicionIni, angulo, mapa);
+    Player jugador(posicionIni, angulo, mapa);
     DirRotDerecha dir;
     //act
     try {

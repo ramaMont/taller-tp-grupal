@@ -17,7 +17,7 @@ Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
     }
 }
 
-void Mapa::agregarJugador(Jugador* jugador){
+void Mapa::agregarPlayer(Player* jugador){
 	mapaJuego[floor(jugador->getPosicion().x)]
         [floor(jugador->getPosicion().y)]=jugador;
 }
@@ -39,7 +39,7 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion){
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)];
 }
 
-void Mapa::moveme(Jugador* jugador, const Coordinates& posicion){
+void Mapa::moveme(Player* jugador, const Coordinates& posicion){
     // for(int i=0; i<alto; i++){
     // 	for(int j=0; j<ancho; j++){
     // 		if(mapaJuego[i][j]!=0){
@@ -56,16 +56,32 @@ void Mapa::moveme(Jugador* jugador, const Coordinates& posicion){
         throw -1;
     if (posicion.x < 0 || posicion.y < 0)
         throw -1;
-    Coordinates posJugador = jugador->getPosicion();
+    Coordinates posPlayer = jugador->getPosicion();
     if (jugador->getPosicion() == posicion){
         return;
     }
     try {
         agregarPosicionable(jugador, posicion);
-        sacarPosicionable(posJugador);
+        sacarPosicionable(posPlayer);
     } catch(int e){
         throw;
     }
+}
+
+Mapa::Mapa(Mapa&& other){
+    this->alto = other.alto;
+    this->ancho = other.ancho;
+    this->mapaJuego.swap(other.mapaJuego);
+}
+
+Mapa& Mapa::operator=(Mapa&& other){
+    if (this == &other){
+        return *this;        // other is myself!
+    }
+    this->alto = other.alto;
+    this->ancho = other.ancho;
+    this->mapaJuego.swap(other.mapaJuego);
+    return *this;
 }
 
 Mapa::~Mapa(){

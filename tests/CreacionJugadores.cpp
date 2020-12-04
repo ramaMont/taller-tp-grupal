@@ -1,13 +1,13 @@
 #include "gtest/gtest.h"
-#include <Jugador.h>
+#include <Player.h>
 #include <Mapa.h>
 #include <coordinates.h>
-TEST(CreacionJugadoresTests, creacionExitosa) {
+TEST(CreacionPlayeresTests, creacionExitosa) {
     //arrange
     Mapa mapa(20,20);
     Coordinates pos(2,5);
     Coordinates dir(0,0);
-    Jugador jugador(pos, dir, mapa);
+    Player jugador(pos, dir, mapa);
     //act
     Coordinates posicionResultado = mapa.obtenerPosicionableEn(pos)->getPosicion();
     //assert

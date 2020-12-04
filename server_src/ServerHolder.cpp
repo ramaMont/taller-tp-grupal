@@ -1,6 +1,6 @@
 #include "ServerHolder.h"
 #include <Mapa.h>
-#include <Jugador.h>
+#include <Player.h>
 #include <coordinates.h>
 #include <Direccion.h>
 #include <iostream>

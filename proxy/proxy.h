@@ -1,6 +1,6 @@
 #ifndef __PROXY__
 #define __PROXY__
 
-int corre();
+int run();
 
 #endif

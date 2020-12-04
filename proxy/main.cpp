@@ -1,5 +1,5 @@
 #include "proxy.h"
 int main(int argc, char** argv ){
-    corre();
+    run();
     return 0;
 }

@@ -9,7 +9,7 @@
 #include "texture.h"
 #include "Mapa.h"
 #include "ray_casting.h"
-#include "Jugador.h"
+#include "Player.h"
 #include "Posicionable.h"
 
 int main(int argc, char* argv[]) {
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 
     Coordinates initial_position(2.5,2.5);
     Coordinates initial_direction(0,1);
-    Jugador player(initial_position,initial_direction,map);
+    Player player(initial_position,initial_direction,map);
 
     for(int i=0; i<24; i++){
     	for(int j=0; j<24; j++){
