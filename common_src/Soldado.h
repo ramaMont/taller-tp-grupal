@@ -10,9 +10,11 @@ class Soldado {
 
     public:
     Soldado(int &balas): balas(balas) { }
-	virtual void disparar(Jugador *jugador) = 0;
+	virtual void disparar(Jugador *jugador, std::vector<Jugador*>&) = 0;
 	virtual void soltarArma(Jugador *jugador) = 0;
 	virtual bool estaListo() = 0;
+    void obtenerEnemigosCercanos(std::vector<Jugador*>& enemigos,
+       Jugador* jugador, std::set<std::pair<int, Jugador*>>& jugadores);
 };
 
 
@@ -23,7 +25,7 @@ class Perro: public Soldado {
 	
 	public:
 	Perro(int& n);
-	void disparar(Jugador *jugador) override;
+	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;
 	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
@@ -35,7 +37,7 @@ class Guardia: public Soldado {
 	
 	public:
 	Guardia(int& balas);
-	void disparar(Jugador *jugador) override;
+	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;
 	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
@@ -48,7 +50,7 @@ class SS: public Soldado {
 	public:
 	SS(int &balas);
 	bool agregarArma(Ametralladora *ametralladora);
-	void disparar(Jugador *jugador) override;	
+	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;	
 	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
@@ -61,7 +63,7 @@ class Oficial: public Soldado {
 	public:
 	Oficial(int &balas);
 	bool agregarArma(CanionDeCadena *canion);
-	void disparar(Jugador *jugador) override;
+	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;
 	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
@@ -74,7 +76,7 @@ class Mutante: public Soldado {
 	public:
 	Mutante(int &balas);
 	bool agregarArma(Lanzacohetes *lanzacohetes);
-	void disparar(Jugador *jugador) override;	
+	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;	
 	void soltarArma(Jugador *jugador) override;
 	bool estaListo() override;
 };
@@ -96,7 +98,7 @@ class EstadoSoldado {
 	bool agregarArma(Arma* arma);
 	void cambiarArma(int numero_arma);
 	void soltarArma();
-	void disparar(Jugador *jugador);
+	void disparar(std::vector<Jugador*>& enemigos);
 };
 
 

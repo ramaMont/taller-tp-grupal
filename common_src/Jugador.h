@@ -10,6 +10,7 @@ class Direccion;
 class EstadoSoldado;
 #include "Soldado.h"
 #include "Item.h"
+#include <vector>
 
 
 class Jugador final : public Posicionable{
@@ -33,8 +34,8 @@ public:
     Coordinates get_coordinates();
 
     Coordinates get_direction();
-   // explicit Jugador(Posicion posicion, Mapa& mapa);
-    void disparar();
+    
+    void disparar(std::vector<Jugador*>&);
     bool recibirDanio(int danio);
     bool usar(Item* item);
     bool agregarArma(Arma* arma);

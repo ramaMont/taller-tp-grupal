@@ -54,8 +54,8 @@ bool Jugador::recibirDanio(int danio){
 	return false;
 }
 
-void Jugador::disparar(){
-	this->soldado.disparar(this);
+void Jugador::disparar(std::vector<Jugador*>& jugadores){
+	this->soldado.disparar(jugadores);
 }
 
 bool Jugador::usar(Item* item){

@@ -5,6 +5,7 @@
 class Jugador;
 #include "Item.h"
 class Mapa;
+#include <set>
 
 
 #define N_CUCHILLO 0
@@ -13,16 +14,19 @@ class Mapa;
 #define N_CANION 3
 #define N_LANZACOHETES 4
 
+typedef std::set<std::pair<int, Jugador*>> angulos_enemigos_t;
 
 class Arma {
 	public:
-	virtual void disparar(Jugador* jugador) = 0;
+	virtual void disparar(Jugador* jugador) {}
+	virtual void disparar(Jugador* jugador, angulos_enemigos_t& enemigos) {}
+	virtual void disparar(Jugador* jugador, std::vector<Jugador*>& enemigos) {}
 };
 
 
 class Cuchillo: public Arma {
 	private:
-	bool atacar(Mapa &mapa, Jugador* jugador, Coordinates &direccion);
+	bool atacar(Mapa &mapa, Jugador* jugador, const Coordinates &direccion);
 	
 	public:
 	Cuchillo() { }
@@ -36,7 +40,7 @@ class Pistola: public Arma {
 	
 	public:
 	void setParametros(const float precision);
-	void disparar(Jugador* jugador) override;
+	void disparar(Jugador* jugador, angulos_enemigos_t& enemigos) override;
 };
 
 
@@ -47,7 +51,7 @@ class Ametralladora: public Arma, public Item {
 	public:
 	explicit Ametralladora(Coordinates p): Item(p) { }
 	void setParametros(const float precision);
-	void disparar(Jugador* jugador) override;
+	void disparar(Jugador* jugador, angulos_enemigos_t& enemigos) override;
 	bool usar(Jugador* jugador) override;
 };
 
@@ -59,7 +63,7 @@ class CanionDeCadena: public Arma, public Item {
 	public:
 	explicit CanionDeCadena(Coordinates p): Item(p) { }
 	void setParametros(const float precision);
-	void disparar(Jugador* jugador) override;
+	void disparar(Jugador* jugador, angulos_enemigos_t& enemigos) override;
 	bool usar(Jugador* jugador) override;
 };
 
@@ -67,20 +71,20 @@ class CanionDeCadena: public Arma, public Item {
 class Lanzacohetes: public Arma, public Item {
 	public:
 	explicit Lanzacohetes(Coordinates p): Item(p) { }
-	void disparar(Jugador* jugador) override;
+	void disparar(Jugador* jugador, std::vector<Jugador*>& enemigos) override;
 	bool usar(Jugador* jugador) override;
 };
 
 
 class Cohete: public Posicionable{
 	private:
-	Coordinates direccion;
+	const Coordinates direccion;
 	
 	public:
-	Cohete(Coordinates posicion, Coordinates dir);
-	void disparar(Jugador* jugador);
+	Cohete(Coordinates posicion, const Coordinates dir);
+	void disparar(Jugador* jugador, std::vector<Jugador*>& enemigos);
 	void avanzar(Mapa& mapa);
-	void explotar(Jugador* jugador, Mapa& mapa);
+	void explotar(Jugador* jugador, std::vector<Jugador*>& enemigos);
 };
 	
 

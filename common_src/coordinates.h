@@ -54,6 +54,9 @@ public:
 
     int get_increase_y()const;
 
+    // Devuelve el angulo entre la direccion y la posicion desde mis coordenadas
+    double calculate_angle(const Coordinates& direction, const Coordinates& position);
+
     // void set_x(double a_x);
 
     // void set_y(double a_y);
