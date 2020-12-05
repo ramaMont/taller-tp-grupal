@@ -103,34 +103,16 @@ int run(){
 
     ThKeyReader th_key_reader(th_sender_client);
 
-    th_key_reader.start();
+    th_key_reader.start();          // Lectura de teclas
     while(true){
-        th_drawer.run();
-        th_user_client.run();     // Lectura de teclas y paso de mensaje a el th_sender_client
-        th_sender_client.run(); // paso de protocolo al th_receiver_server
-        th_receiver_server.run(); // paso de protocolo al game_model_server
-        game_model_server.run();  // Procesamiento de instruccion
-        th_sender_server.run(); // paso de protocolo al th_receiver_client
-        th_receiver_client.run(); // paso de protocolo al game_model_client
-        game_model_client.run();  // Procesamiento de instruccion y dibujo en pantalla.
+        th_drawer.run();            // Dibujo de juego en cliente
+        th_user_client.run();       // Paso de mensaje a el th_sender_client
+        th_sender_client.run();     // paso de protocolo al th_receiver_server
+        th_receiver_server.run();   // paso de protocolo al game_model_server
+        game_model_server.run();    // Procesamiento de instruccion
+        th_sender_server.run();     // paso de protocolo al th_receiver_client
+        th_receiver_client.run();   // paso de protocolo al game_model_client
+        game_model_client.run();    // Procesamiento de instruccion y dibujo en pantalla.
     }
-
-
-    // game_model_server.addUser(&thUserServer);
-    // game_model_client.addUser(&thUserClient);
-    // game_model_server.addPlayer(&player_server);
-    // game_model_client.addPlayer(&player_client);
-
-//    Window window(640,480);
-//    Raycasting ray_casting(player_client, map,window);
-
-//    draw(window, ray_casting);
-
-//         //updateModel();
-//         // std::cout << protocol.direction << std::endl;
-// //        std::cout << sizeof(protocol) << std::endl;
-// //        draw(window, ray_casting);
-//       }
-//     }
     return 0;
 }

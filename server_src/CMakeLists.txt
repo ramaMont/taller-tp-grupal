@@ -11,4 +11,6 @@ add_executable(${PROJECT_NAME}_run ${SOURCES} ${LIB_SOURCES})
 
 add_library(${PROJECT_NAME}_lib STATIC ${SOURCES})
 
+target_link_libraries(${PROJECT_NAME}_lib PUBLIC ${CMAKE_PROJECT_NAME}_common_lib )
+
 target_link_libraries(${PROJECT_NAME}_run PUBLIC ${CMAKE_PROJECT_NAME}_common_lib )

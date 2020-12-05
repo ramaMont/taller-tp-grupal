@@ -3,6 +3,10 @@
 static const double step_size=0.15;
 static double inc = 0.15;
 
+
+Direccion::~Direccion(){
+}
+//-----------------------------------------------------------------------------
 DirAdelante::DirAdelante(){
 }
 

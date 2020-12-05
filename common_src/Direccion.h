@@ -7,49 +7,51 @@ class Player;
 
 class Direccion{
 public:
+
     virtual Coordinates mover(Player* jugador, Coordinates direction) = 0;
+    virtual ~Direccion();
 };
 
 class DirAdelante : public Direccion{
 public:
     DirAdelante();
     virtual Coordinates mover(Player* jugador, Coordinates direction) override;
-    ~DirAdelante();
+    virtual ~DirAdelante();
 };
 
 class DirAtras : public Direccion{
 public:
     DirAtras();
     virtual Coordinates mover(Player* jugador, Coordinates direction) override;
-    ~DirAtras();
+    virtual ~DirAtras();
 };
 
 class DirIzquierda : public Direccion{
 public:
     DirIzquierda();
     virtual Coordinates mover(Player* jugador, Coordinates direction) override;
-    ~DirIzquierda();
+    virtual ~DirIzquierda();
 };
 
 class DirDerecha : public Direccion{
 public:
     DirDerecha();
     virtual Coordinates mover(Player* jugador, Coordinates direction) override;
-    ~DirDerecha();
+    virtual ~DirDerecha();
 };
 
 class DirRotDerecha : public Direccion{
 public:
     DirRotDerecha();
     virtual Coordinates mover(Player* jugador, Coordinates direction) override;
-    ~DirRotDerecha();
+    virtual ~DirRotDerecha();
 };
 
 class DirRotIzquierda : public Direccion{
 public:
     DirRotIzquierda();
     virtual Coordinates mover(Player* jugador, Coordinates direction) override;
-    ~DirRotIzquierda();
+    virtual ~DirRotIzquierda();
 };
 
 #endif

@@ -29,6 +29,12 @@ void GameModel::initDirections(){
     directions[Protocol::direction::ROTATE_RIGHT] = rotRight;
 }
 
+void GameModel::cleanDirections(){
+    for (auto it = directions.begin(); it != directions.end(); ++it){
+        Direccion* dir = it->second;
+        delete(dir);
+    }
+}
 
 void GameModel::run(){
     if (!operations.empty()){
@@ -73,19 +79,12 @@ GameModel& GameModel::operator=(GameModel&& other){
 }
 
 GameModel::~GameModel(){
+    cleanDirections();
 }
-
-// GameModelServer::GameModelServer(Mapa& map):
-//         GameModel(map){
-// }
 
 GameModelServer::GameModelServer(Mapa& map, std::map<int,Player *>& players, std::map<int,ThSender *>& users_sender):
         GameModel(map, players), users_sender(users_sender){
 }
-
-// GameModelClient::GameModelClient(Mapa& map):
-//         GameModel(map){
-// }
 
 GameModelClient::GameModelClient(Mapa& map, std::map<int,Player *>& players):
         GameModel(map, players){
@@ -109,7 +108,6 @@ void GameModelClient::processProtocol(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::MOVE:
             processMove(protocol);
-            draw();
             break;
         case Protocol::action::SHOOT:
 
@@ -130,9 +128,6 @@ void GameModelServer::echoProtocol(Protocol protocol){
         user_sender->push(protocol);
         it++;
     }
-}
-
-void GameModelClient::draw(){
 }
 
 GameModelServer::~GameModelServer(){
