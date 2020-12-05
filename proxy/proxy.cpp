@@ -1,7 +1,6 @@
 #include "proxy.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+
 #include <iostream>
 #include <exception>
 #include <vector>
@@ -20,6 +19,8 @@
 
 #include <GameModel.h>
 #include <ThUser.h>
+#include <ThKeyReader.h>
+#include <ThDrawer.h>
 
 // void draw(Window& window, Raycasting& ray_casting){
 //   window.set_no_color();
@@ -77,8 +78,10 @@ int run(){
     Player player_client(initial_position, initial_direction, map_client, id);
     initMap(map_server, map_client, player_server, player_client);
 
-    GameModel game_model_server(std::move(map_client));
-    GameModel game_model_client(std::move(map_server));
+    ThDrawer th_drawer(player_client, map_client);
+
+    GameModelServer game_model_server(std::move(map_client));
+    GameModelClient game_model_client(std::move(map_server));
 
     ThReceiver th_receiver_server(game_model_server);
     ThReceiver th_receiver_client(game_model_client);
@@ -95,7 +98,12 @@ int run(){
     game_model_server.addThSender(&th_sender_server);
     game_model_client.addThSender(&th_sender_client);
 
+    ThKeyReader th_key_reader(th_sender_client);
+
+
     while(true){
+        th_drawer.run();
+        th_key_reader.run();
         th_user_client.run();     // Lectura de teclas y paso de mensaje a el th_sender_client
         th_sender_client.run(); // paso de protocolo al th_receiver_server
         th_receiver_server.run(); // paso de protocolo al game_model_server
@@ -116,48 +124,6 @@ int run(){
 
 //    draw(window, ray_casting);
 
-
-//     SDL_bool done = SDL_FALSE;
-//     while (!done) {
-//       SDL_Event event;
-//       while (SDL_PollEvent(&event)) {
-//         switch(event.type) {
-//           case SDL_KEYDOWN: {
-//             SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-//             switch (keyEvent.keysym.sym) {
-//               case SDLK_LEFT:
-//                 // protocol.direction = LEFT;
-//                 // protocol.id = 1;
-//                 break;
-//               case SDLK_RIGHT:
-//                 // protocol.direction = RIGHT;
-//                 // protocol.id = 1;
-//                 break;
-//               case SDLK_UP:
-//                 // protocol.direction = FORWARD;
-//                 // protocol.id = 1;
-//                 break;
-//               case SDLK_DOWN:
-//                 // protocol.direction = BACKWARD;
-//                 // protocol.id = 1;
-//                 break;
-//               case SDLK_q:
-//                 // protocol.direction = ROTATE_LEFT;
-//                 // protocol.id = 1;
-//                 break;
-//               case SDLK_e:
-//                 // protocol.direction = ROTATE_RIGHT;
-//                 // protocol.id = 1;
-//                 break;
-//             }
-//           } // Fin KEY_DOWN
-//           break;            
-//           case SDL_QUIT: {
-//             done = SDL_TRUE;
-//           }
-//         }
-//         //server.setProtocol(protocol);
-//         //protocol = server.reciveProtocol();
 //         //updateModel();
 //         // std::cout << protocol.direction << std::endl;
 // //        std::cout << sizeof(protocol) << std::endl;

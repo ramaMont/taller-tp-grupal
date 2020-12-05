@@ -12,7 +12,7 @@ class ThSender;
 #include <map>
 
 class GameModel{
-private:
+protected:
     Mapa map;
     std::queue<Protocol> operations;
     std::atomic<bool> keep_running;
@@ -30,7 +30,7 @@ public:
     void initDirections();
     void run();
     void push(Protocol protocol);
-    void processProtocol(Protocol& protocol);
+    virtual void processProtocol(Protocol& protocol) = 0;
     void addPlayer(Player* player);
     void addThSender(ThSender* th_sender);
     GameModel(const GameModel&) = delete;
@@ -38,6 +38,24 @@ public:
     GameModel& operator=(const GameModel&) = delete;
     GameModel& operator=(GameModel&& other);
     ~GameModel();
+
+};
+
+class GameModelServer : public GameModel{
+public:
+    explicit GameModelServer(Mapa&& map);
+    explicit GameModelServer(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender);
+    virtual void processProtocol(Protocol& protocol) override;
+    ~GameModelServer();
+};
+
+class GameModelClient : public GameModel{
+public:
+    explicit GameModelClient(Mapa&& map);
+    explicit GameModelClient(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender);
+    virtual void processProtocol(Protocol& protocol) override;
+    void draw();
+    ~GameModelClient();
 };
 
 #endif

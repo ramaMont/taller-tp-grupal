@@ -21,9 +21,9 @@ public:
     void sacarPosicionable(Coordinates posicion);
     Posicionable* obtenerPosicionableEn(Coordinates posicion);
     void moveme(Player* jugador, const Coordinates& posicion);
-    Mapa(const Mapa&) = delete;
+//    Mapa(const Mapa&) = delete;
     Mapa(Mapa&& other);
-    Mapa& operator=(const Mapa&) = delete;
+//    Mapa& operator=(const Mapa&) = delete;
     Mapa& operator=(Mapa&& other);
     ~Mapa();
 };

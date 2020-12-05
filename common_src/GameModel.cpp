@@ -48,20 +48,6 @@ void GameModel::movePlayer(int player_id){
 void GameModel::shoot(){
 }
 
-void GameModel::processProtocol(Protocol& protocol){
-    switch (protocol.getAction()){
-        case MOVE:
-            processMove(protocol);
-            echoProtocol(protocol);
-            break;
-        case SHOOT:
-
-            break;
-        default:
-            break;
-    }
-}
-
 void GameModel::processMove(Protocol& protocol){
     Player* player = players.at(protocol.getId());
     Direccion* dir = directions.at(protocol.getDirection());
@@ -101,4 +87,57 @@ GameModel& GameModel::operator=(GameModel&& other){
 }
 
 GameModel::~GameModel(){
+}
+
+GameModelServer::GameModelServer(Mapa&& map):
+        GameModel(std::move(map)){
+}
+
+GameModelServer::GameModelServer(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender):
+        GameModel(std::move(map), std::move(players), std::move(users_sender)){
+}
+
+GameModelClient::GameModelClient(Mapa&& map):
+        GameModel(std::move(map)){
+}
+
+GameModelClient::GameModelClient(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender):
+        GameModel(std::move(map), std::move(players), std::move(users_sender)){
+}
+
+void GameModelServer::processProtocol(Protocol& protocol){
+    switch (protocol.getAction()){
+        case MOVE:
+            processMove(protocol);
+            echoProtocol(protocol);
+            break;
+        case SHOOT:
+
+            break;
+        default:
+            break;
+    }
+}
+
+void GameModelClient::processProtocol(Protocol& protocol){
+    switch (protocol.getAction()){
+        case MOVE:
+            processMove(protocol);
+            draw();
+            break;
+        case SHOOT:
+
+            break;
+        default:
+            break;
+    }
+}
+
+void GameModelClient::draw(){
+}
+
+GameModelServer::~GameModelServer(){
+}
+
+GameModelClient::~GameModelClient(){
 }

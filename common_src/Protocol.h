@@ -14,9 +14,10 @@ private:
     enum direction direction;
     int damage;
 public:
-    Protocol();
+    explicit Protocol(int id);
     enum action getAction();
     enum direction getDirection();
+    void setDirection(enum direction);
     int getId();
     ~Protocol();
 };

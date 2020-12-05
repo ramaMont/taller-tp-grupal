@@ -5,7 +5,6 @@
 
 class ThGameServer{
 private:
-    GameModel gameModel;
     
 public:
     ThGameServer();

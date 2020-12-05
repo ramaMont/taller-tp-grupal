@@ -1,6 +1,6 @@
 #include "Protocol.h"
 
-Protocol::Protocol(){
+Protocol::Protocol(int id):id(id){
 }
 enum action Protocol::getAction(){
     return action;
@@ -11,5 +11,9 @@ int Protocol::getId(){
 enum direction Protocol::getDirection(){
     return direction;
 }
+void Protocol::setDirection(enum direction){
+    direction = direction;
+}
+
 Protocol::~Protocol(){
 }
