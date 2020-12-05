@@ -1,41 +1,51 @@
 #include "ThKeyReader.h"
+
+#include <Protocol.h>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 ThKeyReader::ThKeyReader(ThSender& th_sender):
-        th_sender(th_sender){
+        th_sender(th_sender), is_running(true){
 }
 
 void ThKeyReader::run(){
     SDL_bool done = SDL_FALSE;
-    Protocol protocol(th_sender.getId());
+    int id = th_sender.getId();
+    Protocol protocol(id);
+    SDL_Event event;
     while (!done) {
-        SDL_Event event;
         while (SDL_PollEvent(&event)){
             switch(event.type) {
                 case SDL_KEYDOWN: {
                     SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-                    switch (keyEvent.keysym.sym) {
+                    switch (keyEvent.keysym.sym){
                         case SDLK_LEFT:
-                            protocol.setDirection(LEFT);
+                            protocol.moveInDirection(Protocol::direction::LEFT);
+                            th_sender.push(protocol);
                             break;
                         case SDLK_RIGHT:
-                            protocol.setDirection(RIGHT);
+                            protocol.moveInDirection(Protocol::direction::RIGHT);
+                            th_sender.push(protocol);
                             break;
                         case SDLK_UP:
-                            protocol.setDirection(FORWARD);
+                            protocol.moveInDirection(Protocol::direction::FORWARD);
+                            th_sender.push(protocol);
                             break;
                         case SDLK_DOWN:
-                            protocol.setDirection(BACKWARD);
+                            protocol.moveInDirection(Protocol::direction::BACKWARD);
+                            th_sender.push(protocol);
                             break;
                         case SDLK_q:
-                            protocol.setDirection(ROTATE_LEFT);
+                            protocol.moveInDirection(Protocol::direction::ROTATE_LEFT);
+                            th_sender.push(protocol);
                             break;
                         case SDLK_e:
-                            protocol.setDirection(ROTATE_RIGHT);
+                            protocol.moveInDirection(Protocol::direction::ROTATE_RIGHT);
+                            th_sender.push(protocol);
                             break;
-                    }        
-                    th_sender.push(protocol);
+                    }
+                    
                 }
                 break;            
                 case SDL_QUIT: {
@@ -45,6 +55,13 @@ void ThKeyReader::run(){
 
         }
     }
+}
+
+void ThKeyReader::stop(){
+
+}
+bool ThKeyReader::isDone(){
+    return !is_running;
 }
 
 ThKeyReader::~ThKeyReader(){

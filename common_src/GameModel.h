@@ -13,26 +13,23 @@ class ThSender;
 
 class GameModel{
 protected:
-    Mapa map;
+    Mapa& map;
     std::queue<Protocol> operations;
     std::atomic<bool> keep_running;
-    std::map<int,Player *> players;
-    std::map<int,ThSender *> users_sender;
-    std::map<enum direction, Direccion* > directions;
+    std::map<int,Player *>& players;
+    std::map<Protocol::direction, Direccion* > directions;
     void updateEvent();
     void movePlayer(int player_id);
     void shoot();
     void processMove(Protocol& protocol);
-    void echoProtocol(Protocol protocol);
 public:
-    explicit GameModel(Mapa&& map);
-    explicit GameModel(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender);
+//    explicit GameModel(Mapa& map);
+    explicit GameModel(Mapa& map, std::map<int,Player *>& players);
     void initDirections();
     void run();
     void push(Protocol protocol);
     virtual void processProtocol(Protocol& protocol) = 0;
     void addPlayer(Player* player);
-    void addThSender(ThSender* th_sender);
     GameModel(const GameModel&) = delete;
     GameModel(GameModel&& other) = delete;
     GameModel& operator=(const GameModel&) = delete;
@@ -42,17 +39,21 @@ public:
 };
 
 class GameModelServer : public GameModel{
+private:
+    std::map<int,ThSender *>& users_sender;
+    void echoProtocol(Protocol protocol);
 public:
-    explicit GameModelServer(Mapa&& map);
-    explicit GameModelServer(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender);
+//    explicit GameModelServer(Mapa& map);
+    explicit GameModelServer(Mapa& map, std::map<int,Player *>& players, std::map<int,ThSender *>& users_sender);
     virtual void processProtocol(Protocol& protocol) override;
+    void addThSender(ThSender* th_sender);
     ~GameModelServer();
 };
 
 class GameModelClient : public GameModel{
 public:
-    explicit GameModelClient(Mapa&& map);
-    explicit GameModelClient(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender);
+//    explicit GameModelClient(Mapa& map);
+    explicit GameModelClient(Mapa& map, std::map<int,Player *>& players);
     virtual void processProtocol(Protocol& protocol) override;
     void draw();
     ~GameModelClient();

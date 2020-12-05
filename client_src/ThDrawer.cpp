@@ -8,5 +8,6 @@ void ThDrawer::run(){
     ray_casting.calculate_ray_casting();
     window.render();
 }
+
 ThDrawer::~ThDrawer(){
 }

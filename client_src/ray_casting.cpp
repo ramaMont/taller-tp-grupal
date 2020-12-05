@@ -17,31 +17,28 @@
 void Raycasting::init_textures(){
 
 //Cargo pared gris
-  std::ifstream greystone_file("textures/greystone.mat");
-  std::string number;
-
-  for(int k=0; k<3; k++){
-	  for(int i=0; i<64; i++){
-		  for(int j=0; j<64; j++){
-		  	getline(greystone_file,number);
-		  	textures[0][k][i][j] = stoi(number);
-		  }  	
-	  }
-  }
+    std::ifstream greystone_file("textures/greystone.mat");
+    std::string number;
+    for(int k=0; k<3; k++){
+        for(int i=0; i<64; i++){
+            for(int j=0; j<64; j++){
+            getline(greystone_file,number);
+            textures[0][k][i][j] = stoi(number);
+            }  	
+        }
+    }
 
 
 //Cargo pared azul
   std::ifstream bluestone_file("textures/bluestone.mat");
-
-  for(int k=0; k<3; k++){
-	  for(int i=0; i<64; i++){
-		  for(int j=0; j<64; j++){
-		  	getline(bluestone_file,number);
-		  	textures[1][k][i][j] = stoi(number);
-		  }  	
-	  }
-  }
-
+    for(int k=0; k<3; k++){
+        for(int i=0; i<64; i++){
+            for(int j=0; j<64; j++){
+            getline(bluestone_file,number);
+            textures[1][k][i][j] = stoi(number);
+            }  	
+        }
+    }
 }
 
 

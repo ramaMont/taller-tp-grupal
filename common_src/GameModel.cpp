@@ -1,12 +1,12 @@
 #include "GameModel.h"
 
-GameModel::GameModel(Mapa&& map): 
-        map(std::move(map)), keep_running(true){
-    initDirections();
-}
+// GameModel::GameModel(Mapa& map): 
+//         map(map), keep_running(true){
+//     initDirections();
+// }
 
-GameModel::GameModel(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender): 
-        map(std::move(map)), keep_running(true), players(players), users_sender(users_sender){
+GameModel::GameModel(Mapa& map, std::map<int,Player *>& players): 
+        map(map), keep_running(true), players(players){
     // Inicializo el diccionario directions para acceder a cada direccion 
     // en tiempo O(1)
     // verificar si esto anda o si los punteros se pierden cuando finaliza
@@ -21,12 +21,12 @@ void GameModel::initDirections(){
     DirDerecha* right = new DirDerecha();
     DirRotIzquierda* rotLeft = new DirRotIzquierda();
     DirRotDerecha* rotRight = new DirRotDerecha();
-    directions[FORWARD] = forward;
-    directions[BACKWARD] = backward;
-    directions[LEFT] = left;
-    directions[RIGHT] = right;
-    directions[ROTATE_LEFT] = rotLeft;
-    directions[ROTATE_RIGHT] = rotRight;
+    directions[Protocol::direction::FORWARD] = forward;
+    directions[Protocol::direction::BACKWARD] = backward;
+    directions[Protocol::direction::LEFT] = left;
+    directions[Protocol::direction::RIGHT] = right;
+    directions[Protocol::direction::ROTATE_LEFT] = rotLeft;
+    directions[Protocol::direction::ROTATE_RIGHT] = rotRight;
 }
 
 
@@ -42,7 +42,6 @@ void GameModel::run(){
 void GameModel::updateEvent(){
 }
 void GameModel::movePlayer(int player_id){
-
 }
 
 void GameModel::shoot(){
@@ -61,18 +60,6 @@ void GameModel::push(Protocol protocol){
 void GameModel::addPlayer(Player* player){
     players.insert(std::pair<int, Player*>(player->getId(), player));
 }
-void GameModel::addThSender(ThSender* th_sender){
-    users_sender.insert(std::pair<int, ThSender*>(th_sender->getId(), th_sender));
-}
-
-void GameModel::echoProtocol(Protocol protocol){
-    std::map<int, ThSender *>::iterator it = users_sender.begin();
-    while (it != users_sender.end()){
-        ThSender* user_sender = it->second;
-        user_sender->push(protocol);
-        it++;
-    }
-}
 
 GameModel& GameModel::operator=(GameModel&& other){
     if (this == &other){
@@ -81,7 +68,6 @@ GameModel& GameModel::operator=(GameModel&& other){
     this->map = std::move(other.map);
     this->keep_running = true;
     this->players = std::move(other.players);
-    this->users_sender = std::move(other.users_sender);
     this->directions = std::move(other.directions);
     return *this;
 }
@@ -89,29 +75,29 @@ GameModel& GameModel::operator=(GameModel&& other){
 GameModel::~GameModel(){
 }
 
-GameModelServer::GameModelServer(Mapa&& map):
-        GameModel(std::move(map)){
+// GameModelServer::GameModelServer(Mapa& map):
+//         GameModel(map){
+// }
+
+GameModelServer::GameModelServer(Mapa& map, std::map<int,Player *>& players, std::map<int,ThSender *>& users_sender):
+        GameModel(map, players), users_sender(users_sender){
 }
 
-GameModelServer::GameModelServer(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender):
-        GameModel(std::move(map), std::move(players), std::move(users_sender)){
-}
+// GameModelClient::GameModelClient(Mapa& map):
+//         GameModel(map){
+// }
 
-GameModelClient::GameModelClient(Mapa&& map):
-        GameModel(std::move(map)){
-}
-
-GameModelClient::GameModelClient(Mapa&& map, std::map<int,Player *>&& players, std::map<int,ThSender *>&& users_sender):
-        GameModel(std::move(map), std::move(players), std::move(users_sender)){
+GameModelClient::GameModelClient(Mapa& map, std::map<int,Player *>& players):
+        GameModel(map, players){
 }
 
 void GameModelServer::processProtocol(Protocol& protocol){
     switch (protocol.getAction()){
-        case MOVE:
+        case Protocol::action::MOVE:
             processMove(protocol);
             echoProtocol(protocol);
             break;
-        case SHOOT:
+        case Protocol::action::SHOOT:
 
             break;
         default:
@@ -121,15 +107,28 @@ void GameModelServer::processProtocol(Protocol& protocol){
 
 void GameModelClient::processProtocol(Protocol& protocol){
     switch (protocol.getAction()){
-        case MOVE:
+        case Protocol::action::MOVE:
             processMove(protocol);
             draw();
             break;
-        case SHOOT:
+        case Protocol::action::SHOOT:
 
             break;
         default:
             break;
+    }
+}
+
+void GameModelServer::addThSender(ThSender* th_sender){
+    users_sender.insert(std::pair<int, ThSender*>(th_sender->getId(), th_sender));
+}
+
+void GameModelServer::echoProtocol(Protocol protocol){
+    std::map<int, ThSender *>::iterator it = users_sender.begin();
+    while (it != users_sender.end()){
+        ThSender* user_sender = it->second;
+        user_sender->push(protocol);
+        it++;
     }
 }
 

@@ -2,17 +2,23 @@
 
 Protocol::Protocol(int id):id(id){
 }
-enum action Protocol::getAction(){
-    return action;
+
+Protocol::Protocol(int id, const enum direction):
+        id(id){
+//    this->direction = direction;
+}
+Protocol::action Protocol::getAction(){
+    return _action;
 }
 int Protocol::getId(){
     return id;
 }
-enum direction Protocol::getDirection(){
-    return direction;
+Protocol::direction Protocol::getDirection(){
+    return _direction;
 }
-void Protocol::setDirection(enum direction){
-    direction = direction;
+void Protocol::moveInDirection(Protocol::direction direction){
+    _action = Protocol::action::MOVE;
+    _direction = direction;
 }
 
 Protocol::~Protocol(){

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(${CMAKE_PROJECT_NAME}_server)
 
-set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno-inline")
+set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno-inline -pthread")
 
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
 

@@ -78,10 +78,14 @@ int run(){
     Player player_client(initial_position, initial_direction, map_client, id);
     initMap(map_server, map_client, player_server, player_client);
 
+    std::map<int,Player *> players_server;
+    std::map<int,Player *> players_client;
+    std::map<int,ThSender *> users_sender;
+
     ThDrawer th_drawer(player_client, map_client);
 
-    GameModelServer game_model_server(std::move(map_client));
-    GameModelClient game_model_client(std::move(map_server));
+    GameModelServer game_model_server(map_client, players_server, users_sender);
+    GameModelClient game_model_client(map_server, players_client);
 
     ThReceiver th_receiver_server(game_model_server);
     ThReceiver th_receiver_client(game_model_client);
@@ -96,14 +100,12 @@ int run(){
     game_model_client.addPlayer(&player_client);
 
     game_model_server.addThSender(&th_sender_server);
-    game_model_client.addThSender(&th_sender_client);
 
     ThKeyReader th_key_reader(th_sender_client);
 
-
+    th_key_reader.start();
     while(true){
         th_drawer.run();
-        th_key_reader.run();
         th_user_client.run();     // Lectura de teclas y paso de mensaje a el th_sender_client
         th_sender_client.run(); // paso de protocolo al th_receiver_server
         th_receiver_server.run(); // paso de protocolo al game_model_server
