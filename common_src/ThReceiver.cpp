@@ -7,17 +7,10 @@ ThReceiver::ThReceiver(Socket* socket):
 
 void ThReceiver::run(){
     Protocol protocol;
-    socket->recive(protocol, sizeof(protocol));
-    std::cout << "------------ Accion --------\n";
-    std::cout << protocol.getAction() << std::endl;
-    if (protocol.getAction() == Protocol::action::MOVE)
-        std::cout << "accion de moverse\n";
-    std::cout << "---------- Direccion --------\n";
-    std::cout << protocol.getDirection() << std::endl;
-    if (protocol.getDirection() == Protocol::direction::LEFT)
-        std::cout << "movimiento hacia la izquierda\n";
-    std::cout << "---------- ID --------\n";
-    std::cout << protocol.getId() << std::endl;
+    while (is_running){
+        socket->recive(protocol, sizeof(protocol));
+        processReception(protocol);
+    }
 }
 
 void ThReceiver::push(Protocol protocol){
@@ -25,6 +18,26 @@ void ThReceiver::push(Protocol protocol){
 }
 
 void ThReceiver::stop(){
+    is_running = false;
+}
+
+void ThReceiver::setThUser(ThUser* th_user){
+    _th_user = th_user;
+}
+
+void ThReceiver::processReception(Protocol& protocol){
+    switch (protocol.getAction()){
+        case Protocol::action::CREATE_GAME:
+            _th_user->push(protocol);
+            break;
+        case Protocol::action::JOIN_GAME:
+            _th_user->push(protocol);
+            break;
+        default:
+            // TODO: la parte que no es crear o unirse a una partida,
+            // se lo envia directamente al game model
+            break;
+    }
 }
 
 ThReceiver::~ThReceiver(){

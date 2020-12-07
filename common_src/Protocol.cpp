@@ -34,5 +34,9 @@ void Protocol::unSerialize(){
     damage = ntohs(damage);
 }
 
+void Protocol::setAction(Protocol::action action){
+    _action = action;
+}
+
 Protocol::~Protocol(){
 }

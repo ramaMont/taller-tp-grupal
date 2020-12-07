@@ -6,7 +6,8 @@
 struct __attribute__ ((packed)) Protocol {
 public:
     enum action : std::uint16_t { MOVE, SHOOT, LOAD, PICKUP, OPEN,
-            SHOOTED, ADDKILL, ADDPOINTS, ENDGAME };
+            SHOOTED, ADDKILL, ADDPOINTS, ENDGAME, SET_ID,
+            JOIN_GAME, CREATE_GAME };
 
     enum direction : std::uint16_t { FORWARD, BACKWARD, LEFT, RIGHT,
             ROTATE_LEFT, ROTATE_RIGHT};
@@ -20,6 +21,7 @@ public:
     void serialize();
     void unSerialize();
     int getId();
+    void setAction(Protocol::action action);
     ~Protocol();
 private:
     Protocol::action _action;

@@ -1,13 +1,14 @@
 #ifndef __TH_USER__
 #define __TH_USER__
 
+#include <Thread.h>
 #include "Protocol.h"
 #include <queue>
 #include "ThSender.h"
 class ThReceiver;
 #include "ThReceiver.h"
 
-class ThUser{
+class ThUser : public Thread{
 protected:
     std::queue<Protocol> operations;
     int user_id;
@@ -16,9 +17,10 @@ protected:
 
 public:
     explicit ThUser(int user_id, ThReceiver& th_receiver, ThSender& th_sender);
-    virtual void run();
+    virtual void run() override;
     void push(Protocol protocol);
     int getId();
+    virtual void stop() override;
     ~ThUser();
 };
 

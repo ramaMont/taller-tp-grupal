@@ -5,7 +5,7 @@
 #include <atomic>
 
 class Thread {
-private:
+protected:
     std::thread thread;
     std::atomic<bool> is_running;
 public:
