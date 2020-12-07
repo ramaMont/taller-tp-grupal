@@ -1,21 +1,22 @@
 #ifndef __TH_SENDER__
 #define __TH_SENDER__
 
+#include "Thread.h"
 #include <queue>
 #include "Protocol.h"
-class ThReceiver;
-#include "ThReceiver.h"
+#include "Socket.h"
 
-class ThSender{
+class ThSender : public Thread{
 private:
     std::queue<Protocol> operations;
-    ThReceiver& other_receiver;
     int id_user;
+    Socket* socket;
 public:
-    explicit ThSender(ThReceiver& other_receiver, int id_user);
-    void run();
+    explicit ThSender(int id_user, Socket* socket);
+    virtual void run() override;
     int getId();
     void push(Protocol protocol);
+    virtual void stop() override;
     ~ThSender();
 };
 

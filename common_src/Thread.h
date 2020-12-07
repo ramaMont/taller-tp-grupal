@@ -2,10 +2,12 @@
 #define __THREAD__
 
 #include <thread>
+#include <atomic>
 
 class Thread {
 private:
     std::thread thread;
+    std::atomic<bool> is_running;
 public:
     Thread();
     void start();
@@ -16,7 +18,7 @@ public:
     Thread(Thread&& other);
     Thread& operator=(Thread&& other);
     virtual void stop() = 0;
-    virtual bool isDone() = 0;
+    bool isDone();
     virtual ~Thread();
 };
 

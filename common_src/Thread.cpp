@@ -2,7 +2,7 @@
 #include <thread>
 #include <utility>
 
-Thread::Thread(){
+Thread::Thread():is_running(true){
 }
 
 void Thread::start() {
@@ -20,6 +20,10 @@ Thread::Thread(Thread&& other) {
 Thread& Thread::operator=(Thread&& other) {
     this->thread = std::move(other.thread);
     return *this;
+}
+
+bool Thread::isDone(){
+    return !is_running;
 }
 
 Thread::~Thread(){

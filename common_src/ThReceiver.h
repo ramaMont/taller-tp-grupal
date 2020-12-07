@@ -1,19 +1,20 @@
 #ifndef __TH_RECEIVER__
 #define __TH_RECEIVER__
 
+#include "Thread.h"
 #include <queue>
 #include "Protocol.h"
-class GameModel;
-#include "GameModel.h"
+#include "Socket.h"
 
-class ThReceiver{
+class ThReceiver :  public Thread{
 private:
     std::queue<Protocol> operations;
-    GameModel& my_game_model;
+    Socket* socket;
 public:
-    explicit ThReceiver(GameModel& my_game_model);
-    void run();
+    explicit ThReceiver(Socket *socket);
+    virtual void run() override;
     void push(Protocol protocol);
+    virtual void stop();
     ~ThReceiver();
 };
 

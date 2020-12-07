@@ -8,7 +8,7 @@ class ThReceiver;
 #include "ThReceiver.h"
 
 class ThUser{
-private:
+protected:
     std::queue<Protocol> operations;
     int user_id;
     ThReceiver& th_receiver;
@@ -16,28 +16,24 @@ private:
 
 public:
     explicit ThUser(int user_id, ThReceiver& th_receiver, ThSender& th_sender);
-    void run();
+    virtual void run();
     void push(Protocol protocol);
     int getId();
     ~ThUser();
 };
 
-// class ThUserClient : public ThUser{
-// public:
-//     explicit ThUserClient(GameModel& game_model, int id);
-//     virtual void run() override;
-//     void push(Protocol protocol);
-//     int getId();
-//     ~ThUserClient();
-// };
+class ThUserClient : public ThUser{
+public:
+    explicit ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_sender);
+    virtual void run() override;
+    ~ThUserClient();
+};
 
-// class ThUserServer : public ThUser{
-// public:
-//     explicit ThUserServer(GameModel& game_model, int id);
-//     virtual void run() override;
-//     void push(Protocol protocol);
-//     int getId();
-//     ~ThUserServer();
-// };
+class ThUserServer : public ThUser{
+public:
+    explicit ThUserServer(int user_id, ThReceiver& th_receiver, ThSender& th_sender);
+    virtual void run() override;
+    ~ThUserServer();
+};
 
 #endif

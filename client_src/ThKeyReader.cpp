@@ -6,7 +6,7 @@
 #include <SDL2/SDL_image.h>
 
 ThKeyReader::ThKeyReader(ThSender& th_sender):
-        th_sender(th_sender), is_running(true){
+        Thread(), th_sender(th_sender){
 }
 
 void ThKeyReader::run(){
@@ -58,10 +58,6 @@ void ThKeyReader::run(){
 }
 
 void ThKeyReader::stop(){
-
-}
-bool ThKeyReader::isDone(){
-    return !is_running;
 }
 
 ThKeyReader::~ThKeyReader(){

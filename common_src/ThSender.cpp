@@ -1,14 +1,14 @@
 #include "ThSender.h"
+#include <iostream>
 
-ThSender::ThSender(ThReceiver& other_receiver, int id_user):
-        other_receiver(other_receiver), id_user(id_user){
+ThSender::ThSender(int id_user, Socket* socket):
+        id_user(id_user), socket(socket){
 }
 void ThSender::run(){
-    if (!operations.empty()){
-        Protocol protocol = operations.front();
-        operations.pop();
-        other_receiver.push(protocol);
-    }
+    Protocol protocol(87, Protocol::direction::ROTATE_LEFT);
+    std::cout << "Tamaño del protocolo: " << sizeof(Protocol) << std::endl;
+    socket->send(protocol, sizeof(Protocol));
+    std::cout << "Mensaje enviado\n";
 }
 void ThSender::push(Protocol protocol){
     operations.push(protocol);
@@ -16,6 +16,9 @@ void ThSender::push(Protocol protocol){
 
 int ThSender::getId(){
     return id_user;
+}
+
+void ThSender::stop(){
 }
 
 ThSender::~ThSender(){

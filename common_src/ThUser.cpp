@@ -1,7 +1,5 @@
 #include "ThUser.h"
 
-
-
 ThUser::ThUser(int user_id, ThReceiver& th_receiver, ThSender& th_sender):
     user_id(user_id), th_receiver(th_receiver), th_sender(th_sender){
 }
@@ -22,4 +20,20 @@ int ThUser::getId(){
 }
 
 ThUser::~ThUser(){
+}
+
+ThUserClient::ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_sender):
+    ThUser(user_id, th_receiver, th_sender){
+}
+
+void ThUserClient::run(){
+
+}
+
+ThUserServer::ThUserServer(int user_id, ThReceiver& th_receiver, ThSender& th_sender):
+    ThUser(user_id, th_receiver, th_sender){
+}
+
+void ThUserServer::run(){
+    
 }

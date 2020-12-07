@@ -2,6 +2,7 @@
 #define __SOCKET__
 
 #include <string>
+#include "Protocol.h"
 
 class Socket{
 protected:
@@ -12,14 +13,10 @@ protected:
     void iteroAddrinfo(struct addrinfo *result, struct addrinfo *rp);
 public:
     Socket();
-    explicit Socket(std::string port);
-    explicit Socket(std::string host, std::string port);
     explicit Socket(int socketFd);
-    void hostListening();
-    Socket acceptClient();
-    void connect();
-    int sendStr(std::string msg, size_t size);
-    int recive(std::string &reciv, size_t size);
+
+    int send(Protocol& protocol, size_t size);
+    int recive(Protocol& protocol, size_t size);
     void shutdown();
     void close();
     Socket(const Socket&) = delete;
@@ -27,6 +24,24 @@ public:
     Socket& operator=(const Socket&) = delete;
     Socket& operator=(Socket&& other);
     ~Socket();
+};
+
+class SocketClient : public Socket{
+private:
+    void hostOClientConf(struct addrinfo **pr, char *host, char *port);
+public:
+    explicit SocketClient(std::string host, std::string port);
+    ~SocketClient();
+};
+
+class SocketServer : public Socket{
+private:
+    void hostOClientConf(struct addrinfo **pr, char *host, char *port);
+public:
+    explicit SocketServer(std::string port);
+    void hostListening();
+    Socket acceptClient();
+    ~SocketServer();
 };
 
 #endif

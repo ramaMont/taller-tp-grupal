@@ -9,26 +9,6 @@
 #include <stdio.h>
 
 #define MAX_CLIENTS_HOLD 10
-#define PORT_LENGTH 10
-#define MSG_LENGTH 500
-
-enum TipoUsuario { CLIENT, SERVER };
-
-void hostOClientConf(struct addrinfo **pr, char *host, char *port,
-        bool server){
-    int err;
-    struct addrinfo hints;  
-    memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_INET;       /* IPv4 */
-    hints.ai_socktype = SOCK_STREAM; /* TCP  */
-    if (server)
-        hints.ai_flags = AI_PASSIVE;     /* AI_PASSIVE to bind */
-    err = getaddrinfo(host, port, &hints, pr);
-    if (err != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(err));
-        throw -1;
-    }
-}
 
 void Socket::iteroAddrinfo(struct addrinfo *result, struct addrinfo *rp){
     rp=result;
@@ -47,15 +27,6 @@ void Socket::iteroAddrinfo(struct addrinfo *result, struct addrinfo *rp){
         throw -1;
     }
     freeaddrinfo(result);
-}
-
-void Socket::hostListening(){
-    int s = listen(socketFd, MAX_CLIENTS_HOLD);
-    if (s == -1) {
-        std::cout << "Error: " << strerror(errno) << "\n";
-        ::close(socketFd);
-        throw -1;
-    }
 }
 
 void Socket::reUseHost(struct addrinfo *pr){
@@ -90,32 +61,6 @@ void Socket::hostNBind(struct addrinfo *pr){
     freeaddrinfo(pr);
 }
 
-Socket Socket::acceptClient(){
-    int peersktFd = accept(socketFd, NULL, NULL);
-    if (peersktFd == -1) {
-        throw -1;
-    }
-    return Socket(peersktFd);
-}
-
-Socket::Socket(std::string host, std::string port){
-    struct addrinfo *pr=0;
-    struct addrinfo *rp=0;
-    char* localHost = const_cast<char*>(host.c_str());
-    char* portChar = const_cast<char*>(port.c_str());
-    hostOClientConf(&pr, localHost, portChar, CLIENT);
-    iteroAddrinfo(pr, rp);
-}
-
-Socket::Socket(std::string port):Socket(){
-    struct addrinfo *pr=0;
-    char localHost[] = "localhost";
-    char* portChar = const_cast<char*>(port.c_str());
-    hostOClientConf(&pr, localHost, portChar, SERVER);
-    hostNBind(pr);
-    hostListening();
-}
-
 Socket::Socket(){
     socketFd = -1;
 }
@@ -123,14 +68,12 @@ Socket::Socket(){
 Socket::Socket(int socketFd):socketFd(socketFd){
 }
 
-int Socket::sendStr(std::string msg, size_t size){
+int Socket::send(Protocol& protocol, size_t size){
     size_t bytes_enviados = 0;
-    ++size;
-    msg.push_back(EOF);
-    char* msg_to_send = const_cast<char*>(msg.c_str());
+    protocol.serialize();
     while (bytes_enviados < size) {
         int sent;
-        sent = send(socketFd, msg_to_send + bytes_enviados,
+        sent = ::send(socketFd, &protocol + bytes_enviados,
             size - bytes_enviados, MSG_NOSIGNAL);
         if (sent == -1) {
             printf("Error: %s\n", strerror(errno));
@@ -145,26 +88,21 @@ int Socket::sendStr(std::string msg, size_t size){
     return 0;
 }
 
-int Socket::recive(std::string &reciv, size_t size){
-    char buff[MSG_LENGTH]; 
+int Socket::recive(Protocol& protocol, size_t size){
+    Protocol recived_protocol;
     size_t received = 0;
     while (received < size) {
         int rec = 0;
-        rec = recv(socketFd, &buff[received], size-received, 0);
-        if (rec == 0) {             // socket cerrado :)
-            reciv = buff;
+        rec = recv(socketFd, &recived_protocol + received, size-received, 0);
+        if (rec == 0) {             // socket cerrado :S
             return -1;
         } else if (rec == -1) {     // error
             return -2;
         }
         received += rec;
-        if (buff[received-1] == EOF){
-            buff[received-1] = '\0';
-            reciv = buff;
-            return received;
-        }
     }
-    reciv = buff;
+    recived_protocol.unSerialize();
+    protocol = recived_protocol;
     return received;
 }
 
@@ -198,4 +136,74 @@ Socket::~Socket(){
         ::shutdown(socketFd, SHUT_RDWR);
         ::close(socketFd);
     }
+}
+
+SocketServer::SocketServer(std::string port):Socket(){
+    struct addrinfo *pr=0;
+    char localHost[] = "localhost";
+    char* portChar = const_cast<char*>(port.c_str());
+    hostOClientConf(&pr, localHost, portChar);
+    hostNBind(pr);
+    hostListening();
+}
+
+void SocketServer::hostListening(){
+    int s = listen(socketFd, MAX_CLIENTS_HOLD);
+    if (s == -1) {
+        std::cout << "Error: " << strerror(errno) << "\n";
+        ::close(socketFd);
+        throw -1;
+    }
+}
+
+Socket SocketServer::acceptClient(){
+    int peersktFd = accept(socketFd, NULL, NULL);
+    if (peersktFd == -1) {
+        throw -1;
+    }
+    return Socket(peersktFd);
+}
+
+SocketClient::SocketClient(std::string host, std::string port){
+    struct addrinfo *pr=0;
+    struct addrinfo *rp=0;
+    char* localHost = const_cast<char*>(host.c_str());
+    char* portChar = const_cast<char*>(port.c_str());
+    hostOClientConf(&pr, localHost, portChar);
+    iteroAddrinfo(pr, rp);
+}
+
+void SocketClient::hostOClientConf(struct addrinfo **pr, char *host,
+        char *port){
+    int err;
+    struct addrinfo hints;  
+    memset(&hints, 0, sizeof(struct addrinfo));
+    hints.ai_family = AF_INET;       /* IPv4 */
+    hints.ai_socktype = SOCK_STREAM; /* TCP  */
+    err = getaddrinfo(host, port, &hints, pr);
+    if (err != 0) {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(err));
+        throw -1;
+    }
+}
+
+void SocketServer::hostOClientConf(struct addrinfo **pr, char *host,
+        char *port){
+    int err;
+    struct addrinfo hints;  
+    memset(&hints, 0, sizeof(struct addrinfo));
+    hints.ai_family = AF_INET;       /* IPv4 */
+    hints.ai_socktype = SOCK_STREAM; /* TCP  */
+    hints.ai_flags = AI_PASSIVE;     /* AI_PASSIVE to bind */
+    err = getaddrinfo(host, port, &hints, pr);
+    if (err != 0) {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(err));
+        throw -1;
+    }
+}
+
+SocketClient::~SocketClient(){
+}
+
+SocketServer::~SocketServer(){
 }
