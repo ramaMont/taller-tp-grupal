@@ -10,6 +10,11 @@
 #define PUNTOS_COFRE 100
 #define PUNTOS_CORONA 200
 
+
+Item::Item(Coordinates p): Posicionable(p) { 
+	puedoPasar(true);
+}
+
 bool Comida::usar(Jugador* jugador){
 	return jugador->agregarVida(PUNTOS_COMIDA);
 }

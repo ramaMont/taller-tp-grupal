@@ -7,7 +7,7 @@ class Jugador;
 
 class Item: public Posicionable {
 	public:
-	explicit Item(Coordinates p): Posicionable(p) { }
+	explicit Item(Coordinates p);
 	virtual bool usar(Jugador* jugador) = 0;
 };
 

@@ -35,14 +35,15 @@ void Partida::agregarRobot(){
 void Partida::comenzarPartida(){
 	if (this->jugadores.size() == 0)
 		return;
-	Mapa mapa(ALTO,ANCHO);
-	iniciarMapa(mapa);
+	YAML::Node mapa_node = YAML::LoadFile("example_map.yaml");
+	Mapa mapa(mapa_node["filas"].as<int>(), mapa_node["columnas"].as<int>());
+	iniciarMapa(mapa, mapa_node["elementos"]);
 	this->tiempo_inicial = time(0);
 	recibirEventos();
 }
 
 
-void Partida::iniciarMapa(Mapa& mapa){
+void Partida::iniciarMapa(Mapa& mapa, YAML::Node elementos){
 	// Colocar objetos, jugadores y robots en el mapa
 }
 
@@ -81,42 +82,31 @@ bool Partida::todosMuertos(){
 }
 
 
-void Partida::mayoresEnemigosMatados(std::string& buffer){
+void Partida::mostrarGanadores(){
+	std::string buffer;
+	size_t (Jugador::*funcion)();
+	
 	buffer.append("Enemigos Matados:\n");
-	std::set<std::pair<size_t, std::string>> enemigos;
-	for (std::pair<std::string, Jugador*> j: this->jugadores){
-		std::pair<size_t, std::string> p(j.second->getEnemigosMatados(), j.first);
-		enemigos.insert(p);
-	}
-	std::set<std::pair<size_t, std::string>>::reverse_iterator it;
-	int i = 0;
-	for (it = enemigos.rbegin(); it != enemigos.rend() && i<CANT_GANADORES; it++, i++)
-		buffer.append((*it).first + "\t" + (*it).second + "\n");
-	buffer.append("\n");	
-}
-
-
-void Partida::mayorPuntuacion(std::string& buffer){
+	funcion = &Jugador::getEnemigosMatados;
+	mayoresPuntajes(buffer, funcion);
+	
 	buffer.append("Puntuacion:\n");
-	std::set<std::pair<size_t, std::string>> enemigos;
-	for (std::pair<std::string, Jugador*> j: this->jugadores){
-		std::pair<size_t, std::string> p(j.second->getPuntuacion(), j.first);
-		enemigos.insert(p);
-	}
-	std::set<std::pair<size_t, std::string>>::reverse_iterator it;
-	int i = 0;
-	for (it = enemigos.rbegin(); it != enemigos.rend() && i<CANT_GANADORES; it++, i++)
-		buffer.append((*it).first + "\t" + (*it).second + "\n");
-	buffer.append("\n");	
-}
-
-
-void Partida::mayoresBalasDisparadas(std::string& buffer){
+	funcion = &Jugador::getPuntuacion;
+	mayoresPuntajes(buffer, funcion);
+	
+	funcion = &Jugador::getBalasDisparadas;
 	buffer.append("Balas Disparadas:\n");
+	mayoresPuntajes(buffer, funcion);
+
+	std::cout << buffer;
+}
+
+
+void Partida::mayoresPuntajes(std::string& buffer,size_t (Jugador::*funcion)()){
 	std::set<std::pair<size_t, std::string>> enemigos;
 	
 	for (std::pair<std::string, Jugador*> j: this->jugadores){
-		std::pair<size_t, std::string> p(j.second->getBalasDisparadas(), j.first);
+		std::pair<size_t, std::string> p((j.second->*funcion)(), j.first);
 		enemigos.insert(p);
 	}
 	
@@ -125,15 +115,6 @@ void Partida::mayoresBalasDisparadas(std::string& buffer){
 	for (it = enemigos.rbegin(); it != enemigos.rend() && i<CANT_GANADORES; it++, i++)
 		buffer.append((*it).first + "\t" + (*it).second + "\n");
 	buffer.append("\n");	
-}
-
-
-void Partida::mostrarGanadores(){ /* Cambiar por puntero a funcion */
-	std::string str;
-	mayoresEnemigosMatados(str);
-	mayorPuntuacion(str);
-	mayoresBalasDisparadas(str);
-	std::cout << str;
 }
 
 

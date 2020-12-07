@@ -92,6 +92,7 @@ class EstadoSoldado {
 	SS ss;
 	Oficial oficial;
 	Mutante mutante;
+	Soldado *soldado_anterior;
 	
 	public:
 	explicit EstadoSoldado(Jugador *jugador, int& balas);
@@ -99,6 +100,7 @@ class EstadoSoldado {
 	void cambiarArma(int numero_arma);
 	void soltarArma();
 	void disparar(std::vector<Jugador*>& enemigos);
+	void recargarBalas();
 };
 
 

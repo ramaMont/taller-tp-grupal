@@ -3,6 +3,7 @@
 #include <utility>
 #include <cmath>
 #include <vector>
+#include <typeinfo>
 
 // Codigo de errores en int (despues cambiar a excepciones)
 // -1 lugar no encontrado
@@ -18,12 +19,14 @@ Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
 }
 
 void Mapa::agregarJugador(Jugador* jugador){
-	mapaJuego[floor(jugador->getPosicion().x)]
-        [floor(jugador->getPosicion().y)].push(jugador);
+	const Coordinates& posicion = jugador->getPosicion();
+	mapaJuego[floor(posicion.x)][floor(posicion.y)].push(jugador);
 }
 
 void Mapa::agregarPosicionable(Posicionable* posicionable, 
         Coordinates posicion){
+	if (floor(posicion.x) < 0 || floor(posicion.x) >= ancho ||
+	    floor(posicion.y) < 0 || floor(posicion.y) >= alto) return;
 	if(mapaJuego[floor(posicion.x)][floor(posicion.y)].empty()){
 		mapaJuego[floor(posicion.x)][floor(posicion.y)].push(posicionable);
 	}else{
@@ -38,11 +41,13 @@ void Mapa::agregarPosicionable(Posicionable* posicionable,
 }
 
 void Mapa::sacarPosicionable(Coordinates posicion){
-   if (!mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
-	   mapaJuego[floor(posicion.x)][floor(posicion.y)].pop();
+    if (!mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
+	    mapaJuego[floor(posicion.x)][floor(posicion.y)].pop();
 }
 
 Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion){
+	if (floor(posicion.x) < 0 || floor(posicion.x) >= ancho ||
+	    floor(posicion.y) < 0 || floor(posicion.y) >= alto) return nullptr;
 	if (mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
 		return nullptr;
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)].top();
@@ -61,15 +66,19 @@ void Mapa::moveme(Jugador* jugador, const Coordinates& posicion){
     // }
     // printf("\n\n\n");
 	
-    if (posicion.x > ancho || posicion.y > alto)
+    if (floor(posicion.x) >= ancho || floor(posicion.y) >= alto)
         throw -1;
-    if (posicion.x < 0 || posicion.y < 0)
+    if (floor(posicion.x) < 0 || floor(posicion.y) < 0)
         throw -1;
     Coordinates posJugador = jugador->getPosicion();
     if (jugador->getPosicion() == posicion){
         return;
     }
     try {
+		Posicionable* posicionable = obtenerPosicionableEn(posicion);
+		if (posicionable && typeid(*posicionable) == typeid(Item) &&
+			static_cast<Item*>(posicionable)->usar(jugador))
+			sacarPosicionable(posicion);
         agregarPosicionable(jugador, posicion);
         sacarPosicionable(posJugador);
     } catch(int e){

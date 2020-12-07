@@ -7,6 +7,7 @@
 #include <ctime>
 #include <Jugador.h>
 #include <Mapa.h>
+#include <yaml-cpp/yaml.h>
 
 
 class Partida{
@@ -21,13 +22,11 @@ public:
     bool agregarJugador(const std::string& nombre);
     void agregarRobot();
     void comenzarPartida();
-    void iniciarMapa(Mapa& mapa);
+    void iniciarMapa(Mapa& mapa, YAML::Node elementos);
     void recibirEventos();
     bool todosMuertos();
     void mostrarGanadores();
-    void mayoresEnemigosMatados(std::string& buffer);
-    void mayorPuntuacion(std::string& buffer);
-    void mayoresBalasDisparadas(std::string& buffer);
+    void mayoresPuntajes(std::string& buffer, size_t (Jugador::*funcion)());
     ~Partida();
 };
 

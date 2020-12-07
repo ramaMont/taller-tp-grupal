@@ -359,7 +359,7 @@ TEST(MovimientoJugadoresTests, adelanteFallaIrArribaFuera) {
     //Mirando hacia arriba
     //Poner 00 despues de la coma
     Coordinates angulo(0,1);
-    Coordinates posicionIni(11,20);
+    Coordinates posicionIni(11,19);
     Jugador jugador(posicionIni, angulo, mapa);
     DirAdelante dir;
     //act

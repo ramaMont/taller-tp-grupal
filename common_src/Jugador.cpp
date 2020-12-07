@@ -85,6 +85,7 @@ bool Jugador::agregarBalas(int cant){
 	if (this->balas_restantes == BALAS_MAXIMAS)
 		return false;
 	this->balas_restantes = std::min(this->balas_restantes+cant, BALAS_MAXIMAS);
+	this->soldado.recargarBalas();
 	return true;
 }
 
