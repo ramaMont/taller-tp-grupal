@@ -73,7 +73,9 @@ int Socket::send(Protocol& protocol, size_t size){
     protocol.serialize();
     while (bytes_enviados < size) {
         int sent;
-        sent = ::send(socketFd, &protocol + bytes_enviados,
+        // Verificar si este casteo me salva de tener que pasarlo a char* todo
+        // el struct.
+        sent = ::send(socketFd, (char *)&protocol + bytes_enviados,
             size - bytes_enviados, MSG_NOSIGNAL);
         if (sent == -1) {
             printf("Error: %s\n", strerror(errno));
@@ -93,7 +95,9 @@ int Socket::recive(Protocol& protocol, size_t size){
     size_t received = 0;
     while (received < size) {
         int rec = 0;
-        rec = recv(socketFd, &recived_protocol + received, size-received, 0);
+        // Verificar si este casteo me salva de tener que pasarlo a char* todo
+        // el struct.
+        rec = recv(socketFd, (char *)&recived_protocol + received, size-received, 0);
         if (rec == 0) {             // socket cerrado :S
             return -1;
         } else if (rec == -1) {     // error
