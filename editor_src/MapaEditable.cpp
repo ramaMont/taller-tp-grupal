@@ -3,6 +3,7 @@
 #include <utility>
 
 void MapaEditable::cargarMapaExistente() {
+    // TODO: meter este comportamiento en una clase. (RAII)
     std::ifstream file;
     file.open(archivo_mapa);
     if (file.is_open()) {
@@ -31,14 +32,9 @@ void MapaEditable::cargarMapaExistente() {
 }
 
 void MapaEditable::guardarMapa() {
+    // TODO: meter este comportamiento en una clase. (RAII)
     std::ofstream file;
-    std::string nombre_archivo;
-    if (archivo_mapa.length() > 0)
-        nombre_archivo = archivo_mapa;
-    else
-        nombre_archivo = "../" + nombre + ".yaml";
-    std::cout << nombre_archivo;
-    file.open(nombre_archivo);
+    file.open(archivo_mapa);
     file << "nombre: " << nombre << std::endl;
     file << "filas: " << filas << std::endl;
     file << "columnas: " << columnas << std::endl;
@@ -54,6 +50,7 @@ void MapaEditable::obtenerElemento(const std::string& posicion,
     try {
         elemento = mapa[posicion];
     } catch (...) {
+        // TODO: Agregar excepcion y lanzarla.
         std::cout << "Elemento no encontrado";
     }
 }
@@ -62,6 +59,11 @@ void MapaEditable::cargarElemento(const std::string& posicion,
                                   const std::string& elemento) {
     mapa.insert(std::pair<std::string, std::string>(posicion,
                                                     elemento));
+}
+
+void MapaEditable::actualizarElemento(const std::string& posicion,
+                                  const std::string& elemento) {
+    mapa[posicion] = elemento;
 }
 
 std::string MapaEditable::getNombre() {

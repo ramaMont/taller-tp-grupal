@@ -5,9 +5,8 @@
 #include <iostream>
 #include <QApplication>
 #include <QMouseEvent>
-
+#include <QtWidgets>
 #include <QWidget>
-#include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLineEdit>
@@ -15,7 +14,7 @@
 #include <QPainter>
 #include <QDrag>
 #include <map>
-#include <QTableView>
+#include <QGridLayout>
 #include <QStandardItemModel>
 #include <QVariant>
 #include <QScrollArea>
@@ -29,44 +28,31 @@
 class Editor : public QWidget {
 public:
     explicit Editor(QWidget *parent = 0);
+
 private:
     // Creo los widgets asignandole un padre
-    QWidget *horizontalLayoutWidget;
     QMessageBox* messageBox;
-    QWidget *horizontalLayoutWidget2;
-    QHBoxLayout *horizontalLayout;
+    QWidget *widgetEditarMapa;
+    QHBoxLayout *horizontalLayoutCrearMapa;
     QHBoxLayout *horizontalLayoutSave;
-    QHBoxLayout *horizontalLayout2;
+    QHBoxLayout *horizontalLayoutEditarMapa;
     QPushButton *botonCrearMapa;
     QPushButton *botonEditarMapa;
     QPushButton* botonGuardarMapa;
-    QWidget *horizontalLayoutWidgetSave;
-    QWidget *verticalLayoutWidget;
+    QWidget *widgetCrearMapa;
+    QWidget *widgetMapaGuardar;
+    QWidget *widgetRecursos;
     QVBoxLayout *verticalLayout;
-    QScrollArea *scrollArea;
+    QScrollArea *scrollMapArea;
+    QScrollArea *scrollResourcesArea;
     QLabel* nombreLabel;
     QLabel* filasLabel;
     QLabel* columnasLabel;
     QLineEdit *inputNombreMapa;
     QLineEdit *inputCantidadFilas;
     QLineEdit *inputCantidadColumnas;
-    QLabel *guard_1;
-    QLabel *guard_2;
-    QLabel *guard_3;
-    QLabel *guard_4;
-    QLabel *guard_5;
-    QLabel *guard_6;
     QWidget *mapWidget;
     QGridLayout *gridLayout;
-    QLabel *label_2_3;
-    QLabel *label_2_1;
-    QLabel *label_1_1;
-    QLabel *label_1_2;
-    QLabel *label_1_3;
-    QLabel *label_2_2;
-    QLabel *label_3_1;
-    QLabel *label_3_2;
-    QLabel *label_3_3;
     QPushButton *botonSonido;
     bool mapa_creado;
     MapaEditable* mapa;
@@ -77,6 +63,8 @@ private:
     void fabricarMapa(const int& flag);
     void limpiarGrid();
     void guardarMapa();
+    void sincronizarMapaYVista();
+    void keyPressEvent(QKeyEvent* event) override;
     std::map<std::string, std::string> obtenerMapaRecursos();
 };
 

@@ -4,9 +4,10 @@ project(qt5-demo)
 find_package(Qt5Widgets)
 
 add_executable(editor
+  ResourcesWidget.cpp
   Editor.cpp
-  dragwidget.cpp
   MapaEditable.cpp
+  MapWidget.cpp
   main.cpp)
 
 # Use the Widgets module from Qt 5.

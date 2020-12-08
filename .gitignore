@@ -54,3 +54,6 @@ dkms.conf
 #extras
 .vscode
 build
+
+#sprites
+/editor_src/imgs/sprites

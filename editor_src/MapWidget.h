@@ -1,15 +1,15 @@
-#ifndef DRAGWIDGET_H
-#define DRAGWIDGET_H
-
 #include <QFrame>
-#include <QDragEnterEvent>
-#include <QDropEvent>
+#include <QtWidgets>
+#include <Qt>
+
+#ifndef MAPWIDGET_H
+#define MAPWIDGET_H
 
 
-class DragWidget : public QFrame
+class MapWidget : public QFrame
 {
  public:
-    explicit DragWidget(QWidget *parent = nullptr, bool accept_drops = false);
+    explicit MapWidget(QWidget *parent = nullptr);
 
  protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -18,4 +18,4 @@ class DragWidget : public QFrame
     void mousePressEvent(QMouseEvent *event) override;
 };
 
-#endif  // DRAGWIDGET_H
+#endif  // MAPWIDGET_H

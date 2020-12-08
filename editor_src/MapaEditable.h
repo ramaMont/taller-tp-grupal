@@ -14,13 +14,15 @@ class MapaEditable {
                  const std::string& nombre,
                  const std::string& archivo_mapa,
                  const int& filas, const int& columnas)
-                 : archivo_mapa(archivo_mapa), filas(filas),
+                 : filas(filas),
                  nombre(nombre), columnas(columnas) {
       if (flag == CARGAR_DESDE_ARCHIVO) {
+         this->archivo_mapa = archivo_mapa;
          cargarMapaExistente();
       } else {
          if (filas > MAX_FC || columnas > MAX_FC ||
              filas < MIN_FC || columnas < MIN_FC) throw -1;
+         this->archivo_mapa = "../" + nombre + ".yaml";
       }
     }
     ~MapaEditable();
@@ -28,6 +30,8 @@ class MapaEditable {
     void cargarMapaExistente();
     void cargarElemento(const std::string& posicion,
                         const std::string& elemento);
+    void actualizarElemento(const std::string& posicion,
+                            const std::string& elemento);
     void obtenerElemento(const std::string& posicion,
                          std::string& elemento);
     void guardarMapa();
