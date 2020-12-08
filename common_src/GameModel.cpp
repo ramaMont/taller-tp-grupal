@@ -5,8 +5,8 @@
 //     initDirections();
 // }
 
-GameModel::GameModel(Mapa& map, std::map<int,Player *>& players): 
-        map(map), keep_running(true), players(players){
+GameModel::GameModel(Mapa&& map, std::map<int,Player *>&& players): 
+        map(std::move(map)), keep_running(true), players(std::move(players)){
     // Inicializo el diccionario directions para acceder a cada direccion 
     // en tiempo O(1)
     // verificar si esto anda o si los punteros se pierden cuando finaliza
@@ -82,12 +82,14 @@ GameModel::~GameModel(){
     cleanDirections();
 }
 
-GameModelServer::GameModelServer(Mapa& map, std::map<int,Player *>& players, std::map<int,ThSender *>& users_sender):
-        GameModel(map, players), users_sender(users_sender){
+GameModelServer::GameModelServer(Mapa&& map, std::map<int,Player *>&& players,
+        std::map<int,ThSender *>& users_sender):
+        GameModel(std::move(map), std::move(players)),
+        users_sender(users_sender){
 }
 
-GameModelClient::GameModelClient(Mapa& map, std::map<int,Player *>& players):
-        GameModel(map, players){
+GameModelClient::GameModelClient(Mapa&& map, std::map<int,Player *>&& players):
+        GameModel(std::move(map), std::move(players)){
 }
 
 void GameModelServer::processProtocol(Protocol& protocol){

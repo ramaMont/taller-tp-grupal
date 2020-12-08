@@ -84,5 +84,13 @@ Mapa& Mapa::operator=(Mapa&& other){
     return *this;
 }
 
+// Se encarga de limpiar los vectores con usuarios y jugadores.
 Mapa::~Mapa(){
+    if (!mapaJuego.empty()){
+        for (int i = 0; i < alto; ++i){
+            for (int j = 0; j < ancho; ++j){
+                delete(mapaJuego[i][j]);
+            }
+        }
+    }
 }

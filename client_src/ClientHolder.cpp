@@ -12,7 +12,7 @@ ClientHolder::ClientHolder(){
 void ClientHolder::logginScreen(){
     std::cout << "Ingrese su nick name:\n";
     std::cin >> _player_name;
-    std::cout << "El server al que queire conectarse\n";
+    std::cout << "El server al que quiere conectarse\n";
     std::cin >> _host_dns;
     std::cout << "El puerto al que quiere conectarse\n";
     std::cin >> _port;
@@ -30,13 +30,13 @@ void ClientHolder::run(){
     ThUserClient th_user_client(id ,th_receiver, th_sender);
     th_receiver.setThUser(&th_user_client);
 
-    //th_user_client.start();
+    th_user_client.start();
     th_receiver.start();
     th_sender.start();
 
     th_receiver.join();
     th_sender.join();
-    //th_user_client.join();
+    th_user_client.join();
 
 }
 

@@ -3,14 +3,14 @@
 
 #include <Thread.h>
 #include "Protocol.h"
-#include <queue>
+#include "BlockingQueue.h"
 #include "ThSender.h"
 class ThReceiver;
 #include "ThReceiver.h"
 
 class ThUser : public Thread{
 protected:
-    std::queue<Protocol> operations;
+    BlockingQueue<Protocol> operations;
     int user_id;
     ThReceiver& th_receiver;
     ThSender& th_sender;
@@ -25,6 +25,10 @@ public:
 };
 
 class ThUserClient : public ThUser{
+private:
+    void joinOrCreateGame();
+    void processReception(Protocol& protocol);
+    void createGameModel(int map_id);
 public:
     explicit ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_sender);
     virtual void run() override;

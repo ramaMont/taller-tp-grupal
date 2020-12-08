@@ -13,10 +13,6 @@ void ThReceiver::run(){
     }
 }
 
-void ThReceiver::push(Protocol protocol){
-    operations.push(protocol);
-}
-
 void ThReceiver::stop(){
     is_running = false;
 }
@@ -33,6 +29,9 @@ void ThReceiver::processReception(Protocol& protocol){
         case Protocol::action::JOIN_GAME:
             _th_user->push(protocol);
             break;
+        case Protocol::action::OK:
+            _th_user->push(protocol);
+            break;
         default:
             // TODO: la parte que no es crear o unirse a una partida,
             // se lo envia directamente al game model
@@ -40,5 +39,10 @@ void ThReceiver::processReception(Protocol& protocol){
     }
 }
 
+void ThReceiver::setGameModel(GameModel* gameModel){
+    _gameModel = std::move(gameModel);
+}
+
 ThReceiver::~ThReceiver(){
+    delete(_gameModel);
 }

@@ -97,7 +97,7 @@ int Socket::recive(Protocol& protocol, size_t size){
         int rec = 0;
         // Verificar si este casteo me salva de tener que pasarlo a char* todo
         // el struct.
-        rec = recv(socketFd, (char *)&recived_protocol + received, size-received, 0);
+        rec = ::recv(socketFd, (char *)&recived_protocol + received, size-received, 0);
         if (rec == 0) {             // socket cerrado :S
             return -1;
         } else if (rec == -1) {     // error

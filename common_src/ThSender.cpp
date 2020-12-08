@@ -6,11 +6,10 @@ ThSender::ThSender(int id_user, Socket* socket):
 }
 void ThSender::run(){
     while (is_running){
-        if (!operations.empty()){
-            Protocol protocol = operations.front();
-            operations.pop();
-            socket->send(protocol, sizeof(Protocol));
-        }
+
+        Protocol protocol = operations.pop();
+        socket->send(protocol, sizeof(Protocol));
+
     }
 }
 void ThSender::push(Protocol protocol){

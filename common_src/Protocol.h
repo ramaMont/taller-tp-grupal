@@ -7,7 +7,7 @@ struct __attribute__ ((packed)) Protocol {
 public:
     enum action : std::uint16_t { MOVE, SHOOT, LOAD, PICKUP, OPEN,
             SHOOTED, ADDKILL, ADDPOINTS, ENDGAME, SET_ID,
-            JOIN_GAME, CREATE_GAME };
+            JOIN_GAME, CREATE_GAME, OK, ERROR, ADD_PLAYER, LAUNCH_GAME };
 
     enum direction : std::uint16_t { FORWARD, BACKWARD, LEFT, RIGHT,
             ROTATE_LEFT, ROTATE_RIGHT};

@@ -2,13 +2,13 @@
 #define __TH_SENDER__
 
 #include "Thread.h"
-#include <queue>
+#include "BlockingQueue.h"
 #include "Protocol.h"
 #include "Socket.h"
 
 class ThSender : public Thread{
 private:
-    std::queue<Protocol> operations;
+    BlockingQueue<Protocol> operations;
     int id_user;
     Socket* socket;
 public:
