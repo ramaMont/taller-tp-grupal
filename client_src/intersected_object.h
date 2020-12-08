@@ -1,13 +1,7 @@
 #ifndef __INTERSECTED_OBJECT__
 #define __INTERSECTED_OBJECT__
 
-#include "Posicionable.h"
-#include "coordinates.h"
-#include "Mapa.h"
-class Mapa;
-#include "Direccion.h"
-class Direccion;
-#include "stdio.h"
+#include <Posicionable.h>
 
 //Datos necesarios para el gráfico del objeto colisionado con raycasting
 class Intersected_object{
@@ -23,6 +17,10 @@ public:
 
     int get_texture(){
     	return object->get_texture();
+    }
+
+    bool is(std::string type){
+        return (object->get_type() == type);
     }
 
     float get_distance_player_plane();

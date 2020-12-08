@@ -5,33 +5,37 @@ static const int Y_SIDE = 2;
 
 Ray::Ray(const double &ray_angle,const Coordinates &ray_direction,\
 	const Coordinates &player_position,const Coordinates &player_direction,\
-	Mapa &map):
+	Mapa &map, int num_ray):
 	player_direction(player_direction),
 	player_position(player_position), 
 	ray_direction(ray_direction), 
 	direction_relative_to_player(ray_angle) ,
-	map(map) {}
+	map(map),
+	num_ray(num_ray) {}
+
+void Ray::increment_coordinates(Coordinates &whole_coordinates, int inc_x, int inc_y){
+	if(whole_coordinates.x_whole() and whole_coordinates.y_whole()){
+		whole_coordinates.inc_x(inc_x);
+		whole_coordinates.inc_y(inc_y);
+	}else if(whole_coordinates.x_whole()){
+		whole_coordinates.inc_x(inc_x);
+	}else{ //Por descarte: y_whole()
+		whole_coordinates.inc_y(inc_y);
+	}
+}
 
 //Eventualmente en lugar de devolver bool, va a devolver el puntero
-Posicionable* Ray::get_element(const Coordinates &map_coordinates){
-	int aumento_x = ray_direction.get_increase_x();
-	int aumento_y = ray_direction.get_increase_y();
+Posicionable* Ray::get_element(Coordinates &map_coordinates){
+	int inc_x = ray_direction.get_increase_x();
+	int inc_y = ray_direction.get_increase_y();
 
-	Coordinates whole_coordinates = map_coordinates;
 
-	if(map_coordinates.x_whole() and map_coordinates.y_whole()){
-		whole_coordinates.inc_x(aumento_x);
-		whole_coordinates.inc_y(aumento_y);
-	}else if(map_coordinates.x_whole()){
-		whole_coordinates.inc_x(aumento_x);
-	}else{ //Por descarte: y_whole()
-		whole_coordinates.inc_y(aumento_y);
-	}
+	increment_coordinates(map_coordinates,inc_x,inc_y);
 
-	whole_coordinates.x = (int)whole_coordinates.x;
-	whole_coordinates.y = (int)whole_coordinates.y;
+	map_coordinates.x = (int)map_coordinates.x;
+	map_coordinates.y = (int)map_coordinates.y;
 
-	return (map.obtenerPosicionableEn(whole_coordinates));
+	return (map.obtenerPosicionableEn(map_coordinates));
 }
 
 double Ray::get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle){
@@ -61,11 +65,17 @@ double Ray::get_y_distance_to_side(const Coordinates &ray_position){
 	}
 }
 
+Intersected_object Ray::get_wall(Coordinates coordinates_map,bool first_triangle, Posicionable* object, float distance_player_plane){
+	if(first_triangle){
+		Intersected_object intersected_object(distance_player_plane,object,coordinates_map.y,X_SIDE);
+		return intersected_object;
+	}else{
+		Intersected_object intersected_object(distance_player_plane,object,coordinates_map.x,Y_SIDE);
+		return intersected_object;
+	}
+}
 
-
-
-Intersected_object Ray::search_object(Coordinates ray_position){
-	bool first_triangle = false; //qué triangulo use despues me afecta en calcular la distancia y el ángulo
+Coordinates Ray::get_coordinates_to_next_block(const Coordinates &ray_position, bool &first_triangle){
 
 	double x_distance = get_x_distance_to_side(ray_position);
 	double y_height = x_distance * (ray_direction.y/ray_direction.x);
@@ -83,21 +93,28 @@ Intersected_object Ray::search_object(Coordinates ray_position){
 		coordinates_map.y=ray_position.y + y_distance;
 		first_triangle = false;
 	}
-	Posicionable* object;
-	if((object = get_element(coordinates_map))!=nullptr){
-		double distance_player_plane = get_distance_to_player_plane(coordinates_map,first_triangle);
-		//Intersected_object *intersected_object = new Intersected_object(distance_player_plane);//Despues cambiarlo, q no sea un puntero
-		if(first_triangle){
-			return Intersected_object(distance_player_plane,object,coordinates_map.y,X_SIDE);
-		}else{
-			return Intersected_object(distance_player_plane,object,coordinates_map.x,Y_SIDE);
-		}
-		
-	}else{
-		return search_object(coordinates_map);
-	}	
+	return coordinates_map;
 }
 
-Intersected_object Ray::get_colisioned_object(){
-	return search_object(player_position);
+
+Intersected_object Ray::search_object(Coordinates ray_position, std::vector<float> &distances){
+	bool first_triangle = false; //qué triangulo use despues me afecta en calcular la distancia y el ángulo
+	Coordinates coordinates_map = get_coordinates_to_next_block(ray_position, first_triangle);
+	Coordinates coordinates_elements = coordinates_map;
+	Posicionable* object;
+	
+	if((object = get_element(coordinates_elements))!=nullptr){
+		if(object->get_type()=="WALL"){
+			double distance_player_plane = get_distance_to_player_plane(coordinates_map,first_triangle);
+			distances.push_back(distance_player_plane);
+			return get_wall(coordinates_map, first_triangle, object, distance_player_plane);
+		}else{
+			object->spotted();
+		}
+	}
+	return search_object(coordinates_map,distances);	
+}
+
+Intersected_object Ray::get_colisioned_objects(std::vector<float> &distances){
+	return search_object(player_position,distances);
 }
