@@ -16,7 +16,7 @@ protected:
     Mapa map;
     std::queue<Protocol> operations;
     std::atomic<bool> keep_running;
-    std::map<int,Player *> players;
+    std::map<int,Player> players;
     std::map<Protocol::direction, Direccion* > directions;
     void updateEvent();
     void movePlayer(int player_id);
@@ -25,11 +25,13 @@ protected:
     void initDirections();
     void cleanDirections();
 public:
-    explicit GameModel(Mapa&& map, std::map<int,Player *>&& players);
+    explicit GameModel(Mapa&& map, std::map<int,Player>&& players);
     void run();
     void push(Protocol protocol);
     virtual void processProtocol(Protocol& protocol) = 0;
-    void addPlayer(Player* player);
+    void addPlayer(Player player);
+    Player& getPlayer(int user_id);
+    Mapa& getMap();
     GameModel(const GameModel&) = delete;
     GameModel(GameModel&& other) = delete;
     GameModel& operator=(const GameModel&) = delete;
@@ -43,7 +45,7 @@ private:
     std::map<int,ThSender *>& users_sender;
     void echoProtocol(Protocol protocol);
 public:
-    explicit GameModelServer(Mapa&& map, std::map<int,Player *>&& players,
+    explicit GameModelServer(Mapa&& map, std::map<int,Player>&& players,
         std::map<int,ThSender *>& users_sender);
     virtual void processProtocol(Protocol& protocol) override;
     void addThSender(ThSender* th_sender);
@@ -52,7 +54,7 @@ public:
 
 class GameModelClient : public GameModel{
 public:
-    explicit GameModelClient(Mapa&& map, std::map<int,Player *>&& players);
+    explicit GameModelClient(Mapa&& map, std::map<int,Player>&& players);
     virtual void processProtocol(Protocol& protocol) override;
     ~GameModelClient();
 };

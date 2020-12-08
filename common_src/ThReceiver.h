@@ -19,11 +19,11 @@ private:
 public:
     explicit ThReceiver(Socket *socket);
     virtual void run() override;
-
     virtual void stop();
     void setThUser(ThUser* th_user);
     void setGameModel(GameModel* gameModel);
     void processReception(Protocol& protocol);
+    GameModel* getGameModel();
     ~ThReceiver();
 };
 

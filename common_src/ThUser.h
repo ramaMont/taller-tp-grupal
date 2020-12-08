@@ -29,6 +29,8 @@ private:
     void joinOrCreateGame();
     void processReception(Protocol& protocol);
     void createGameModel(int map_id);
+    void waitUntilLaunch();
+    void play();
 public:
     explicit ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_sender);
     virtual void run() override;

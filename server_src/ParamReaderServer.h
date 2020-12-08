@@ -9,6 +9,7 @@ private:
     std::vector<std::string> configs;
 public:
     explicit ParamReaderServer(int argc, char** argv);
+    std::string getPort();
     ~ParamReaderServer();
 };
 

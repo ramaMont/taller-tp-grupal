@@ -5,14 +5,16 @@
 #include "ray_casting.h"
 #include <Mapa.h>
 #include <Player.h>
+#include <Thread.h>
 
-class ThDrawer{
+class ThDrawer : public Thread{
 private:
     Window window;
     Raycasting ray_casting;
 public:
     explicit ThDrawer(Player& player, Mapa& map);
-    void run();
+    virtual void run() override;
+    virtual void stop() override;
     ~ThDrawer();
 };
 

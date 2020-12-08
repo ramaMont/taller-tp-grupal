@@ -5,5 +5,9 @@ ParamReaderServer::ParamReaderServer(int argc, char** argv):
         if (argc != 3) throw -1;
 }
 
+std::string ParamReaderServer::getPort(){
+    return args.at(1);
+}
+
 ParamReaderServer::~ParamReaderServer(){
 }

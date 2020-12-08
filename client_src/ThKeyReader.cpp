@@ -45,19 +45,19 @@ void ThKeyReader::run(){
                             th_sender.push(protocol);
                             break;
                     }
-                    
                 }
                 break;            
                 case SDL_QUIT: {
                     done = SDL_TRUE;
+                    stop();
                 }
             }
-
         }
     }
 }
 
 void ThKeyReader::stop(){
+    is_running = false;
 }
 
 ThKeyReader::~ThKeyReader(){

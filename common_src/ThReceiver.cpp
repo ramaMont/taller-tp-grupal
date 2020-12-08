@@ -43,6 +43,10 @@ void ThReceiver::setGameModel(GameModel* gameModel){
     _gameModel = std::move(gameModel);
 }
 
+GameModel* ThReceiver::getGameModel(){
+    return _gameModel;
+}
+
 ThReceiver::~ThReceiver(){
     delete(_gameModel);
 }
