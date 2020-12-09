@@ -86,52 +86,30 @@ int main(int argc, char* argv[]) {
     DirRotIzquierda rotLeft;
 
     SDL_bool done = SDL_FALSE;
+
+    const Uint8 *keys = SDL_GetKeyboardState(NULL);
+    const Uint8 *keys_2 = SDL_GetKeyboardState(NULL);
+    const Uint8 *keys_3 = SDL_GetKeyboardState(NULL);
+
     while (!done) {
       SDL_Event event;
-      while (SDL_PollEvent(&event)) {
+
+        if(keys[SDL_SCANCODE_RIGHT])
+          player.mover(&rotRight);
+        if(keys_2[SDL_SCANCODE_LEFT])
+          player.mover(&rotLeft);
+        if(keys_3[SDL_SCANCODE_UP])
+          player.mover(&forward);
+        if(keys[SDL_SCANCODE_DOWN])
+          player.mover(&backward);
+        
+         window.set_no_color();
+         ray_casting.calculate_ray_casting();
+         window.render(); 
+      SDL_Delay(20);
+      while (SDL_PollEvent(&event)) { 
+
         switch(event.type) {
-          case SDL_KEYDOWN: {
-            SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-            switch (keyEvent.keysym.sym) {
-              case SDLK_LEFT:
-              player.mover(&left);
-              window.set_no_color();
-              ray_casting.calculate_ray_casting();
-              window.render();  
-                break;
-              case SDLK_RIGHT:
-                player.mover(&right);
-                window.set_no_color();
-                ray_casting.calculate_ray_casting();
-                window.render();  
-                break;
-              case SDLK_UP:
-                player.mover(&forward);
-                window.set_no_color();
-                ray_casting.calculate_ray_casting();
-                window.render();  
-                break;
-              case SDLK_DOWN:
-                player.mover(&backward);
-                window.set_no_color();
-                ray_casting.calculate_ray_casting();
-                window.render();  
-                break;
-              case SDLK_q:
-                player.mover(&rotLeft);
-                window.set_no_color();
-                ray_casting.calculate_ray_casting();  
-                window.render();
-                break;
-              case SDLK_e:
-                player.mover(&rotRight);
-                window.set_no_color();
-                ray_casting.calculate_ray_casting();  
-                window.render();
-                break;
-            }
-          } // Fin KEY_DOWN
-          break;            
           case SDL_QUIT: {
             done = SDL_TRUE;
           }
