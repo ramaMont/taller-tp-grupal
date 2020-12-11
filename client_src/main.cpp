@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
     	}
     }
 
-    Window window(1280,720);  //(640,480) o bien (1280,720)
+    Window window(640,480);  //(640,480) o bien (1280,720)
 
     Screen screen(sprites,player,map,window);
 

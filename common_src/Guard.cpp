@@ -6,7 +6,7 @@ static void draw_with_y_positive(Drawer &drawer, const std::vector<float> distan
 			int num_pixel = i*64/cant_rays;
 			if((first_ray + i+ n_rays)>0 and (first_ray + i+ n_rays)<2*n_rays)
 				if(distances[first_ray + i+ n_rays]>player_distance)
-					drawer.draw_sprites(first_ray + i,player_distance ,num_pixel,num_texture);
+					drawer.draw_guard(first_ray + i,player_distance ,num_pixel,num_texture);
 		}
 
 }
@@ -16,7 +16,7 @@ static void draw_with_y_negative(Drawer &drawer, const std::vector<float> distan
 			int num_pixel =63 -  i*64/cant_rays;
 			if((first_ray + i+ n_rays)>0 and (first_ray + i+ n_rays)<2*n_rays)
 				if(distances[first_ray + i+ n_rays]>player_distance)
-					drawer.draw_sprites(first_ray + i,player_distance ,num_pixel,num_texture);
+					drawer.draw_guard(first_ray + i,player_distance ,num_pixel,num_texture);
 		}
 
 }

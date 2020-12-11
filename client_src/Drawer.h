@@ -139,6 +139,28 @@ class Drawer {
 
 		}
 
+
+		void draw_guard(int pos_x, float distance_player_plane, int number_line_texture, int texture){
+			float lineHeight = (height / distance_player_plane);
+			float initial_position_y =  -lineHeight/2 + height/2;
+
+			float pixel_lenght = lineHeight/64;
+			init_pixel(pixel,pixel_lenght,pos_x);
+
+			for(int i=0; i<64; i++){
+				int red = guard_textures[texture][0][number_line_texture][i];
+				int green = guard_textures[texture][1][number_line_texture][i];
+				int blue = guard_textures[texture][2][number_line_texture][i];
+				if((red==152) and (green==0) and (blue==136)){
+				}else{
+					SDL_SetRenderDrawColor(renderer,red , green, blue, SDL_ALPHA_OPAQUE);
+					SDL_RenderFillRect( renderer, &pixel );
+				}
+			   	pixel.y = initial_position_y + ceil((i*pixel_lenght));    	
+			}
+
+		}		
+
 		void draw_wall(int pos_x,float distance_player_plane, int number_line_texture, int texture, int side_division){
 
 
