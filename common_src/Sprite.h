@@ -4,6 +4,9 @@
 class Raycasting;
 #include "ray_casting.h"
 
+class Drawer;
+#include "Drawer.h"
+
 #include <Jugador.h>
 
 #include "Posicionable.h"
@@ -33,7 +36,7 @@ public:
     explicit Sprite(Coordinates posicion, int texture, Jugador &player): 
     Posicionable(posicion,texture),located(false),player(player){}
 
-    virtual void draw(Raycasting* raycasting,  const std::vector<float> distances, int n_rays);
+    virtual void draw(Drawer &drawer,  const std::vector<float> distances, int n_rays);
 
 	Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
 		located = true;

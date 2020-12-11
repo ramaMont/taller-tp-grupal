@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "window.h"
-#include "ray_casting.h"
+#include "Screen.h"
 
 #include <Mapa.h>
 #include <coordinates.h>
@@ -14,7 +14,6 @@
 #include <Wall.h>
 #include <Sprite.h>
 #include <Guard.h>
-//#include "sprite.h"
 
 int main(int argc, char* argv[]) {
 
@@ -51,6 +50,7 @@ int main(int argc, char* argv[]) {
     Coordinates initial_direction(0,1);
     Jugador player(initial_position,initial_direction,map);
     std::vector<Sprite*> sprites;
+    std::vector<Guard*> guards;
     for(int i=0; i<24; i++){
     	for(int j=0; j<24; j++){
         int pos_value = a_map[i][j];
@@ -66,22 +66,22 @@ int main(int argc, char* argv[]) {
 	            map.agregarPosicionable(posicionable,position);
 	          }else{
 	          	Coordinates position((float)i+0.5,(float)j+0.5);
-	            Sprite *posicionable = new Guard(position,a_map[i][j]-10,player);//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
+	            Guard *posicionable = new Guard(position,a_map[i][j]-10,player);//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
 	            sprites.push_back(posicionable);
+	            guards.push_back(posicionable);
 	            map.agregarPosicionable(posicionable,position);	          	
 	          }
     		}
     	}
     }
 
-    Window window(640,480);  //o bien 1280,720
+    Window window(1280,720);  //(640,480) o bien (1280,720)
 
-    Raycasting ray_casting(sprites,player,map,window);
+    Screen screen(sprites,player,map,window);
 
     window.set_no_color();
 
-    ray_casting.calculate_ray_casting();
-
+    screen.show();
     window.render();  
 
     DirAdelante forward;
@@ -106,9 +106,30 @@ int main(int argc, char* argv[]) {
           player.mover(&forward);
         if(keys[SDL_SCANCODE_DOWN])
           player.mover(&backward);
-        
+
+      	if(keys[SDL_SCANCODE_W]){
+			for(unsigned int i=0; i<guards.size(); i++){
+				guards[i]->move_up();
+			}
+      	}
+      	if(keys[SDL_SCANCODE_S]){
+			for(unsigned int i=0; i<guards.size(); i++){
+				guards[i]->move_down();
+			}
+      	} 
+      	if(keys[SDL_SCANCODE_A]){
+			for(unsigned int i=0; i<guards.size(); i++){
+				guards[i]->move_left();
+			}
+      	} 
+      	if(keys[SDL_SCANCODE_D]){
+			for(unsigned int i=0; i<guards.size(); i++){
+				guards[i]->move_right();
+			}
+      	} 
+
          window.set_no_color();
-         ray_casting.calculate_ray_casting();
+         screen.show();
          window.render(); 
       SDL_Delay(20);
       while (SDL_PollEvent(&event)) { 
