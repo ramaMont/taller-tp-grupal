@@ -16,12 +16,19 @@ void ThUserServer::sendConfiguration(){
     // TODO: Envio de configuracion al peer.
 }
 
+void ThUserServer::respondSuccess(){
+    Protocol protocol(game_id);
+    protocol.setAction(Protocol::action::OK);
+    th_sender->push(protocol);
+}
+
 void ThUserServer::initCommunication(){
     Protocol protocol(user_id);
     protocol.setAction(Protocol::action::SET_ID);
     socket_peer.send(protocol, sizeof(Protocol));
     sendConfiguration();
     th_receiver = new ThReceiver(&socket_peer);
+    th_receiver->setThUser(this);
     th_sender = new ThSender(user_id, &socket_peer);
     th_receiver->start();
     th_sender->start();
@@ -32,14 +39,18 @@ void ThUserServer::processReception(Protocol& protocol){
         case Protocol::action::CREATE_GAME:{
             int map_id = protocol.getId();
             games_admin.createGame(*this, map_id);
+            respondSuccess();
             break;
         }
         case Protocol::action::JOIN_GAME:{
-
+//            int game_id = protocol.getId();
+//            games_admin.joinGame(*this, game_id);
             break;
         }
         case Protocol::action::LAUNCH_GAME:{
-
+            int game_id = protocol.getId();
+            games_admin.launchGame(game_id);
+            respondSuccess();
             break;
         }
         default:
@@ -55,6 +66,18 @@ void ThUserServer::run(){
         Protocol protocol = operations.pop();
         processReception(protocol);
     }
+}
+
+ThSender* ThUserServer::getSender(){
+    return th_sender;
+}
+
+void ThUserServer::setGameModel(ThGameModelServer* th_game_model){
+    th_receiver->setGameModel(th_game_model);
+}
+
+void ThUserServer::setGameId(int game_id){
+    this->game_id = game_id;
 }
 
 ThUserServer::~ThUserServer(){

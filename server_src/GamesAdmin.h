@@ -1,9 +1,9 @@
 #ifndef __GAMES_ADMIN__
 #define __GAMES_ADMIN__
 
-class ThGame;
-#include "ThGame.h"
-#include <vector>
+class ThGameModelServer;
+#include <ThGameModelServer.h>
+#include <map>
 #include <mutex>
 class ThUserServer;
 #include "ThUserServer.h"
@@ -11,7 +11,7 @@ class ThUserServer;
 class GamesAdmin{
 private:
     std::mutex mutex;
-    std::vector<ThGame*> games;
+    std::map<int, ThGameModelServer*> games;
     int current_game_id;
 
     void cleanZombies();
@@ -19,6 +19,7 @@ private:
 public:
     GamesAdmin();
     void createGame(ThUserServer& th_user_server, const int& map_id);
+    void launchGame(int game_id);
     ~GamesAdmin();
 };
 

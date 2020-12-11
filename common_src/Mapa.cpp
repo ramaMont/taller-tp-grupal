@@ -49,7 +49,18 @@ void initMap(Mapa& map){
 }
 
 
-Mapa::Mapa(int map_id){
+Mapa::Mapa(int map_id):
+        alto(24),
+        ancho(24),
+        mapaJuego(ancho, std::vector<Posicionable*>(alto)){
+
+
+    for (int i=0; i<ancho; i++){
+        for (int j=0; j<alto; j++){
+            mapaJuego[i][j]=nullptr;
+        }
+    }
+    initMap(*this);
 }
 
 Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,

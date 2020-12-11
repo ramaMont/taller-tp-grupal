@@ -1,17 +1,17 @@
 #include "GameModel.h"
 
-GameModel::GameModel(int map_id):
-        map(map_id), keep_running(true){
+GameModel::GameModel(int map_id, int game_id):
+        Thread(), map(map_id), game_id(game_id){
     initDirections();
 } 
 
 GameModel::GameModel(Mapa&& map): 
-        map(std::move(map)), keep_running(true){
+        Thread(), map(std::move(map)) {
     initDirections();
 }
 
 GameModel::GameModel(Mapa&& map, std::map<int,Player>&& players): 
-        map(std::move(map)), keep_running(true), players(std::move(players)){
+        Thread(), map(std::move(map)), players(std::move(players)){
     initDirections();
 }
 
@@ -41,15 +41,6 @@ void GameModel::cleanDirections(){
     }
 }
 
-void GameModel::run(){
-    if (!operations.empty()){
-        Protocol protocolo = operations.front();
-        operations.pop();
-        processProtocol(protocolo);
-    }
-}
-
-
 void GameModel::updateEvent(){
 }
 void GameModel::movePlayer(int player_id){
@@ -72,6 +63,17 @@ void GameModel::addPlayer(Player player){
     players.insert(std::pair<int, Player>(player.getId(), player));
 }
 
+void GameModel::addPlayer(int player_id){
+    static int pos_x = 2;
+    static int pos_y = 2;
+    Coordinates initial_position(pos_x, pos_y);
+    Coordinates initial_direction(0, 1);
+    Player player(initial_position, initial_direction, map, player_id);
+    players.insert(std::pair<int, Player>(player_id, player));
+    ++pos_x;
+    ++pos_y;
+}
+
 Player& GameModel::getPlayer(int user_id){
     return players.at(user_id);
 }
@@ -80,12 +82,16 @@ Mapa& GameModel::getMap(){
     return map;
 }
 
+int GameModel::getId(){
+    return game_id;
+}
+
 GameModel& GameModel::operator=(GameModel&& other){
     if (this == &other){
         return *this;        // other is myself!
     }
     this->map = std::move(other.map);
-    this->keep_running = true;
+    this->is_running = true;
     this->players = std::move(other.players);
     this->directions = std::move(other.directions);
     return *this;
@@ -95,31 +101,11 @@ GameModel::~GameModel(){
     cleanDirections();
 }
 
-GameModelServer::GameModelServer(int map_id):
-        GameModel(map_id){
-}
-
-GameModelServer::GameModelServer(Mapa&& map):
-        GameModel(std::move(map)){
-}
-
 GameModelClient::GameModelClient(Mapa&& map, std::map<int,Player>&& players):
         GameModel(std::move(map), std::move(players)){
 }
 
-void GameModelServer::processProtocol(Protocol& protocol){
-    switch (protocol.getAction()){
-        case Protocol::action::MOVE:
-            processMove(protocol);
-            echoProtocol(protocol);
-            break;
-        case Protocol::action::SHOOT:
 
-            break;
-        default:
-            break;
-    }
-}
 
 void GameModelClient::processProtocol(Protocol& protocol){
     switch (protocol.getAction()){
@@ -134,20 +120,15 @@ void GameModelClient::processProtocol(Protocol& protocol){
     }
 }
 
-void GameModelServer::addThSender(ThSender* th_sender){
-    users_sender.insert(std::pair<int, ThSender*>(th_sender->getId(), th_sender));
-}
-
-void GameModelServer::echoProtocol(Protocol protocol){
-    std::map<int, ThSender *>::iterator it = users_sender.begin();
-    while (it != users_sender.end()){
-        ThSender* user_sender = it->second;
-        user_sender->push(protocol);
-        it++;
+void GameModelClient::run(){
+    while (is_running){
+        Protocol protocol = operations.pop();
+        processProtocol(protocol);
     }
 }
 
-GameModelServer::~GameModelServer(){
+void GameModelClient::stop(){
+    is_running = false;
 }
 
 GameModelClient::~GameModelClient(){

@@ -6,7 +6,7 @@
 void ThAcceptor::cleanZombies(){
     std::vector<ThUserServer*> activeThreads;
     for (size_t i = 0; i < user_peers.size(); i++){
-        if (!user_peers[i]->isDone()){
+        if (user_peers[i]->isDone()){
             user_peers[i]->join();
             delete user_peers[i];
         } else {

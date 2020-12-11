@@ -60,7 +60,7 @@ void ThUserClient::waitUntilLaunch(){
         std::cin >> option_input;
         switch (option_input){
             case 1:{
-                Protocol protocol;
+                Protocol protocol(_game_model->getId());
                 protocol.setAction(Protocol::action::LAUNCH_GAME);
                 th_sender.push(protocol);
                 ready = true;
@@ -101,6 +101,8 @@ void ThUserClient::processReception(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::OK:
             createGameModel(protocol.getId());
+            std::cout << "Partida creada\nId de Partida: " << 
+                protocol.getId() << std::endl;
             break;
         case Protocol::action::ERROR:
             // TODO: algo salio mal.
