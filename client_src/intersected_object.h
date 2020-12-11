@@ -1,6 +1,7 @@
 #ifndef __INTERSECTED_OBJECT__
 #define __INTERSECTED_OBJECT__
 
+class Posicionable;
 #include <Posicionable.h>
 
 //Datos necesarios para el gráfico del objeto colisionado con raycasting
@@ -15,14 +16,8 @@ public:
 	//Cargo las caracteristicas del objeto colisionado (proximamente agregear n° textura)
     explicit Intersected_object(float distance_player_plane,Posicionable* object ,float position, int side);
 
-    int get_texture(){
-    	return object->get_texture();
-    }
-
-    bool is(std::string type){
-        return (object->get_type() == type);
-    }
-
+    int get_texture();
+    
     float get_distance_player_plane();
 
     int get_number_line_texture();

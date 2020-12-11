@@ -2,11 +2,12 @@
 #define __JUGADOR__
 
 #include "Posicionable.h"
+
 #include "coordinates.h"
-#include "Mapa.h"
 class Mapa;
-#include "Direccion.h"
+#include "Mapa.h"
 class Direccion;
+#include "Direccion.h"
 
 class Jugador final : public Posicionable{
 private:
@@ -14,6 +15,7 @@ private:
     Mapa &mapa;
 public:
     explicit Jugador(Coordinates posicion,Coordinates direction ,Mapa& mapa);
+    void mover_en_una_direccion(Direccion* direccion);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);
     Coordinates get_coordinates();

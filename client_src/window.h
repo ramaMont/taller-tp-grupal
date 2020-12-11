@@ -16,6 +16,8 @@ public:
     Window(int width, int height);
     void set_no_color();
     void set_color(int r, int g, int b, int alpha);
+    int get_width() const;
+    int get_height() const;
     void render();
     SDL_Renderer* getRenderer() const;
     ~Window();

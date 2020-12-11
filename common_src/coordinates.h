@@ -23,7 +23,7 @@ public:
     void normalice_direction();
 
 	//Perpendicular a la direccion q reciba
-    Coordinates get_perpendicular_direction();
+    Coordinates get_perpendicular_direction()const ;
 
     bool x_positive()const;
 

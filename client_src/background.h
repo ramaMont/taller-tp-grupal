@@ -21,5 +21,7 @@ class Background {
 
 		// Muestra el fondo
 		void show();
+
+		~Background();
 };
 #endif

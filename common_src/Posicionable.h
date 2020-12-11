@@ -4,10 +4,14 @@
 
 #include "coordinates.h"
 
+class Ray;
+#include "../client_src/ray.h"
+class Intersected_object;
+#include "../client_src/intersected_object.h"
+
 class Posicionable{
 protected:
     Coordinates posicion;
-    std::string type; //No debería tener esto, deberia poder resolverlo con un double dispatch en lugar de un if-else 
     int texture;
 public:
 
@@ -15,21 +19,15 @@ public:
 	int get_texture(){
 		return texture;
 	}
-	std::string get_type(){
-		return type;
-	}
 
-    explicit Posicionable(Coordinates posicion);
+	explicit Posicionable(Coordinates posicion);
 
-    virtual void spotted(){ //Agregar excepcion
+    explicit Posicionable(Coordinates posicion,int texture);
 
-    }
-
-    //void draw_yourself(Raycasting raycasting){}
-
+    virtual Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
     virtual Coordinates getPosicion();
-    ~Posicionable();
+    virtual ~Posicionable();
 };
 
 #endif

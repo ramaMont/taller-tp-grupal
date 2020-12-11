@@ -26,6 +26,14 @@ void Window::set_no_color() {
     this->set_color(0x33,0x33,0x33,0xFF);
 }
 
+int Window::get_width()const {
+    return width;
+}
+
+int Window::get_height() const{
+    return height;
+}
+
 void Window::render() {
     SDL_RenderPresent(this->renderer);
 }
@@ -45,4 +53,6 @@ Window::~Window() {
         SDL_DestroyWindow(this->window);
         this->window = nullptr;
     }
+
+    SDL_Quit();
 }

@@ -12,6 +12,10 @@ float Intersected_object::get_distance_player_plane(){
 	return distance;
 }
 
+int Intersected_object::get_texture(){
+  	return object->get_texture();
+}
+
 int Intersected_object::get_number_line_texture(){
 	return number_line_texture;
 }

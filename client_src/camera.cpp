@@ -6,7 +6,7 @@
 #include "camera.h"
 
 
-Camera::Camera(Coordinates &player_position, Coordinates &player_direction):
+Camera::Camera(const Coordinates &player_position,const Coordinates &player_direction):
 	player_position(player_position)
 	{
 		float n = 1/sqrt(pow(player_direction.x,2) + pow(player_direction.y,2));

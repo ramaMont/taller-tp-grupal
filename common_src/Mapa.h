@@ -3,9 +3,10 @@
 
 #include <vector>
 #include <utility>
-#include "Posicionable.h"
-#include "Jugador.h"
+class Posicionable;
+//#include "Posicionable.h"
 class Jugador;
+//#include "Jugador.h"
 #include "coordinates.h"
 
 
@@ -14,6 +15,7 @@ private:
     int alto;
     int ancho;
     std::vector<std::vector<Posicionable*>> mapaJuego;
+    Jugador* player;
 public:
     explicit Mapa(int alto, int ancho);
     void agregarJugador(Jugador* jugador);

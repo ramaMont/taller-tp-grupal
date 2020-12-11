@@ -1,4 +1,5 @@
 #include "Mapa.h"
+#include "Jugador.h"
 #include <iostream>
 #include <utility>
 #include <cmath>
@@ -18,8 +19,10 @@ Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
 }
 
 void Mapa::agregarJugador(Jugador* jugador){
-	mapaJuego[floor(jugador->getPosicion().x)]
-        [floor(jugador->getPosicion().y)]=jugador;
+    player = jugador;
+
+	//mapaJuego[floor(jugador->getPosicion().x)]
+    //    [floor(jugador->getPosicion().y)]=jugador;
 }
 
 void Mapa::agregarPosicionable(Posicionable* posicionable, 
@@ -40,17 +43,6 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion){
 }
 
 void Mapa::moveme(Jugador* jugador, const Coordinates& posicion){
-    // for(int i=0; i<alto; i++){
-    // 	for(int j=0; j<ancho; j++){
-    // 		if(mapaJuego[i][j]!=0){
-    // 			printf("P");
-    // 		}else{
-    // 			printf("_");
-    // 		}
-    // 	}
-    // 	printf("\n");
-    // }
-    // printf("\n\n\n");
 	
     if (posicion.x > ancho || posicion.y > alto)
         throw -1;
@@ -68,5 +60,13 @@ void Mapa::moveme(Jugador* jugador, const Coordinates& posicion){
     }
 }
 
+//Problema: intento borrar tambien la posicion donde almaceno el jugador..."solucion": lo saco manualmente...
 Mapa::~Mapa(){
+    sacarPosicionable(player->getPosicion());
+    for(int i=0; i<ancho; i++){
+         for(int j=0; j<alto; j++){
+            if(mapaJuego[i][j]!=nullptr)
+                delete mapaJuego[i][j];
+        }   
+    }
 }

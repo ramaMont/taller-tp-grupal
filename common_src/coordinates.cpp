@@ -41,7 +41,7 @@ void Coordinates::normalice_direction(){
     this->y/=length;        
 }
 
-Coordinates Coordinates::get_perpendicular_direction(){
+Coordinates Coordinates::get_perpendicular_direction()const {
 	//Perpendicular a la direccion q reciba
 	Coordinates perpendicular;
 	if(this->y!=0){
