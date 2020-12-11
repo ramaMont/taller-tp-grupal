@@ -4,13 +4,17 @@
 #include <Thread.h>
 #include <Socket.h>
 #include <vector>
+#include "ThUserServer.h"
+#include "GamesAdmin.h"
 
 class ThAcceptor : public Thread{
-    std::vector<Thread*> peers;
+    std::vector<ThUserServer*> user_peers;
     SocketServer socket_aceptador;
+    GamesAdmin& games_admin;
     void cleanZombies();
+    void sendConfiguration(Socket& socket_peer);
 public:
-    explicit ThAcceptor(const std::string& port);
+    explicit ThAcceptor(const std::string& port, GamesAdmin& games_admin);
     virtual void run() override;
     virtual void stop() override;
     ~ThAcceptor();

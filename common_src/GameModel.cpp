@@ -1,19 +1,24 @@
 #include "GameModel.h"
 
-// GameModel::GameModel(Mapa& map): 
-//         map(map), keep_running(true){
-//     initDirections();
-// }
+GameModel::GameModel(int map_id):
+        map(map_id), keep_running(true){
+    initDirections();
+} 
 
-GameModel::GameModel(Mapa&& map, std::map<int,Player>&& players): 
-        map(std::move(map)), keep_running(true), players(std::move(players)){
-    // Inicializo el diccionario directions para acceder a cada direccion 
-    // en tiempo O(1)
-    // verificar si esto anda o si los punteros se pierden cuando finaliza
-    // el constructor.
+GameModel::GameModel(Mapa&& map): 
+        map(std::move(map)), keep_running(true){
     initDirections();
 }
 
+GameModel::GameModel(Mapa&& map, std::map<int,Player>&& players): 
+        map(std::move(map)), keep_running(true), players(std::move(players)){
+    initDirections();
+}
+
+/* 
+Inicializo el diccionario directions para acceder a cada direccion 
+en tiempo O(1)
+ */
 void GameModel::initDirections(){
     DirAdelante* forward = new DirAdelante();
     DirAtras* backward = new DirAtras();
@@ -90,10 +95,12 @@ GameModel::~GameModel(){
     cleanDirections();
 }
 
-GameModelServer::GameModelServer(Mapa&& map, std::map<int,Player>&& players,
-        std::map<int,ThSender *>& users_sender):
-        GameModel(std::move(map), std::move(players)),
-        users_sender(users_sender){
+GameModelServer::GameModelServer(int map_id):
+        GameModel(map_id){
+}
+
+GameModelServer::GameModelServer(Mapa&& map):
+        GameModel(std::move(map)){
 }
 
 GameModelClient::GameModelClient(Mapa&& map, std::map<int,Player>&& players):

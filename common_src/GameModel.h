@@ -25,6 +25,8 @@ protected:
     void initDirections();
     void cleanDirections();
 public:
+    explicit GameModel(int map_id);
+    explicit GameModel(Mapa&& map);
     explicit GameModel(Mapa&& map, std::map<int,Player>&& players);
     void run();
     void push(Protocol protocol);
@@ -42,11 +44,11 @@ public:
 
 class GameModelServer : public GameModel{
 private:
-    std::map<int,ThSender *>& users_sender;
+    std::map<int,ThSender *> users_sender;
     void echoProtocol(Protocol protocol);
 public:
-    explicit GameModelServer(Mapa&& map, std::map<int,Player>&& players,
-        std::map<int,ThSender *>& users_sender);
+    explicit GameModelServer(int map_id);
+    explicit GameModelServer(Mapa&& map);
     virtual void processProtocol(Protocol& protocol) override;
     void addThSender(ThSender* th_sender);
     ~GameModelServer();

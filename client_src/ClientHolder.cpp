@@ -2,7 +2,7 @@
 #include <Socket.h>
 #include <ThReceiver.h>
 #include <ThSender.h>
-#include <ThUser.h>
+#include <ThUserClient.h>
 
 #include <iostream>
 

@@ -40,7 +40,7 @@ void ThReceiver::processReception(Protocol& protocol){
 }
 
 void ThReceiver::setGameModel(GameModel* gameModel){
-    _gameModel = std::move(gameModel);
+    _gameModel = gameModel;
 }
 
 GameModel* ThReceiver::getGameModel(){

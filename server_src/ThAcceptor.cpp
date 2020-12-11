@@ -1,36 +1,46 @@
 #include "ThAcceptor.h"
 #include <vector>
+#include <ThReceiver.h>
+#include <ThSender.h>
 
 void ThAcceptor::cleanZombies(){
-    std::vector<Thread*> activeThreads;
-    for (size_t i = 0; i < peers.size(); i++){
-        if (!peers[i]->isDone()){
-            peers[i]->join();
-            delete peers[i];
+    std::vector<ThUserServer*> activeThreads;
+    for (size_t i = 0; i < user_peers.size(); i++){
+        if (!user_peers[i]->isDone()){
+            user_peers[i]->join();
+            delete user_peers[i];
         } else {
-            activeThreads.push_back(peers[i]);
+            activeThreads.push_back(user_peers[i]);
         }
     }
-    peers.swap(activeThreads);
+    user_peers.swap(activeThreads);
 }
 
-ThAcceptor::ThAcceptor(const std::string& port):
-    Thread(), socket_aceptador(port){
+ThAcceptor::ThAcceptor(const std::string& port, GamesAdmin& games_admin):
+    Thread(), socket_aceptador(port), games_admin(games_admin){
 }
 void ThAcceptor::run(){
     int current_id = 0;
     while (is_running){
-        Socket socket_receptor = socket_aceptador.acceptClient();
+        Socket socket_peer = socket_aceptador.acceptClient();
         cleanZombies();
-        Protocol protocol(current_id);
-        protocol.setAction(Protocol::action::SET_ID);
-        socket_receptor.send(protocol, sizeof(Protocol));
+        ThUserServer* th_user_peer = 
+            new ThUserServer(current_id, std::move(socket_peer), games_admin);
+        user_peers.push_back(th_user_peer);
+        th_user_peer->start();
         ++current_id;
     }
 }
 void ThAcceptor::stop(){
+    socket_aceptador.shutdown();
+    socket_aceptador.close();
     is_running = false;
 }
 ThAcceptor::~ThAcceptor(){
+    for (size_t i = 0; i < user_peers.size(); i++){
+        user_peers[i]->stop();
+        user_peers[i]->join();
+        delete user_peers[i];
+    }
 }
 
