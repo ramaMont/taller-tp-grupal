@@ -28,5 +28,14 @@ void ThUser::stop(){
     is_running = false;
 }
 
+void ThUser::waitForAction(Protocol::action desired_action){
+    bool ready = false;
+    while (!ready){
+        Protocol protocol = operations.pop();
+        if (protocol.getAction() == desired_action)
+            ready = true;
+    }
+}
+
 ThUser::~ThUser(){
 }

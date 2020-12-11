@@ -19,6 +19,7 @@ public:
     void push(Protocol protocol);
     int getId();
     virtual void stop() override;
+    void waitForAction(Protocol::action desired_action);
     ~ThUser();
 };
 

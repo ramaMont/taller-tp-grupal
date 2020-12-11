@@ -47,15 +47,4 @@ public:
 
 };
 
-
-
-class GameModelClient : public GameModel{
-public:
-    explicit GameModelClient(Mapa&& map, std::map<int,Player>&& players);
-    virtual void processProtocol(Protocol& protocol) override;
-    virtual void run() override;
-    virtual void stop() override;
-    ~GameModelClient();
-};
-
 #endif

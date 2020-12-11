@@ -9,7 +9,7 @@
 #include <ThDrawer.h>
 
 ThUserClient::ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_sender):
-    ThUser(user_id), th_receiver(th_receiver), th_sender(th_sender), _game_model(nullptr){
+    ThUser(user_id), th_receiver(th_receiver), th_sender(th_sender), _th_game_model(nullptr){
 }
 
 void ThUserClient::joinOrCreateGame(){
@@ -60,9 +60,10 @@ void ThUserClient::waitUntilLaunch(){
         std::cin >> option_input;
         switch (option_input){
             case 1:{
-                Protocol protocol(_game_model->getId());
+                Protocol protocol(_th_game_model->getId());
                 protocol.setAction(Protocol::action::LAUNCH_GAME);
                 th_sender.push(protocol);
+//                waitForAction(Protocol::action::OK);
                 ready = true;
                 break;
             }
@@ -75,26 +76,24 @@ void ThUserClient::waitUntilLaunch(){
 
 // Hacer todo para empezar a jugar la partida.
 void ThUserClient::play(){
+    
+    waitForAction(Protocol::action::BEGIN);
+
     ThDrawer th_drawer(th_receiver.getGameModel()->getPlayer(user_id),
         th_receiver.getGameModel()->getMap());
     ThKeyReader th_key_reader(th_sender);
     th_drawer.start();
     th_key_reader.start();
+    _th_game_model->start();
     th_key_reader.join();
     th_drawer.stop();
     th_drawer.join();
+    _th_game_model->join();
 }
 
 void ThUserClient::createGameModel(int map_id){
-    Mapa map(24,24);
-    Coordinates initial_position(2.5, 2.5);
-    Coordinates initial_direction(0, 1);
-    Player player(initial_position, initial_direction, map, user_id);
-    std::map<int,Player> players;
-    players.insert(std::pair<int,Player>(user_id, player));
-    initMap(map);
-    _game_model = new GameModelClient(std::move(map), std::move(players));
-    th_receiver.setGameModel(_game_model);
+    _th_game_model = new ThGameModelClient(user_id, map_id, 0);
+    th_receiver.setGameModel(_th_game_model);
 }
 
 void ThUserClient::processReception(Protocol& protocol){
@@ -121,6 +120,6 @@ void ThUserClient::run(){
 }
 
 ThUserClient::~ThUserClient(){
-    if (_game_model != nullptr)
-        delete(_game_model);
+    if (_th_game_model != nullptr)
+        delete(_th_game_model);
 }

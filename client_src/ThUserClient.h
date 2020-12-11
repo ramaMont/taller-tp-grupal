@@ -7,13 +7,15 @@
 #include "ThSender.h"
 class ThReceiver;
 #include "ThReceiver.h"
+class ThGameModelClient;
+#include "ThGameModelClient.h"
 
 class ThUserClient : public ThUser{
 private:
 
     ThReceiver& th_receiver;
     ThSender& th_sender;
-    GameModelClient* _game_model;
+    ThGameModelClient* _th_game_model;
 
     void joinOrCreateGame();
     void processReception(Protocol& protocol);
