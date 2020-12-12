@@ -5,10 +5,6 @@ ThGameModelClient::ThGameModelClient(int user_id, int map_id,
     addPlayer(user_id);
 }
 
-ThGameModelClient::ThGameModelClient(Mapa&& map, std::map<int,Player>&& players):
-        GameModel(std::move(map), std::move(players)){
-}
-
 void ThGameModelClient::processProtocol(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::MOVE:

@@ -16,7 +16,7 @@ class GameModel : public Thread{
 protected:
     Mapa map;
     BlockingQueue<Protocol> operations;
-    std::map<int,Player> players;
+    std::map<int,Player*> players;
     std::map<Protocol::direction, Direccion* > directions;
     int game_id;
 
@@ -29,12 +29,12 @@ protected:
 public:
     explicit GameModel(int map_id, int game_id);
     explicit GameModel(Mapa&& map);
-    explicit GameModel(Mapa&& map, std::map<int,Player>&& players);
+
     virtual void run() = 0;
     virtual void stop() = 0;
     void push(Protocol protocol);
     virtual void processProtocol(Protocol& protocol) = 0;
-    void addPlayer(Player player);
+
     void addPlayer(int player_id);
     Player& getPlayer(int user_id);
     Mapa& getMap();

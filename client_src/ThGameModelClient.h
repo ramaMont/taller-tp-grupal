@@ -7,7 +7,7 @@
 class ThGameModelClient : public GameModel{
 public:
     explicit ThGameModelClient(int user_id, int map_id, int game_id);
-    explicit ThGameModelClient(Mapa&& map, std::map<int,Player>&& players);
+
     virtual void processProtocol(Protocol& protocol) override;
     virtual void run() override;
     virtual void stop() override;
