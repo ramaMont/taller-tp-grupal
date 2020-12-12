@@ -99,7 +99,7 @@ void constant_loop(Jugador &player, Window &window, Screen &screen){ //1000/30
 	    }*/	
 	    std::this_thread::sleep_for(std::chrono::milliseconds(rest));
     }
-    printf("promedio : %li \n", frames_counter/counter);
+    printf("tiempo promedio de milisegundos entre frames : %li \n", frames_counter/counter);
 
 	/*SDL_bool done = SDL_FALSE;
 
