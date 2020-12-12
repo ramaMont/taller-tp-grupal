@@ -4,6 +4,13 @@
 #include <exception>
 #include <vector>
 
+#include <thread>
+
+#include <chrono>
+#include <iostream>
+#include <sys/time.h>
+#include <ctime>
+
 #include "window.h"
 #include "Screen.h"
 
@@ -14,6 +21,73 @@
 #include <Wall.h>
 #include <Sprite.h>
 #include <Guard.h>
+
+void draw(Jugador &player, Window &window, Screen &screen,SDL_bool &done){
+
+    DirAdelante forward;
+    DirAtras backward;
+    DirIzquierda left;
+    DirDerecha right;
+    DirRotDerecha rotRight;
+    DirRotIzquierda rotLeft;
+
+    const Uint8 *keys = SDL_GetKeyboardState(NULL);
+    SDL_Event event;
+
+
+
+        if(keys[SDL_SCANCODE_RIGHT])
+          player.mover(&rotRight);
+        if(keys[SDL_SCANCODE_LEFT])
+          player.mover(&rotLeft);
+        if(keys[SDL_SCANCODE_UP])
+          player.mover(&forward);
+        if(keys[SDL_SCANCODE_DOWN])
+          player.mover(&backward);
+
+	      while (SDL_PollEvent(&event)) { 
+
+	        switch(event.type) {
+	          case SDL_QUIT: {
+	            done = SDL_TRUE;
+	          }
+	        }
+	      }
+
+         window.set_no_color();
+         screen.show();
+         window.render(); 
+      //SDL_Delay(5);
+}
+
+void constant_loop(Jugador &player, Window &window, Screen &screen){ //1000/30
+	SDL_bool done = SDL_FALSE;
+
+	time_t rate = 1000/30;
+
+    struct timeval time_now{};
+    gettimeofday(&time_now, nullptr);
+    time_t time_start = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);
+
+    while(!done){
+    	//LLamo al dibujadorrr
+    	draw(player,window,screen,done);
+	    gettimeofday(&time_now, nullptr);
+	    time_t time_after_draw = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);    	
+	    std::cout << "time_after_draw: "  << time_after_draw << std::endl << std::endl;
+	    time_t rest = rate - (time_after_draw - time_start);
+	    if (rest < 0){ //Me tardé mas que mi rate en dibujar este frame
+            time_t behind = -rest; //Que tan atrasado estoy
+            rest = rate - behind % rate; //
+            time_t lost = behind + rest;
+            time_start += lost;
+            //it += int(lost / rate);//  # floor division
+	    }
+	    std::this_thread::sleep_for(std::chrono::milliseconds(rest));
+	    //sleep(rest);
+	    time_start += rate;
+    }
+}
 
 int main(int argc, char* argv[]) {
 
@@ -91,56 +165,7 @@ int main(int argc, char* argv[]) {
     DirRotDerecha rotRight;
     DirRotIzquierda rotLeft;
 
-    SDL_bool done = SDL_FALSE;
-
-    const Uint8 *keys = SDL_GetKeyboardState(NULL);
-
-    while (!done) {
-      SDL_Event event;
-
-        if(keys[SDL_SCANCODE_RIGHT])
-          player.mover(&rotRight);
-        if(keys[SDL_SCANCODE_LEFT])
-          player.mover(&rotLeft);
-        if(keys[SDL_SCANCODE_UP])
-          player.mover(&forward);
-        if(keys[SDL_SCANCODE_DOWN])
-          player.mover(&backward);
-
-      	if(keys[SDL_SCANCODE_W]){
-			for(unsigned int i=0; i<guards.size(); i++){
-				guards[i]->move_up();
-			}
-      	}
-      	if(keys[SDL_SCANCODE_S]){
-			for(unsigned int i=0; i<guards.size(); i++){
-				guards[i]->move_down();
-			}
-      	} 
-      	if(keys[SDL_SCANCODE_A]){
-			for(unsigned int i=0; i<guards.size(); i++){
-				guards[i]->move_left();
-			}
-      	} 
-      	if(keys[SDL_SCANCODE_D]){
-			for(unsigned int i=0; i<guards.size(); i++){
-				guards[i]->move_right();
-			}
-      	} 
-
-         window.set_no_color();
-         screen.show();
-         window.render(); 
-      SDL_Delay(20);
-      while (SDL_PollEvent(&event)) { 
-
-        switch(event.type) {
-          case SDL_QUIT: {
-            done = SDL_TRUE;
-          }
-        }
-      }
-    }
+    constant_loop(player,window,screen);
 
     return 0;
 
