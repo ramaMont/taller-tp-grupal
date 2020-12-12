@@ -11,6 +11,7 @@ class GamesAdmin;
 #include "GamesAdmin.h"
 class ThGameModelServer;
 #include "ThGameModelServer.h"
+#include <vector>
 
 class ThUserServer : public ThUser{
 private:
@@ -32,6 +33,7 @@ public:
     ThSender* getSender();
     void setGameModel(ThGameModelServer* th_game_model);
     void setGameId(int game_id);
+    void transmit(std::vector<int>& ids_vector);
     ~ThUserServer();
 };
 

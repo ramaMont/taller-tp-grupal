@@ -16,9 +16,10 @@ private:
     ThReceiver& th_receiver;
     ThSender& th_sender;
     ThGameModelClient* _th_game_model;
+    bool is_creator;
 
     void joinOrCreateGame();
-    void processReception(Protocol& protocol);
+    void processReception(Protocol& protocol, bool& ready);
     void createGameModel(int map_id);
     void waitUntilLaunch();
     void play();

@@ -61,6 +61,7 @@ void GameModel::addPlayer(int player_id){
     Coordinates initial_direction(0, 1);
     Player* player = new Player(initial_position, initial_direction, map, player_id);
     players.insert(std::pair<int, Player*>(player_id, player));
+    id_insertion_order.push_back(player_id);
     ++pos_x;
     ++pos_y;
 }
@@ -75,6 +76,10 @@ Mapa& GameModel::getMap(){
 
 int GameModel::getId(){
     return game_id;
+}
+
+std::vector<int>& GameModel::getIdsVector(){
+    return id_insertion_order;
 }
 
 GameModel& GameModel::operator=(GameModel&& other){

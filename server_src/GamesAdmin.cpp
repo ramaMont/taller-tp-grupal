@@ -37,6 +37,25 @@ void GamesAdmin::launchGame(int game_id){
     games.at(game_id)->start();
 }
 
+void GamesAdmin::joinGame(ThUserServer& th_user_server, int game_id){
+    std::lock_guard<std::mutex> lck(mutex);
+    auto th_game = games.at(game_id);
+    // Le envio al jugador los ids de todos los jugadores en orden
+    // en el que fueron ingresando.
+    std::vector<int>& ids_vector = th_game->getIdsVector();
+    th_user_server.transmit(ids_vector);
+    // Inserto al jugador nuevo en el game model
+    th_game->addPlayer(th_user_server.getId());
+    th_game->addThSender(th_user_server.getSender());
+    th_user_server.setGameModel(th_game);
+    th_user_server.setGameId(game_id);
+    // Le envio a todos los jugadores que se ha unido uno nuevo.
+    // Incluido el nuevo jugador asi se agrega en su modelo.
+    Protocol protocol(th_user_server.getId());
+    protocol.setAction(Protocol::action::ADD_PLAYER);
+    th_game->echoProtocol(protocol);
+}
+
 GamesAdmin::~GamesAdmin(){
     cleanZombies();
 }

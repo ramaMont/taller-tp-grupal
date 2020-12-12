@@ -43,8 +43,8 @@ void ThUserServer::processReception(Protocol& protocol){
             break;
         }
         case Protocol::action::JOIN_GAME:{
-//            int game_id = protocol.getId();
-//            games_admin.joinGame(*this, game_id);
+            int game_id = protocol.getId();
+            games_admin.joinGame(*this, game_id);
             break;
         }
         case Protocol::action::LAUNCH_GAME:{
@@ -78,6 +78,17 @@ void ThUserServer::setGameModel(ThGameModelServer* th_game_model){
 
 void ThUserServer::setGameId(int game_id){
     this->game_id = game_id;
+}
+
+void ThUserServer::transmit(std::vector<int>& ids_vector){
+    for (auto it = ids_vector.begin(); it != ids_vector.end(); ++it){
+        Protocol protocol(*it);
+        protocol.setAction(Protocol::action::ADD_PLAYER);
+        th_sender->push(protocol);
+    }
+    Protocol protocol;
+    protocol.setAction(Protocol::action::END);
+    th_sender->push(protocol);
 }
 
 ThUserServer::~ThUserServer(){

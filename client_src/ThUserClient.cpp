@@ -9,12 +9,12 @@
 #include <ThDrawer.h>
 
 ThUserClient::ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_sender):
-    ThUser(user_id), th_receiver(th_receiver), th_sender(th_sender), _th_game_model(nullptr){
+    ThUser(user_id), th_receiver(th_receiver), th_sender(th_sender), _th_game_model(nullptr), is_creator(false){
 }
 
 void ThUserClient::joinOrCreateGame(){
     int option_input;
-    int id_map;
+
     bool ready = false;
     while (!ready){
         std::cout << "Introduzca 1 para crear partida\n";
@@ -22,18 +22,21 @@ void ThUserClient::joinOrCreateGame(){
         std::cin >> option_input;
         switch (option_input){
             case 1:{
+                int id_map;
                 std::cout << "Introduzca el ID del mapa\n";
                 std::cin >> id_map;
                 Protocol protocol(id_map);
                 protocol.setAction(Protocol::action::CREATE_GAME);
                 th_sender.push(protocol);
                 ready = true;
+                is_creator = true;
                 break;
             }
             case 2:{
+                int game_id;
                 std::cout << "Introduzca el ID de la partida\n";
-                std::cin >> id_map;
-                Protocol protocol(id_map);
+                std::cin >> game_id;
+                Protocol protocol(game_id);
                 protocol.setAction(Protocol::action::JOIN_GAME);
                 th_sender.push(protocol);
                 ready = true;
@@ -47,9 +50,9 @@ void ThUserClient::joinOrCreateGame(){
     ready = false;
     while (!ready){
         Protocol protocol = operations.pop();
-        processReception(protocol);
-        ready = true; 
+        processReception(protocol, ready);
     }
+    std::cout << "Esperando a iniciar la partida\n";
 }
 
 void ThUserClient::waitUntilLaunch(){
@@ -74,6 +77,39 @@ void ThUserClient::waitUntilLaunch(){
     }
 }
 
+void ThUserClient::processReception(Protocol& protocol, bool& ready){
+    switch (protocol.getAction()){
+        case Protocol::action::OK:
+            createGameModel(protocol.getId());
+            std::cout << "Partida creada\nId de Partida: " << 
+                protocol.getId() << std::endl;
+            ready = true;
+            break;
+        case Protocol::action::ADD_PLAYER:{
+            if (_th_game_model == nullptr)
+                createGameModel(protocol.getId());
+            else
+                _th_game_model->addPlayer(protocol.getId());
+            break;
+        }
+        case Protocol::action::END:
+            ready = true;
+            break;
+        case Protocol::action::ERROR:
+            // TODO: algo salio mal.
+            break;
+        default:
+            std::cout << "Nunca deberia entrar acá\n";
+            // TODO: algo salio muy mal.
+            break;
+    }
+}
+
+void ThUserClient::createGameModel(int map_id){
+    _th_game_model = new ThGameModelClient(user_id, map_id, 0);
+    th_receiver.setGameModel(_th_game_model);
+}
+
 // Hacer todo para empezar a jugar la partida.
 void ThUserClient::play(){
     
@@ -91,31 +127,10 @@ void ThUserClient::play(){
     _th_game_model->join();
 }
 
-void ThUserClient::createGameModel(int map_id){
-    _th_game_model = new ThGameModelClient(user_id, map_id, 0);
-    th_receiver.setGameModel(_th_game_model);
-}
-
-void ThUserClient::processReception(Protocol& protocol){
-    switch (protocol.getAction()){
-        case Protocol::action::OK:
-            createGameModel(protocol.getId());
-            std::cout << "Partida creada\nId de Partida: " << 
-                protocol.getId() << std::endl;
-            break;
-        case Protocol::action::ERROR:
-            // TODO: algo salio mal.
-            break;
-        default:
-            std::cout << "Nunca deberia entrar acá\n";
-            // TODO: algo salio muy mal.
-            break;
-    }
-}
-
 void ThUserClient::run(){
     joinOrCreateGame();
-    waitUntilLaunch();
+    if (is_creator)
+        waitUntilLaunch();
     play();
 }
 

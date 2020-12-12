@@ -16,6 +16,7 @@ class GameModel : public Thread{
 protected:
     Mapa map;
     BlockingQueue<Protocol> operations;
+    std::vector<int> id_insertion_order;
     std::map<int,Player*> players;
     std::map<Protocol::direction, Direccion* > directions;
     int game_id;
@@ -39,6 +40,9 @@ public:
     Player& getPlayer(int user_id);
     Mapa& getMap();
     int getId();
+
+    std::vector<int>& getIdsVector();
+
     GameModel(const GameModel&) = delete;
     GameModel(GameModel&& other) = delete;
     GameModel& operator=(const GameModel&) = delete;

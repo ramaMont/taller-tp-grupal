@@ -38,6 +38,12 @@ void ThReceiver::processReception(Protocol& protocol){
         case Protocol::action::BEGIN:
             _th_user->push(protocol);
             break;
+        case Protocol::action::ADD_PLAYER:
+            _th_user->push(protocol);
+            break;
+        case Protocol::action::END:
+            _th_user->push(protocol);
+            break;
         case Protocol::action::MOVE:
             _gameModel->push(protocol);
             break;

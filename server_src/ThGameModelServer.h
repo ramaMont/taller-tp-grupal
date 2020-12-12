@@ -8,7 +8,7 @@ class ThUserServer;
 class ThGameModelServer : public GameModel{
 private:
     std::map<int,ThSender *> users_sender;
-    void echoProtocol(Protocol protocol);
+
 public:
     explicit ThGameModelServer(ThUserServer& th_user_server, int map_id, int game_id);
     explicit ThGameModelServer(Mapa&& map);
@@ -16,6 +16,7 @@ public:
     virtual void run() override;
     virtual void stop() override;
     void addThSender(ThSender* th_sender);
+    void echoProtocol(Protocol protocol);
     ~ThGameModelServer();
 };
 
