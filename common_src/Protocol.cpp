@@ -4,6 +4,10 @@
 Protocol::Protocol(int id):id(id){
 }
 
+Protocol::Protocol(int user_id, int map_id):
+    id(user_id), damage(map_id){
+}
+
 Protocol::Protocol(int id, Protocol::direction direction):
         _action(Protocol::action::MOVE), id(id), _direction(direction){
 }
@@ -12,6 +16,9 @@ Protocol::action Protocol::getAction(){
 }
 int Protocol::getId(){
     return id;
+}
+int Protocol::getId2(){
+    return damage;
 }
 Protocol::direction Protocol::getDirection(){
     return _direction;

@@ -80,14 +80,14 @@ void ThUserClient::waitUntilLaunch(){
 void ThUserClient::processReception(Protocol& protocol, bool& ready){
     switch (protocol.getAction()){
         case Protocol::action::OK:
-            createGameModel(protocol.getId());
+            createGameModel(protocol.getId(), user_id);
             std::cout << "Partida creada\nId de Partida: " << 
                 protocol.getId() << std::endl;
             ready = true;
             break;
         case Protocol::action::ADD_PLAYER:{
             if (_th_game_model == nullptr)
-                createGameModel(protocol.getId());
+                createGameModel(protocol.getId2(), protocol.getId());
             else
                 _th_game_model->addPlayer(protocol.getId());
             break;
@@ -105,8 +105,8 @@ void ThUserClient::processReception(Protocol& protocol, bool& ready){
     }
 }
 
-void ThUserClient::createGameModel(int map_id){
-    _th_game_model = new ThGameModelClient(user_id, map_id, 0);
+void ThUserClient::createGameModel(int map_id, int id_user){
+    _th_game_model = new ThGameModelClient(id_user, map_id, 0);
     th_receiver.setGameModel(_th_game_model);
 }
 

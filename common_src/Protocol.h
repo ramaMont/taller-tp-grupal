@@ -14,6 +14,7 @@ public:
     
     Protocol() = default;
     explicit Protocol(int id);
+    explicit Protocol(int user_id, int map_id);
     explicit Protocol(int id, Protocol::direction direction);
     Protocol::action getAction();
     Protocol::direction getDirection();
@@ -21,6 +22,7 @@ public:
     void serialize();
     void unSerialize();
     int getId();
+    int getId2();
     void setAction(Protocol::action action);
     ~Protocol();
 private:
