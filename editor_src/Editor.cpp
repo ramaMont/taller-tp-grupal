@@ -220,11 +220,10 @@ void Editor::fabricarMapa(const int& flag) {
     mapa_creado = true;
 }
 
-void Editor::cargarArchivoMapa() {
-    // Despliego un dialog para buscar archivos yaml.
+void Editor::desplegarFileDialog() {
     QString file_name = QFileDialog::getOpenFileName(this,
-        tr("Editar Mapa"), "",
-        tr("Mapas (*.yaml)"));
+            tr("Editar Mapa"), "",
+            tr("Mapas (*.yaml)"));
 
     std::string map_file = file_name.toUtf8().constData();
 
@@ -246,10 +245,31 @@ void Editor::cargarArchivoMapa() {
     QApplication::clipboard()->clear();
 }
 
+void Editor::cargarArchivoMapa() {
+    if (mapa_creado) {
+        // Mensaje de confirmación.
+        QMessageBox::StandardButton reply;
+        QMessageBox messageBox(QMessageBox::Question, "Alerta",
+                                    "El mapa actual se limpiará. "
+                                    "Está seguro?",
+                                    QMessageBox::Yes|QMessageBox::No,
+                                    this);
+        messageBox.setButtonText(QMessageBox::Yes, tr("Si"));
+        messageBox.setButtonText(QMessageBox::No, tr("No"));
+        if (messageBox.exec() == QMessageBox::Yes) {
+            desplegarFileDialog();
+        } else {
+            return;
+        }
+    } else {
+        desplegarFileDialog();
+    }
+}
+
 std::map<std::string, std::string> Editor::obtenerMapaRecursos() {
     // Genero un mapa con todos los recursos.
     std::map<std::string, std::string> mapa;
-    
+
     // Armas y jugadores.
     mapa.insert(std::pair<std::string, std::string>("guardia",
                                                     "../imgs/guardia.png"));

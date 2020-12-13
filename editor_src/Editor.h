@@ -65,6 +65,7 @@ private:
     void guardarMapa();
     void sincronizarMapaYVista();
     void keyPressEvent(QKeyEvent* event) override;
+    void desplegarFileDialog();
     std::map<std::string, std::string> obtenerMapaRecursos();
 };
 
