@@ -7,7 +7,8 @@ private:
 	Coordinates direction;
 
 public:
-	explicit Guard(Coordinates posicion, int num_texture, Jugador &player): Sprite(posicion,num_texture,player){}
+	explicit Guard(Coordinates posicion, int num_texture, Jugador &player): 
+	Sprite(posicion,num_texture,player){}
 
 	void draw(Drawer &drawer,  const std::vector<float> distances, int n_rays) override;
 

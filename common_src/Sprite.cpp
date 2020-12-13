@@ -1,30 +1,13 @@
 #include "Sprite.h"
 
+float Sprite::dist(Coordinates ray_direction, Coordinates player_position){
+	float num = ray_direction.x*(posicion.x - player_position.x) + ray_direction.y*(posicion.y - player_position.y);
+	float denom = ray_direction.x*ray_direction.x + ray_direction.y*ray_direction.y;
+	float n = num/denom;
 
-static void draw_with_y_positive(Drawer &drawer,const std::vector<float> distances,int n_rays,int first_ray,int cant_rays,int num_texture,float player_distance  ){
-		for(int i=0 ; i<cant_rays ; i++){
-			int num_pixel = i*64/cant_rays;
-			if((first_ray + i+ n_rays)>0 and (first_ray + i+ n_rays)<2*n_rays)
-				if(distances[first_ray + i+ n_rays]>player_distance)
-					drawer.draw_sprites(first_ray + i,player_distance ,num_pixel,num_texture);
-		}
+	Coordinates colision_line = player_position;
+	colision_line.x+=n*ray_direction.x;
+	colision_line.y+=n*ray_direction.y;
 
-}
-
-static void draw_with_y_negative(Drawer &drawer, const std::vector<float> distances,int n_rays,int first_ray,int cant_rays,int num_texture,float player_distance  ){
-		for(int i=0 ; i<cant_rays ; i++){
-			int num_pixel =63 -  i*64/cant_rays;
-			if((first_ray + i+ n_rays)>0 and (first_ray + i+ n_rays)<2*n_rays)
-				if(distances[first_ray + i+ n_rays]>player_distance)
-					drawer.draw_sprites(first_ray + i,player_distance ,num_pixel,num_texture);
-		}
-
-}
-
-void Sprite::draw(Drawer &drawer, const std::vector<float> distances, int n_rays){
-	int first_ray = center_ray - cant_rays/2;
-	if(player.get_direction().y>0)
-		draw_with_y_positive(drawer,distances,n_rays,first_ray,cant_rays,texture,player_distance);
-	else
-		draw_with_y_negative(drawer,distances,n_rays,first_ray,cant_rays,texture,player_distance);
+	return sqrt(pow(colision_line.x - posicion.x,2) + pow(colision_line.y - posicion.y,2));
 }

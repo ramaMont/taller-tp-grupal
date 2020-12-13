@@ -9,6 +9,8 @@
 #include <fstream>
 #include <Jugador.h>
 
+#include "window.h"
+
 #define texWidth 64
 #define texHeight 64
 
@@ -17,7 +19,7 @@ class Drawer {
 
 	private:
 		int wall_textures[8][3][64][64];//Textura; color(r,g,b); fila; columna
-		int other_textures[2][3][64][64];//Texturas de barriles/lamparas
+		int other_textures[3][3][64][64];//Texturas de barriles/lamparas
 		int guard_textures[3][3][64][64];//Guardia de frente, de costado, y de atras
 
 		Jugador &player;
@@ -86,6 +88,7 @@ class Drawer {
 
 			load_ohter_texture("barrel.mat",0);
 			load_ohter_texture("pillar.mat",1);
+			load_ohter_texture("greenlight.mat",2);
 
 			load_guard_texture("front_guard.mat",0);
 			load_guard_texture("side_guard.mat",1);

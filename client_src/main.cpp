@@ -19,7 +19,7 @@
 #include <Jugador.h>
 #include <Direccion.h>
 #include <Wall.h>
-#include <Sprite.h>
+#include <Sprite_holder.h>
 #include <Guard.h>
 
 void draw(Jugador &player, Window &window, Screen &screen,SDL_bool &done){
@@ -61,47 +61,7 @@ void draw(Jugador &player, Window &window, Screen &screen,SDL_bool &done){
 }
 
 void constant_loop(Jugador &player, Window &window, Screen &screen){ //1000/30
-
 	SDL_bool done = SDL_FALSE;
-
-	long int frames_counter = 0;
-	long int counter = 0;
-
-	time_t rate = 1000/30;
-
-    struct timeval time_now{};
-    gettimeofday(&time_now, nullptr);
-    time_t time_before_draw;// = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);
-    time_t time_after_draw;
-
-    time_t time_previous_draw;
-    time_previous_draw = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);    		
-
-    while(!done){
-    	//LLamo al dibujadorrr
-	    gettimeofday(&time_now, nullptr);
-		time_before_draw = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);    	
-
-    	draw(player,window,screen,done);
-	    
-	    gettimeofday(&time_now, nullptr);
-	    time_after_draw = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);    	
-	    frames_counter+=(time_after_draw - time_previous_draw);
-	    counter++;
-	    time_previous_draw = time_after_draw;
-	    time_t rest = rate - (time_after_draw - time_before_draw);
-	    /*if (rest < 0){ //Me tardé mas que mi rate en dibujar este frame
-            time_t behind = -rest; //Que tan atrasado estoy
-            rest = rate - behind % rate; //
-            time_t lost = behind + rest;
-            time_start += lost;
-            //it += int(lost / rate);//  # floor division
-	    }*/	
-	    std::this_thread::sleep_for(std::chrono::milliseconds(rest));
-    }
-    printf("tiempo promedio de milisegundos entre frames : %li \n", frames_counter/counter);
-
-	/*SDL_bool done = SDL_FALSE;
 
 	time_t rate = 1000/30;
 
@@ -114,19 +74,18 @@ void constant_loop(Jugador &player, Window &window, Screen &screen){ //1000/30
     	draw(player,window,screen,done);
 	    gettimeofday(&time_now, nullptr);
 	    time_t time_after_draw = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);    	
-	    std::cout << "time_after_draw: "  << time_after_draw << std::endl << std::endl;
 	    time_t rest = rate - (time_after_draw - time_start);
 	    if (rest < 0){ //Me tardé mas que mi rate en dibujar este frame
             time_t behind = -rest; //Que tan atrasado estoy
             rest = rate - behind % rate; //
             time_t lost = behind + rest;
             time_start += lost;
-            //it += int(lost / rate);//  # floor division
+	    }else{
+	    	std::this_thread::sleep_for(std::chrono::milliseconds(rest));
 	    }
-	    std::this_thread::sleep_for(std::chrono::milliseconds(rest));
 	    //sleep(rest);
 	    time_start += rate;
-    }*/
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -175,7 +134,8 @@ int main(int argc, char* argv[]) {
 	  		      map.agregarPosicionable(posicionable,position);
 	          }else if(pos_value<10){
 	            Coordinates position((float)i+0.5,(float)j+0.5);
-	            Sprite *posicionable = new Sprite(position,a_map[i][j]-8,player);
+	            Sprite_holder *posicionable = new Sprite_holder(position,a_map[i][j]-8,player);
+	            posicionable->add_sprite(2);
 	            sprites.push_back(posicionable);
 	            map.agregarPosicionable(posicionable,position);
 	          }else{
