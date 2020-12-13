@@ -1,5 +1,6 @@
 #include "Mapa.h"
 #include "Jugador.h"
+#include "Enemy.h"
 #include <iostream>
 #include <utility>
 #include <cmath>
@@ -27,15 +28,41 @@ void Mapa::agregarJugador(Jugador* jugador){
 
 void Mapa::agregarPosicionable(Posicionable* posicionable, 
         Coordinates posicion){
-	if(mapaJuego[floor(posicion.x)][floor(posicion.y)]==nullptr){
-		mapaJuego[floor(posicion.x)][floor(posicion.y)]=posicionable;
-	}else{
-		throw -2;//Quiero guardar algo donde ya hay otra cosa
-	}
+    if(mapaJuego[floor(posicion.x)][floor(posicion.y)]==nullptr){
+        mapaJuego[floor(posicion.x)][floor(posicion.y)]=posicionable;
+    }else{
+        throw -2;//Quiero guardar algo donde ya hay otra cosa
+    }
 }
 
+void Mapa::relocatePlayer(Jugador* jugador, Coordinates posicion){
+        if(mapaJuego[floor(posicion.x)][floor(posicion.y)]==nullptr){
+            mapaJuego[floor(posicion.x)][floor(posicion.y)]=jugador;
+        }else{
+            mapaJuego[floor(posicion.x)][floor(posicion.y)]->add(jugador);
+            //throw -2;//Quiero guardar algo donde ya hay otra cosa
+        }
+}
+
+
+void Mapa::relocateEnemy(Enemy* enemy, Coordinates posicion){
+        if(mapaJuego[floor(posicion.x)][floor(posicion.y)]==nullptr){
+            mapaJuego[floor(posicion.x)][floor(posicion.y)]=enemy;
+        }else{
+            mapaJuego[floor(posicion.x)][floor(posicion.y)]->add(enemy);
+            //throw -2;//Quiero guardar algo donde ya hay otra cosa
+        }
+}
+
+
 void Mapa::sacarPosicionable(Coordinates posicion){
-   mapaJuego[floor(posicion.x)][floor(posicion.y)]=nullptr;
+    if(mapaJuego[floor(posicion.x)][floor(posicion.y)]!=nullptr){
+        try{
+            mapaJuego[floor(posicion.x)][floor(posicion.y)]->remove();
+        }catch (int e){
+            mapaJuego[floor(posicion.x)][floor(posicion.y)]=nullptr;
+        }
+    }
 }
 
 Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion){
@@ -53,12 +80,31 @@ void Mapa::moveme(Jugador* jugador, const Coordinates& posicion){
         return;
     }
     try {
-        agregarPosicionable(jugador, posicion);
+        relocatePlayer(jugador,posicion);
         sacarPosicionable(posJugador);
     } catch(int e){
         throw;
     }
 }
+
+void Mapa::moveEnemy(Enemy* enemy, const Coordinates& posicion){
+    
+    if (posicion.x > ancho || posicion.y > alto)
+        throw -1;
+    if (posicion.x < 0 || posicion.y < 0)
+        throw -1;
+    Coordinates posJugador = enemy->getPosicion();
+    if (enemy->getPosicion() == posicion){
+        return;
+    }
+    try {
+        relocateEnemy(enemy, posicion);
+        sacarPosicionable(posJugador);
+    } catch(int e){
+        throw;
+    }
+}
+
 
 //Problema: intento borrar tambien la posicion donde almaceno el jugador..."solucion": lo saco manualmente...
 Mapa::~Mapa(){

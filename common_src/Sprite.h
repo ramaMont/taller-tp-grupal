@@ -29,7 +29,7 @@ public:
     virtual void draw(Drawer &drawer,  const std::vector<float> distances, int n_rays) = 0;
 
 	Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
-		located = true;
+		spotted();
 		return ray->sprite_colided(coordinates_map);
 	}
 
@@ -54,7 +54,7 @@ public:
 		cant_rays = 180/player_distance;
 	}	
 
-	void spotted(){
+	virtual void spotted(){
 		located = true;
 	}
 

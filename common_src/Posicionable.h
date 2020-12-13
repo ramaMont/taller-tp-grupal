@@ -8,6 +8,8 @@ class Ray;
 #include "../client_src/ray.h"
 class Intersected_object;
 #include "../client_src/intersected_object.h"
+class Jugador;
+class Enemy;
 
 class Posicionable{
 protected:
@@ -27,6 +29,19 @@ public:
     virtual Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
     virtual Coordinates getPosicion();
+
+    virtual void add(Enemy* new_enemy){
+        throw -2;
+    }
+
+    virtual void add(Jugador* player){
+        throw -2;
+    }
+
+    virtual void remove(){
+        throw -2;
+    }
+
     virtual ~Posicionable();
 };
 

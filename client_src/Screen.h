@@ -11,6 +11,7 @@
 
 class Sprite;
 #include <Sprite.h>
+class Enemy;
 #include <Jugador.h>
 #include <Mapa.h>
 

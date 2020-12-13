@@ -20,9 +20,9 @@
 #include <Direccion.h>
 #include <Wall.h>
 #include <Sprite_holder.h>
-#include <Guard.h>
+#include <Enemy.h>
 
-void draw(Jugador &player, Window &window, Screen &screen,SDL_bool &done){
+void draw(std::vector<Enemy*> enemies,Jugador &player, Window &window, Screen &screen,SDL_bool &done){
 
     DirAdelante forward;
     DirAtras backward;
@@ -45,6 +45,15 @@ void draw(Jugador &player, Window &window, Screen &screen,SDL_bool &done){
         if(keys[SDL_SCANCODE_DOWN])
           player.mover(&backward);
 
+        if(keys[SDL_SCANCODE_W])
+          enemies[0]->move_up();
+        if(keys[SDL_SCANCODE_S])
+          enemies[0]->move_down();
+        if(keys[SDL_SCANCODE_A])
+          enemies[0]->move_left();
+        if(keys[SDL_SCANCODE_D])
+          enemies[0]->move_right();
+
 	      while (SDL_PollEvent(&event)) { 
 
 	        switch(event.type) {
@@ -60,7 +69,7 @@ void draw(Jugador &player, Window &window, Screen &screen,SDL_bool &done){
       //SDL_Delay(5);
 }
 
-void constant_loop(Jugador &player, Window &window, Screen &screen){ //1000/30
+void constant_loop(std::vector<Enemy*> &enemies,Jugador &player, Window &window, Screen &screen){ //1000/30
 	SDL_bool done = SDL_FALSE;
 
 	time_t rate = 1000/30;
@@ -71,7 +80,7 @@ void constant_loop(Jugador &player, Window &window, Screen &screen){ //1000/30
 
     while(!done){
     	//LLamo al dibujadorrr
-    	draw(player,window,screen,done);
+    	draw(enemies,player,window,screen,done);
 	    gettimeofday(&time_now, nullptr);
 	    time_t time_after_draw = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);    	
 	    time_t rest = rate - (time_after_draw - time_start);
@@ -101,7 +110,7 @@ int main(int argc, char* argv[]) {
   {1,0,8,10,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,9,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -123,7 +132,7 @@ int main(int argc, char* argv[]) {
     Coordinates initial_direction(0,1);
     Jugador player(initial_position,initial_direction,map);
     std::vector<Sprite*> sprites;
-    std::vector<Guard*> guards;
+    std::vector<Enemy*> enemies;
     for(int i=0; i<24; i++){
     	for(int j=0; j<24; j++){
         int pos_value = a_map[i][j];
@@ -140,9 +149,9 @@ int main(int argc, char* argv[]) {
 	            map.agregarPosicionable(posicionable,position);
 	          }else{
 	          	Coordinates position((float)i+0.5,(float)j+0.5);
-	            Guard *posicionable = new Guard(position,a_map[i][j]-10,player);//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
+	            Enemy *posicionable = new Enemy(position,a_map[i][j]-10,player,"Andy", map);//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
 	            sprites.push_back(posicionable);
-	            guards.push_back(posicionable);
+	            enemies.push_back(posicionable);
 	            map.agregarPosicionable(posicionable,position);	          	
 	          }
     		}
@@ -165,7 +174,7 @@ int main(int argc, char* argv[]) {
     DirRotDerecha rotRight;
     DirRotIzquierda rotLeft;
 
-    constant_loop(player,window,screen);
+    constant_loop(enemies,player,window,screen);
 
     return 0;
 
