@@ -35,6 +35,8 @@ class MapaEditable {
     void obtenerElemento(const std::string& posicion,
                          std::string& elemento);
     void guardarMapa();
+    void agregarFila();
+    void agregarColumna();
     int getColumnas();
     int getFilas();
     void limpiar();

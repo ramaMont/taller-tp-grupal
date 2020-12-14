@@ -1,13 +1,30 @@
 #include "ResourcesWidget.h"
 #include <iostream>
 #include <QObject>
-#include "Editor.h"
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QApplication>
 
-ResourcesWidget::ResourcesWidget(QWidget *parent)
-    : QFrame(parent) {
+ResourcesWidget::ResourcesWidget(QWidget *parent,
+                                const std::map<std::string, std::string>&
+                                    recursos_del_juego)
+    : QFrame(parent), recursos_del_juego(recursos_del_juego) {
+    this->setObjectName(QStringLiteral("widgetRecursos"));
+    verticalLayout = new QVBoxLayout(this);
+    verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
+
+    // Recorro los recursos y por cada uno genero un label.
+    for (auto const& element : recursos_del_juego) {
+        QLabel* label = new QLabel(this);
+        label->setObjectName(QString::fromStdString(element.first));
+        label->setPixmap(QPixmap(QString::fromStdString(element.second)));
+        label->setFixedWidth(MIN_WIDTH_SIZE);
+        label->setFixedHeight(MIN_HEIGHT_SIZE);
+        label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        verticalLayout->addWidget(label);
+    }
+
     setAcceptDrops(false);
 }
 

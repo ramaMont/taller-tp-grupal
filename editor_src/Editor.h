@@ -19,11 +19,8 @@
 #include <QVariant>
 #include <QScrollArea>
 #include <QMessageBox>
-#include "MapaEditable.h"
-
-#define MIN_WIDTH_SIZE 80
-#define MIN_HEIGHT_SIZE 80
-
+#include "ResourcesWidget.h"
+#include "MapWidget.h"
 
 class Editor : public QWidget {
 public:
@@ -42,7 +39,6 @@ private:
     QWidget *widgetCrearMapa;
     QWidget *widgetMapaGuardar;
     QWidget *widgetRecursos;
-    QVBoxLayout *verticalLayout;
     QScrollArea *scrollMapArea;
     QScrollArea *scrollResourcesArea;
     QLabel* nombreLabel;
@@ -51,19 +47,13 @@ private:
     QLineEdit *inputNombreMapa;
     QLineEdit *inputCantidadFilas;
     QLineEdit *inputCantidadColumnas;
-    QWidget *mapWidget;
-    QGridLayout *gridLayout;
+    MapWidget *mapWidget;
     QPushButton *botonSonido;
-    bool mapa_creado;
-    MapaEditable* mapa;
-    std::map<std::string, std::string> mapa_recursos;
+    std::map<std::string, std::string> recursos_del_juego;
     void crearMapaNuevo();
     void cargarArchivoMapa();
     void conectarEventos();
-    void fabricarMapa(const int& flag);
-    void limpiarGrid();
     void guardarMapa();
-    void sincronizarMapaYVista();
     void keyPressEvent(QKeyEvent* event) override;
     void desplegarFileDialog();
     std::map<std::string, std::string> obtenerMapaRecursos();

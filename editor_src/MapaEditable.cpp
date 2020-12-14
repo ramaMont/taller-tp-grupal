@@ -82,6 +82,14 @@ void MapaEditable::limpiar() {
     mapa.clear();
 }
 
+void MapaEditable::agregarFila() {
+    filas += 1;
+}
+
+void MapaEditable::agregarColumna() {
+    columnas += 1;
+}
+
 MapaEditable::~MapaEditable() {
     limpiar();
 }
