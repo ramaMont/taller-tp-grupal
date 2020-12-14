@@ -10,24 +10,22 @@ class Raycasting;
 class Drawer;
 #include "Drawer.h"
 
-#include <Jugador.h>
+#include <Movable.h>
 
 #include "Posicionable.h"
 
-#include <Enemy.h>
-
 #include <Sprite.h>
+#include <Sprite_drawer.h>
 
 //Puede tener más de un sprite y además un enemigo
-class Sprite_holder : public Sprite{
+class Sprite_holder : public Sprite, public Sprite_drawer{
 protected:
 	std::vector<int> sprites_textures;
-	Enemy* enemy;
-	Jugador* jugador;
+    Movable* movable;
 
 public:
     explicit Sprite_holder(Coordinates posicion, int texture, Jugador &player): 
-    Sprite(posicion,texture,player), enemy(nullptr),jugador(nullptr){
+    Sprite(posicion,texture,player),Sprite_drawer(posicion,texture,player) ,movable(nullptr){
     	sprites_textures.push_back(texture);
     }
 
@@ -35,15 +33,19 @@ public:
     	sprites_textures.push_back(num_texture);
     }
 
-	void spotted() override{
-		located = true;
-		if(enemy!=nullptr)
-			enemy->spotted();
+    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
+        spotted();
+        return ray->sprite_colided(coordinates_map);
+    }    
+
+	void spotted(){
+        spotted_sprite();
+        if(movable!=nullptr){
+            movable->spotted();
+        }
 	}    
 
-    void add(Enemy* new_enemy) override;
-
-    void add(Jugador* player) override;
+    void add(Movable* movable) override;
 
     void remove() override;
 

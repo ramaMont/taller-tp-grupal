@@ -1,26 +1,17 @@
 #include "Sprite_holder.h"
 
 
-void Sprite_holder::add(Enemy* new_enemy){
-	if((enemy!=nullptr) | (jugador!=nullptr)){
+void Sprite_holder::add(Movable* new_movable){
+	if(movable!=nullptr){
 		throw -2;
 	}else{
-		enemy=new_enemy;
+		movable=new_movable;
 	}
 
-}
-
-void Sprite_holder::add(Jugador* player){
-	if((enemy!=nullptr) | (jugador!=nullptr)){
-		throw -2;
-	}else{
-		jugador=player;
-	}
 }
 
 void Sprite_holder::remove(){
-	enemy = nullptr;
-	jugador = nullptr;
+	movable = nullptr;
 }
 
 static void draw_with_y_positive(Drawer &drawer,const std::vector<float> distances,int n_rays,int first_ray,int cant_rays,int num_texture,float player_distance  ){
@@ -54,10 +45,5 @@ void Sprite_holder::draw(Drawer &drawer, const std::vector<float> distances, int
 		for(unsigned int i=0; i<sprites_textures.size(); i++){
 			draw_with_y_negative(drawer,distances,n_rays,first_ray,cant_rays,sprites_textures[i],player_distance);
 		}
-	}
-
-	if(enemy){
-		printf("eaaa\n");
-		enemy->draw(drawer,distances,n_rays);
 	}
 }

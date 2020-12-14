@@ -8,6 +8,7 @@ class Ray;
 #include "../client_src/ray.h"
 class Intersected_object;
 #include "../client_src/intersected_object.h"
+class Movable;
 class Jugador;
 class Enemy;
 
@@ -30,11 +31,7 @@ public:
 
     virtual Coordinates getPosicion();
 
-    virtual void add(Enemy* new_enemy){
-        throw -2;
-    }
-
-    virtual void add(Jugador* player){
+    virtual void add(Movable* movable){
         throw -2;
     }
 

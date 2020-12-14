@@ -1,50 +1,41 @@
 #ifndef __ENEMY__
 #define __ENEMY__
 
+#include "Posicionable.h"
+
+#include "coordinates.h"
 class Mapa;
+#include "Mapa.h"
+class Direccion;
 #include "Direccion.h"
 
-#include "Sprite.h"
-class Enemy : public Sprite{
+class Movable;
+#include <Movable.h>
+
+class Drawer;
+
+#include "Sprite_drawer.h"
+
+class Enemy : public Movable, public Sprite_drawer{
 private:
+	Jugador &player;	
 	std::string id;
-	Coordinates direction;
-	Mapa &mapa;
 
 public:
-	explicit Enemy(Coordinates posicion, int num_texture, Jugador &player ,std::string id, Mapa &map ): 
-	Sprite(posicion,num_texture,player),id(id),mapa(map){
-		direction.x = 0;
-		direction.y = 1;
+	explicit Enemy(Coordinates posicion, int num_texture, Coordinates direction ,Mapa& mapa, Jugador &player ,std::string id);
+
+    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
+        spotted();
+        return ray->sprite_colided(coordinates_map);
+    } 
+
+	void spotted() override{
+		spotted_sprite();
+		update_position(posicion);
 	}
 
-	void draw(Drawer &drawer,  const std::vector<float> distances, int n_rays) override;
 
-	void mover_en_una_direccion(Coordinates nuevaPos);
-
-	void mover(Coordinates nuevaPos);
-
-	void move_up(){
-		Coordinates nuevaPos = posicion;
-		nuevaPos.x+=0.1;
-		mover(nuevaPos);
-	}
-	void move_down(){
-		Coordinates nuevaPos = posicion;
-		nuevaPos.x-=0.1;
-		mover(nuevaPos);
-	}
-	void move_left(){
-		Coordinates nuevaPos = posicion;
-		nuevaPos.y+=0.1;
-		mover(nuevaPos);
-	}
-	void move_right(){
-		Coordinates nuevaPos = posicion;
-		nuevaPos.y-=0.1;
-		mover(nuevaPos);	
-	}	
-
+	void draw(Drawer &drawer,  const std::vector<float> distances, int n_rays);
 
 };
 

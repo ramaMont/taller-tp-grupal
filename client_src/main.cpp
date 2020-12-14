@@ -16,10 +16,12 @@
 
 #include <Mapa.h>
 #include <coordinates.h>
+#include <Movable.h>
 #include <Jugador.h>
 #include <Direccion.h>
 #include <Wall.h>
 #include <Sprite_holder.h>
+#include <Sprite_drawer.h>
 #include <Enemy.h>
 
 void draw(std::vector<Enemy*> enemies,Jugador &player, Window &window, Screen &screen,SDL_bool &done){
@@ -46,13 +48,13 @@ void draw(std::vector<Enemy*> enemies,Jugador &player, Window &window, Screen &s
           player.mover(&backward);
 
         if(keys[SDL_SCANCODE_W])
-          enemies[0]->move_up();
+          enemies[0]->mover(&forward);
         if(keys[SDL_SCANCODE_S])
-          enemies[0]->move_down();
+          enemies[0]->mover(&backward);
         if(keys[SDL_SCANCODE_A])
-          enemies[0]->move_left();
+          enemies[0]->mover(&left);
         if(keys[SDL_SCANCODE_D])
-          enemies[0]->move_right();
+          enemies[0]->mover(&right);
 
 	      while (SDL_PollEvent(&event)) { 
 
@@ -92,7 +94,6 @@ void constant_loop(std::vector<Enemy*> &enemies,Jugador &player, Window &window,
 	    }else{
 	    	std::this_thread::sleep_for(std::chrono::milliseconds(rest));
 	    }
-	    //sleep(rest);
 	    time_start += rate;
     }
 }
@@ -128,10 +129,10 @@ int main(int argc, char* argv[]) {
     
     Mapa map(24, 24);
 
-    Coordinates initial_position(12.5,2.5);
+    Coordinates initial_position(7.5,1.5);
     Coordinates initial_direction(0,1);
     Jugador player(initial_position,initial_direction,map);
-    std::vector<Sprite*> sprites;
+    std::vector<Sprite_drawer*> sprites;
     std::vector<Enemy*> enemies;
     for(int i=0; i<24; i++){
     	for(int j=0; j<24; j++){
@@ -149,7 +150,9 @@ int main(int argc, char* argv[]) {
 	            map.agregarPosicionable(posicionable,position);
 	          }else{
 	          	Coordinates position((float)i+0.5,(float)j+0.5);
-	            Enemy *posicionable = new Enemy(position,a_map[i][j]-10,player,"Andy", map);//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
+	          	Coordinates enemy_direction(0,1);
+	            Enemy *posicionable = new Enemy(position,a_map[i][j]-10,enemy_direction,map,player,"Andy");//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
+	            //OJO ACÁ, YA NO TENGO ENEMIGOS COMO SPRITES EH
 	            sprites.push_back(posicionable);
 	            enemies.push_back(posicionable);
 	            map.agregarPosicionable(posicionable,position);	          	
@@ -160,7 +163,7 @@ int main(int argc, char* argv[]) {
 
     Window window(640,480);  //(640,480) o bien (1280,720)
 
-    Screen screen(sprites,player,map,window);
+    Screen screen(enemies,sprites,player,map,window);
 
     window.set_no_color();
 
