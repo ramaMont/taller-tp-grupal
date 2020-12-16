@@ -65,8 +65,8 @@ void Mapa::moveme(Movable* jugador, const Coordinates& posicion){
         throw -1;
     if (posicion.x < 0 || posicion.y < 0)
         throw -1;
-    Coordinates posJugador = jugador->getPosicion();
-    if (jugador->getPosicion() == posicion){
+    Coordinates posJugador = jugador->get_position();
+    if (jugador->get_position() == posicion){
         return;
     }
     try {
@@ -80,7 +80,7 @@ void Mapa::moveme(Movable* jugador, const Coordinates& posicion){
 
 //Problema: intento borrar tambien la posicion donde almaceno el jugador..."solucion": lo saco manualmente...
 Mapa::~Mapa(){
-    sacarPosicionable(player->get_coordinates());
+    sacarPosicionable(player->get_position());
     for(int i=0; i<ancho; i++){
          for(int j=0; j<alto; j++){
             if(mapaJuego[i][j]!=nullptr){

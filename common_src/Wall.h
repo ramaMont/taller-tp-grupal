@@ -13,10 +13,6 @@ public:
 		return ray->wall_colided(coordinates_map,first_triangle,this);
 	}
 
-    /*virtual void draw_yourself(Raycasting raycasting) override{
-	  //raycasting.draw_wall(this)
-	}*/
-
 };
 
 #endif

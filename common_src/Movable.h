@@ -13,7 +13,7 @@ class Ray;
 #include "ray.h"
 
 class Movable : public Posicionable{
-private:
+protected:
 	Coordinates direction;
     Mapa &mapa;
 public:
@@ -25,9 +25,7 @@ public:
 	virtual void spotted(){
 	}
 
-    Coordinates get_coordinates();
-
-    Coordinates get_direction();
+    Coordinates get_direction() const;
 
     ~Movable();  
 };

@@ -39,11 +39,7 @@ void Movable::mover(Direccion* direccion){
     }
 }
 
-Coordinates Movable::get_coordinates(){
-    return posicion;
-}
-
-Coordinates Movable::get_direction(){
+Coordinates Movable::get_direction() const{
     return direction;
 }
 

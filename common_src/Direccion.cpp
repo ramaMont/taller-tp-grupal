@@ -7,7 +7,7 @@ DirAdelante::DirAdelante(){
 }
 
 Coordinates DirAdelante::mover(Movable* jugador, Coordinates direction){
-    Coordinates posActual = jugador->getPosicion();
+    Coordinates posActual = jugador->get_position();
     posActual.increment_on_direction(direction,step_size);
     return posActual;
 }
@@ -19,7 +19,7 @@ DirAtras::DirAtras(){
 }
 
 Coordinates DirAtras::mover(Movable* jugador, Coordinates direction){
-    Coordinates posActual = jugador->getPosicion();
+    Coordinates posActual = jugador->get_position();
     posActual.increment_on_direction(direction,-step_size);
     return posActual;
 }
@@ -31,7 +31,7 @@ DirIzquierda::DirIzquierda(){
 }
 
 Coordinates DirIzquierda::mover(Movable* jugador, Coordinates direction){
-    Coordinates posActual = jugador->getPosicion();
+    Coordinates posActual = jugador->get_position();
     Coordinates new_direction = direction.get_perpendicular_direction();
     if (direction.y_positive()){
         posActual.increment_on_direction(new_direction,-step_size);
@@ -48,7 +48,7 @@ DirDerecha::DirDerecha(){
 }
 
 Coordinates DirDerecha::mover(Movable* jugador, Coordinates direction){
-    Coordinates posActual = jugador->getPosicion();
+    Coordinates posActual = jugador->get_position();
     Coordinates new_direction = direction.get_perpendicular_direction();
     if (direction.y_positive()){
         posActual.increment_on_direction(new_direction,step_size);
@@ -70,7 +70,7 @@ Coordinates DirRotDerecha::mover(Movable* jugador, Coordinates direction){
     Coordinates dirActual = jugador->get_direction();
     dirActual.rotate(-inc);
     jugador->set_direction(dirActual);
-    return jugador->get_coordinates();
+    return jugador->get_position();
 }
 
 DirRotDerecha::~DirRotDerecha(){
@@ -85,7 +85,7 @@ Coordinates DirRotIzquierda::mover(Movable* jugador, Coordinates direction){
     Coordinates dirActual = jugador->get_direction();
     dirActual.rotate(inc);
     jugador->set_direction(dirActual);
-    return jugador->get_coordinates();
+    return jugador->get_position();
 }
 
 DirRotIzquierda::~DirRotIzquierda(){

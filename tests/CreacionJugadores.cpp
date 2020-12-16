@@ -9,7 +9,7 @@ TEST(CreacionJugadoresTests, creacionExitosa) {
     Coordinates dir(0,0);
     Jugador jugador(pos, dir, mapa);
     //act
-    Coordinates posicionResultado = mapa.obtenerPosicionableEn(pos)->getPosicion();
+    Coordinates posicionResultado = mapa.obtenerPosicionableEn(pos)->get_position();
     //assert
     EXPECT_EQ (pos.x, posicionResultado.x);
     EXPECT_EQ (pos.y, posicionResultado.y);

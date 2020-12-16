@@ -19,8 +19,6 @@ public:
 	// Calculo un rayo que partiendo del jugador, "choque" con un punto en el plano.
 	Coordinates calculate_ray_direction(int i, int n_rays);
 
-	Coordinates find_intersection(Coordinates direction,Coordinates position);
-
 	Coordinates get_camera_plane();
 };
 

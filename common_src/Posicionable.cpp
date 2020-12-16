@@ -9,7 +9,7 @@ Posicionable::Posicionable(Coordinates posicion, int texture):
     posicion(posicion),texture(texture){
 }
 
-Coordinates Posicionable::getPosicion(){
+Coordinates Posicionable::get_position(){
     return posicion;
 }
 

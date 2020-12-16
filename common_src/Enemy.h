@@ -19,6 +19,7 @@ class Drawer;
 class Enemy : public Movable, public Sprite_drawer{
 private:
 	Jugador &player;	
+	int num_texture;
 	std::string id;
 
 public:
@@ -31,11 +32,10 @@ public:
 
 	void spotted() override{
 		spotted_sprite();
-		update_position(posicion);
 	}
 
 
-	void draw(Drawer &drawer,  const std::vector<float> distances, int n_rays);
+	void draw(Drawer &drawer,  const std::vector<float> &distances, int n_rays);
 
 };
 

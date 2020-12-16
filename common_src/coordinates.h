@@ -47,6 +47,8 @@ public:
 
     double get_distance_to_higher_side_y()const;
 
+    double calculate_distance_to_vector(const Coordinates vector_direction, const Coordinates vector_position);
+
     double calculate_distance(const Coordinates &a_position) const;
 
 	// Según la direccion a la que apunta mi rayo, me fijo en una celda distinta

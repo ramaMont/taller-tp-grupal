@@ -104,6 +104,21 @@ int Coordinates::get_increase_y()const{
 	return increase;
 }
 
+
+double Coordinates::calculate_distance_to_vector(const Coordinates vector_direction, const Coordinates vector_position){
+
+	float num = vector_direction.x*(this->x - vector_position.x) + vector_direction.y*( this->y - vector_position.y);
+	float denom = vector_direction.x*vector_direction.x + vector_direction.y*vector_direction.y;
+	float n = num/denom;
+
+	Coordinates colision_line = vector_position;
+	colision_line.x+=n*vector_direction.x;
+	colision_line.y+=n*vector_direction.y;
+
+	return sqrt(pow(colision_line.x - this->x,2) + pow(colision_line.y - this->y,2));
+
+}
+
 // void Coordinates::set_x(double a_x){
 //     this->x = a_x;
 // }

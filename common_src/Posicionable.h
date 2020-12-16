@@ -29,7 +29,7 @@ public:
 
     virtual Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
-    virtual Coordinates getPosicion();
+    virtual Coordinates get_position();
 
     virtual void add(Movable* movable){
         throw -2;

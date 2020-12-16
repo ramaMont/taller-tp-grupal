@@ -20,9 +20,10 @@ class Drawer {
 	private:
 		int wall_textures[8][3][64][64];//Textura; color(r,g,b); fila; columna
 		int other_textures[3][3][64][64];//Texturas de barriles/lamparas
-		int guard_textures[3][3][64][64];//Guardia de frente, de costado, y de atras
+		int guard_textures[8][3][64][64];//Guardia de frente, de costado, y de atras
+		int gun_player[3][64][64];
 
-		Jugador &player;
+		const Jugador &player;
 		SDL_Renderer* renderer;
 		SDL_Rect pixel;
 		int widht;
@@ -75,6 +76,21 @@ class Drawer {
 		  file.close();
 		}		
 
+		void load_gun_player_texture(std::string file_name){
+		  std::ifstream file("textures/"+file_name);
+		  std::string number;
+
+		  for(int k=0; k<3; k++){
+			  for(int i=0; i<64; i++){
+				  for(int j=0; j<64; j++){
+				  	getline(file,number);
+				  	gun_player[k][i][j] = stoi(number);
+				  }  	
+			  }
+		  }	
+		  file.close();
+		}	
+
 		void init_textures(){
 
 			load_wall_texture("greystone.mat",0);
@@ -91,8 +107,15 @@ class Drawer {
 			load_ohter_texture("greenlight.mat",2);
 
 			load_guard_texture("front_guard.mat",0);
-			load_guard_texture("side_guard.mat",1);
-			load_guard_texture("back_guard.mat",2);
+			load_guard_texture("front_right_guard.mat",1);
+			load_guard_texture("right_side_guard.mat",2);
+			load_guard_texture("back_right_guard.mat",3);
+			load_guard_texture("back_guard.mat",4);
+			load_guard_texture("back_left_guard.mat",5);
+			load_guard_texture("left_side_guard.mat",6);
+			load_guard_texture("front_left_guard.mat",7);
+
+			load_gun_player_texture("simple_gun.mat");
 
 		}		
 
@@ -102,19 +125,14 @@ class Drawer {
 			pixel.w = x_lenght_ray;
 			pixel.h = ceil(pixel_lenght);
 
-			int x_initial_pos;
-		    if(player.get_direction().y>0){
-		    	x_initial_pos = x_lenght_ray*(pos_x+n_rays);
-		    }else{
-		    	x_initial_pos = widht - x_lenght_ray*(pos_x+n_rays);
-		    }
+			int x_initial_pos = x_lenght_ray*(pos_x+n_rays);
 
 			pixel.x = x_initial_pos;
 		}
 
 
 	public:
-		Drawer(const Window &window,const int n_rays, Jugador &player):
+		Drawer(const Window &window,const int n_rays,const Jugador &player):
 			player(player),renderer(window.getRenderer()),
 			widht(window.get_width()), height(window.get_height()),
 			n_rays(n_rays){
@@ -163,6 +181,38 @@ class Drawer {
 			}
 
 		}		
+
+		void draw_gun_player(){
+			float lineHeight = height/2;
+			float initial_position_y =height/2;
+
+			float pixel_lenght = lineHeight/64;
+
+			for(int j=0; j<64; j++){
+
+
+				float x_lenght_ray = widht/(2*n_rays);//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
+
+				pixel.w = x_lenght_ray;
+				pixel.h = ceil(pixel_lenght);
+
+				int x_initial_pos = x_lenght_ray*(j+n_rays - 32);
+				pixel.x = x_initial_pos;
+
+
+				for(int i=27; i<64; i++){
+					int red = gun_player[0][j][i];
+					int green = gun_player[1][j][i];
+					int blue = gun_player[2][j][i];
+					if((red==163) and (green==73) and (blue==164)){
+					}else{
+						SDL_SetRenderDrawColor(renderer,red , green, blue, SDL_ALPHA_OPAQUE);
+						SDL_RenderFillRect( renderer, &pixel );
+					}
+				   	pixel.y = initial_position_y + ceil((i*pixel_lenght));    	
+				}
+			}
+		}				
 
 		void draw_wall(int pos_x,float distance_player_plane, int number_line_texture, int texture, int side_division){
 

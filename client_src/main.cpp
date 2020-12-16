@@ -52,9 +52,9 @@ void draw(std::vector<Enemy*> enemies,Jugador &player, Window &window, Screen &s
         if(keys[SDL_SCANCODE_S])
           enemies[0]->mover(&backward);
         if(keys[SDL_SCANCODE_A])
-          enemies[0]->mover(&left);
+          enemies[0]->mover(&rotLeft);
         if(keys[SDL_SCANCODE_D])
-          enemies[0]->mover(&right);
+          enemies[0]->mover(&rotRight);
 
 	      while (SDL_PollEvent(&event)) { 
 
@@ -130,7 +130,7 @@ int main(int argc, char* argv[]) {
     Mapa map(24, 24);
 
     Coordinates initial_position(7.5,1.5);
-    Coordinates initial_direction(0,1);
+    Coordinates initial_direction(1,1);
     Jugador player(initial_position,initial_direction,map);
     std::vector<Sprite_drawer*> sprites;
     std::vector<Enemy*> enemies;
@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
     	}
     }
 
-    Window window(640,480);  //(640,480) o bien (1280,720)
+    Window window(1280,720);  //(640,480) o bien (1280,720)
 
     Screen screen(enemies,sprites,player,map,window);
 

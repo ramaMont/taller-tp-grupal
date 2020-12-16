@@ -67,10 +67,11 @@ class Screen{
 		}		
 
 		void initialice_spotted_sprites(std::vector<Sprite_drawer*> &spotted_sprites,Camera &camera){
+
 			for(unsigned int j=0; j<spotted_sprites.size(); j++){
+				spotted_sprites[j]->set_relative_angle_to_player();
 				for(int i=-2*n_rays; i<=2*n_rays; i++){
-					Coordinates ray_direction = camera.calculate_ray_direction(i,n_rays);
-					spotted_sprites[j]->update_distance_to_closest_ray(i,ray_direction);
+					spotted_sprites[j]->update_distance_to_closest_ray(i,n_rays);
 				}
 				spotted_sprites[j]->set_distance(camera.get_camera_plane());
 			}
@@ -88,7 +89,7 @@ class Screen{
 		void show(){
 			unsee_sprites();
 			background.show();
-			Camera camera(player.get_coordinates(),player.get_direction());
+			Camera camera(player.get_position(),player.get_direction());
 			std::vector<float> distances;
 			raycasting.calculate_raycasting(camera,distances);
 			std::vector<Sprite_drawer*> spotted_sprites;
@@ -97,6 +98,8 @@ class Screen{
 			for(unsigned int j=0; j<spotted_sprites.size(); j++){
 				spotted_sprites[j]->draw(drawer,distances,n_rays);
 			}
+
+			drawer.draw_gun_player();
 
 		}
 };
