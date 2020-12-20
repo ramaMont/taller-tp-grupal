@@ -18,16 +18,13 @@ private:
     int n_rays;
     SDL_Rect imgPartRect;
 
-    void show_weapon(int frame_gun, int current_gun);
+    void show_weapon(int frame_gun, int current_gun, int left_start_texture, int right_end_texture);
 
     void show(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int pos_x, float distance_player_plane);
 
     void show_sprites(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int upper_limit, int pos_x, float distance_player_plane);
 
 public:
-
-    // Carga una textura
-    Texture(SDL_Renderer* renderer, int height);
 
     Texture(const Window& window, int n_rays);
 

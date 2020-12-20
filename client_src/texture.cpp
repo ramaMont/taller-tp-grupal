@@ -42,27 +42,6 @@ void Texture::add_gun_texture(std::string new_texture){
 	SDL_FreeSurface(loadedSurface);		
 }
 
-Texture::Texture(SDL_Renderer* renderer, int height) : renderer(renderer),height(height) {
-	add_wall_texture("greystone");
-	add_wall_texture("bluestone");
-	add_wall_texture("purplestone");
-	add_wall_texture("colorstone");
-	add_wall_texture("eagle");
-	add_wall_texture("mossy");
-	add_wall_texture("redbrick");
-	add_wall_texture("wood");
-
-	add_sprite_texture("barrel");
-	add_sprite_texture("pillar");
-	add_sprite_texture("greenlight");
-
-	add_enemy_texture("guard_pos");
-	add_enemy_texture("officer_pos");
-	add_enemy_texture("dog_pos");
-	add_enemy_texture("ss_pos");
-	add_enemy_texture("mutant_pos");
-}
-
 Texture::Texture(const Window& window, int n_rays):
 	renderer(window.getRenderer()),height(window.get_height()),
 	width(window.get_width()),n_rays(n_rays)	{
@@ -119,18 +98,25 @@ void Texture::show(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int po
 }
 
 
-void Texture::show_weapon(int frame_gun, int current_gun){
-		imgPartRect.x = 65*frame_gun; //Desde qué pixel en X quiero
+void Texture::show_weapon(int frame_gun, int current_gun, int left_start_texture, int right_end_texture){
+		imgPartRect.x = 65*frame_gun + left_start_texture; //Desde qué pixel en X quiero
 		imgPartRect.y = current_gun*65;	//Desde qué pixel en Y quiero
-		imgPartRect.w = 64; //Cantidad de pixeles en X que tomo
+		imgPartRect.w = right_end_texture-left_start_texture; //Cantidad de pixeles en X que tomo
 		imgPartRect.h = 64; //Cantidad de pixeles en Y que tomo
-		//printf("(int)ceil(pixel_length*64): %i \n",(int)ceil(pixel_length*64) );
-	     const SDL_Rect sdlDst = {
-	        width/2 - 160, //Posicion inicial de X donde voy a mostrar el pixel
+
+		int widht_drawable_pixel = right_end_texture - left_start_texture;
+	    const SDL_Rect sdlDst = {
+	        width/2 - (65/2 - left_start_texture)*4, //Posicion inicial de X donde voy a mostrar el pixel
 	        height - 320, //Posicion inicial de Y donde voy a mostrar el pixel
-	        320, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
+	        widht_drawable_pixel*5, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
 	        320//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
-	    };     
+	    };   
+/*	     const SDL_Rect sdlDst = {
+	        width/2 - (65-right_end_texture)*2, //Posicion inicial de X donde voy a mostrar el pixel
+	        height - 320, //Posicion inicial de Y donde voy a mostrar el pixel
+	        widht_drawable_pixel*4, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
+	        320//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
+	    };     */
 	    SDL_RenderCopy(this->renderer, guns, &imgPartRect, &sdlDst);
 }
 
@@ -162,16 +148,16 @@ void Texture::show_sprites(SDL_Texture* texture,int x_pixel_line,int y_pixel_lin
 }
 
 void Texture::show_knife(int frame_gun){
-	show_weapon(frame_gun,0);
+		show_weapon(frame_gun,0,27,53);
 }
 void Texture::show_gun(int frame_gun){
-	show_weapon(frame_gun,1);
+		show_weapon(frame_gun,1,20,47);
 }
 void Texture::show_machine_gun(int frame_gun){
-	show_weapon(frame_gun,2);
+		show_weapon(frame_gun,2,13,52);
 }
 void Texture::show_chain_gun(int frame_gun){
-	show_weapon(frame_gun,3);
+		show_weapon(frame_gun,3,7,59);
 }
 
 
