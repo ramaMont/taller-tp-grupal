@@ -17,7 +17,7 @@ protected:
 	Coordinates direction;
     Mapa &mapa;
 public:
-    explicit Movable(Coordinates posicion,Coordinates direction ,Mapa& mapa);
+    explicit Movable(Texture &texture_drawer,Coordinates posicion,Coordinates direction ,Mapa& mapa);
     void mover_en_una_direccion(Direccion* direccion);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);

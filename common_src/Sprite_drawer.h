@@ -9,9 +9,6 @@
 class Raycasting;
 #include "ray_casting.h"
 
-class Drawer;
-#include "Drawer.h"
-
 class Posicionable;
 #include <Posicionable.h>
 
@@ -35,7 +32,7 @@ public:
     posicionable(posicionable), player(player) {}   
 
 
-    virtual void draw(Drawer &drawer,  const std::vector<float> &distances, int n_rays)  = 0;
+    virtual void draw(const std::vector<float> &distances, int n_rays)  = 0;
 
     void set_relative_angle_to_player(){
     	Coordinates player_position = player.get_position();

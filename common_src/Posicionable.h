@@ -11,11 +11,13 @@ class Intersected_object;
 class Movable;
 class Jugador;
 class Enemy;
+class Texture;
 
 class Posicionable{
 protected:
     Coordinates posicion;
     int texture;
+    Texture &texture_drawer;
 public:
 
 	//Estos 2 no deberian estár, idealmente podria usar double dispatch y fue
@@ -23,9 +25,9 @@ public:
 		return texture;
 	}
 
-	explicit Posicionable(Coordinates posicion);
+	explicit Posicionable(Texture &texture_drawer,Coordinates posicion);
 
-    explicit Posicionable(Coordinates posicion,int texture);
+    explicit Posicionable(Texture &texture_drawer, Coordinates posicion,int texture);
 
     virtual Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 

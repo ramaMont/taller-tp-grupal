@@ -7,8 +7,8 @@
 #include "ray_casting.h"
 #include "ray.h"
 
-Raycasting::Raycasting(Jugador &a_player,Mapa &a_map, int n_rays, Drawer &drawer)
-    : player(a_player), map(a_map),n_rays(n_rays), drawer(drawer){}
+Raycasting::Raycasting(Jugador &a_player,Mapa &a_map, int n_rays, Texture &texture_drawer)
+    : player(a_player), map(a_map),n_rays(n_rays), texture_drawer(texture_drawer){}
 
 
 
@@ -26,8 +26,8 @@ void Raycasting::calculate_raycasting(Camera &camera,std::vector<float> &distanc
 		float distance_player_plane = intersected_object.get_distance_player_plane();
 		int number_line_texture = intersected_object.get_number_line_texture();
 		int texture = intersected_object.get_texture();
-		int side_division = intersected_object.get_side_division();
-		drawer.draw_wall(i,distance_player_plane,number_line_texture,texture, side_division);
+		bool wall_side_y = intersected_object.get_side_wall_colided();
+		texture_drawer.show_wall(i,distance_player_plane,number_line_texture,texture, wall_side_y);
 	}
 
 

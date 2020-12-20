@@ -7,9 +7,6 @@
 class Raycasting;
 #include "ray_casting.h"
 
-class Drawer;
-#include "Drawer.h"
-
 #include <Jugador.h>
 #include <Movable.h>
 
@@ -24,8 +21,8 @@ protected:
     Movable* movable;
 
 public:
-    explicit Sprite_holder(Coordinates posicion, int texture, Jugador &player): 
-    Posicionable(posicion,texture),Sprite_drawer(this,player) ,movable(nullptr){
+    explicit Sprite_holder(Texture &texture_drawer, Coordinates posicion, int texture, Jugador &player): 
+    Posicionable(texture_drawer,posicion,texture),Sprite_drawer(this,player) ,movable(nullptr){
     	sprites_textures.push_back(texture);
     }
 
@@ -49,7 +46,7 @@ public:
 
     void remove() override;
 
-    void draw(Drawer &drawer,  const std::vector<float> &distances, int n_rays) override;
+    void draw(const std::vector<float> &distances, int n_rays) override;
 
 };
 

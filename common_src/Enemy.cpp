@@ -1,11 +1,11 @@
 #include "Enemy.h"
 
-#include "Drawer.h"
-
 #include <math.h>
 
-Enemy::Enemy(Coordinates posicion, int num_texture, Coordinates direction ,Mapa& mapa, Jugador &player ,std::string id):
-    Movable(posicion,direction,mapa),Sprite_drawer(this,player),player(player),num_texture(num_texture),id(id) {}
+Enemy::Enemy(Texture &texture_drawer,Coordinates posicion, int num_texture, Coordinates direction ,Mapa& mapa, Jugador &player ,std::string id):
+    Movable(texture_drawer,posicion,direction,mapa),Sprite_drawer(this,player),
+    player(player),num_texture(num_texture),id(id),
+    moved_frames_continued(0),enemy_type(nullptr) {}
 
 
 static int get_num_texture(Coordinates enemy_position, Coordinates enemy_direction, Coordinates player_position){
@@ -24,37 +24,43 @@ static int get_num_texture(Coordinates enemy_position, Coordinates enemy_directi
 		side = 0;
 	else if(abs_angle<3*M_PI/8){
 		if(angle<0)
-			side = 1;
-		else
 			side = 7;
-
+		else
+			side = 1;
 	}
 	else if(abs_angle<5*M_PI/8){
 		if(angle<0)
-			side = 2;
-		else
 			side = 6;
+		else
+			side = 2;
 	}
 	else if(abs_angle<7*M_PI/8){
 		if(angle<0)
-			side = 3;
-		else
 			side = 5;
+		else
+			side = 3;
 	}
 	else
 		side = 4;
 	return side;
 }
 
-void Enemy::draw(Drawer &drawer, const std::vector<float> &distances, int n_rays){
+void Enemy::draw(const std::vector<float> &distances, int n_rays){
 	int first_ray = center_ray - cant_rays/2;
 	int side_texture = get_num_texture(posicion,direction, player.get_position());
 	for(int i=0 ; i<cant_rays ; i++){
 		int num_pixel = i*64/cant_rays;
-		if((first_ray + i+ n_rays)>0 and (first_ray + i+ n_rays)<2*n_rays){
-			if(distances[first_ray + i+ n_rays]>player_distance){
-				drawer.draw_guard(first_ray + i,player_distance ,num_pixel,side_texture);
+		int current_ray = first_ray + i+ n_rays;
+		if((current_ray)>0 and (current_ray)<2*n_rays){
+			if(distances[current_ray]>player_distance){
+				enemy_type->call_drawer(first_ray + i,player_distance ,num_pixel,side_texture,moved_frames_continued/2);
 			}
 		}
 	}
+}
+
+
+Enemy::~Enemy(){
+	if(enemy_type!=nullptr)
+		delete enemy_type;
 }

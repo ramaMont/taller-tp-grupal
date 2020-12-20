@@ -1,12 +1,13 @@
 #include "Posicionable.h"
 
+#include "texture.h"
 
-Posicionable::Posicionable(Coordinates posicion):
-    posicion(posicion){
+Posicionable::Posicionable(Texture &texture_drawer,Coordinates posicion):
+    posicion(posicion),texture_drawer(texture_drawer){
 }
 
-Posicionable::Posicionable(Coordinates posicion, int texture):
-    posicion(posicion),texture(texture){
+Posicionable::Posicionable(Texture &texture_drawer, Coordinates posicion, int texture):
+    posicion(posicion),texture(texture),texture_drawer(texture_drawer){
 }
 
 Coordinates Posicionable::get_position(){

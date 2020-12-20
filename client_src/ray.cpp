@@ -66,13 +66,14 @@ double Ray::get_y_distance_to_side(const Coordinates &ray_position){
 }
 
 Intersected_object Ray::get_wall(Coordinates coordinates_map,bool first_triangle, Posicionable* object, float distance_player_plane){
-	if(first_triangle){
-		Intersected_object intersected_object(distance_player_plane,object,coordinates_map.y,X_SIDE);
-		return intersected_object;
-	}else{
-		Intersected_object intersected_object(distance_player_plane,object,coordinates_map.x,Y_SIDE);
-		return intersected_object;
-	}
+	float coordinates_colided_side = 0;
+	if(first_triangle)
+		coordinates_colided_side = coordinates_map.y;
+	else
+		coordinates_colided_side = coordinates_map.x;
+
+	Intersected_object intersected_object(distance_player_plane,object,coordinates_colided_side,first_triangle);
+	return intersected_object;
 }
 
 Coordinates Ray::get_coordinates_to_next_block(const Coordinates &ray_position, bool &first_triangle){

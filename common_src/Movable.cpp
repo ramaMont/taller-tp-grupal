@@ -1,8 +1,8 @@
 #include "Movable.h"
 #include <stdio.h>
 
-Movable::Movable(Coordinates position,Coordinates direction ,Mapa& mapa):
-        Posicionable(position),direction(direction), mapa(mapa){
+Movable::Movable(Texture &texture_drawer,Coordinates position,Coordinates direction ,Mapa& mapa):
+        Posicionable(texture_drawer,position),direction(direction), mapa(mapa){
 }
 
 void Movable::mover_en_una_direccion(Direccion* direccion){

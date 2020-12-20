@@ -14,8 +14,8 @@
 #include "background.h"
 class Intersected_object;
 #include "intersected_object.h"
-class Drawer;
-#include "Drawer.h"
+class Texture;
+#include "texture.h"
 
 #include <Jugador.h>
 #include <Mapa.h>
@@ -29,12 +29,12 @@ private:
 	Jugador &player;
 	Mapa &map;
 	int n_rays;
-	Drawer &drawer;
+	Texture &texture_drawer;
 
 
 
 public:
-    Raycasting(Jugador &a_player, Mapa &map, int n_rays, Drawer &drawer);
+    Raycasting(Jugador &a_player, Mapa &map, int n_rays, Texture &texture_drawer);
 
 
     //Llama a Ray por cada rayo nuevo, y una vez obtenida su longitud la manda a draw

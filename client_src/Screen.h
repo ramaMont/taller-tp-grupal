@@ -35,7 +35,7 @@ class Screen{
 		std::vector<Sprite_drawer*> &sprites;
 		Jugador &player;
 		Mapa &map;
-		Drawer drawer;
+		Texture &texture;
 		Background background;
 		Raycasting raycasting;
 
@@ -79,12 +79,12 @@ class Screen{
 		}
 
 	public:
-		Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, Mapa &map, const Window &window):
+		Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, Mapa &map,Texture &texture, const Window &window):
 		n_rays(160),enemies(enemies) ,sprites(sprites), player(player),
 		map(map),
-		drawer(window,n_rays,player),
+		texture(texture),
 		background(window), 
-		raycasting(player, map, n_rays, drawer){}
+		raycasting(player, map, n_rays, texture){}
 
 		void show(){
 			unsee_sprites();
@@ -96,11 +96,10 @@ class Screen{
 			get_spotted_sprites(spotted_sprites);
 			initialice_spotted_sprites(spotted_sprites,camera);
 			for(unsigned int j=0; j<spotted_sprites.size(); j++){
-				spotted_sprites[j]->draw(drawer,distances,n_rays);
+				spotted_sprites[j]->draw(distances,n_rays);
 			}
 
-			drawer.draw_gun_player();
-
+			player.draw();
 		}
 };
 #endif
