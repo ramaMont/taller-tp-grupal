@@ -7,7 +7,6 @@ Jugador::Jugador(Texture &texture_drawer,Coordinates posicion,Coordinates direct
 }
 
 void Jugador::draw(){
-	printf("frame: %i\n", frames_since_shot/4);
 	gun_type->call_drawer(frames_since_shot/4);
 }
 

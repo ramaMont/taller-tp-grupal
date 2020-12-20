@@ -148,21 +148,6 @@ void Texture::show(SDL_Texture* texture,int x_pixel_line,int x_initial_pos,int x
 	        height_ray//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
 	    };     
 	    SDL_RenderCopy(this->renderer, texture, &imgPartRect, &sdlDst);
-	/*}else{
-		int cant_showable_pixels = height/pixel_length;
-		imgPartRect.x = x_pixel_line; //Desde qué pixel en X quiero
-		imgPartRect.y = 32-cant_showable_pixels/2;	//Desde qué pixel en Y quiero
-		imgPartRect.w = 1; //Cantidad de pixeles en X que tomo
-		imgPartRect.h = cant_showable_pixels; //Cantidad de pixeles en Y que tomo
-		//printf("(int)ceil(pixel_length*64): %i \n",(int)ceil(pixel_length*64) );
-	     const SDL_Rect sdlDst = {
-	        x_initial_pos, //Posicion inicial de X donde voy a mostrar el pixel
-	        0, //Posicion inicial de Y donde voy a mostrar el pixel
-	        x_lenght_ray, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
-	        height//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
-	    };     
-	    SDL_RenderCopy(this->renderer, texture, &imgPartRect, &sdlDst);	
-	}*/
 }
 
 void Texture::show_wall(int pos_x,float distance_player_plane, int number_line_texture, int texture, bool wall_side_y){
@@ -178,13 +163,6 @@ void Texture::show_wall(int pos_x,float distance_player_plane, int number_line_t
 
 	int current_texture = 2*texture + wall_side_y;
 	show(this->wall_textures[current_texture],number_line_texture,x_initial_pos,x_lenght_ray,pixel_length,initial_position_y);
-}
-
-
-void Texture::show_y_pixel_line(int num_texture,bool shaded,int x_pixel_line,int x_initial_pos,int x_lenght_ray, float pixel_length,int initial_position_y){
-
-	int current_texture = 2*num_texture + shaded;
-	show(this->wall_textures[current_texture],x_pixel_line,x_initial_pos,x_lenght_ray,pixel_length,initial_position_y);
 }
 
 void Texture::show_sprite(int pos_x, float distance_player_plane, int number_line_texture, int texture){

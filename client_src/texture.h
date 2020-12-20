@@ -39,9 +39,6 @@ public:
     // Carga la textura en windows
     void show_wall(int pos_x,float distance_player_plane, int number_line_texture, int texture, bool wall_side_y);
 
-    // Carga la textura en windows
-    void show_y_pixel_line(int num_texture,bool shaded,int x_pixel_line,int x_initial_pos,int x_lenght_ray, float pixel_length,int initial_position_y);
-
     void show_sprite(int pos_x, float distance_player_plane, int number_line_texture, int texture);
 
     void show_enemy(int frame, int state,int enemy,int pos_x, float distance_player_plane, int number_line_texture);    

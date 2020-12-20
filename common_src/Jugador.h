@@ -26,7 +26,6 @@ public:
     explicit Jugador(Texture &texture_drawer,Coordinates posicion,Coordinates direction ,Mapa& mapa);
 
     void new_gun_type(int new_gun_type){
-    	printf("apretaste el: %i \n", new_gun_type);
     	if(gun_type!=nullptr)
     		delete gun_type;
     	if(new_gun_type==0)
