@@ -2,19 +2,19 @@
 
 Posicionable::Posicionable(Coordinates posicion):
     posicion(posicion){
-	this->puedo_pasar = false;
+	this->esObstaculo = true;
 }
 
 Coordinates Posicionable::getPosicion(){
     return posicion;
 }
 
-bool Posicionable::puedoPasar(){
-	return this->puedo_pasar;
+bool Posicionable::atravesable(){
+	return !this->esObstaculo;
 }
 
-void Posicionable::puedoPasar(bool booleano){
-	this->puedo_pasar = booleano;
+void Posicionable::atravesable(bool booleano){
+	this->esObstaculo = !booleano;
 }
 
 Posicionable::~Posicionable(){

@@ -194,7 +194,7 @@ TEST(AtaquesTests, pistolaNoAtacaSiHayObjetoEnElMedio) {
     vec.push_back(&enemigo);
     int vida_inicial = jugador.getVida();
     Coordinates posicion(8, 5);
-    Pared pared(posicion);
+    Objeto pared(posicion);
     
     //act
     mapa.agregarPosicionable(&pared, posicion);
@@ -394,7 +394,7 @@ TEST(AtaquesTests, lanzacohetesNoAtacaSiUnObjetoSeInterpone) {
     int vida_inicial = jugador.getVida();
     Coordinates posicion(7,10);
     Lanzacohetes lanzacohetes(posicion);
-    Pared pared(Coordinates(11,10));
+    Objeto pared(Coordinates(11,10));
     mapa.agregarPosicionable(&pared, Coordinates(11,10));
     
     //act

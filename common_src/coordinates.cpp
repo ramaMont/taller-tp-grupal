@@ -105,7 +105,7 @@ int Coordinates::get_increase_y()const{
 }
 
 double Coordinates::calculate_angle(const Coordinates& direction,
-    const Coordinates& position){
+    const Coordinates& position) const{
 	float var_x = position.x - this->x;
 	float var_y = position.y - this->y;
 	double product = var_x * direction.x + var_y * direction.y;

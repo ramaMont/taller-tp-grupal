@@ -31,9 +31,14 @@ public:
     explicit Jugador(Coordinates posicion,Coordinates direction ,Mapa& mapa);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);
-    Coordinates get_coordinates();
+    Coordinates get_coordinates() const;
 
-    Coordinates get_direction();
+    Coordinates get_direction() const;
+    
+    double calcularAngulo(Jugador* jugador);
+    double calcularAngulo(const Coordinates& dir, const Coordinates& posicion);
+    double calcularDistancia(Jugador* jugador);
+    double calcularDistancia(const Coordinates& posicion);
     
     void disparar(std::vector<Jugador*>&);
     bool recibirDanio(int danio);
@@ -51,6 +56,7 @@ public:
     bool revivir();
     bool estaVivo();
     Mapa& getMapa();
+    int numeroArmaActual() const;
     size_t getBalasDisparadas();
     size_t getEnemigosMatados();
     size_t getPuntuacion();    

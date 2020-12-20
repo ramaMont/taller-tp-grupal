@@ -7,7 +7,8 @@ class Posicionable{
 protected:
     Coordinates posicion;
     int texture;
-    bool puedo_pasar;
+    bool esObstaculo;
+    
 public:
 	void set_texture(int num_texture){
 		texture = num_texture;
@@ -18,8 +19,8 @@ public:
 
     explicit Posicionable(Coordinates posicion);
     virtual Coordinates getPosicion();
-    bool puedoPasar();
-    void puedoPasar(bool booleano);
+    bool atravesable();
+    void atravesable(bool booleano);
     ~Posicionable();
 };
 

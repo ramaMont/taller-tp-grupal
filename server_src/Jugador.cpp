@@ -32,16 +32,33 @@ void Jugador::mover(Direccion* direccion){
     }
 }
 
-Coordinates Jugador::get_coordinates(){
+Coordinates Jugador::get_coordinates() const{
     return posicion;
 }
 
-Coordinates Jugador::get_direction(){
+Coordinates Jugador::get_direction() const{
     return direction;
 }
 
 void Jugador::set_direction(Coordinates direction){
     this->direction = direction;
+}
+
+
+double Jugador::calcularAngulo(Jugador* jugador){
+	return jugador->calcularAngulo(this->direction, this->posicion);
+}
+
+double Jugador::calcularAngulo(const Coordinates& direccion, const Coordinates& posicion){
+	return posicion.calculate_angle(direccion, this->posicion);
+}
+
+double Jugador::calcularDistancia(Jugador* jugador){
+	return jugador->calcularDistancia(this->posicion);
+}
+
+double Jugador::calcularDistancia(const Coordinates& posicion){
+	return posicion.calculate_distance(this->posicion);
 }
 
 
@@ -137,6 +154,10 @@ bool Jugador::estaVivo(){
 
 Mapa& Jugador::getMapa(){
 	return this->mapa;
+}
+
+int Jugador::numeroArmaActual() const{
+	return this->soldado.armaActual();
 }
 
 size_t Jugador::getBalasDisparadas(){

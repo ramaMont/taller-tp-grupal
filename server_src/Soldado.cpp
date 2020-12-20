@@ -26,6 +26,10 @@ EstadoSoldado::EstadoSoldado(Jugador *jugador, int &balas): jugador(jugador),
 	this->soldado_anterior = nullptr;
 }
 
+int EstadoSoldado::armaActual() const{
+	return this->soldado->numeroArma();
+}
+
 bool EstadoSoldado::agregarArma(Arma* arma){
 	if (typeid(*arma) == typeid(Ametralladora)){
 		return this->ss.agregarArma(static_cast<Ametralladora*>(arma));
@@ -101,6 +105,10 @@ bool Perro::estaListo(){
 	return true;
 }
 
+int Perro::numeroArma() const{
+	return N_CUCHILLO;
+}
+
 
 // Soldado
 
@@ -113,8 +121,7 @@ void Soldado::obtenerEnemigosCercanos(std::vector<Jugador*>& enemigos,
 	for (Jugador* enemigo: enemigos){
 		if (enemigo == jugador)  
 			continue;
-		float angulo = jugador->get_coordinates().calculate_angle(
-		    jugador->get_direction(), enemigo->get_coordinates());
+		float angulo = jugador->calcularAngulo(enemigo);
 		int grados = radianesAGrados(angulo);
 		if (grados <= GRADOS_45)
 		    jugadores.insert(std::pair<int,Jugador*>(grados,enemigo));
@@ -140,6 +147,10 @@ void Guardia::soltarArma(Jugador *jugador){
 
 bool Guardia::estaListo(){
 	return this->balas > 0;
+}
+
+int Guardia::numeroArma() const{
+	return N_PISTOLA;
 }
 
 
@@ -182,6 +193,10 @@ bool SS::estaListo(){
 	return this->balas > 0 && this->ametralladora != nullptr;
 }
 
+int SS::numeroArma() const{
+	return N_AMETRALLADORA;
+}
+
 
 // Oficial
 
@@ -217,6 +232,10 @@ bool Oficial::estaListo(){
 	return this->balas > 0 && this->canion != nullptr;
 }
 
+int Oficial::numeroArma() const{
+	return N_CANION;
+}
+
 
 // Mutante
 
@@ -244,5 +263,9 @@ void Mutante::soltarArma(Jugador *jugador){
 
 bool Mutante::estaListo(){
 	return this->balas > BALAS_LANZACOHETES && this->lanzacohetes != nullptr;
+}
+
+int Mutante::numeroArma() const{
+	return N_LANZACOHETES;
 }
 

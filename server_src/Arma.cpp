@@ -1,5 +1,6 @@
 #include "Arma.h"
 
+#include "configuracion.h"
 #include "Jugador.h"
 #include <cstdlib>
 #include <ctime>
@@ -22,14 +23,14 @@
 
 void Cuchillo::disparar(Jugador* jugador, angulos_enemigos_t& enemigos){
 	for (std::pair<int, Jugador*> e: enemigos){
-		if (jugador->get_coordinates().calculate_distance(
-		    e.second->get_coordinates()) < DISTANCIA_CUCHILLO){
-		    	srand (time(0));
-				int danio = rand() % MAXIMO_DANIO + 1;
-				bool murio = e.second->recibirDanio(danio);
-				if (murio)
-					jugador->agregarEnemigoMuerto();
-				return;
+		if (jugador->calcularDistancia(e.second) < DISTANCIA_CUCHILLO){
+		    srand (time(0));
+			//int danio = rand() % (int)configuracion["maximo danio"] + 1;
+			int danio = rand() % MAXIMO_DANIO + 1;
+			bool murio = e.second->recibirDanio(danio);
+			if (murio)
+				jugador->agregarEnemigoMuerto();
+			return;
 		}
 	}
 }
@@ -46,8 +47,7 @@ bool colisionaConObjeto(Mapa& mapa, const Coordinates& inicio,
 	actual.increment_on_direction(direccion, PASO);
 
 	while (actual != fin){
-		Posicionable* objeto = mapa.obtenerPosicionableEn(actual);
-		if (objeto != nullptr && !objeto->puedoPasar() && actual != inicio)
+		if (mapa.hayObstaculoEn(actual) && actual != inicio)
 			return true;
 		actual.increment_on_direction(direccion, PASO);
 	}
@@ -55,8 +55,7 @@ bool colisionaConObjeto(Mapa& mapa, const Coordinates& inicio,
 }
 
 void atacar(Jugador* jugador, Jugador* enemigo, float precision, int angulo){
-	double distancia = jugador->get_coordinates().calculate_distance(
-		enemigo->get_coordinates());
+	double distancia = jugador->calcularDistancia(enemigo);
 		
 	float danio = precision - distancia * BAJA_PRECISION;
 	danio -= angulo/RANGO_DISPARO;
@@ -162,8 +161,7 @@ void Cohete::disparar(Jugador* jugador, std::vector<Jugador*>& enemigos){
 void Cohete::avanzar(Mapa& mapa){
 	mapa.sacarPosicionable(this->posicion);
 	this->posicion.increment_on_direction(this->direccion, 1);
-	Posicionable* objeto = mapa.obtenerPosicionableEn(this->posicion);
-	if (objeto != nullptr && !objeto->puedoPasar())
+	if (mapa.hayObstaculoEn(this->posicion))
         return;
     mapa.agregarPosicionable(this, this->posicion);
 	return avanzar(mapa);

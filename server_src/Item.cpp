@@ -12,7 +12,7 @@
 
 
 Item::Item(Coordinates p): Posicionable(p) { 
-	puedoPasar(true);
+	atravesable(true);
 }
 
 bool Comida::usar(Jugador* jugador){

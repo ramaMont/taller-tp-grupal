@@ -12,15 +12,9 @@ class Objeto: public Posicionable {
 };
 
 
-class Pared: public Objeto {
+class ParedFalsa: public Objeto {
 	public:
-	Pared(Coordinates coordenadas): Objeto(coordenadas) { }
-};
-
-
-class ParedFalsa: public Pared {
-	public:
-	ParedFalsa(Coordinates coordenadas): Pared(coordenadas) { }
+	ParedFalsa(Coordinates coordenadas): Objeto(coordenadas) { }
 	void abrir(Jugador *jugador);
 };
 
@@ -46,22 +40,5 @@ class PuertaCerrada: public Puerta {
 	void abrir(Jugador *jugador) override;
 };
 
-
-class Barril: public Objeto {
-	public:
-	Barril(Coordinates coordenadas): Objeto(coordenadas) { }
-};
-
-
-class Mesa: public Objeto {
-	public:
-	Mesa(Coordinates coordenadas): Objeto(coordenadas) { }
-};
-
-
-class Silla: public Objeto {
-	public:
-	Silla(Coordinates coordenadas): Objeto(coordenadas) { }
-};
 
 #endif
