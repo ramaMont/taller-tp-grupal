@@ -18,8 +18,11 @@ private:
     int n_rays;
     SDL_Rect imgPartRect;
 
+    void show_weapon(int frame_gun, int current_gun);
 
-    void show(SDL_Texture* texture,int x_pixel_line,int x_initial_pos,int x_lenght_ray, float pixel_length,int initial_position_y);
+    void show(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int pos_x, float distance_player_plane);
+
+    void show_sprites(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int upper_limit, int pos_x, float distance_player_plane);
 
 public:
 
@@ -41,9 +44,26 @@ public:
 
     void show_sprite(int pos_x, float distance_player_plane, int number_line_texture, int texture);
 
-    void show_enemy(int frame, int state,int enemy,int pos_x, float distance_player_plane, int number_line_texture);    
 
-    void show_gun(int frame_gun, int current_gun);
+	void show_dog(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+
+	void show_guard(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+
+	void show_officer(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+
+	void show_ss(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+
+	void show_mutant(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+
+
+
+	void show_knife(int frame_gun);
+
+	void show_gun(int frame_gun);
+
+	void show_machine_gun(int frame_gun);
+
+	void show_chain_gun(int frame_gun);
 
     // Destruye los recursos creados
     ~Texture();

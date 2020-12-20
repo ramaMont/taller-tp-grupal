@@ -197,8 +197,8 @@ int main(int argc, char* argv[]) {
     
     Texture texture(window,160);
 
-    Coordinates initial_position(7.5,1.5);
-    Coordinates initial_direction(1,1);
+    Coordinates initial_position(6.5,3.5);
+    Coordinates initial_direction(1,0);
     Jugador player(texture,initial_position,initial_direction,map);
     player.new_gun_type(1);
     std::vector<Sprite_drawer*> sprites;

@@ -14,7 +14,7 @@ Camera::Camera(const Coordinates &player_position,const Coordinates &player_dire
 		coordinates_camera.y =player_position.y + n*player_direction.y;
 
 		camera_plane = player_direction.get_perpendicular_direction();
-		if(player_direction.y<0){
+		if(player_direction.y<=0){
 			camera_plane.y = -camera_plane.y;
 			camera_plane.x = -camera_plane.x;
 		}
