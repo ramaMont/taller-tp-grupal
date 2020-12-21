@@ -14,7 +14,7 @@ class Partida{
 private:
     std::string params;
     std::map<std::string, Jugador *> jugadores;
-    std::vector<Jugador *> robots;
+    std::vector<Jugador *> bots;
     time_t tiempo_inicial;
 public:
     explicit Partida(const std::string& params);

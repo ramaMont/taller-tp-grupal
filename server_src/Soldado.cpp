@@ -1,6 +1,7 @@
 #include "Soldado.h"
 
 #include "Mapa.h"
+#include "ParamReaderServer.h"
 
 #include <unistd.h>
 #include <typeinfo>
@@ -9,13 +10,7 @@
 
 #include <iostream>
 
-#define PRECISION 0.8
-#define BALAS_AMETRALLADORA 5
-#define TIEMPO_AMETRALLADORA 300
-#define BALAS_LANZACOHETES 5
-#define TIEMPO_CANION 100
 #define GRADOS_180 180
-#define GRADOS_45 45
 #define PI 3.14159265358979323846
 
 
@@ -123,7 +118,7 @@ void Soldado::obtenerEnemigosCercanos(std::vector<Jugador*>& enemigos,
 			continue;
 		float angulo = jugador->calcularAngulo(enemigo);
 		int grados = radianesAGrados(angulo);
-		if (grados <= GRADOS_45)
+		if (grados <= configuracion["rango_de_disparo"])
 		    jugadores.insert(std::pair<int,Jugador*>(grados,enemigo));
 	}
 }
@@ -132,7 +127,6 @@ void Soldado::obtenerEnemigosCercanos(std::vector<Jugador*>& enemigos,
 // Guardia
 
 Guardia::Guardia(int& balas): Soldado(balas){
-	this->pistola.setParametros(PRECISION);
 }
 
 void Guardia::disparar(Jugador *jugador, std::vector<Jugador*>& enemigos){
@@ -164,7 +158,6 @@ bool SS::agregarArma(Ametralladora *ametr){
 	if (this->ametralladora != nullptr)
 		return false;
 	this->ametralladora = ametr;
-	this->ametralladora->setParametros(PRECISION);
 	return true;
 }
 
@@ -174,12 +167,14 @@ void SS::disparar(Jugador *jugador, std::vector<Jugador*>& enemigos){
 	float tiempo_presionado = 0.3;   /* Pasado por parametro */
 	float tiempo_transcurrido = 0;
 	while (tiempo_transcurrido < tiempo_presionado && this->balas > 0){
-		for (int i = 0; (i < BALAS_AMETRALLADORA) && (this->balas > 0); i ++){
+		for (int i = 0; (i < configuracion["balas_por_rafaga_ametralladora"]) 
+		     && (this->balas > 0); i ++){
 			this->ametralladora->disparar(jugador, set_jugadores);
 			this->balas --;
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(TIEMPO_AMETRALLADORA));
-		tiempo_transcurrido += TIEMPO_AMETRALLADORA;
+		std::this_thread::sleep_for(std::chrono::milliseconds(
+		(int)(configuracion["frecuencia_rafaga_ametralladora"]*1000)));
+		tiempo_transcurrido += configuracion["frecuencia_rafaga_ametralladora"]*1000;
 	}
 }
 
@@ -208,7 +203,6 @@ bool Oficial::agregarArma(CanionDeCadena *canion){
 	if (this->canion != nullptr)
 		return false;
 	this->canion = canion;
-	this->canion->setParametros(PRECISION);
     return true;
 }
 	
@@ -218,7 +212,8 @@ void Oficial::disparar(Jugador *jugador, std::vector<Jugador*>& enemigos){
 	for (int i = 0; (i < 1/*tiempo presionado*/) && (this->balas > 0); i ++){
 		this->canion->disparar(jugador, set_jugadores);
 		this->balas --;
-		std::this_thread::sleep_for(std::chrono::milliseconds(TIEMPO_CANION));
+		std::this_thread::sleep_for(std::chrono::milliseconds(
+		(int)(configuracion["frecuencia_disparo_canion"]*1000)));
 	}	
 }
 
@@ -252,7 +247,7 @@ bool Mutante::agregarArma(Lanzacohetes *lanzacohetes){
 
 void Mutante::disparar(Jugador *jugador, std::vector<Jugador*>& enemigos){
 	this->lanzacohetes->disparar(jugador, enemigos);
-	this->balas -= BALAS_LANZACOHETES;
+	this->balas -= (int)configuracion["balas_gastadas_lanzacohetes"];
 }
 
 void Mutante::soltarArma(Jugador *jugador){
@@ -262,7 +257,8 @@ void Mutante::soltarArma(Jugador *jugador){
 }
 
 bool Mutante::estaListo(){
-	return this->balas > BALAS_LANZACOHETES && this->lanzacohetes != nullptr;
+	return this->balas > configuracion["balas_gastadas_lanzacohetes"]
+	       && this->lanzacohetes != nullptr;
 }
 
 int Mutante::numeroArma() const{

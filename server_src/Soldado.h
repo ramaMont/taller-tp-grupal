@@ -1,8 +1,8 @@
 #ifndef __SOLDADO__
 #define __SOLDADO__
 
-#include <vector>
 #include "Arma.h"
+#include <vector>
 
 class Soldado {
 	protected:

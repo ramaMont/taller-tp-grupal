@@ -1,9 +1,9 @@
 #include "Objeto.h"
 
+#include "ParamReaderServer.h"
 #include <thread>
 #include <chrono>
 
-#define SEGUNDOS_PUERTA 3
 
 void ParedFalsa::abrir(Jugador *jugador){
 	if (jugador->get_coordinates().calculate_distance(this->posicion) <= 1)
@@ -21,7 +21,8 @@ void Puerta::abrirPuerta(Jugador *jugador){
 	atravesable(true);
 	
 	// Cambiar a un evento
-	std::this_thread::sleep_for (std::chrono::seconds(SEGUNDOS_PUERTA));
+	std::this_thread::sleep_for (std::chrono::seconds(
+	    (int)configuracion["segundos_cerrar_puerta"]));
 	cerrar();	
 }
 

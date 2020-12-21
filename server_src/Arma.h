@@ -31,34 +31,22 @@ class Cuchillo: public Arma {
 
 
 class Pistola: public Arma {
-	private:
-	float precision;
-	
 	public:
-	void setParametros(const float precision);
 	void disparar(Jugador* jugador, angulos_enemigos_t& enemigos) override;
 };
 
 
 class Ametralladora: public Arma, public Item {
-	private:
-	float precision;
-	
 	public:
 	explicit Ametralladora(Coordinates p): Item(p) { }
-	void setParametros(const float precision);
 	void disparar(Jugador* jugador, angulos_enemigos_t& enemigos) override;
 	bool usar(Jugador* jugador) override;
 };
 
 
 class CanionDeCadena: public Arma, public Item {
-	private:
-	float precision;
-	
 	public:
 	explicit CanionDeCadena(Coordinates p): Item(p) { }
-	void setParametros(const float precision);
 	void disparar(Jugador* jugador, angulos_enemigos_t& enemigos) override;
 	bool usar(Jugador* jugador) override;
 };

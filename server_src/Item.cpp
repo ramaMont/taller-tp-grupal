@@ -1,14 +1,6 @@
 #include "Item.h"
-
 #include "Jugador.h"
-
-#define PUNTOS_COMIDA 10
-#define PUNTOS_KIT 20
-#define CANT_BALAS 5
-#define PUNTOS_CRUZ 10
-#define PUNTOS_COPA 50
-#define PUNTOS_COFRE 100
-#define PUNTOS_CORONA 200
+#include "ParamReaderServer.h"
 
 
 Item::Item(Coordinates p): Posicionable(p) { 
@@ -16,11 +8,11 @@ Item::Item(Coordinates p): Posicionable(p) {
 }
 
 bool Comida::usar(Jugador* jugador){
-	return jugador->agregarVida(PUNTOS_COMIDA);
+	return jugador->agregarVida((int)configuracion["puntos_comida"]);
 }
 
 bool KitMedico::usar(Jugador* jugador){
-	return jugador->agregarVida(PUNTOS_KIT);
+	return jugador->agregarVida((int)configuracion["puntos_kit"]);
 }
 
 bool Sangre::usar(Jugador* jugador){
@@ -33,7 +25,7 @@ bool Sangre::usar(Jugador* jugador){
 
 
 Balas::Balas(Coordinates p): Item(p){
-	this->cantidad = CANT_BALAS;
+	this->cantidad = (int)configuracion["cantidad_balas"];
 }
 
 Balas::Balas(Coordinates p, int cant): Item(p){
@@ -58,15 +50,15 @@ bool Tesoro::usar(Jugador* jugador){
 	return true;
 }
 
-Cruz::Cruz(Coordinates p): Tesoro(PUNTOS_CRUZ, p){
+Cruz::Cruz(Coordinates p): Tesoro((int)configuracion["puntos_cruz"], p){
 }
 
-Copa::Copa(Coordinates p): Tesoro(PUNTOS_COPA, p){
+Copa::Copa(Coordinates p): Tesoro((int)configuracion["puntos_copa"], p){
 }
 
-Cofre::Cofre(Coordinates p): Tesoro(PUNTOS_COFRE, p){
+Cofre::Cofre(Coordinates p): Tesoro((int)configuracion["puntos_cofre"], p){
 }
 
-Corona::Corona(Coordinates p): Tesoro(PUNTOS_CORONA, p){
+Corona::Corona(Coordinates p): Tesoro((int)configuracion["puntos_corona"], p){
 }
 

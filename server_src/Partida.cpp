@@ -2,14 +2,15 @@
 #include <string>
 #include <iostream>
 #include <set>
+#include "ParamReaderServer.h"
 
-#define ALTO 20	/* cambiar por yaml */
+#define ALTO 20	/* cambiar por mapa */
 #define ANCHO 20
 #define MAXIMOS_JUGADORES 10
-#define MINUTOS_PARTIDA 20
 
 #define SEGUNDOS_POR_MINUTOS 60
 #define CANT_GANADORES 5
+
 
 Partida::Partida(const std::string& params): params(params){
 }
@@ -28,7 +29,7 @@ bool Partida::agregarJugador(const std::string& nombre){
 
 
 void Partida::agregarRobot(){
-	this->robots.push_back(nullptr);
+	this->bots.push_back(nullptr);
 }
 
 
@@ -44,7 +45,7 @@ void Partida::comenzarPartida(){
 
 
 void Partida::iniciarMapa(Mapa& mapa, YAML::Node elementos){
-	// Colocar objetos, jugadores y robots en el mapa
+	// Colocar objetos, jugadores y bots en el mapa
 }
 
 
@@ -53,7 +54,7 @@ void Partida::recibirEventos(){
 		// realizar evento
 		time_t tiempo_actual = time(0);
 		double segundos = difftime(tiempo_actual, this->tiempo_inicial);
-		if (segundos/SEGUNDOS_POR_MINUTOS > MINUTOS_PARTIDA)
+		if (segundos/SEGUNDOS_POR_MINUTOS > configuracion["minutos_partida"])
 			break;
 		if (todosMuertos())
 			break;
@@ -71,7 +72,7 @@ bool Partida::todosMuertos(){
 			ganador = true;
 		}
 	}
-	for (Jugador* j: this->robots){
+	for (Jugador* j: this->bots){
 		if (j->estaVivo()){
 			if (ganador)
 				return false;

@@ -5,6 +5,7 @@
 #include "Posicionable.h"
 #include "Objeto.h"
 #include <vector>
+#include "ParamReaderServer.h"
 
 #define N_CUCHILLO 0
 #define N_PISTOLA 1

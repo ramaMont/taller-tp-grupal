@@ -23,7 +23,7 @@ TEST(ParamReaderServerTest, cantCorrectaParams) {
     int result;
     try {
         char w1[] = "holis";
-        char w2[] = "chauchis";
+        char w2[] = "configuracion.yaml";
         char w3[] = "fname";
         char* args[] = { w1, w2, w3 };
         ParamReaderServer serverPrueba(3, args);

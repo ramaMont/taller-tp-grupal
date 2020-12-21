@@ -1,22 +1,17 @@
 #include "Jugador.h"
+#include "ParamReaderServer.h"
 #include <stdio.h>
 #include <algorithm>
 #include <iostream>
-
-#define VIDA_MAXIMA 50 /*cambiar por yaml*/
-#define CANTIDAD_DE_VIDAS 2
-#define BALAS_INICIALES 8
-#define BALAS_MAXIMAS 30
-#define VIDA_MINIMA 11
 
 
 Jugador::Jugador(Coordinates position, Coordinates direction, Mapa& mapa):
     Posicionable(position), mapa(mapa), direction(direction),
     soldado(EstadoSoldado(this, this->balas_restantes)){
     mapa.agregarJugador(this);
-    this->vida = VIDA_MAXIMA;
-    this->vidasRestantes = CANTIDAD_DE_VIDAS;
-    this->balas_restantes = BALAS_INICIALES;
+    this->vida = (int)configuracion["vida_maxima"];
+    this->vidasRestantes = (int)configuracion["cantidad_de_vidas"];
+    this->balas_restantes = (int)configuracion["balas_iniciales"];
 	this->puntuacion = 0;
     this->balas_disparadas = 0;
     this->enemigos_matados = 0;
@@ -88,9 +83,9 @@ void Jugador::cambiarArma(int numero_arma){
 }
 
 bool Jugador::agregarVida(int cantidad){
-	if (this->vida == VIDA_MAXIMA)
+	if (this->vida == (int)configuracion["vida_maxima"])
 		return false;
-	this->vida = std::min(this->vida + cantidad, VIDA_MAXIMA);
+	this->vida = std::min(this->vida + cantidad, (int)configuracion["vida_maxima"]);
 	return true;
 }
 	
@@ -99,9 +94,10 @@ void Jugador::agregarPuntos(int cantidad){
 }
 
 bool Jugador::agregarBalas(int cant){
-	if (this->balas_restantes == BALAS_MAXIMAS)
+	if (this->balas_restantes == (int)configuracion["balas_maximas"])
 		return false;
-	this->balas_restantes = std::min(this->balas_restantes+cant, BALAS_MAXIMAS);
+	this->balas_restantes = std::min(this->balas_restantes+cant, 
+	    (int)configuracion["balas_maximas"]);
 	this->soldado.recargarBalas();
 	return true;
 }
@@ -124,7 +120,7 @@ void Jugador::agregarEnemigoMuerto(){
 }
 
 bool Jugador::estaPorMorir(){
-	return this->vida <= VIDA_MINIMA;
+	return this->vida <= (int)configuracion["vida_minima"];
 }
 
 void Jugador::morir(){
@@ -141,9 +137,9 @@ bool Jugador::revivir(){
 	if (this->vidasRestantes <= 0)
 		return false;
     mapa.agregarPosicionable(this, posicion_inicial);
-    this->vida = VIDA_MAXIMA;
+    this->vida = (int)configuracion["vida_maxima"];
     this->vidasRestantes --;
-    this->balas_restantes = BALAS_INICIALES;
+    this->balas_restantes = (int)configuracion["balas_iniciales"];
 	this->soldado.cambiarArma(N_PISTOLA);
     return true;
 }

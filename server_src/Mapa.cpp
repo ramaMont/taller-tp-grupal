@@ -55,18 +55,6 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
 }
 
 void Mapa::moveme(Jugador* jugador, const Coordinates& posicion){
-    // for(int i=0; i<alto; i++){
-    // 	for(int j=0; j<ancho; j++){
-    // 		if(mapaJuego[i][j]!=0){
-    // 			printf("P");
-    // 		}else{
-    // 			printf("_");
-    // 		}
-    // 	}
-    // 	printf("\n");
-    // }
-    // printf("\n\n\n");
-	
     if (floor(posicion.x) >= ancho || floor(posicion.y) >= alto)
         throw -1;
     if (floor(posicion.x) < 0 || floor(posicion.y) < 0)
@@ -88,17 +76,9 @@ void Mapa::moveme(Jugador* jugador, const Coordinates& posicion){
 }
 
 void Mapa::soltar(Posicionable* objeto, const Coordinates& posicion){
-	for (int p_x = posicion.x - 1; p_x < posicion.x + 1; p_x ++){
-		for (int p_y = posicion.y - 1; p_y < posicion.y + 1; p_y ++){
-			if (0 <= p_x && p_x < ancho && 0 <= p_y && p_y < alto){
-				try {
-					agregarPosicionable(objeto, Coordinates(p_x, p_y));
-					break;
-				} catch (...){
-				}
-			}
-		}
-	}
+	if (floor(posicion.x) < 0 || floor(posicion.x) >= ancho ||
+	    floor(posicion.y) < 0 || floor(posicion.y) >= alto) return;
+	mapaJuego[floor(posicion.x)][floor(posicion.y)].push(objeto);
 }
 
 void Mapa::soltar(Posicionable objeto){
