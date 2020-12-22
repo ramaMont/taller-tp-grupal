@@ -14,6 +14,7 @@ void ThReceiver::run(){
         }
     } catch (...){
         is_running = false;
+        _th_user->stop();
     }
 }
 
@@ -48,6 +49,9 @@ void ThReceiver::processReception(Protocol& protocol){
             } else {
                 _gameModel->addPlayer(protocol.getId());
             }
+            break;
+        case Protocol::action::REMOVE:
+            _th_user->removePlayer(protocol.getUserId());
             break;
         case Protocol::action::END:
             _th_user->push(protocol);

@@ -26,6 +26,7 @@ private:
 public:
     explicit ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_sender);
     virtual void run() override;
+    virtual void removePlayer(int user_id) override;
     ~ThUserClient();
 };
 

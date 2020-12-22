@@ -11,6 +11,7 @@ public:
     virtual void processProtocol(Protocol& protocol) override;
     virtual void run() override;
     virtual void stop() override;
+    void removePlayer(int user_id);
     ~ThGameModelClient();
 };
 

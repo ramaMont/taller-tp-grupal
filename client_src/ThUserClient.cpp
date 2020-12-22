@@ -8,8 +8,10 @@
 #include <ThKeyReader.h>
 #include <ThDrawer.h>
 
-ThUserClient::ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_sender):
-    ThUser(user_id), th_receiver(th_receiver), th_sender(th_sender), _th_game_model(nullptr), is_creator(false){
+ThUserClient::ThUserClient(int user_id, ThReceiver& th_receiver,
+        ThSender& th_sender):
+    ThUser(user_id), th_receiver(th_receiver), th_sender(th_sender),
+    _th_game_model(nullptr), is_creator(false){
 }
 
 void ThUserClient::joinOrCreateGame(){
@@ -92,8 +94,8 @@ void ThUserClient::processReception(Protocol& protocol, bool& ready){
             break;
         case Protocol::action::ADD_PLAYER:{
             if (_th_game_model == nullptr)
-                createGameModel(protocol.getMapId(), protocol.getUserId()
-                    , protocol.getGameId());
+                createGameModel(protocol.getMapId(), protocol.getUserId(), 
+                    protocol.getGameId());
             else
                 _th_game_model->addPlayer(protocol.getUserId());
             break;
@@ -138,6 +140,12 @@ void ThUserClient::run(){
     if (is_creator)
         waitUntilLaunch();
     play();
+}
+
+void ThUserClient::removePlayer(int user_id){
+    if (_th_game_model != nullptr){
+        _th_game_model->removePlayer(user_id);
+    }
 }
 
 ThUserClient::~ThUserClient(){

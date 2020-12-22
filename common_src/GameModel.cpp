@@ -1,12 +1,12 @@
 #include "GameModel.h"
 
 GameModel::GameModel(int map_id, int game_id):
-        Thread(), map(map_id), game_id(game_id){
+        Thread(), map(map_id), operations(), game_id(game_id){
     initDirections();
 } 
 
 GameModel::GameModel(Mapa&& map): 
-        Thread(), map(std::move(map)) {
+        Thread(), map(std::move(map)), operations() {
     initDirections();
 }
 

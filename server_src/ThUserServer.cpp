@@ -75,6 +75,8 @@ void ThUserServer::run(){
         }
     } catch (...){
         is_running = false;
+        if (game_id != -1)
+            games_admin.removePlayer(game_id, user_id);
     }
 }
 

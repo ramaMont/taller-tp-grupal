@@ -56,6 +56,14 @@ void GamesAdmin::joinGame(ThUserServer& th_user_server, int game_id){
     th_game->echoProtocol(protocol);
 }
 
+void GamesAdmin::removePlayer(int game_id, int user_id){
+    try{
+        auto game = games.at(game_id);
+        game->removePlayer(user_id);
+    } catch (...){
+    }
+}
+
 GamesAdmin::~GamesAdmin(){
     cleanZombies();
 }

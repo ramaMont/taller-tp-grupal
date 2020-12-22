@@ -2,7 +2,7 @@
 #include <iostream>
 
 ThSender::ThSender(int id_user, Socket* socket):
-        id_user(id_user), socket(socket){
+        operations(), id_user(id_user), socket(socket){
 }
 void ThSender::run(){
     try{

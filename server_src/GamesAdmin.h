@@ -21,6 +21,7 @@ public:
     void createGame(ThUserServer& th_user_server, const int& map_id);
     void launchGame(int game_id);
     void joinGame(ThUserServer& th_user_server, int game_id);
+    void removePlayer(int game_id, int user_id);
     ~GamesAdmin();
 };
 

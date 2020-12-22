@@ -13,6 +13,9 @@ void ThGameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::SHOOT:
 
             break;
+        case Protocol::action::REMOVE:
+            removePlayer(protocol.getUserId());
+            break;
         default:
             break;
     }
@@ -23,6 +26,12 @@ void ThGameModelClient::run(){
         Protocol protocol = operations.pop();
         processProtocol(protocol);
     }
+}
+
+void ThGameModelClient::removePlayer(int user_id){
+    auto coordenadas = players.at(user_id)->get_coordinates();
+    players.erase(user_id);
+    map.sacarPosicionable(coordenadas);
 }
 
 void ThGameModelClient::stop(){

@@ -14,7 +14,7 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
             echoProtocol(protocol);
             break;
         case Protocol::action::SHOOT:
-
+            // TODO
             break;
         default:
             break;
@@ -42,6 +42,17 @@ void ThGameModelServer::run(){
         Protocol protocol = operations.pop();
         processProtocol(protocol);
     }
+}
+
+void ThGameModelServer::removePlayer(int user_id){
+    auto player = players.at(user_id);
+    auto coordenadas = player->get_coordinates();
+    users_sender.erase(user_id);
+    players.erase(user_id);
+    Protocol protocol(user_id);
+    map.sacarPosicionable(coordenadas);
+    protocol.setAction(Protocol::action::REMOVE);
+    echoProtocol(protocol);
 }
 
 void ThGameModelServer::stop(){

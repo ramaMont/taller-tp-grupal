@@ -17,6 +17,7 @@ public:
     virtual void stop() override;
     void addThSender(ThSender* th_sender);
     void echoProtocol(Protocol protocol);
+    void removePlayer(int user_id);
     ~ThGameModelServer();
 };
 

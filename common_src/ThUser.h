@@ -20,6 +20,7 @@ public:
     int getId();
     virtual void stop() override;
     void waitForAction(Protocol::action desired_action);
+    virtual void removePlayer(int user_id);
     ~ThUser();
 };
 
