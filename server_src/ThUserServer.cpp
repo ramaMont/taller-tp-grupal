@@ -68,9 +68,13 @@ void ThUserServer::processReception(Protocol& protocol){
 
 void ThUserServer::run(){
     initCommunication();
-    while (is_running){
-        Protocol protocol = operations.pop();
-        processReception(protocol);
+    try{
+        while (is_running){
+            Protocol protocol = operations.pop();
+            processReception(protocol);
+        }
+    } catch (...){
+        is_running = false;
     }
 }
 

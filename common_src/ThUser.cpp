@@ -8,11 +8,8 @@
 ThUser::ThUser(int user_id): Thread(), user_id(user_id){
 }
 
-
 void ThUser::run(){
-
     Protocol protocol = operations.pop();
-
 }
 
 void ThUser::push(Protocol protocol){
@@ -26,6 +23,7 @@ int ThUser::getId(){
 void ThUser::stop(){
     //TODO:Cerrar la cola bloqueante para que se destrabe del pop
     is_running = false;
+    operations.stop();
 }
 
 void ThUser::waitForAction(Protocol::action desired_action){

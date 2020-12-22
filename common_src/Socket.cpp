@@ -77,12 +77,12 @@ int Socket::send(Protocol& protocol, size_t size){
         // el struct.
         sent = ::send(socketFd, (char *)&protocol + bytes_enviados,
             size - bytes_enviados, MSG_NOSIGNAL);
-        if (sent == -1) {
+        if (sent == -1){
             printf("Error: %s\n", strerror(errno));
-            return -1;
-        } else if (sent == 0) {
+            throw -1;
+        } else if (sent == 0){
             printf("Error: %s\n", strerror(errno));
-            return -2;
+            throw -2;
         } else {
             bytes_enviados += sent;
         }
@@ -93,15 +93,15 @@ int Socket::send(Protocol& protocol, size_t size){
 int Socket::recive(Protocol& protocol, size_t size){
     Protocol recived_protocol;
     size_t received = 0;
-    while (received < size) {
+    while (received < size){
         int rec = 0;
         // Verificar si este casteo me salva de tener que pasarlo a char* todo
         // el struct.
         rec = ::recv(socketFd, (char *)&recived_protocol + received, size-received, 0);
         if (rec == 0) {             // socket cerrado :S
-            return -1;
+            throw -1;
         } else if (rec == -1) {     // error
-            return -2;
+            throw -2;
         }
         received += rec;
     }
@@ -119,7 +119,7 @@ Socket &Socket::operator=(Socket&& other){
     return *this;
 }
 
-Socket::Socket(Socket&& other) {
+Socket::Socket(Socket&& other){
     this->socketFd = other.socketFd;
     other.socketFd = -1;
 }

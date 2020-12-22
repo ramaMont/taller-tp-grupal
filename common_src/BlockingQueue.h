@@ -11,6 +11,7 @@ private:
     std::mutex m;
     std::queue<T> queue;
     std::condition_variable cv;
+    bool open = true;
 public:
     void push(T const& data){
         std::lock_guard<std::mutex> lck(m);
@@ -21,10 +22,17 @@ public:
         std::unique_lock<std::mutex> lck(m);
         while (queue.empty()){
             cv.wait(lck);
+            if (!open)
+                throw -1;
         }
         T data = queue.front();
         queue.pop();
         return data;
+    }
+    void stop(){
+        std::unique_lock<std::mutex> lck(m);
+        open = false;
+        cv.notify_all();
     }
 };
 

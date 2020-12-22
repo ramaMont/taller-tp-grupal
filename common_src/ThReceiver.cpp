@@ -7,9 +7,13 @@ ThReceiver::ThReceiver(Socket* socket):
 
 void ThReceiver::run(){
     Protocol protocol;
-    while (is_running){
-        socket->recive(protocol, sizeof(protocol));
-        processReception(protocol);
+    try{
+        while (is_running){
+            socket->recive(protocol, sizeof(protocol));
+            processReception(protocol);
+        }
+    } catch (...){
+        is_running = false;
     }
 }
 
