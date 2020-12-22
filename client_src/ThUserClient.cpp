@@ -47,16 +47,13 @@ void ThUserClient::joinOrCreateGame(){
         }
     }
     ready = false;
-    if (is_creator){
-        while (!ready){
-            Protocol protocol = operations.pop();
-            processReception(protocol, ready);
-        }
-    } else {
-        while (!ready){
-            Protocol protocol = operations.pop();
-            processReception(protocol, ready);
-        }
+
+    while (!ready){
+        Protocol protocol = operations.pop();
+        processReception(protocol, ready);
+    }
+
+    if (!is_creator){
         Protocol protocol = operations.pop();
         processReception(protocol, ready);
     }
