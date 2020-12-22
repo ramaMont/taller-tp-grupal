@@ -1,11 +1,20 @@
 #include "Protocol.h"
 #include<arpa/inet.h>
 
+Protocol::Protocol():
+    _action(Protocol::action::NONE), id(0), 
+    _direction(Protocol::direction::STAY), damage(0), _game_id(0){
+}
+
 Protocol::Protocol(int id):id(id){
 }
 
 Protocol::Protocol(int user_id, int map_id):
     id(user_id), damage(map_id){
+}
+
+Protocol::Protocol(int user_id, int map_id, int game_id):
+    id(user_id), damage(map_id), _game_id(game_id){
 }
 
 Protocol::Protocol(int id, Protocol::direction direction):
@@ -17,9 +26,17 @@ Protocol::action Protocol::getAction(){
 int Protocol::getId(){
     return id;
 }
-int Protocol::getId2(){
+int Protocol::getMapId(){
     return damage;
 }
+
+int Protocol::getUserId(){
+    return id;
+}
+int Protocol::getGameId(){
+    return _game_id;
+}
+
 Protocol::direction Protocol::getDirection(){
     return _direction;
 }
@@ -33,12 +50,14 @@ void Protocol::serialize(){
     id = htons(id);
     _direction = (Protocol::direction)htons(_direction);
     damage = htons(damage);
+    _game_id = htons(_game_id);
 }
 void Protocol::unSerialize(){
     _action = (Protocol::action)ntohs(_action);
     id = ntohs(id);
     _direction = (Protocol::direction)ntohs(_direction);
     damage = ntohs(damage);
+    _game_id = ntohs(_game_id);
 }
 
 void Protocol::setAction(Protocol::action action){

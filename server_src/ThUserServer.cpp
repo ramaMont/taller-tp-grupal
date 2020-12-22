@@ -17,7 +17,13 @@ void ThUserServer::sendConfiguration(){
 }
 
 void ThUserServer::respondSuccess(){
-    Protocol protocol(game_id);
+    Protocol protocol;
+    protocol.setAction(Protocol::action::OK);
+    th_sender->push(protocol);
+}
+
+void ThUserServer::respondSuccess(int map_id){
+    Protocol protocol(user_id, map_id, game_id);
     protocol.setAction(Protocol::action::OK);
     th_sender->push(protocol);
 }
@@ -39,7 +45,7 @@ void ThUserServer::processReception(Protocol& protocol){
         case Protocol::action::CREATE_GAME:{
             int map_id = protocol.getId();
             games_admin.createGame(*this, map_id);
-            respondSuccess();
+            respondSuccess(map_id);
             break;
         }
         case Protocol::action::JOIN_GAME:{
