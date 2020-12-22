@@ -18,7 +18,7 @@ public:
     Thread(Thread&& other);
     Thread& operator=(Thread&& other);
     virtual void stop() = 0;
-    bool isDone();
+    virtual bool isDone();
     virtual ~Thread();
 };
 

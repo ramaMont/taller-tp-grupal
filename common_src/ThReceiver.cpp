@@ -75,6 +75,9 @@ GameModel* ThReceiver::getGameModel(){
 }
 
 ThReceiver::~ThReceiver(){
-    if (_gameModel != nullptr)
-        delete(_gameModel);
+    // if (_gameModel != nullptr){
+    //     _gameModel->stop();
+    //     _gameModel->join();
+    //     delete(_gameModel);
+    // }
 }

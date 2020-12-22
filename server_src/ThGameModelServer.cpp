@@ -38,9 +38,13 @@ void ThGameModelServer::run(){
     Protocol protocol;
     protocol.setAction(Protocol::action::BEGIN);
     echoProtocol(protocol);
-    while (is_running){
-        Protocol protocol = operations.pop();
-        processProtocol(protocol);
+    try{
+        while (is_running){
+            Protocol protocol = operations.pop();
+            processProtocol(protocol);
+        }
+    } catch(...){
+        is_running = false;
     }
 }
 
@@ -57,6 +61,13 @@ void ThGameModelServer::removePlayer(int user_id){
 
 void ThGameModelServer::stop(){
     is_running = false;
+    operations.stop();
+}
+
+bool ThGameModelServer::isDone(){
+    if (players.size() == 0)
+        return true;
+    return !is_running;
 }
 
 ThGameModelServer::~ThGameModelServer(){

@@ -1,6 +1,7 @@
 #include "ThUserServer.h"
 #include <Protocol.h>
 #include <iostream>
+#include <exception>
 
 ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
         GamesAdmin& games_admin):
@@ -73,7 +74,7 @@ void ThUserServer::run(){
             Protocol protocol = operations.pop();
             processReception(protocol);
         }
-    } catch (...){
+    } catch(...){
         is_running = false;
         if (game_id != -1)
             games_admin.removePlayer(game_id, user_id);

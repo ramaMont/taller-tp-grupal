@@ -15,6 +15,7 @@ void GamesAdmin::cleanZombies(){
     for (auto it = games.begin(); it != games.end(); ++it){
         auto th_game = it->second;
         if (th_game->isDone()){
+            th_game->stop();
             th_game->join();
             delete(th_game);
         } else {
