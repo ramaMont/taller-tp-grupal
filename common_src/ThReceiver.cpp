@@ -2,7 +2,7 @@
 #include <iostream>
 
 ThReceiver::ThReceiver(Socket* socket):
-        socket(socket){
+        socket(socket), _th_user(nullptr), _gameModel(nullptr){
 }
 
 void ThReceiver::run(){
@@ -39,7 +39,11 @@ void ThReceiver::processReception(Protocol& protocol){
             _th_user->push(protocol);
             break;
         case Protocol::action::ADD_PLAYER:
-            _th_user->push(protocol);
+            if (_gameModel == nullptr){
+                _th_user->push(protocol);
+            } else {
+                _gameModel->addPlayer(protocol.getId());
+            }
             break;
         case Protocol::action::END:
             _th_user->push(protocol);
@@ -63,5 +67,6 @@ GameModel* ThReceiver::getGameModel(){
 }
 
 ThReceiver::~ThReceiver(){
-    delete(_gameModel);
+    if (_gameModel != nullptr)
+        delete(_gameModel);
 }

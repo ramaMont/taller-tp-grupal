@@ -57,6 +57,7 @@ void GameModel::push(Protocol protocol){
 void GameModel::addPlayer(int player_id){
     static int pos_x = 2;
     static int pos_y = 2;
+    try{
     Coordinates initial_position(pos_x, pos_y);
     Coordinates initial_direction(0, 1);
     Player* player = new Player(initial_position, initial_direction, map, player_id);
@@ -64,6 +65,8 @@ void GameModel::addPlayer(int player_id){
     id_insertion_order.push_back(player_id);
     ++pos_x;
     ++pos_y;
+    } catch (...){
+    }
 }
 
 Player& GameModel::getPlayer(int user_id){

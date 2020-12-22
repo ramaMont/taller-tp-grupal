@@ -14,7 +14,6 @@ ThUserClient::ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_se
 
 void ThUserClient::joinOrCreateGame(){
     int option_input;
-
     bool ready = false;
     while (!ready){
         std::cout << "Introduzca 1 para crear partida\n";
@@ -48,7 +47,16 @@ void ThUserClient::joinOrCreateGame(){
         }
     }
     ready = false;
-    while (!ready){
+    if (is_creator){
+        while (!ready){
+            Protocol protocol = operations.pop();
+            processReception(protocol, ready);
+        }
+    } else {
+        while (!ready){
+            Protocol protocol = operations.pop();
+            processReception(protocol, ready);
+        }
         Protocol protocol = operations.pop();
         processReception(protocol, ready);
     }
