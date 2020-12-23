@@ -27,7 +27,6 @@ void ThUser::stop(){
 }
 
 void ThUser::removePlayer(int user_id){
-
 }
 
 void ThUser::waitForAction(Protocol::action desired_action){
