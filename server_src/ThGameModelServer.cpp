@@ -1,7 +1,7 @@
 #include "ThGameModelServer.h"
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server, int map_id, int game_id):
-        GameModel(map_id, game_id){
+        GameModel(map_id, game_id), launched(false){
     addThSender(th_user_server.getSender());
     addPlayer(th_user_server.getId());
     th_user_server.setGameModel(this);
@@ -35,6 +35,7 @@ void ThGameModelServer::echoProtocol(Protocol protocol){
 }
 
 void ThGameModelServer::run(){
+    launched = true;
     Protocol protocol;
     protocol.setAction(Protocol::action::BEGIN);
     echoProtocol(protocol);
@@ -68,6 +69,10 @@ bool ThGameModelServer::isDone(){
     if (players.size() == 0)
         return true;
     return !is_running;
+}
+
+bool ThGameModelServer::wasLaunched(){
+    return launched;
 }
 
 ThGameModelServer::~ThGameModelServer(){

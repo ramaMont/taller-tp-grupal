@@ -4,14 +4,15 @@
 #include <GameModel.h>
 class ThUserServer;
 #include "ThUserServer.h"
+#include <atomic>
 
 class ThGameModelServer : public GameModel{
 private:
     std::map<int,ThSender *> users_sender;
+    std::atomic<bool> launched;
 
 public:
     explicit ThGameModelServer(ThUserServer& th_user_server, int map_id, int game_id);
-    explicit ThGameModelServer(Mapa&& map);
     virtual void processProtocol(Protocol& protocol) override;
     virtual void run() override;
     virtual void stop() override;
@@ -19,6 +20,7 @@ public:
     void echoProtocol(Protocol protocol);
     void removePlayer(int user_id);
     virtual bool isDone() override;
+    bool wasLaunched();
     ~ThGameModelServer();
 };
 
