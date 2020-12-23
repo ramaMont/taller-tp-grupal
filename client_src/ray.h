@@ -21,6 +21,8 @@ class Posicionable;
 class Intersected_object;
 #include "intersected_object.h"
 
+class Wall;
+
 // Implementa un único rayo del raycasting
 class Ray {
 
@@ -43,7 +45,7 @@ class Ray {
 		Posicionable* get_element(Coordinates &map_coordinates);
 
 		// Devuelve la pared contra la que chocó el rayo
-		Intersected_object get_wall(Coordinates coordinates_map,bool first_triangle, Posicionable* object, float distance_player_plane);
+		Intersected_object get_wall(Coordinates coordinates_map,bool first_triangle, Wall* object, float distance_player_plane);
 
 		// Calcula la distancia desde el jugador al objeto con el que impactó el rayo
 		double get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle);
@@ -73,9 +75,13 @@ class Ray {
 		el que choca el rayo, partiendo de la posicion inicial, player_position*/
 		Intersected_object get_colisioned_objects();
 
-		Intersected_object wall_colided(Coordinates coordinates_map,bool first_triangle,Posicionable *object);
-
+		//Los objetos contra los que colisioné, que no son paredes,
+		// devuelven esta funcion, que llama a la recursiva y continúa buscando una pared
 		Intersected_object sprite_colided(Coordinates coordinates_map);
+
+		// El objeto contra el que colisioné llama a este método si es una pared, y finalizo este rayo		
+		Intersected_object wall_colided(Coordinates coordinates_map,bool first_triangle,Wall *object);
+
 
 };
 #endif

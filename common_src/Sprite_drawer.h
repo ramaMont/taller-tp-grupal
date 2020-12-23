@@ -14,7 +14,7 @@ class Posicionable;
 
 #include <coordinates.h>
 
-//Puede tener más de un sprite y además un enemigo
+// Obtiene la informacion necesaria para dibujar sprites, tanto sprites comunes como enemigos
 class Sprite_drawer{
 protected:
 	Posicionable* posicionable;
@@ -28,63 +28,29 @@ protected:
 
 
 public:
-    explicit Sprite_drawer(Posicionable *posicionable, Jugador &player): 
-    posicionable(posicionable), player(player) {}   
-
+    explicit Sprite_drawer(Posicionable *posicionable, Jugador &player);
 
     virtual void draw(const std::vector<float> &distances, int n_rays)  = 0;
 
-    void set_relative_angle_to_player(){
-    	Coordinates player_position = player.get_position();
-    	Coordinates player_direction = player.get_direction();
+    // Calcula su angulo relativo respecto a la direccion del jugador
+    void set_relative_angle_to_player();
 
-    	Coordinates sprite_position = posicionable->get_position();
+    // Obtiene el rayo de raycasting mas cercano a su posicion
+	void update_distance_to_closest_ray(int i,int n_rays);
 
-		Coordinates relative_player_pos;
-		relative_player_pos.x = sprite_position.x - player_position.x;
-		relative_player_pos.y = sprite_position.y - player_position.y;
+	// Calcula la distancia al plano del jugador
+	void set_distance(int half_pixels,Coordinates camera_plane);
 
+	// En caso de haber colisionado con un rayo, seteo el sprite como 'avistado'
+	void spotted_sprite();
 
-		double dist = player_direction.x*relative_player_pos.x + player_direction.y*relative_player_pos.y;
-		double det = player_direction.x*relative_player_pos.y - player_direction.y*relative_player_pos.x;
+	// True si el sprite fue visto, false en caso contrario
+	bool is_spotted();
 
-		relative_angle_to_player = atan2(det, dist);
-    }
+	// Desactiva el 'avistado' del frame anterior
+	void disable_spotted();
 
-	void update_distance_to_closest_ray(int i,int n_rays){
-		double ray_angle = atan(((double)i/(double)n_rays));
-		double distance = std::abs(relative_angle_to_player + ray_angle);
-		if(distance<lowest_ray_distance){
-			lowest_ray_distance = distance;
-			center_ray = i;
-		}
-	}
-
-
-	void set_distance(Coordinates camera_plane){
-		player_distance = (posicionable->get_position()).calculate_distance_to_vector(camera_plane,player.get_position());
-		if(player_distance<0.5)
-			player_distance=0.5;
-		cant_rays = 180/player_distance; //La cantidad de rayos es irrelevante al tema de la "vibracion" de los sprites
-	}
-
-	void spotted_sprite(){
-		located = true;
-	} 	
-
-	bool is_spotted(){
-		return located;
-	}
-
-	void disable_spotted(){
-		located = false;
-		player_distance = 90;
-		lowest_ray_distance = 90;
-	}
-
-	float get_distance_player_plane() const{
-		return player_distance;
-	}		    
+	float get_distance_player_plane() const;
 
 };
 

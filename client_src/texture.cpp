@@ -42,9 +42,9 @@ void Texture::add_gun_texture(std::string new_texture){
 	SDL_FreeSurface(loadedSurface);		
 }
 
-Texture::Texture(const Window& window, int n_rays):
-	renderer(window.getRenderer()),height(window.get_height()),
-	width(window.get_width()),n_rays(n_rays)	{
+Texture::Texture(const Window& window):
+	renderer(window.getRenderer()),height(window.get_height()-112),
+	width(window.get_width()-20){
 
 	add_wall_texture("greystone");
 	add_wall_texture("bluestone");
@@ -67,19 +67,18 @@ Texture::Texture(const Window& window, int n_rays):
 
 	add_gun_texture("guns");
 
+	this->x_lenght_ray = ceil((float)this->width/(window.get_resolution_width()));//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
 	}
 
 
-void Texture::show(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int pos_x, float distance_player_plane){
+void Texture::show(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int x_pixel, float distance_player_plane){
 
 	float lineHeight = (this->height / distance_player_plane);
 	int initial_position_y =  -lineHeight/2 + height/2;
 
 	float pixel_length = lineHeight/64;
 
-	float x_lenght_ray = this->width/(2*n_rays);//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
-
-	int x_initial_pos = x_lenght_ray*(pos_x+n_rays);
+	int x_initial_pos = x_lenght_ray*x_pixel;
 
 	int height_ray = (int)ceil(pixel_length*64);
 	//if(height_ray<height){
@@ -120,16 +119,14 @@ void Texture::show_weapon(int frame_gun, int current_gun, int left_start_texture
 	    SDL_RenderCopy(this->renderer, guns, &imgPartRect, &sdlDst);
 }
 
-void Texture::show_sprites(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int upper_limit,int pos_x, float distance_player_plane){
+void Texture::show_sprites(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int upper_limit,int x_pixel, float distance_player_plane){
 
 	float lineHeight = (this->height / distance_player_plane);
 	int initial_position_y =  -lineHeight/2 + height/2;
 
 	float pixel_length = lineHeight/64;
 
-	float x_lenght_ray = this->width/(2*n_rays);//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
-
-	int x_initial_pos = x_lenght_ray*(pos_x+n_rays);
+	int x_initial_pos = x_lenght_ray*x_pixel;
 
 	int height_ray = (int)ceil((pixel_length)*64);
 	//if(height_ray<height){
@@ -162,49 +159,82 @@ void Texture::show_chain_gun(int frame_gun){
 
 
 
-void Texture::show_dog(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture){
-	show_sprites(this->enemies[2],65*state + number_line_texture,frame*65,32 ,pos_x,distance_player_plane);
+void Texture::show_dog(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
+	show_sprites(this->enemies[2],65*state + number_line_texture,frame*65,32 ,x_pixel,distance_player_plane);
 }
 
-void Texture::show_guard(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture){
+void Texture::show_guard(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
 	if(number_line_texture>15 and number_line_texture<49)
-		show_sprites(this->enemies[0],65*state + number_line_texture,frame*65,15 ,pos_x,distance_player_plane);
+		show_sprites(this->enemies[0],65*state + number_line_texture,frame*65,15 ,x_pixel,distance_player_plane);
 }
 
-void Texture::show_officer(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture){
+void Texture::show_officer(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
 	if(number_line_texture>15 and number_line_texture<49)		
-		show_sprites(this->enemies[1],65*state + number_line_texture,frame*65,12, pos_x,distance_player_plane);
+		show_sprites(this->enemies[1],65*state + number_line_texture,frame*65,12, x_pixel,distance_player_plane);
 }
 
-void Texture::show_ss(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture){
+void Texture::show_ss(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
 	if(number_line_texture>0 and number_line_texture<64)		
-		show_sprites(this->enemies[3],65*state + number_line_texture,frame*65,8, pos_x,distance_player_plane);
+		show_sprites(this->enemies[3],65*state + number_line_texture,frame*65,8, x_pixel,distance_player_plane);
 }
 
-void Texture::show_mutant(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture){
+void Texture::show_mutant(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
 	if(number_line_texture>15 and number_line_texture<49)	
-		show_sprites(this->enemies[4],65*state + number_line_texture,frame*65,17, pos_x,distance_player_plane);
+		show_sprites(this->enemies[4],65*state + number_line_texture,frame*65,17, x_pixel,distance_player_plane);
 }
 
 
-
-void Texture::show_wall(int pos_x,float distance_player_plane, int number_line_texture, int texture, bool wall_side_y){
-	int current_texture = 2*texture + wall_side_y;
-	show(this->wall_textures[current_texture],number_line_texture,0,pos_x,distance_player_plane);
+void Texture::show_wall_greystone(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
+	int current_texture = wall_side_y;
+	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
 }
 
+void Texture::show_wall_bluestone(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
+	int current_texture = 2*1 + wall_side_y;
+	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+}
+
+void Texture::show_wall_purplestone(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
+	int current_texture = 2*2 + wall_side_y;
+	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+}
+
+void Texture::show_wall_colorstone(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
+	int current_texture = 2*3 + wall_side_y;
+	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+}
+
+void Texture::show_wall_eagle(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
+	int current_texture = 2*4 + wall_side_y;
+	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+}
+
+void Texture::show_wall_mossy(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
+	int current_texture = 2*5 + wall_side_y;
+	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+}
+
+void Texture::show_wall_redbrick(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
+	int current_texture = 2*6 + wall_side_y;
+	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+}
+
+void Texture::show_wall_wood(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
+	int current_texture = 2*7 + wall_side_y;
+	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+}
 
 //0: barril; 1: columna; 2: lampara
-void Texture::show_sprite(int pos_x, float distance_player_plane, int number_line_texture, int texture){
+void Texture::show_sprite(int x_pixel, float distance_player_plane, int number_line_texture, int texture){
 	if(texture==0){
 		if(number_line_texture>15 and number_line_texture<48)	
-			show_sprites(this->sprites[texture],number_line_texture,0,31,pos_x,distance_player_plane);
+			show_sprites(this->sprites[texture],number_line_texture,0,31,x_pixel,distance_player_plane);
 	}
 	else if(texture==1){
 		if(number_line_texture>15)	
-			show_sprites(this->sprites[texture],number_line_texture,0,0,pos_x,distance_player_plane);		
+			show_sprites(this->sprites[texture],number_line_texture,0,0,x_pixel,distance_player_plane);		
 	}else if(texture==2){
-		show(this->sprites[texture],number_line_texture,0,pos_x,distance_player_plane);
+		show(this->sprites[texture],number_line_texture,0,x_pixel,distance_player_plane);
 	}
 }
 
@@ -218,4 +248,11 @@ Texture::~Texture() {
 	for(int i=0; i<cant_textures;i++){
 		SDL_DestroyTexture(sprites[i]);
 	}
+
+	cant_textures = enemies.size();
+	for(int i=0; i<cant_textures;i++){
+		SDL_DestroyTexture(enemies[i]);
+	}	
+
+	SDL_DestroyTexture(guns);
 }

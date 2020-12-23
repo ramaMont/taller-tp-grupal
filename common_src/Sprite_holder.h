@@ -21,26 +21,13 @@ protected:
     Movable* movable;
 
 public:
-    explicit Sprite_holder(Texture &texture_drawer, Coordinates posicion, int texture, Jugador &player): 
-    Posicionable(texture_drawer,posicion,texture),Sprite_drawer(this,player) ,movable(nullptr){
-    	sprites_textures.push_back(texture);
-    }
+    explicit Sprite_holder(Texture &texture_drawer, Coordinates posicion, int texture, Jugador &player);
 
-    void add_sprite(int num_texture){
-    	sprites_textures.push_back(num_texture);
-    }
+    void add_sprite(int num_texture);
 
-    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
-        spotted();
-        return ray->sprite_colided(coordinates_map);
-    }    
+    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
-	void spotted(){
-        spotted_sprite();
-        if(movable!=nullptr){
-            movable->spotted();
-        }
-	}    
+	void spotted();
 
     void add(Movable* movable) override;
 

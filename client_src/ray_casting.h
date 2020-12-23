@@ -29,15 +29,14 @@ private:
 	Jugador &player;
 	Mapa &map;
 	int n_rays;
-	Texture &texture_drawer;
 
 
 
 public:
-    Raycasting(Jugador &a_player, Mapa &map, int n_rays, Texture &texture_drawer);
+    Raycasting(Jugador &a_player, Mapa &map, int n_rays);
 
 
-    //Llama a Ray por cada rayo nuevo, y una vez obtenida su longitud la manda a draw
+    //Llama a Ray por cada rayo nuevo, y una vez obtenido, lo dibuja
     void calculate_raycasting(Camera &camera,std::vector<float> &distances);
 };
 

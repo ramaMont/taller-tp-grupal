@@ -193,12 +193,12 @@ int main(int argc, char* argv[]) {
     
     Mapa map(24, 24);
 
-    Window window(640,480);  //(640,480) o bien (1280,720)
+    Window window(1280,720,640,200);  //(640,480) o bien (1280,720)
     
-    Texture texture(window,160);
+    Texture texture(window);
 
     Coordinates initial_position(6.5,3.5);
-    Coordinates initial_direction(1,0);
+    Coordinates initial_direction(0,-1);
     Jugador player(texture,initial_position,initial_direction,map);
     player.new_gun_type(1);
     std::vector<Sprite_drawer*> sprites;
@@ -209,8 +209,28 @@ int main(int argc, char* argv[]) {
         if(pos_value!=0){
             if(pos_value<8){
               Coordinates position((float)i,(float)j);
-              Posicionable *posicionable = new Wall(texture,position,a_map[i][j]-1);
-              map.agregarPosicionable(posicionable,position);
+              if(pos_value==1){
+                  Posicionable *posicionable = new Wall_greystone(texture,position);
+                  map.agregarPosicionable(posicionable,position);                
+              }else if(pos_value==2){
+                  Posicionable *posicionable = new Wall_bluestone(texture,position);
+                  map.agregarPosicionable(posicionable,position);
+              }else if(pos_value==3){
+                  Posicionable *posicionable = new Wall_purplestone(texture,position);
+                  map.agregarPosicionable(posicionable,position);
+              }else if(pos_value==4){
+                  Posicionable *posicionable = new Wall_colorstone(texture,position);
+                  map.agregarPosicionable(posicionable,position);
+              }else if(pos_value==5){
+                  Posicionable *posicionable = new Wall_eagle(texture,position);
+                  map.agregarPosicionable(posicionable,position);
+              }else if(pos_value==6){
+                  Posicionable *posicionable = new Wall_mossy(texture,position);
+                  map.agregarPosicionable(posicionable,position);
+              }else if(pos_value==7){
+                  Posicionable *posicionable = new Wall_redbrick(texture,position);
+                  map.agregarPosicionable(posicionable,position);
+              }
             }else if(pos_value<10){
               Coordinates position((float)i+0.5,(float)j+0.5);
               Sprite_holder *posicionable = new Sprite_holder(texture,position,a_map[i][j]-8,player);

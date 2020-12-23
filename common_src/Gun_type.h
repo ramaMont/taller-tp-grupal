@@ -3,6 +3,7 @@
 
 class Texture;
 
+//Los distintos tipos de armas que puede tener el jugador
 class Gun_type{
 protected:
 	Texture &texture_drawer;

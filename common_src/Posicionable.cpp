@@ -6,10 +6,6 @@ Posicionable::Posicionable(Texture &texture_drawer,Coordinates posicion):
     posicion(posicion),texture_drawer(texture_drawer){
 }
 
-Posicionable::Posicionable(Texture &texture_drawer, Coordinates posicion, int texture):
-    posicion(posicion),texture(texture),texture_drawer(texture_drawer){
-}
-
 Coordinates Posicionable::get_position(){
     return posicion;
 }

@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-// "Camara" representativa que se solo en raycasting para calcular la distancia de cada rayo
+// "Camara" representativa para calcular la distancia de cada rayo en raycasting
 class Camera {
 
 private:

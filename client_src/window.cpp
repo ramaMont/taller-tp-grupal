@@ -6,8 +6,8 @@
 #include <iostream>
 
 
-Window::Window(int width, int height) :
-        width(width), height(height) {
+Window::Window(int width, int height, int resolution_width, int resolution_high) :
+        width(width), height(height),resolution_width(resolution_width),resolution_high(resolution_high) {
     int state = SDL_CreateWindowAndRenderer(
         width, height, SDL_RENDERER_ACCELERATED,
         &this->window, &this->renderer);

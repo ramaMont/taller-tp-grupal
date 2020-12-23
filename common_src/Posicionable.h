@@ -13,30 +13,27 @@ class Jugador;
 class Enemy;
 class Texture;
 
+
 class Posicionable{
 protected:
     Coordinates posicion;
-    int texture;
     Texture &texture_drawer;
 public:
 
-	//Estos 2 no deberian estár, idealmente podria usar double dispatch y fue
-	int get_texture(){
-		return texture;
-	}
 
 	explicit Posicionable(Texture &texture_drawer,Coordinates posicion);
 
-    explicit Posicionable(Texture &texture_drawer, Coordinates posicion,int texture);
-
+	// Tira excepcion, los objetos con los que colisiono solo pueden ser clases hijas de Posicionable.
     virtual Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
     virtual Coordinates get_position();
 
+    // En ningun otro objeto ademas de SpriteHolder puedo tener otro Posicionable adentro
     virtual void add(Movable* movable){
         throw -2;
     }
 
+	// En ningun otro objeto ademas de SpriteHolder puedo tener otro Posicionable adentro
     virtual void remove(){
         throw -2;
     }

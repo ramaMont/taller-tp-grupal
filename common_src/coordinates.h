@@ -16,13 +16,16 @@ public:
 
     Coordinates(double a_x, double a_y);
 
+    //Incrementa en módulo 'inc' las coordenadas del objeto, deacuerdo a direccion recibida.
     void increment_on_direction(Coordinates movement_direction, double inc);
 
+    //Rota las coordenadas.
     void rotate(double inc);
 
+    //Normaliza las coordenadas
     void normalice_direction();
 
-	//Perpendicular a la direccion q reciba
+	//Devuelva una coordenada perpendicular a la direccion de ésta.
     Coordinates get_perpendicular_direction()const ;
 
     bool x_positive()const;
@@ -36,8 +39,6 @@ public:
     void inc_x(double a_x);
 
     void inc_y(double a_y);
-
-    bool has_element(const std::vector<std::vector<int>> &map);
 
     double get_distance_to_lower_side_x()const;
 
@@ -55,10 +56,6 @@ public:
     int get_increase_x()const;
 
     int get_increase_y()const;
-
-    // void set_x(double a_x);
-
-    // void set_y(double a_y);
 
     //Compara nomas la parte "entera" de las coordenadas
     bool operator==(const Coordinates& other) const{

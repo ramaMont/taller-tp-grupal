@@ -16,6 +16,7 @@ class Movable;
 
 #include "Enemy_type.h"
 
+// Es tanto un Movible como un sprite, dado que su metodo para dibujar es el mismo que el de los sprites
 class Enemy : public Movable, public Sprite_drawer{
 private:
 	Jugador &player;	
@@ -27,41 +28,19 @@ private:
 public:
 	explicit Enemy(Texture &texture_drawer,Coordinates posicion, int num_texture, Coordinates direction ,Mapa& mapa, Jugador &player ,std::string id);
 
-    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
-        spotted();
-        return ray->sprite_colided(coordinates_map);
-    } 
+	// En caso de colisionar con un enemigo durante el raycasting, le mando que aún no encontró una pared
+    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
-    void new_enemy_type(int new_enemy_type){
-    	printf("apretaste el: %i \n", new_enemy_type);
-    	if(enemy_type!=nullptr)
-    		delete enemy_type;
-    	if(new_enemy_type==0)
-    		enemy_type = new Dog(texture_drawer);
-    	else if(new_enemy_type==1)
-    		enemy_type = new Guard(texture_drawer);
-    	else if(new_enemy_type==2)
-    		enemy_type = new SS(texture_drawer);
-    	else if(new_enemy_type==3)
-    		enemy_type = new Officer(texture_drawer);
-    	else if(new_enemy_type==4)
-    		enemy_type = new Mutant(texture_drawer);
-    }
+    // Cambio el tipo actual del enemigo
+    void new_enemy_type(int new_enemy_type);
 
-	void spotted() override{
-		spotted_sprite();
-	}
+    // Actualizo el frame del enemigo en caso de que se esté modviendo
+	void moving();
 
-	void moving(){
-		moved_frames_continued++;
-		moved_frames_continued = moved_frames_continued%40;
-	}
+	// Actualizo el frame del enemigo en caso de que esté quieto
+	void still();
 
-	void still(){
-		moved_frames_continued=0;
-	}
-
-
+	// Dibujo al enemigo
 	void draw(const std::vector<float> &distances, int n_rays);
 
 	~Enemy();

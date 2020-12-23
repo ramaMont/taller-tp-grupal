@@ -3,6 +3,7 @@
 
 class Texture;
 
+//Los distintos tipos de enemigos
 class Enemy_type{
 protected:
 	Texture &texture_drawer;

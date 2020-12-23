@@ -21,10 +21,6 @@ public:
     void mover_en_una_direccion(Direccion* direccion);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);
-
-	virtual void spotted(){
-	}
-
     Coordinates get_direction() const;
 
     ~Movable();  
