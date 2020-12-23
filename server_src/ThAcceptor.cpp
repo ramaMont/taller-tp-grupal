@@ -47,7 +47,6 @@ ThAcceptor::~ThAcceptor(){
     for (size_t i = 0; i < user_peers.size(); i++){
         user_peers[i]->stop();
         user_peers[i]->join();
-        delete user_peers[i];
+        delete(user_peers[i]);
     }
 }
-

@@ -90,8 +90,4 @@ GameModel& GameModel::operator=(GameModel&& other){
 
 GameModel::~GameModel(){
     cleanDirections();
-    for (auto it = players.begin(); it != players.end(); ++it){
-        auto player = it->second;
-        delete(player);
-    }
 }
