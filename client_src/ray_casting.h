@@ -26,7 +26,6 @@
 
 //Implementa el raycasting
 class Raycasting {
-
 private:
 	int textures[10][3][64][64];//Textura; color(r,g,b); fila; columna
 
@@ -42,12 +41,11 @@ private:
 	//Dibuja un rayo del ra#include "intersected_object.h"ycasting
 	void draw(Intersected_object intersected_object,float pos_x);
 
-
-
 public:
     Raycasting(Player &a_player, Mapa &map, const Window &window);
 
-    //Llama a Ray por cada rayo nuevo, y una vez obtenida su longitud la manda a draw
+    //Llama a Ray por cada rayo nuevo, y una vez obtenida su longitud
+	// la manda a draw
     void calculate_ray_casting();
 };
 

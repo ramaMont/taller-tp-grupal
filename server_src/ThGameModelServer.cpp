@@ -1,7 +1,12 @@
 #include "ThGameModelServer.h"
 
-ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server, int map_id, int game_id):
-        GameModel(map_id, game_id), launched(false){
+#include <vector>
+#include <map>
+#include <utility>
+
+ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
+        int map_id, int game_id):
+    GameModel(map_id, game_id), launched(false){
     addThSender(th_user_server.getSender());
     addPlayer(th_user_server.getId());
     th_user_server.setGameModel(this);
@@ -22,7 +27,8 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
 }
 
 void ThGameModelServer::addThSender(ThSender* th_sender){
-    users_sender.insert(std::pair<int, ThSender*>(th_sender->getId(), th_sender));
+    users_sender.insert(std::pair<int, ThSender*>(th_sender->getId(),
+        th_sender));
 }
 
 void ThGameModelServer::echoProtocol(Protocol protocol){
@@ -30,7 +36,7 @@ void ThGameModelServer::echoProtocol(Protocol protocol){
     while (it != users_sender.end()){
         ThSender* user_sender = it->second;
         user_sender->push(protocol);
-        it++;
+        ++it;
     }
 }
 
@@ -41,7 +47,7 @@ void ThGameModelServer::run(){
     echoProtocol(protocol);
     try{
         while (is_running){
-            Protocol protocol = operations.pop();
+            protocol = operations.pop();
             processProtocol(protocol);
         }
     } catch(...){

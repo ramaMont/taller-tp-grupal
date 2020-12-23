@@ -12,7 +12,7 @@ void ThReceiver::run(){
             socket->recive(protocol, sizeof(protocol));
             processReception(protocol);
         }
-    } catch (...){
+    } catch(...){
         is_running = false;
         _th_user->stop();
     }

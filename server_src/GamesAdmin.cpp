@@ -2,10 +2,13 @@
 
 #include "ThGameModelServer.h"
 #include "Mapa.h"
-#include <map>
 #include <ThUser.h>
 #include <coordinates.h>
 #include <Player.h>
+
+#include <map>
+#include <utility>
+#include <vector>
 
 GamesAdmin::GamesAdmin(): current_game_id(0){
 }
@@ -19,7 +22,8 @@ void GamesAdmin::cleanZombies(){
             th_game->join();
             delete(th_game);
         } else {
-            activeGames.insert(std::pair<int, ThGameModelServer*>(th_game->getId(), th_game));
+            activeGames.insert(std::pair<int, ThGameModelServer*>
+                (th_game->getId(), th_game));
         }
     }
     games.swap(activeGames);    
@@ -28,7 +32,8 @@ void GamesAdmin::cleanZombies(){
 void GamesAdmin::createGame(ThUserServer& th_user_server, const int& map_id){
     std::lock_guard<std::mutex> lck(mutex);
     cleanZombies();
-    ThGameModelServer* th_game = new ThGameModelServer(th_user_server, map_id, current_game_id);
+    ThGameModelServer* th_game = new ThGameModelServer(th_user_server, map_id,
+        current_game_id);
     games.insert(std::pair<int, ThGameModelServer*>(th_game->getId(), th_game));
     th_user_server.setGameId(current_game_id);
     ++current_game_id;
@@ -61,7 +66,7 @@ void GamesAdmin::removePlayer(int game_id, int user_id){
     try{
         auto game = games.at(game_id);
         game->removePlayer(user_id);
-    } catch (...){
+    } catch(...){
     }
 }
 

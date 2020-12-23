@@ -10,7 +10,7 @@ void ThSender::run(){
             Protocol protocol = operations.pop();
             socket->send(protocol, sizeof(Protocol));
         }
-    } catch (...){
+    } catch(...){
         is_running = false;
     }
 }

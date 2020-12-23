@@ -1,7 +1,9 @@
 #include "ServerHolder.h"
 #include <ThAcceptor.h>
-#include <iostream>
 #include "GamesAdmin.h"
+
+#include <iostream>
+#include <string>
 
 ServerHolder::ServerHolder(int argc, char** argv):
     paramReader(argc, argv){

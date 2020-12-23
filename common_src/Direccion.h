@@ -7,7 +7,6 @@ class Player;
 
 class Direccion{
 public:
-
     virtual Coordinates mover(Player* jugador, Coordinates direction) = 0;
     virtual ~Direccion();
 };

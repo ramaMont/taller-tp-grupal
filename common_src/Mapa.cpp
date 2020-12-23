@@ -37,9 +37,9 @@ void initMap(Mapa& map){
         {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
     };
-    for(int i=0; i<24; i++){
-        for(int j=0; j<24; j++){
-            if(a_map[i][j]!=0){
+    for (int i=0; i<24; i++){
+        for (int j=0; j<24; j++){
+            if (a_map[i][j]!=0){
                 Coordinates position((float)i,(float)j);
                 Posicionable* posicionable = new Posicionable(position);
                 map.agregarPosicionable(posicionable,position);
@@ -53,8 +53,6 @@ Mapa::Mapa(int map_id):
         alto(24),
         ancho(24),
         mapaJuego(ancho, std::vector<Posicionable*>(alto)){
-
-
     for (int i=0; i<ancho; i++){
         for (int j=0; j<alto; j++){
             mapaJuego[i][j]=nullptr;

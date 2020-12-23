@@ -4,7 +4,7 @@ int main(int argc, char* argv[]) {
     ClientHolder clientHolder;
     try{
         clientHolder.run();
-    } catch (...){
+    } catch(...){
     }
     return 0;
 }

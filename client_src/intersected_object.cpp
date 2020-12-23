@@ -2,9 +2,10 @@
 
 #include <cmath>
 
-Intersected_object::Intersected_object(float distance_player_plane, float position, int side){
+Intersected_object::Intersected_object(float distance_player_plane, 
+        float position, int side){
     distance = distance_player_plane;
-    number_line_texture = floor ((position - floor(position))*64);
+    number_line_texture = floor((position - floor(position))*64);
     side_division = side;
 }
 

@@ -3,9 +3,11 @@
 
 #include <Thread.h>
 #include <Socket.h>
-#include <vector>
 #include "ThUserServer.h"
 #include "GamesAdmin.h"
+
+#include <vector>
+#include <string>
 
 class ThAcceptor : public Thread{
     std::vector<ThUserServer*> user_peers;

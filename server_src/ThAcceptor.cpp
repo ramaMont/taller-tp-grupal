@@ -3,6 +3,8 @@
 #include <ThReceiver.h>
 #include <ThSender.h>
 
+#include <string>
+
 void ThAcceptor::cleanZombies(){
     std::vector<ThUserServer*> activeThreads;
     for (size_t i = 0; i < user_peers.size(); i++){
@@ -20,18 +22,19 @@ ThAcceptor::ThAcceptor(const std::string& port, GamesAdmin& games_admin):
     Thread(), socket_aceptador(port), games_admin(games_admin){
 }
 void ThAcceptor::run(){
-    int current_id = 0;
     try{
+        int current_id = 0;
         while (is_running){
             Socket socket_peer = socket_aceptador.acceptClient();
             cleanZombies();
             ThUserServer* th_user_peer = 
-                new ThUserServer(current_id, std::move(socket_peer), games_admin);
+                new ThUserServer(current_id, std::move(socket_peer),
+                games_admin);
             user_peers.push_back(th_user_peer);
             th_user_peer->start();
             ++current_id;
         }
-    } catch (...){
+    } catch(...){
         is_running = false;
     }
 }

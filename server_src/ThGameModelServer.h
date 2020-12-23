@@ -4,7 +4,9 @@
 #include <GameModel.h>
 class ThUserServer;
 #include "ThUserServer.h"
+
 #include <atomic>
+#include <map>
 
 class ThGameModelServer : public GameModel{
 private:
@@ -12,7 +14,8 @@ private:
     std::atomic<bool> launched;
 
 public:
-    explicit ThGameModelServer(ThUserServer& th_user_server, int map_id, int game_id);
+    explicit ThGameModelServer(ThUserServer& th_user_server, int map_id,
+        int game_id);
     virtual void processProtocol(Protocol& protocol) override;
     virtual void run() override;
     virtual void stop() override;

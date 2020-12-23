@@ -9,7 +9,7 @@ ThUser::ThUser(int user_id): Thread(), operations(),user_id(user_id){
 }
 
 void ThUser::run(){
-    Protocol protocol = operations.pop();
+//    Protocol protocol = operations.pop();
 }
 
 void ThUser::push(Protocol protocol){

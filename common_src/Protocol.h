@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-struct __attribute__ ((packed)) Protocol {
+struct __attribute__((packed)) Protocol {
 public:
     enum action : std::uint16_t { MOVE, SHOOT, LOAD, PICKUP, OPEN,
             SHOOTED, ADDKILL, ADDPOINTS, ENDGAME, SET_ID,

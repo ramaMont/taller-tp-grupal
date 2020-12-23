@@ -12,10 +12,10 @@ private:
     std::queue<T> queue;
     std::condition_variable cv;
     bool open;
+    
 public:
     BlockingQueue():open(true){
     }
-
     void push(T const& data){
         std::lock_guard<std::mutex> lck(m);
         queue.push(data);

@@ -1,14 +1,12 @@
 #include "GameModel.h"
 
+#include <vector>
+#include <utility>
+
 GameModel::GameModel(int map_id, int game_id):
         Thread(), map(map_id), operations(), game_id(game_id){
     initDirections();
 } 
-
-GameModel::GameModel(Mapa&& map): 
-        Thread(), map(std::move(map)), operations() {
-    initDirections();
-}
 
 /* 
 Inicializo el diccionario directions para acceder a cada direccion 
@@ -36,14 +34,6 @@ void GameModel::cleanDirections(){
     }
 }
 
-void GameModel::updateEvent(){
-}
-void GameModel::movePlayer(int player_id){
-}
-
-void GameModel::shoot(){
-}
-
 void GameModel::processMove(Protocol& protocol){
     Player* player = players.at(protocol.getId());
     Direccion* dir = directions.at(protocol.getDirection());
@@ -55,17 +45,18 @@ void GameModel::push(Protocol protocol){
 }
 
 void GameModel::addPlayer(int player_id){
-    static int pos_x = 2;
-    static int pos_y = 2;
     try{
+        static int pos_x = 2;
+        static int pos_y = 2;
         Coordinates initial_position(pos_x, pos_y);
         Coordinates initial_direction(0, 1);
-        Player* player = new Player(initial_position, initial_direction, map, player_id);
+        Player* player = new Player(initial_position, initial_direction,
+            map, player_id);
         players.insert(std::pair<int, Player*>(player_id, player));
         id_insertion_order.push_back(player_id);
         ++pos_x;
         ++pos_y;
-    } catch (...){
+    } catch(...){
     }
 }
 
@@ -93,6 +84,7 @@ GameModel& GameModel::operator=(GameModel&& other){
     this->is_running = true;
     this->players = std::move(other.players);
     this->directions = std::move(other.directions);
+    this->game_id = std::move(other.game_id);
     return *this;
 }
 

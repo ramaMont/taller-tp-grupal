@@ -6,7 +6,8 @@
 //Coordenadas, representan tanto posiciones como direcciones de un vector
 /*Nota: como todos sus atributos son 
 accedidos con tanta frecuencia que conviene hacerlos 
-publicos en lugar de llenar mi código de getters y setters, capaz me conviene convertir esto en un struct*/
+publicos en lugar de llenar mi código de getters y setters, capaz me conviene 
+convertir esto en un struct*/
 class Coordinates{
 public:
     double x;
@@ -49,7 +50,7 @@ public:
 
     double calculate_distance(const Coordinates &a_position) const;
 
-	// Según la direccion a la que apunta mi rayo, me fijo en una celda distinta
+	//Según la direccion a la que apunta mi rayo, me fijo en una celda distinta
     int get_increase_x()const;
 
     int get_increase_y()const;
@@ -60,7 +61,8 @@ public:
 
     //Compara nomas la parte "entera" de las coordenadas
     bool operator==(const Coordinates& other) const{
-        return (floor(this->x) == floor(other.x) && floor(this->y) == floor(other.y));
+        return (floor(this->x) == floor(other.x) && 
+            floor(this->y) == floor(other.y));
     }
     
     //Compara nomas la parte "entera" de las coordenadas

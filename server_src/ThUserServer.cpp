@@ -2,6 +2,7 @@
 #include <Protocol.h>
 #include <iostream>
 #include <exception>
+#include <vector>
 
 ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
         GamesAdmin& games_admin):

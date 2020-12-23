@@ -1,5 +1,7 @@
 #include "ParamReaderServer.h"
 
+#include <string>
+
 ParamReaderServer::ParamReaderServer(int argc, char** argv): 
     args(argv, argv+argc){
         if (argc != 3) throw -1;

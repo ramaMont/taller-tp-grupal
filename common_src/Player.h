@@ -16,7 +16,8 @@ private:
     int player_id;
 public:
     explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa);
-    explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id);
+    explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa,
+        int id);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);
     Coordinates get_coordinates();

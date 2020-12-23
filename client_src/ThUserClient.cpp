@@ -119,10 +119,8 @@ void ThUserClient::createGameModel(int map_id, int id_user, int game_id){
 }
 
 // Hacer todo para empezar a jugar la partida.
-void ThUserClient::play(){
-    
+void ThUserClient::play(){  
     waitForAction(Protocol::action::BEGIN);
-
     ThDrawer th_drawer(th_receiver.getGameModel()->getPlayer(user_id),
         th_receiver.getGameModel()->getMap());
     ThKeyReader th_key_reader(th_sender);

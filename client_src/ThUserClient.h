@@ -12,7 +12,6 @@ class ThGameModelClient;
 
 class ThUserClient : public ThUser{
 private:
-
     ThReceiver& th_receiver;
     ThSender& th_sender;
     ThGameModelClient* _th_game_model;
@@ -24,7 +23,8 @@ private:
     void waitUntilLaunch();
     void play();
 public:
-    explicit ThUserClient(int user_id, ThReceiver& th_receiver, ThSender& th_sender);
+    explicit ThUserClient(int user_id, ThReceiver& th_receiver, 
+        ThSender& th_sender);
     virtual void run() override;
     virtual void removePlayer(int user_id) override;
     ~ThUserClient();

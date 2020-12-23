@@ -9,8 +9,10 @@ class ThSender;
 #include "ThSender.h"
 #include "Mapa.h"
 #include "BlockingQueue.h"
+
 #include <atomic>
 #include <map>
+#include <vector>
 
 class GameModel : public Thread{
 protected:
@@ -27,12 +29,12 @@ protected:
     void processMove(Protocol& protocol);
     void initDirections();
     void cleanDirections();
+
 public:
     explicit GameModel(int map_id, int game_id);
-    explicit GameModel(Mapa&& map);
 
-    virtual void run() = 0;
-    virtual void stop() = 0;
+    virtual void run() override = 0;
+    virtual void stop() override = 0;
     void push(Protocol protocol);
     virtual void processProtocol(Protocol& protocol) = 0;
 
@@ -48,7 +50,5 @@ public:
     GameModel& operator=(const GameModel&) = delete;
     GameModel& operator=(GameModel&& other);
     virtual ~GameModel();
-
 };
-
 #endif

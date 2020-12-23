@@ -11,7 +11,6 @@ class ThUser;
 
 class ThReceiver :  public Thread{
 private:
-
     Socket* socket;
     ThUser* _th_user;
     GameModel* _gameModel;
@@ -19,7 +18,7 @@ private:
 public:
     explicit ThReceiver(Socket *socket);
     virtual void run() override;
-    virtual void stop();
+    virtual void stop() override;
     void setThUser(ThUser* th_user);
     void setGameModel(GameModel* gameModel);
     void processReception(Protocol& protocol);
