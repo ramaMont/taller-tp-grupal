@@ -58,8 +58,9 @@ void ThGameModelServer::run(){
 void ThGameModelServer::removePlayer(int user_id){
     auto player = players.at(user_id);
     auto coordenadas = player->get_coordinates();
-    users_sender.erase(user_id);
+    delete(player);
     players.erase(user_id);
+    users_sender.erase(user_id);
     Protocol protocol(user_id);
     map.sacarPosicionable(coordenadas);
     protocol.setAction(Protocol::action::REMOVE);
@@ -82,4 +83,7 @@ bool ThGameModelServer::wasLaunched(){
 }
 
 ThGameModelServer::~ThGameModelServer(){
+    // Todos los jugadores son limpiados en la funcion 
+    // removePlayer la cual es llamada cada vez que un jugador
+    // se desconecta o se frena la ejecucion de un ThUserServer
 }
