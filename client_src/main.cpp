@@ -193,7 +193,7 @@ int main(int argc, char* argv[]) {
     
     Mapa map(24, 24);
 
-    Window window(1280,720,640,200);  //(640,480) o bien (1280,720)
+    Window window(1280,720,320,200);  //(640,480) o bien (1280,720)
     
     Texture texture(window);
 
