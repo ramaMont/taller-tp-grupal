@@ -83,4 +83,7 @@ bool ThGameModelServer::wasLaunched(){
 }
 
 ThGameModelServer::~ThGameModelServer(){
+    // Todos los jugadores son limpiados en la funcion 
+    // removePlayer la cual es llamada cada vez que un jugador
+    // se desconecta o se frena la ejecucion de un ThUserServer
 }
