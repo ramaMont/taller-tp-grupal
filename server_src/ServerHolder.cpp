@@ -1,17 +1,23 @@
 #include "ServerHolder.h"
-#include <Mapa.h>
-#include <Jugador.h>
-#include <coordinates.h>
-#include <Direccion.h>
+#include <ThAcceptor.h>
+#include "GamesAdmin.h"
+
 #include <iostream>
-#include <exception>
+#include <string>
 
 ServerHolder::ServerHolder(int argc, char** argv):
     paramReader(argc, argv){
 }
 
 void ServerHolder::run(){
-
+    std::string run;
+    GamesAdmin games_admin;
+    ThAcceptor th_acceptor(paramReader.getPort(), games_admin);
+    th_acceptor.start();
+    while (run != "q")
+        std::cin >> run;
+    th_acceptor.stop();
+    th_acceptor.join();
 }
 
 ServerHolder::~ServerHolder(){

@@ -14,8 +14,12 @@ class Intersected_object{
 private:
 	int number_line_texture;//Fila de pixeles a graficar (eje x)
     float distance;
-    Posicionable* object;//A éste despues le tengo que hacer get_texture_number para saber q textura usar
-    int side_division; //Si el objeto está en el eje x, el valor es 1, si está en y, es 2 y más oscura
+    // A éste despues le tengo que hacer get_texture_number para saber
+    // q textura usar
+    Posicionable* object;
+    // Si el objeto está en el eje x, el valor es 1, si está en y
+    // es 2 y más oscura
+    int side_division; 
 
 public:
 	//Cargo las caracteristicas del objeto colisionado (proximamente agregear n° textura)
@@ -26,12 +30,8 @@ public:
     }
 
     float get_distance_player_plane();
-
     int get_number_line_texture();
-
     int get_side_division();
-
-    
 };
 
 #endif

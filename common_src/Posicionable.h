@@ -17,7 +17,7 @@ public:
 
     explicit Posicionable(Coordinates posicion);
     virtual Coordinates getPosicion();
-    ~Posicionable();
+    virtual ~Posicionable();
 };
 
 #endif

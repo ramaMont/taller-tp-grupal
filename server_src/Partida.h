@@ -3,12 +3,12 @@
 
 #include <string>
 #include <vector>
-#include <Jugador.h>
+#include <Player.h>
 
 class Partida{
 private:
     std::string params;
-    std::vector<Jugador *> jugadores;
+    std::vector<Player *> jugadores;
 public:
     explicit Partida(const std::string& params);
     void run();

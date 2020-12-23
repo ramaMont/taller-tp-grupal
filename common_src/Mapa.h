@@ -4,10 +4,9 @@
 #include <vector>
 #include <utility>
 #include "Posicionable.h"
-#include "Jugador.h"
-class Jugador;
+#include "Player.h"
+class Player;
 #include "coordinates.h"
-
 
 class Mapa{
 private:
@@ -15,13 +14,20 @@ private:
     int ancho;
     std::vector<std::vector<Posicionable*>> mapaJuego;
 public:
+    explicit Mapa(int map_id);
     explicit Mapa(int alto, int ancho);
-    void agregarJugador(Jugador* jugador);
+    void agregarPlayer(Player* jugador);
     void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);
     void sacarPosicionable(Coordinates posicion);
     Posicionable* obtenerPosicionableEn(Coordinates posicion);
-    void moveme(Jugador* jugador, const Coordinates& posicion);
+    void moveme(Player* jugador, const Coordinates& posicion);
+//    Mapa(const Mapa&) = delete;
+    Mapa(Mapa&& other);
+//    Mapa& operator=(const Mapa&) = delete;
+    Mapa& operator=(Mapa&& other);
     ~Mapa();
 };
+
+void initMap(Mapa& map);
 
 #endif

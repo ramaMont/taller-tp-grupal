@@ -6,11 +6,9 @@
 
 
 class Texture {
-
 private:
     SDL_Renderer* renderer;
     SDL_Texture* texture;
-
 
 public:
     // Carga una textura

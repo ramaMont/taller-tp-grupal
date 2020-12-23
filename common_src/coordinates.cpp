@@ -55,9 +55,9 @@ Coordinates Coordinates::get_perpendicular_direction(){
 	return perpendicular;
 }    
 
-bool Coordinates::has_element(const std::vector<std::vector<int>> &map){
-	return (map[(int)this->y][(int)this->x]!=0);
-}
+// bool Coordinates::has_element(const std::vector<std::vector<int>> &map){
+// 	return (map[(int)this->y][(int)this->x]!=0);
+// }
 
 void Coordinates::inc_x(double a_x){
 	this->x+=a_x;
