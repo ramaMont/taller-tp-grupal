@@ -56,6 +56,10 @@ function bot.crearAristas()
 				bot.agregarArista(i, j, i+1, j)
 				bot.agregarArista(i, j, i, j-1)
 				bot.agregarArista(i, j, i, j+1)
+				bot.agregarArista(i, j, i-1, j-1)
+				bot.agregarArista(i, j, i-1, j+1)
+				bot.agregarArista(i, j, i+1, j-1)
+				bot.agregarArista(i, j, i+1, j+1)
 			end
 		end
 	end
