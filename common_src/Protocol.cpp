@@ -6,19 +6,24 @@ Protocol::Protocol():
     _direction(Protocol::direction::STAY), damage(0), _game_id(0){
 }
 
-Protocol::Protocol(int id):id(id){
+Protocol::Protocol(int id):
+    _action(Protocol::action::NONE), id(id), 
+    _direction(Protocol::direction::STAY), damage(0), _game_id(0){
 }
 
 Protocol::Protocol(int user_id, int map_id):
-    id(user_id), damage(map_id){
+    _action(Protocol::action::NONE), id(user_id), 
+    _direction(Protocol::direction::STAY), damage(map_id), _game_id(0){
 }
 
 Protocol::Protocol(int user_id, int map_id, int game_id):
-    id(user_id), damage(map_id), _game_id(game_id){
+    _action(Protocol::action::NONE), id(user_id), 
+    _direction(Protocol::direction::STAY), damage(map_id), _game_id(game_id){
 }
 
 Protocol::Protocol(int id, Protocol::direction direction):
-        _action(Protocol::action::MOVE), id(id), _direction(direction){
+        _action(Protocol::action::MOVE), id(id), _direction(direction),
+        damage(0), _game_id(0){
 }
 Protocol::action Protocol::getAction(){
     return _action;

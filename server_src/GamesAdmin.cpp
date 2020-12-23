@@ -66,5 +66,10 @@ void GamesAdmin::removePlayer(int game_id, int user_id){
 }
 
 GamesAdmin::~GamesAdmin(){
-    cleanZombies();
+    for (auto it = games.begin(); it != games.end(); ++it){
+        auto th_game = it->second;
+        th_game->stop();
+        th_game->join();
+        delete(th_game);
+    }
 }
