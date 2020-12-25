@@ -52,7 +52,7 @@ private:
     std::map<std::string, std::string> recursos_del_juego;
     void crearMapaNuevo();
     void cargarArchivoMapa();
-    void conectarEventos();
+    void fabricarMenu();
     void guardarMapa();
     void keyPressEvent(QKeyEvent* event) override;
     void desplegarFileDialog();

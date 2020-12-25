@@ -2,18 +2,35 @@
 #include <QCoreApplication>
 #include <QFileDialog>
 #include <QScrollBar>
+#include <QDialog>
+#include <QMenuBar>
+#include <QList>
+#include <QFormLayout>
 #include <QAbstractItemView>
 
 
 Editor::Editor(QWidget *parent) : QWidget(parent) {
 
     // Tamaño y titulo de la ventana
-    this->resize(910, 800);
+    this->resize(1050, 800);
     this->setWindowTitle(QString("Editor de Mapas - Wolfenstein 3D"));
+    fabricarMenu();
+
+    this->setStyleSheet("QWidget {background-image: url(../imgs/fondo3.png) }"
+    "QLabel { color : white; }"
+    "QMenuBar {color: white;}"
+    "QMenu::item {color: white;}"
+    "QMessageBox QLabel {color: white;}"
+    "QPushButton {color: white;}"
+    "QButton {color: white;}"
+    "QDialogButton {color: white}"
+    "QDialogButtonBox {color: white;}");
 
     // Obtengo los recursos con los que se crearan los mapas
     recursos_del_juego = obtenerMapaRecursos();
 
+
+    /*
     // Creo un widget para el boton de editar mapas.
     widgetEditarMapa = new QWidget(this);
     widgetEditarMapa->setObjectName(QStringLiteral("widgetEditarMapa"));
@@ -29,22 +46,22 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
 
     horizontalLayoutEditarMapa->addWidget(botonEditarMapa);
 
+    */
+
     // Creo un widget para la creacion del mapa, con su widget y labels.
     widgetCrearMapa = new QWidget(this);
     widgetCrearMapa->setObjectName(QStringLiteral("widgetCrearMapa"));
-    widgetCrearMapa->setGeometry(QRect(230, 20, 631, 80));
+    widgetCrearMapa->setGeometry(QRect(230, 0, 631, 80));
 
-    nombreLabel = new QLabel(this);
-    nombreLabel->setText("Nombre: ");
     filasLabel = new QLabel(this);
-    filasLabel->setText("Filas: ");
-    columnasLabel = new QLabel(this);
-    columnasLabel->setText("Columnas: ");
+    filasLabel->setObjectName("filasColumnasLabel");
+    filasLabel->setText("");
 
     horizontalLayoutCrearMapa = new QHBoxLayout(widgetCrearMapa);
     horizontalLayoutCrearMapa->setObjectName(QStringLiteral("horizontalLayout"));
     horizontalLayoutCrearMapa->setContentsMargins(0, 0, 0, 0);
 
+    /*
     botonCrearMapa = new QPushButton(widgetCrearMapa);
     botonCrearMapa->setText("Crear Mapa");
     botonCrearMapa->setObjectName(QStringLiteral("botonCrearMapa"));
@@ -61,23 +78,21 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     inputCantidadColumnas->setObjectName(QStringLiteral("columnas"));
     inputCantidadColumnas->setClearButtonEnabled(false);
 
-    horizontalLayoutCrearMapa->addWidget(nombreLabel);
-    horizontalLayoutCrearMapa->addWidget(inputNombreMapa);
+    */
+
     horizontalLayoutCrearMapa->addWidget(filasLabel);
-    horizontalLayoutCrearMapa->addWidget(inputCantidadFilas);
-    horizontalLayoutCrearMapa->addWidget(columnasLabel);
-    horizontalLayoutCrearMapa->addWidget(inputCantidadColumnas);
-    horizontalLayoutCrearMapa->addWidget(botonCrearMapa);
+
 
     // Creo un widget para los recursos con los que armaremos el mapa.
     widgetRecursos = new ResourcesWidget(this, recursos_del_juego);
+    widgetRecursos->setStyleSheet("QWidget {background-image: url(../imgs/fondo33.png) }");
 
     // Agrego una barra de scroll por si los elementos son muchos.
     scrollResourcesArea = new QScrollArea(this);
     scrollResourcesArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollResourcesArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollResourcesArea->setWidgetResizable(true);
-    scrollResourcesArea->setGeometry(QRect(50, 120, 95, 581));
+    scrollResourcesArea->setGeometry(QRect(50, 60, 95, 700));
     scrollResourcesArea->setWidget(widgetRecursos);
     scrollResourcesArea->show();
 
@@ -86,14 +101,17 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     scrollMapArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollMapArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollMapArea->setWidgetResizable(true);
-    scrollMapArea->setGeometry(QRect(230, 120, 631, 581));
+    scrollMapArea->setGeometry(QRect(230, 60, 750, 700));
 
     mapWidget = new MapWidget(this, recursos_del_juego);
+    mapWidget->setStyleSheet("QWidget {background-image: url(../imgs/fondo32.png) }");
     scrollMapArea->setWidget(mapWidget);
+    scrollMapArea->show();
 
     setScrollBarStyle(scrollResourcesArea);
     setScrollBarStyle(scrollMapArea);
 
+    /*
     widgetMapaGuardar = new QWidget(this);
     widgetMapaGuardar->setObjectName(
         QStringLiteral("widgetCrearMapa"));
@@ -112,10 +130,10 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     botonGuardarMapa->setFixedSize(size);
     horizontalLayoutSave->addWidget(botonGuardarMapa,
                                     Qt::AlignCenter | Qt::AlignTop);
+    */
 
     // Conecto eventos
     QMetaObject::connectSlotsByName(this);
-    conectarEventos();
     this->show();
 }
 
@@ -195,33 +213,68 @@ void Editor::setScrollBarStyle(QScrollArea* scrollArea) {
 }
 
 void Editor::crearMapaNuevo() {
-    QLineEdit* nombre_mapa = findChild<QLineEdit*>("nombreMapa");
-    QString nombre = nombre_mapa->text();
+    QDialog dialog(this);
+    dialog.setWindowTitle(QString("Nuevo mapa"));
+    // Creo un dialog con un form
+    QFormLayout form(&dialog);
 
-    QLineEdit* cantidad_filas = findChild<QLineEdit*>("filas");
-    QString filas_str = cantidad_filas->text();
-    int filas = filas_str.toInt();
+    // Agrego una lista con los campos
+    QList<QLineEdit *> fields;
 
-    QLineEdit* cantidad_columnas = findChild<QLineEdit*>("columnas");
-    QString columnas_str = cantidad_columnas->text();
-    int columnas = columnas_str.toInt();
+    // Nombre del mapa
+    QLineEdit* lineEditNombre = new QLineEdit(&dialog);
+    QString labelNombre = QString("Nombre");
+    form.addRow(labelNombre, lineEditNombre);
+    fields << lineEditNombre;
 
-    // Valido valores.
-    if (filas > MAX_FC || columnas > MAX_FC ||
-        filas < MIN_FC || columnas < MIN_FC) {
-        messageBox = new QMessageBox(this);
-        messageBox->setText("El número de filas y columnas "
-                            "debe estar entre 8 y 50");
-        messageBox->setWindowTitle("Error");
-        messageBox->setIcon(QMessageBox::Warning);
-        messageBox->show();
-        return;
+    // Filas
+    QLineEdit* lineEditFilas = new QLineEdit(&dialog);
+    QString labelFilas = QString("Filas");
+    form.addRow(labelFilas, lineEditFilas);
+    fields << lineEditFilas;
+
+    // Nombre del mapa
+    QLineEdit* lineEditColumnas = new QLineEdit(&dialog);
+    QString labelColumnas = QString("Columnas");
+    form.addRow(labelColumnas, lineEditColumnas);
+    fields << lineEditColumnas;
+
+    // Botones
+    QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                            Qt::Horizontal, &dialog);
+    form.addRow(&buttonBox);
+
+    // Conecto eventos
+    QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+    // Show the dialog as modal
+    if (dialog.exec() == QDialog::Accepted) {
+        // If the user didn't dismiss the dialog, do something with the fields
+        QString nombre_qstring = lineEditNombre->text();
+        QString filas_qstring = lineEditFilas->text();
+        QString columnas_qstring = lineEditColumnas->text();
+        std::string nombre_map = nombre_qstring.toStdString();
+        int filas = filas_qstring.toInt();
+        int columnas = columnas_qstring.toInt();
+
+        // Valido valores.
+        if (filas > MAX_FC || columnas > MAX_FC ||
+            filas < MIN_FC || columnas < MIN_FC) {
+            messageBox = new QMessageBox(this);
+            messageBox->setText("El número de filas y columnas "
+                                "debe estar entre 10 y 50");
+            messageBox->setWindowTitle("Error");
+            messageBox->setIcon(QMessageBox::Warning);
+            messageBox->show();
+            return;
+        }
+
+        mapWidget->crearMapaNuevo(nombre_map, filas, columnas);
+        scrollMapArea->show();
+        this->setWindowTitle(nombre_qstring);
+        mapWidget->actualizarLabelFyC();
     }
-
-    std::string nombre_map = nombre.toStdString();
-
-    mapWidget->crearMapaNuevo(nombre_map, filas, columnas);
-    scrollMapArea->show();
 }
 
 void Editor::desplegarFileDialog() {
@@ -233,8 +286,6 @@ void Editor::desplegarFileDialog() {
 
     // Cargo un nuevo mapa.
     mapWidget->cargarMapaDesdeArchivo(map_file);
-    mapWidget->cargarLabelsBasicos(inputNombreMapa, inputCantidadFilas,
-                                   inputCantidadColumnas);
 
     // Limpio el clipboard, el dialog de file lo utiliza.
     QApplication::clipboard()->clear();
@@ -251,6 +302,7 @@ void Editor::cargarArchivoMapa() {
                                     this);
         messageBox.setButtonText(QMessageBox::Yes, tr("Si"));
         messageBox.setButtonText(QMessageBox::No, tr("No"));
+
         if (messageBox.exec() == QMessageBox::Yes) {
             desplegarFileDialog();
         } else {
@@ -258,6 +310,8 @@ void Editor::cargarArchivoMapa() {
         }
     } else {
         desplegarFileDialog();
+        mapWidget->actualizarNombreVentana();
+        mapWidget->actualizarLabelFyC();
     }
 }
 
@@ -274,20 +328,20 @@ void Editor::guardarMapa() {
     messageBox->show();
 }
 
-void Editor::conectarEventos() {
-    // Conecto el evento del boton
-    QPushButton* botonEditarMapa = findChild<QPushButton*>("botonEditarMapa");
-    QPushButton* botonCrearMapa = findChild<QPushButton*>("botonCrearMapa");
-    QPushButton* botonGuardarMapa = findChild<QPushButton*>("botonGuardarMapa");
-    // Evento de edicion de mapa
-    QObject::connect(botonEditarMapa, &QPushButton::clicked,
-                     this, &Editor::cargarArchivoMapa);
-    // Evento de creacion de mapa
-    QObject::connect(botonCrearMapa, &QPushButton::clicked,
-                     this, &Editor::crearMapaNuevo);
-    // Evento de guardado de mapa
-    QObject::connect(botonGuardarMapa, &QPushButton::clicked,
-                     this, &Editor::guardarMapa);
+void Editor::fabricarMenu() {
+    auto* nuevo_mapa = new QAction("&Nuevo Mapa...", this);
+    auto* cargar_mapa = new QAction("&Cargar Mapa...", this);
+    auto* guardar_mapa = new QAction("&Guardar", this);
+
+    QMenuBar* menuBar = new QMenuBar(this);
+    QMenu *file = menuBar->addMenu("&Archivo");
+    file->addAction(nuevo_mapa);
+    file->addAction(cargar_mapa);
+    file->addAction(guardar_mapa);
+
+    connect(nuevo_mapa, &QAction::triggered, this, &Editor::crearMapaNuevo);
+    connect(cargar_mapa, &QAction::triggered, this, &Editor::cargarArchivoMapa);
+    connect(guardar_mapa, &QAction::triggered, this, &Editor::guardarMapa);
 }
 
 void Editor::keyPressEvent(QKeyEvent* event) {

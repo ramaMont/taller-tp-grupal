@@ -3,8 +3,8 @@
 #include <map>
 #include <fstream>
 
-#define MAX_FC 50
-#define MIN_FC 8
+#define MAX_FC 40
+#define MIN_FC 10
 #define CARGAR_DESDE_ARCHIVO 1
 #define NUEVO_MAPA 0
 

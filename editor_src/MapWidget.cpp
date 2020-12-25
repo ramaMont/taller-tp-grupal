@@ -153,8 +153,25 @@ void MapWidget::crearCeldaVacia(const std::string& pos,
     mapa->cargarElemento(pos, "vacio");
 }
 
+void MapWidget::actualizarLabelFyC() {
+    // Busco el label correspondiente a filas y columnas.
+    QLabel* fyc = parent()->parent()->parent()
+                    ->findChild<QLabel*> ("filasColumnasLabel");
+    int filas = mapa->getFilas();
+    int columnas = mapa->getColumnas();
+    std::string text = "Filas: " + std::to_string(filas)
+        + "   Columnas: " + std::to_string(columnas);
+    fyc->setText(QString::fromStdString(text));
+}
+
 void MapWidget::agregarColumnaAPartirDe(int columna) {
     int nueva_columna = mapa->getColumnas();
+    if (nueva_columna >= MAX_FC) {
+        std::string message = "El máximo de columnas es de "
+            + std::to_string(MAX_FC);
+        mostrarWarning(QString::fromStdString(message));
+        return;
+    }
     // Agrego una nueva columna con vacios
     for (int i=0; i < mapa->getFilas(); i++) {
         std::string pos = "pos_" + std::to_string(i)
@@ -172,10 +189,17 @@ void MapWidget::agregarColumnaAPartirDe(int columna) {
         }
     }
     mapa->agregarColumna();
+    actualizarLabelFyC();
 }
 
 void MapWidget::agregarFilaAPartirDe(int fila) {
     int nueva_fila = mapa->getFilas();
+    if (nueva_fila >= MAX_FC) {
+        std::string message = "El máximo de filas es de "
+            + std::to_string(MAX_FC);
+        mostrarWarning(QString::fromStdString(message));
+        return;
+    }
     // Agrego una nueva fila con vacios
     for (int i=0; i < mapa->getColumnas(); i++) {
         std::string pos = "pos_" + std::to_string(nueva_fila)
@@ -193,10 +217,17 @@ void MapWidget::agregarFilaAPartirDe(int fila) {
         }
     }
     mapa->agregarFila();
+    actualizarLabelFyC();
 }
 
 void MapWidget::eliminarFila(int fila) {
     int ultima_fila = mapa->getFilas()-1;
+    if (ultima_fila < MIN_FC) {
+        std::string message = "El minimo de filas es de "
+            + std::to_string(MIN_FC);
+        mostrarWarning(QString::fromStdString(message));
+        return;
+    }
 
     // Intercambio el contenido de los labels hasta llegar al actual.
     for (int i=fila; i <= ultima_fila; i++) {
@@ -220,11 +251,18 @@ void MapWidget::eliminarFila(int fila) {
     }
 
     mapa->eliminarFila();
+    actualizarLabelFyC();
 }
 
 void MapWidget::eliminarColumna(int columna) {
     // Elimino todos los elementos de la celda
     int ultima_columna = mapa->getColumnas()-1;
+    if (ultima_columna < MIN_FC) {
+        std::string message = "El minimo de columnas es de "
+            + std::to_string(MIN_FC);
+        mostrarWarning(QString::fromStdString(message));
+        return;
+    }
 
     // Intercambio el contenido de los labels hasta llegar al ultimo.
     for (int i=columna; i <= ultima_columna; i++) {
@@ -248,6 +286,7 @@ void MapWidget::eliminarColumna(int columna) {
     }
 
     mapa->eliminarColumna();
+    actualizarLabelFyC();
 }
 
 void MapWidget::desplegarMenuOpciones(QMouseEvent *event, QLabel* label_visual,
@@ -281,6 +320,9 @@ void MapWidget::desplegarMenuOpciones(QMouseEvent *event, QLabel* label_visual,
     });
     QPoint globalPos = mapToGlobal(event->pos());
     contextMenu.exec(globalPos);
+
+    if (highlighted_label != nullptr)
+        highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
 }
 
 void MapWidget::pointAndClick(QLabel* label_visual, QLabel* label_elemento) {
@@ -327,10 +369,12 @@ void MapWidget::ejecutarDrag(QMouseEvent *event, QLabel* label_visual,
 }
 
 void MapWidget::mousePressEvent(QMouseEvent *event) {
+    if (!hayMapaCreado()) return;
     // Obtengo el label grafico, y el oculto que tiene el elemento.
     QLabel* label_visual = static_cast<QLabel*>(childAt(event->pos()));
     QLabel* label_elemento = findChild<QLabel*>
                                 (label_visual->objectName() + "_element");
+    highlighted_label = label_visual;
     if (!label_visual)
         return;
 
@@ -408,12 +452,9 @@ void MapWidget::cargarMapaDesdeArchivo(const std::string& map_file) {
     fabricarMapa(CARGAR_DESDE_ARCHIVO);
 }
 
-void MapWidget::cargarLabelsBasicos(QLineEdit* nombre_mapa,
-                                    QLineEdit* cantidad_filas,
-                                    QLineEdit* cantidad_columnas) {
-    nombre_mapa->setText(QString::fromStdString(mapa->getNombre()));
-    cantidad_filas->setText(QString::number(mapa->getFilas()));
-    cantidad_columnas->setText(QString::number(mapa->getColumnas()));
+void MapWidget::actualizarNombreVentana() {
+    QWidget* window = static_cast<QWidget*> (this->parent()->parent()->parent());
+    window->setWindowTitle(QString::fromStdString(mapa->getNombre()));
 }
 
 void MapWidget::guardarMapa() {
@@ -422,10 +463,12 @@ void MapWidget::guardarMapa() {
 }
 
 void MapWidget::sincronizarMapaYVista() {
+    mapa->limpiar();
     // Recorro el mapa y en base al contenido de la grafica, actualizo.
     for (int i = 0; i < gridLayout->count(); i++) {
         QLabel* label = static_cast<QLabel*> (gridLayout->itemAt(i)->widget());
         if (label->objectName().endsWith("_element")) continue;
+        std::cout << label->objectName().toStdString() << std::endl;
         QLabel* hidden_label = findChild<QLabel*>(label->objectName()
                                + "_element");
         mapa->actualizarElemento(label->objectName().toStdString(),
@@ -441,4 +484,23 @@ void MapWidget::limpiarGridYMapa() {
             gridLayout->itemAt(i)->widget()->deleteLater();
         }
     }
+}
+
+void MapWidget::mostrarWarning(QString message) {
+    QMessageBox messageBox(this);
+    messageBox.setStyleSheet(
+        "QWidget {background-image: url(../imgs/fondo3.png) }"
+    "QLabel { color : white; }"
+    "QMenuBar {color: white;}"
+    "QMenu::item {color: white;}"
+    "QMessageBox QLabel {color: white;}"
+    "QPushButton {color: white;}"
+    "QButton {color: white;}"
+    "QDialogButton {color: white}"
+    "QDialogButtonBox {color: white;}"
+    );
+    messageBox.setText(message);
+    messageBox.setWindowTitle("Error");
+    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.exec();
 }

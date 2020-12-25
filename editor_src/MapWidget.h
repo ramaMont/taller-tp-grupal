@@ -5,6 +5,7 @@
 #include <string>
 #include <QGridLayout>
 #include <QMessageBox>
+#include <QMainWindow>
 #include <iostream>
 #include <map>
 #include "MapaEditable.h"
@@ -26,8 +27,8 @@ class MapWidget : public QFrame
     void crearMapaNuevo(const std::string& nombre,
                         const int& filas, const int& columnas);
     void cargarMapaDesdeArchivo(const std::string& map_file);
-    void cargarLabelsBasicos(QLineEdit* nombre_mapa, QLineEdit* cantidad_filas,
-                             QLineEdit* cantidad_columnas);
+    void actualizarNombreVentana();
+    void actualizarLabelFyC();
 
  protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -52,6 +53,7 @@ class MapWidget : public QFrame
     void agregarFilaAPartirDe(int fila);
     void eliminarFila(int fila);
     void eliminarColumna(int fila);
+    void mostrarWarning(QString message);
     void intercambiarLabels(const std::string& pos_1,
                             const std::string& pos_2);
     void crearCeldaVacia(const std::string& pos, const int& fila,
