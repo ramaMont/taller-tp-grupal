@@ -5,8 +5,8 @@
 #include "Protocol.h"
 #include "BlockingQueue.h"
 #include "ThSender.h"
-class ThReceiver;
-#include "ThReceiver.h"
+//class ThReceiver;
+//#include "ThReceiver.h"
 
 class ThUser : public Thread{
 protected:

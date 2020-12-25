@@ -24,7 +24,7 @@ public:
     void normalice_direction();
 
 	//Perpendicular a la direccion q reciba
-    Coordinates get_perpendicular_direction();
+    Coordinates get_perpendicular_direction() const;
 
     bool x_positive()const;
 
@@ -47,6 +47,8 @@ public:
     double get_distance_to_lower_side_y()const;
 
     double get_distance_to_higher_side_y()const;
+
+    double calculate_distance_to_vector(const Coordinates vector_direction, const Coordinates vector_position);
 
     double calculate_distance(const Coordinates &a_position) const;
 

@@ -11,12 +11,17 @@
 
 // Fondo del juego: el piso y el techo
 class Background {
+
 	private:
 		SDL_Renderer* renderer;
 		SDL_Rect roof;
+
 	public:
-		explicit Background(const Window &window);
+		Background(const Window &window);
+
 		// Muestra el fondo
 		void show();
+
+		~Background();
 };
 #endif
