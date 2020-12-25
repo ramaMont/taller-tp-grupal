@@ -1,48 +1,56 @@
 #include "MapaEditable.h"
 #include <algorithm>
 #include <utility>
+#include "yaml-cpp/yaml.h"
 
 void MapaEditable::cargarMapaExistente() {
     // TODO: meter este comportamiento en una clase. (RAII)
-    std::ifstream file;
-    file.open(archivo_mapa);
-    if (file.is_open()) {
-        try {
-            std::string map_name, cols, rows, pos, element, key;
-            file >> key >> map_name;
-            file >> key >> rows;
-            file >> key >> cols;
-            file >> key;
-            while (file >> key) {
-                file >> pos;
-                pos.pop_back();
-                file >> element;
-                cargarElemento(pos, element);
-                pos.clear();
-                element.clear();
+    YAML::Node map = YAML::LoadFile(archivo_mapa);
+
+    if (!map["nombre"] | !map["filas"] |
+        !map["columnas"] | !map["elementos"]) {
+        std::cout << "Invalid map" << std::endl;
+        return;
+    }
+
+    nombre = map["nombre"].as<std::string>();
+    filas = map["filas"].as<int>();
+    columnas = map["columnas"].as<int>();
+
+    for (int i=0; i < filas; i++) {
+        for (int k=0; k < columnas; k++) {
+            std::string pos = "pos_" + std::to_string(i) +
+                "_" + std::to_string(k);
+            if (!map["elementos"][pos]) {
+                std::cout << "Error: posicion " << pos
+                    << "no encontrada" << std::endl;
+                return;
             }
-            nombre = map_name;
-            columnas = std::stoi(cols);
-            filas = std::stoi(rows);
-        } catch (...) {
-            std::cout << "Error reading map file";
+            cargarElemento(pos, map["elementos"][pos].as<std::string>());
         }
     }
-    file.close();
 }
 
 void MapaEditable::guardarMapa() {
     // TODO: meter este comportamiento en una clase. (RAII)
-    std::ofstream file;
-    file.open(archivo_mapa);
-    file << "nombre: " << nombre << std::endl;
-    file << "filas: " << filas << std::endl;
-    file << "columnas: " << columnas << std::endl;
-    file << "elementos: " << std::endl;
+    YAML::Emitter out;
+    out << YAML::BeginMap;
+    out << YAML::Key << "nombre";
+    out << YAML::Value << nombre;
+    out << YAML::Key << "filas";
+    out << YAML::Value << filas;
+    out << YAML::Key << "columnas";
+    out << YAML::Value << columnas;
+    out << YAML::Key << "elementos";
+    out << YAML::BeginMap;
     for (auto const& element : mapa) {
-        file << "   - " << element.first << ": " << element.second << std::endl;
+        out << YAML::Key << element.first;
+        out << YAML::Value << element.second;
     }
-    file.close();
+    out << YAML::EndMap;
+    out << YAML::EndMap;
+    std::ofstream file(archivo_mapa);
+    file << out.c_str();
 }
 
 void MapaEditable::obtenerElemento(const std::string& posicion,
