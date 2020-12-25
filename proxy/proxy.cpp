@@ -20,7 +20,7 @@
 #include <GameModel.h>
 #include <ThUser.h>
 #include <ThKeyReader.h>
-//#include <ThDrawer.h>
+#include <ThDrawer.h>
 
 // void draw(Window& window, Raycasting& ray_casting){
 //   window.set_no_color();

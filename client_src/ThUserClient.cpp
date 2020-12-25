@@ -1,14 +1,14 @@
 #include "ThUserClient.h"
 
 #include <iostream>
-#include "Cl_Mapa.h"
+#include <Mapa.h>
 #include <vector>
 #include <map>
 #include <GameModel.h>
 #include <ThKeyReader.h>
 #include <ThDrawer.h>
 
-ThUserClient::ThUserClient(int user_id, ClThReceiver& th_receiver,
+ThUserClient::ThUserClient(int user_id, ThReceiver& th_receiver,
         ThSender& th_sender):
     ThUser(user_id), th_receiver(th_receiver), th_sender(th_sender),
     _th_game_model(nullptr), is_creator(false){
@@ -121,7 +121,8 @@ void ThUserClient::createGameModel(int map_id, int id_user, int game_id){
 // Hacer todo para empezar a jugar la partida.
 void ThUserClient::play(){  
     waitForAction(Protocol::action::BEGIN);
-    ThDrawer th_drawer(th_receiver.getGameModel()->get_window(), th_receiver.getGameModel()->get_screen());
+    ThDrawer th_drawer(th_receiver.getGameModel()->getPlayer(user_id),
+        th_receiver.getGameModel()->getMap());
     ThKeyReader th_key_reader(th_sender);
     th_drawer.start();
     th_key_reader.start();

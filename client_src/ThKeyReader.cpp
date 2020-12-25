@@ -14,40 +14,51 @@ void ThKeyReader::run(){
     int id = th_sender.getId();
     Protocol protocol(id);
     SDL_Event event;
-    const Uint8 *keys = SDL_GetKeyboardState(NULL);    
     while (!done) {
-
-
-        if(keys[SDL_SCANCODE_RIGHT]){
-            protocol.moveInDirection(
-                Protocol::direction::RIGHT);
-            th_sender.push(protocol);
-        }
-        if(keys[SDL_SCANCODE_LEFT]){
-            protocol.moveInDirection(
-                Protocol::direction::ROTATE_LEFT);
-            th_sender.push(protocol);
-        }
-        if(keys[SDL_SCANCODE_UP]){
-            protocol.moveInDirection(
-                Protocol::direction::FORWARD);
-            th_sender.push(protocol);
-        }
-        if(keys[SDL_SCANCODE_DOWN]){
-            protocol.moveInDirection(
-                Protocol::direction::BACKWARD);
-            th_sender.push(protocol);
-        }
-
-        while (SDL_PollEvent(&event)) { 
-
-          switch(event.type) {
-            case SDL_QUIT: {
-              done = SDL_TRUE;
+        while (SDL_PollEvent(&event)){
+            switch (event.type) {
+                case SDL_KEYDOWN: {
+                    SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
+                    switch (keyEvent.keysym.sym){
+                        case SDLK_LEFT:
+                            protocol.moveInDirection(
+                                Protocol::direction::LEFT);
+                            th_sender.push(protocol);
+                            break;
+                        case SDLK_RIGHT:
+                            protocol.moveInDirection(
+                                Protocol::direction::RIGHT);
+                            th_sender.push(protocol);
+                            break;
+                        case SDLK_UP:
+                            protocol.moveInDirection(
+                                Protocol::direction::FORWARD);
+                            th_sender.push(protocol);
+                            break;
+                        case SDLK_DOWN:
+                            protocol.moveInDirection(
+                                Protocol::direction::BACKWARD);
+                            th_sender.push(protocol);
+                            break;
+                        case SDLK_q:
+                            protocol.moveInDirection(
+                                Protocol::direction::ROTATE_LEFT);
+                            th_sender.push(protocol);
+                            break;
+                        case SDLK_e:
+                            protocol.moveInDirection(
+                                Protocol::direction::ROTATE_RIGHT);
+                            th_sender.push(protocol);
+                            break;
+                    }
+                }
+                break;            
+                case SDL_QUIT: {
+                    done = SDL_TRUE;
+                    stop();
+                }
             }
-          }
         }
-        SDL_Delay(20);
     }
 }
 

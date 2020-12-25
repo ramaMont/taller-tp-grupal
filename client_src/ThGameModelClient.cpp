@@ -1,7 +1,7 @@
 #include "ThGameModelClient.h"
 
 ThGameModelClient::ThGameModelClient(int user_id, int map_id,
-        int game_id) : Thread(),ClientGameModel(map_id, game_id), is_running(true){
+        int game_id) : GameModel(map_id, game_id){
     addPlayer(user_id);
 }
 
@@ -29,8 +29,8 @@ void ThGameModelClient::run(){
 }
 
 void ThGameModelClient::removePlayer(int user_id){
-    auto coordenadas = movables.at(user_id)->get_position();
-    movables.erase(user_id);
+    auto coordenadas = players.at(user_id)->get_coordinates();
+    players.erase(user_id);
     map.sacarPosicionable(coordenadas);
 }
 

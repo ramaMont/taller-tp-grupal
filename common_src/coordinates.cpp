@@ -41,7 +41,7 @@ void Coordinates::normalice_direction(){
     this->y/=length;        
 }
 
-Coordinates Coordinates::get_perpendicular_direction() const{
+Coordinates Coordinates::get_perpendicular_direction(){
 	//Perpendicular a la direccion q reciba
 	Coordinates perpendicular;
 	if(this->y!=0){
@@ -111,20 +111,6 @@ int Coordinates::get_increase_y()const{
 // void Coordinates::set_y(double a_y){
 // 	this->y = a_y;
 // }
-
-double Coordinates::calculate_distance_to_vector(const Coordinates vector_direction, const Coordinates vector_position){
-
-	float num = vector_direction.x*(this->x - vector_position.x) + vector_direction.y*( this->y - vector_position.y);
-	float denom = vector_direction.x*vector_direction.x + vector_direction.y*vector_direction.y;
-	float n = num/denom;
-
-	Coordinates colision_line = vector_position;
-	colision_line.x+=n*vector_direction.x;
-	colision_line.y+=n*vector_direction.y;
-
-	return sqrt(pow(colision_line.x - this->x,2) + pow(colision_line.y - this->y,2));
-
-}
 
 size_t Coordinates::Hash::operator()(const Coordinates& pos) const{
     size_t rowHash = std::hash<int>()((int)pos.x);

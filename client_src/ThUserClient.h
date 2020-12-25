@@ -1,19 +1,18 @@
 #ifndef __TH_USER_CLIENT__
 #define __TH_USER_CLIENT__
 
-#include "Cl_Posicionable.h"
 #include <ThUser.h>
 #include "Protocol.h"
 #include "BlockingQueue.h"
 #include "ThSender.h"
-class ClThReceiver;
-#include "ClThReceiver.h"
+class ThReceiver;
+#include "ThReceiver.h"
 class ThGameModelClient;
 #include "ThGameModelClient.h"
 
 class ThUserClient : public ThUser{
 private:
-    ClThReceiver& th_receiver;
+    ThReceiver& th_receiver;
     ThSender& th_sender;
     ThGameModelClient* _th_game_model;
     bool is_creator;
@@ -24,7 +23,7 @@ private:
     void waitUntilLaunch();
     void play();
 public:
-    explicit ThUserClient(int user_id, ClThReceiver& th_receiver, 
+    explicit ThUserClient(int user_id, ThReceiver& th_receiver, 
         ThSender& th_sender);
     virtual void run() override;
     virtual void removePlayer(int user_id) override;

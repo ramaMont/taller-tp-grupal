@@ -1,26 +1,37 @@
 #ifndef __INTERSECTED_OBJECT__
 #define __INTERSECTED_OBJECT__
 
-class Cl_Posicionable;
-#include <Cl_Posicionable.h>
+#include "Posicionable.h"
+#include "coordinates.h"
+#include "Mapa.h"
+class Mapa;
+#include "Direccion.h"
+class Direccion;
+#include "stdio.h"
 
-class Texture;
-class Wall;
-//Datos necesarios para el gráfico de la pared con raycasting, incluida la misma pared colisionada
+//Datos necesarios para el gráfico del objeto colisionado con raycasting
 class Intersected_object{
 private:
 	int number_line_texture;//Fila de pixeles a graficar (eje x)
     float distance;
-    Wall* object;
-    bool wall_side_y; //Si el objeto está en el eje x, el valor es 1, si está en y, es 2 y más oscura
+    // A éste despues le tengo que hacer get_texture_number para saber
+    // q textura usar
+    Posicionable* object;
+    // Si el objeto está en el eje x, el valor es 1, si está en y
+    // es 2 y más oscura
+    int side_division; 
 
 public:
-	//Cargo las caracteristicas de la pared colisionada.
-    explicit Intersected_object(float distance_player_plane,Wall* object ,float position, bool wall_side_y);
+	//Cargo las caracteristicas del objeto colisionado (proximamente agregear n° textura)
+    explicit Intersected_object(float distance_player_plane,Posicionable* object ,float position, int side);
 
-    //Llama al dibujar de la correspondiente pared con los datos necesarios
-    void draw(int x_pixel);
-    
+    int get_texture(){
+    	return object->get_texture();
+    }
+
+    float get_distance_player_plane();
+    int get_number_line_texture();
+    int get_side_division();
 };
 
 #endif
