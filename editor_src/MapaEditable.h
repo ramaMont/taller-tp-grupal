@@ -37,6 +37,8 @@ class MapaEditable {
     void guardarMapa();
     void agregarFila();
     void agregarColumna();
+    void eliminarFila();
+    void eliminarColumna();
     int getColumnas();
     int getFilas();
     void limpiar();

@@ -1,75 +1,79 @@
 nombre: MapaDificil
-filas: 15
+filas: 13
 columnas: 17
 elementos: 
-   - pos_0_0: vacio
-   - pos_0_1: vacio
+   - pos_0_0: barril
+   - pos_0_1: barril
    - pos_0_10: vacio
-   - pos_0_11: vacio
+   - pos_0_11: canion_de_fuego
    - pos_0_12: vacio
-   - pos_0_13: vacio
+   - pos_0_13: canion_de_fuego
    - pos_0_14: vacio
    - pos_0_15: vacio
-   - pos_0_16: vacio
-   - pos_0_2: vacio
+   - pos_0_16: medicina
+   - pos_0_17: medicina
+   - pos_0_2: barril
    - pos_0_3: vacio
    - pos_0_4: vacio
    - pos_0_5: vacio
    - pos_0_6: vacio
-   - pos_0_7: vacio
+   - pos_0_7: guardia
    - pos_0_8: vacio
-   - pos_0_9: vacio
+   - pos_0_9: guardia
    - pos_10_0: vacio
-   - pos_10_1: guardia
-   - pos_10_10: pared_falsa
+   - pos_10_1: vacio
+   - pos_10_10: vacio
    - pos_10_11: vacio
-   - pos_10_12: pared_falsa
+   - pos_10_12: vacio
    - pos_10_13: vacio
-   - pos_10_14: guardia
+   - pos_10_14: vacio
    - pos_10_15: vacio
-   - pos_10_16: medicina
+   - pos_10_16: vacio
+   - pos_10_17: vacio
    - pos_10_2: vacio
    - pos_10_3: vacio
    - pos_10_4: vacio
    - pos_10_5: vacio
    - pos_10_6: vacio
-   - pos_10_7: canion_de_fuego
-   - pos_10_8: pared_falsa
+   - pos_10_7: vacio
+   - pos_10_8: vacio
    - pos_10_9: vacio
-   - pos_11_0: vacio
+   - pos_11_0: llave
    - pos_11_1: vacio
    - pos_11_10: vacio
-   - pos_11_11: vacio
+   - pos_11_11: guardia
    - pos_11_12: vacio
-   - pos_11_13: vacio
+   - pos_11_13: guardia
    - pos_11_14: vacio
    - pos_11_15: vacio
-   - pos_11_16: vacio
-   - pos_11_2: vacio
+   - pos_11_16: medicina
+   - pos_11_17: medicina
+   - pos_11_2: canion_de_fuego
    - pos_11_3: vacio
    - pos_11_4: vacio
    - pos_11_5: vacio
-   - pos_11_6: vacio
-   - pos_11_7: vacio
+   - pos_11_6: guardia
+   - pos_11_7: guardia
    - pos_11_8: vacio
-   - pos_11_9: vacio
-   - pos_12_0: vacio
-   - pos_12_1: guardia
-   - pos_12_10: guardia
-   - pos_12_11: vacio
-   - pos_12_12: guardia
-   - pos_12_13: vacio
-   - pos_12_14: guardia
+   - pos_11_9: guardia
+   - pos_12_0: ametralladora
+   - pos_12_1: vacio
+   - pos_12_10: vacio
+   - pos_12_11: canion_de_fuego
+   - pos_12_12: vacio
+   - pos_12_13: trofeo
+   - pos_12_14: vacio
    - pos_12_15: vacio
    - pos_12_16: medicina
-   - pos_12_2: vacio
-   - pos_12_3: canion_de_fuego
+   - pos_12_17: medicina
+   - pos_12_2: canion_de_fuego
+   - pos_12_3: vacio
    - pos_12_4: vacio
    - pos_12_5: vacio
-   - pos_12_6: vacio
-   - pos_12_7: guardia
-   - pos_12_8: guardia
-   - pos_12_9: vacio
+   - pos_12_6: trofeo
+   - pos_12_7: medicina
+   - pos_12_8: vacio
+   - pos_12_9: ametralladora
    - pos_13_0: vacio
    - pos_13_1: llave
    - pos_13_10: guardia
@@ -78,7 +82,8 @@ elementos:
    - pos_13_13: vacio
    - pos_13_14: guardia
    - pos_13_15: vacio
-   - pos_13_16: medicina
+   - pos_13_16: vacio
+   - pos_13_17: medicina
    - pos_13_2: vacio
    - pos_13_3: canion_de_fuego
    - pos_13_4: vacio
@@ -95,7 +100,8 @@ elementos:
    - pos_14_13: vacio
    - pos_14_14: trofeo
    - pos_14_15: vacio
-   - pos_14_16: medicina
+   - pos_14_16: vacio
+   - pos_14_17: medicina
    - pos_14_2: vacio
    - pos_14_3: canion_de_fuego
    - pos_14_4: vacio
@@ -104,19 +110,38 @@ elementos:
    - pos_14_7: trofeo
    - pos_14_8: medicina
    - pos_14_9: vacio
-   - pos_1_0: vacio
+   - pos_15_0: vacio
+   - pos_15_1: ametralladora
+   - pos_15_10: ametralladora
+   - pos_15_11: vacio
+   - pos_15_12: canion_de_fuego
+   - pos_15_13: vacio
+   - pos_15_14: trofeo
+   - pos_15_15: vacio
+   - pos_15_16: vacio
+   - pos_15_17: medicina
+   - pos_15_2: vacio
+   - pos_15_3: canion_de_fuego
+   - pos_15_4: vacio
+   - pos_15_5: vacio
+   - pos_15_6: vacio
+   - pos_15_7: trofeo
+   - pos_15_8: medicina
+   - pos_15_9: vacio
+   - pos_1_0: ametralladora
    - pos_1_1: vacio
    - pos_1_10: vacio
    - pos_1_11: vacio
    - pos_1_12: vacio
    - pos_1_13: vacio
-   - pos_1_14: ametralladora
-   - pos_1_15: ametralladora
-   - pos_1_16: ametralladora
+   - pos_1_14: vacio
+   - pos_1_15: vacio
+   - pos_1_16: vacio
+   - pos_1_17: vacio
    - pos_1_2: vacio
    - pos_1_3: vacio
    - pos_1_4: vacio
-   - pos_1_5: pared_falsa
+   - pos_1_5: vacio
    - pos_1_6: vacio
    - pos_1_7: vacio
    - pos_1_8: vacio
@@ -130,6 +155,7 @@ elementos:
    - pos_2_14: vacio
    - pos_2_15: vacio
    - pos_2_16: vacio
+   - pos_2_17: vacio
    - pos_2_2: vacio
    - pos_2_3: vacio
    - pos_2_4: vacio
@@ -138,122 +164,129 @@ elementos:
    - pos_2_7: vacio
    - pos_2_8: vacio
    - pos_2_9: vacio
-   - pos_3_0: vacio
-   - pos_3_1: pasadizo_2
-   - pos_3_10: guardia
-   - pos_3_11: vacio
-   - pos_3_12: canion_de_fuego
-   - pos_3_13: vacio
-   - pos_3_14: canion_de_fuego
+   - pos_3_0: pasadizo_2
+   - pos_3_1: vacio
+   - pos_3_10: vacio
+   - pos_3_11: guardia
+   - pos_3_12: vacio
+   - pos_3_13: guardia
+   - pos_3_14: vacio
    - pos_3_15: vacio
    - pos_3_16: medicina
-   - pos_3_2: vacio
-   - pos_3_3: pasadizo_2
+   - pos_3_17: medicina
+   - pos_3_2: pasadizo_2
+   - pos_3_3: vacio
    - pos_3_4: vacio
    - pos_3_5: vacio
-   - pos_3_6: vacio
-   - pos_3_7: vacio
-   - pos_3_8: guardia
-   - pos_3_9: vacio
-   - pos_4_0: vacio
+   - pos_3_6: pared_falsa
+   - pos_3_7: guardia
+   - pos_3_8: vacio
+   - pos_3_9: guardia
+   - pos_4_0: medicina
    - pos_4_1: vacio
    - pos_4_10: vacio
-   - pos_4_11: vacio
+   - pos_4_11: pared_falsa
    - pos_4_12: vacio
-   - pos_4_13: vacio
+   - pos_4_13: guardia
    - pos_4_14: vacio
    - pos_4_15: vacio
-   - pos_4_16: vacio
-   - pos_4_2: vacio
+   - pos_4_16: medicina
+   - pos_4_17: medicina
+   - pos_4_2: medicina
    - pos_4_3: vacio
    - pos_4_4: vacio
    - pos_4_5: vacio
-   - pos_4_6: vacio
-   - pos_4_7: vacio
+   - pos_4_6: canion_de_fuego
+   - pos_4_7: pared_falsa
    - pos_4_8: vacio
-   - pos_4_9: vacio
-   - pos_5_0: vacio
+   - pos_4_9: pared_falsa
+   - pos_5_0: canion_de_fuego
    - pos_5_1: vacio
    - pos_5_10: vacio
-   - pos_5_11: vacio
+   - pos_5_11: pared_falsa
    - pos_5_12: vacio
-   - pos_5_13: vacio
+   - pos_5_13: guardia
    - pos_5_14: vacio
    - pos_5_15: vacio
-   - pos_5_16: vacio
-   - pos_5_2: vacio
+   - pos_5_16: medicina
+   - pos_5_17: medicina
+   - pos_5_2: guardia
    - pos_5_3: vacio
    - pos_5_4: vacio
    - pos_5_5: vacio
-   - pos_5_6: vacio
-   - pos_5_7: vacio
+   - pos_5_6: canion_de_fuego
+   - pos_5_7: pared_falsa
    - pos_5_8: vacio
-   - pos_5_9: vacio
+   - pos_5_9: guardia
    - pos_6_0: vacio
-   - pos_6_1: pasadizo_2
-   - pos_6_10: guardia
+   - pos_6_1: vacio
+   - pos_6_10: vacio
    - pos_6_11: vacio
-   - pos_6_12: guardia
+   - pos_6_12: vacio
    - pos_6_13: vacio
-   - pos_6_14: guardia
+   - pos_6_14: vacio
    - pos_6_15: vacio
-   - pos_6_16: medicina
+   - pos_6_16: vacio
+   - pos_6_17: vacio
    - pos_6_2: vacio
-   - pos_6_3: pasadizo_2
+   - pos_6_3: vacio
    - pos_6_4: vacio
    - pos_6_5: vacio
    - pos_6_6: vacio
-   - pos_6_7: pared_falsa
-   - pos_6_8: guardia
+   - pos_6_7: vacio
+   - pos_6_8: vacio
    - pos_6_9: vacio
-   - pos_7_0: vacio
-   - pos_7_1: medicina
-   - pos_7_10: pared_falsa
-   - pos_7_11: vacio
-   - pos_7_12: pared_falsa
-   - pos_7_13: vacio
-   - pos_7_14: guardia
+   - pos_7_0: guardia
+   - pos_7_1: vacio
+   - pos_7_10: vacio
+   - pos_7_11: pared_falsa
+   - pos_7_12: vacio
+   - pos_7_13: guardia
+   - pos_7_14: vacio
    - pos_7_15: vacio
    - pos_7_16: medicina
+   - pos_7_17: medicina
    - pos_7_2: vacio
-   - pos_7_3: medicina
+   - pos_7_3: vacio
    - pos_7_4: vacio
    - pos_7_5: vacio
-   - pos_7_6: vacio
-   - pos_7_7: canion_de_fuego
-   - pos_7_8: pared_falsa
-   - pos_7_9: vacio
+   - pos_7_6: canion_de_fuego
+   - pos_7_7: pared_falsa
+   - pos_7_8: vacio
+   - pos_7_9: pared_falsa
    - pos_8_0: vacio
-   - pos_8_1: canion_de_fuego
-   - pos_8_10: guardia
+   - pos_8_1: vacio
+   - pos_8_10: vacio
    - pos_8_11: vacio
-   - pos_8_12: pared_falsa
+   - pos_8_12: vacio
    - pos_8_13: vacio
-   - pos_8_14: guardia
+   - pos_8_14: vacio
    - pos_8_15: vacio
-   - pos_8_16: medicina
+   - pos_8_16: vacio
+   - pos_8_17: vacio
    - pos_8_2: vacio
-   - pos_8_3: guardia
+   - pos_8_3: vacio
    - pos_8_4: vacio
    - pos_8_5: vacio
    - pos_8_6: vacio
-   - pos_8_7: canion_de_fuego
-   - pos_8_8: pared_falsa
+   - pos_8_7: vacio
+   - pos_8_8: vacio
    - pos_8_9: vacio
-   - pos_9_0: vacio
+   - pos_9_0: guardia
    - pos_9_1: vacio
    - pos_9_10: vacio
-   - pos_9_11: vacio
+   - pos_9_11: guardia
    - pos_9_12: vacio
-   - pos_9_13: vacio
+   - pos_9_13: guardia
    - pos_9_14: vacio
    - pos_9_15: vacio
-   - pos_9_16: vacio
-   - pos_9_2: vacio
+   - pos_9_16: medicina
+   - pos_9_17: medicina
+   - pos_9_2: canion_de_fuego
    - pos_9_3: vacio
    - pos_9_4: vacio
    - pos_9_5: vacio
-   - pos_9_6: vacio
-   - pos_9_7: vacio
+   - pos_9_6: guardia
+   - pos_9_7: guardia
    - pos_9_8: vacio
-   - pos_9_9: vacio
+   - pos_9_9: guardia

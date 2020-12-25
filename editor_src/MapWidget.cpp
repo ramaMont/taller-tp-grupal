@@ -19,6 +19,7 @@ MapWidget::MapWidget(QWidget *parent,
     gridLayout->setContentsMargins(0, 0, 0, 0);
     gridLayout->setHorizontalSpacing(0);
     gridLayout->setVerticalSpacing(0);
+    highlighted_label = nullptr;
     this->setLayout(gridLayout);
     setAcceptDrops(true);
 }
@@ -43,6 +44,12 @@ void MapWidget::dragEnterEvent(QDragEnterEvent *event) {
 void MapWidget::dragMoveEvent(QDragMoveEvent *event) {
     if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
         if (event->source() == this) {
+            QPoint pt = this->mapFromGlobal(QCursor::pos());
+            QWidget* child = childAt(pt);
+            if (highlighted_label != nullptr)
+                highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+            highlighted_label = qobject_cast<QLabel *>(child);
+            highlighted_label->setStyleSheet("QLabel { background-color : #D9FAC5; }");
             event->setDropAction(Qt::MoveAction);
             event->accept();
         } else {
@@ -78,6 +85,8 @@ void MapWidget::dropEvent(QDropEvent *event) {
             hidden_label->setText(event->mimeData()->text());
         }
 
+        highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+
         if (event->source() == this) {
             // Envio una señal de movimiento para el fin del drag.
             event->setDropAction(Qt::MoveAction);
@@ -102,18 +111,24 @@ void MapWidget::intercambiarLabels(const std::string& pos_1,
     // Tomo sus elementos, y los intercambio.
     QString element_1 = label_elemento_1->text();
     QString element_2 = label_elemento_2->text();
-    if (label_elemento_2->text().toStdString() != "vacio") {
-        QPixmap image_2 = label_visual_2->pixmap()->copy();
-        label_visual_1->setPixmap(image_2);
+
+    QPixmap image_1;
+    QPixmap image_2;
+
+    if (element_1.toStdString() != "vacio") {
+        image_1 = label_visual_1->pixmap()->copy();
     } else {
-        label_visual_1->setPixmap(QPixmap());
+        image_1 = QPixmap();
     }
-    if (label_elemento_1->text().toStdString() != "vacio") {
-        QPixmap image_1 = label_visual_1->pixmap()->copy();
-        label_visual_2->setPixmap(image_1);
+
+    if (element_2.toStdString() != "vacio") {
+        image_2 = label_visual_2->pixmap()->copy();
     } else {
-        label_visual_2->setPixmap(QPixmap());
+        image_2 = QPixmap();
     }
+
+    label_visual_1->setPixmap(image_2);
+    label_visual_2->setPixmap(image_1);
     label_elemento_2->setText(element_1);
     label_elemento_1->setText(element_2);
 }
@@ -131,7 +146,7 @@ void MapWidget::crearCeldaVacia(const std::string& pos,
     hidden_label->setText("vacio");
     label->setFixedWidth(MIN_WIDTH_SIZE);
     label->setFixedHeight(MIN_HEIGHT_SIZE);
-    label->setStyleSheet("border: 0.5px ridge grey;");
+    label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
     // Agrego al layout.
     gridLayout->addWidget(label, fila, columna);
     gridLayout->addWidget(hidden_label);
@@ -180,6 +195,61 @@ void MapWidget::agregarFilaAPartirDe(int fila) {
     mapa->agregarFila();
 }
 
+void MapWidget::eliminarFila(int fila) {
+    int ultima_fila = mapa->getFilas()-1;
+
+    // Intercambio el contenido de los labels hasta llegar al actual.
+    for (int i=fila; i <= ultima_fila; i++) {
+        for (int k=0; k < mapa->getColumnas(); k++) {
+            std::string pos_1 = "pos_" + std::to_string(i)
+                + "_" + std::to_string(k);
+            std::string pos_2 = "pos_" + std::to_string(i-1)
+                + "_" + std::to_string(k);
+            intercambiarLabels(pos_1, pos_2);
+        }
+    }
+    // Elimino todos los elementos de la ultima fila
+    for (int i=0; i < mapa->getColumnas(); i++) {
+        std::string pos = "pos_" + std::to_string(ultima_fila)
+            + "_" + std::to_string(i);
+        QLabel* label_visual = findChild<QLabel*> (QString::fromStdString(pos));
+        QLabel* label_elemento = findChild<QLabel*>
+            (QString::fromStdString(pos) + "_element");
+        label_visual->deleteLater();
+        label_elemento->deleteLater();
+    }
+
+    mapa->eliminarFila();
+}
+
+void MapWidget::eliminarColumna(int columna) {
+    // Elimino todos los elementos de la celda
+    int ultima_columna = mapa->getColumnas()-1;
+
+    // Intercambio el contenido de los labels hasta llegar al ultimo.
+    for (int i=columna; i <= ultima_columna; i++) {
+        for (int k=0; k < mapa->getFilas(); k++) {
+            std::string pos_1 = "pos_" + std::to_string(k)
+                + "_" + std::to_string(i);
+            std::string pos_2 = "pos_" + std::to_string(k)
+                + "_" + std::to_string(i-1);
+            intercambiarLabels(pos_1, pos_2);
+        }
+    }
+    // Elimino todos los elementos de la ultima columna
+    for (int i=0; i < mapa->getFilas(); i++) {
+        std::string pos = "pos_" + std::to_string(i)
+            + "_" + std::to_string(ultima_columna);
+        QLabel* label_visual = findChild<QLabel*> (QString::fromStdString(pos));
+        QLabel* label_elemento = findChild<QLabel*>
+            (QString::fromStdString(pos) + "_element");
+        label_visual->deleteLater();
+        label_elemento->deleteLater();
+    }
+
+    mapa->eliminarColumna();
+}
+
 void MapWidget::desplegarMenuOpciones(QMouseEvent *event, QLabel* label_visual,
                                       QLabel* label_elemento) {
     QMenu contextMenu;
@@ -204,10 +274,10 @@ void MapWidget::desplegarMenuOpciones(QMouseEvent *event, QLabel* label_visual,
         agregarFilaAPartirDe(fila+1);
     });
     contextMenu.addAction("Eliminar fila", this, [=] {
-        std::cout << "ABJ" << std::endl;
+        eliminarFila(fila+1);
     });
     contextMenu.addAction("Eliminar columna", this, [=] {
-        std::cout << "ABJ" << std::endl;
+        eliminarColumna(columna+1);
     });
     QPoint globalPos = mapToGlobal(event->pos());
     contextMenu.exec(globalPos);
@@ -315,7 +385,7 @@ void MapWidget::fabricarMapa(const int& flag) {
             }
             label->setFixedWidth(MIN_WIDTH_SIZE);
             label->setFixedHeight(MIN_HEIGHT_SIZE);
-            label->setStyleSheet("border: 0.5px ridge grey;");
+            label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
             label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
             gridLayout->addWidget(label, i, k);
             gridLayout->addWidget(hidden_label);

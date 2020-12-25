@@ -22,6 +22,7 @@ ResourcesWidget::ResourcesWidget(QWidget *parent,
         label->setFixedWidth(MIN_WIDTH_SIZE);
         label->setFixedHeight(MIN_HEIGHT_SIZE);
         label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
         verticalLayout->addWidget(label);
     }
 

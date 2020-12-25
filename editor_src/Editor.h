@@ -56,6 +56,7 @@ private:
     void guardarMapa();
     void keyPressEvent(QKeyEvent* event) override;
     void desplegarFileDialog();
+    void setScrollBarStyle(QScrollArea* scrollArea);
     std::map<std::string, std::string> obtenerMapaRecursos();
 };
 

@@ -39,6 +39,7 @@ class MapWidget : public QFrame
     MapaEditable* mapa;
     QGridLayout* gridLayout;
     std::map<std::string, std::string> mapa_recursos;
+    QLabel* highlighted_label;
     bool mapa_creado;
     void limpiarGridYMapa();
     void pointAndClick(QLabel* label_visual, QLabel* label_elemento);
@@ -49,6 +50,8 @@ class MapWidget : public QFrame
     void sincronizarMapaYVista();
     void agregarColumnaAPartirDe(int columna);
     void agregarFilaAPartirDe(int fila);
+    void eliminarFila(int fila);
+    void eliminarColumna(int fila);
     void intercambiarLabels(const std::string& pos_1,
                             const std::string& pos_2);
     void crearCeldaVacia(const std::string& pos, const int& fila,

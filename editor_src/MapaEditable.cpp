@@ -86,6 +86,14 @@ void MapaEditable::agregarFila() {
     filas += 1;
 }
 
+void MapaEditable::eliminarFila() {
+    filas -= 1;
+}
+
+void MapaEditable::eliminarColumna() {
+    columnas -= 1;
+}
+
 void MapaEditable::agregarColumna() {
     columnas += 1;
 }
