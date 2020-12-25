@@ -2,17 +2,18 @@
 #define __TH_DRAWER__
 
 #include "window.h"
-#include "ray_casting.h"
-#include <Mapa.h>
+#include "Screen.h"
+#include <Cl_Mapa.h>
 #include <Player.h>
+#include <Jugador.h>
 #include <Thread.h>
 
 class ThDrawer : public Thread{
 private:
-    Window window;
-    Raycasting ray_casting;
+    Window &window;
+    Screen &screen;
 public:
-    explicit ThDrawer(Player& player, Mapa& map);
+    explicit ThDrawer(Window &window, Screen &screen);
     virtual void run() override;
     virtual void stop() override;
     ~ThDrawer();

@@ -1,6 +1,9 @@
 #include "ClientHolder.h"
+
+#include "Cl_Posicionable.h"
+
 #include <Socket.h>
-#include <ThReceiver.h>
+#include "ClThReceiver.h"
 #include <ThSender.h>
 #include <ThUserClient.h>
 
@@ -25,7 +28,7 @@ void ClientHolder::run(){
     SocketClient socket(_host_dns, _port);
     socket.recive(protocol, sizeof(Protocol));
     setId(protocol, id);
-    ThReceiver th_receiver(&socket);
+    ClThReceiver th_receiver(&socket);
     ThSender th_sender(id, &socket);
     ThUserClient th_user_client(id ,th_receiver, th_sender);
     th_receiver.setThUser(&th_user_client);

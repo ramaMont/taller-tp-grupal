@@ -1,9 +1,9 @@
 #include "ThUser.h"
 #include <iostream>
-#include <Mapa.h>
+//#include <Mapa.h>
 #include <vector>
 #include <map>
-#include <GameModel.h>
+//#include <GameModel.h>
 
 ThUser::ThUser(int user_id): Thread(), operations(),user_id(user_id){
 }

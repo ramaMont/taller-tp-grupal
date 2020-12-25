@@ -12,8 +12,6 @@ file(COPY textures/
 
 add_library(${BINARY}_lib STATIC ${SOURCES})
 
-target_link_libraries(${BINARY}_lib SDL2 SDL2_image ${CMAKE_PROJECT_NAME}_common_lib)
-
 target_link_libraries(${BINARY}_run SDL2 SDL2_image ${CMAKE_PROJECT_NAME}_common_lib)
 
 
