@@ -20,7 +20,7 @@ private:
 
     void joinOrCreateGame();
     void processReception(Protocol& protocol, bool& ready);
-    void createGameModel(int map_id, int id_user, int game_id);
+    void createGameModel(int map_id, int id_user_protocol, int game_id);
     void waitUntilLaunch();
     void play();
     void gameLoop();

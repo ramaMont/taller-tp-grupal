@@ -115,8 +115,8 @@ void ThUserClient::processReception(Protocol& protocol, bool& ready){
     }
 }
 
-void ThUserClient::createGameModel(int map_id, int id_user, int game_id){
-    _th_game_model = new ThGameModelClient(id_user, map_id, game_id);
+void ThUserClient::createGameModel(int map_id, int id_user_protocol, int game_id){
+    _th_game_model = new ThGameModelClient(id_user_protocol, map_id, game_id, user_id);
     th_receiver.setGameModel(_th_game_model);
 }
 

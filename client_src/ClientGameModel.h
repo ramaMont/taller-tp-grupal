@@ -42,6 +42,7 @@ protected:
     std::map<Protocol::direction, Direccion* > directions;
     int game_id;
     Screen screen;
+    int protagonist_id;
 
     std::vector<Sprite_drawer*> sprites;
     std::vector<Enemy*> enemies;
@@ -55,7 +56,7 @@ protected:
     void cleanDirections();
 
 public:
-    explicit ClientGameModel(int map_id, int game_id);
+    explicit ClientGameModel(int map_id, int game_id, int protagonist_id);
 
     Window& get_window();
 

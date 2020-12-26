@@ -10,7 +10,7 @@ private:
 	bool is_running;
     std::queue<Protocol> operations;
 public:
-    explicit ThGameModelClient(int user_id, int map_id, int game_id);
+    explicit ThGameModelClient(int user_id, int map_id, int game_id, int protagonist_id);
 
     virtual void processProtocol(Protocol& protocol);
     void run();

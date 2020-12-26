@@ -8,12 +8,13 @@
 #include <vector>
 #include <utility>
 
-ClientGameModel::ClientGameModel(int map_id, int game_id):
+ClientGameModel::ClientGameModel(int map_id, int game_id, int protagonist_id):
     window(640,480,320,200) ,
     texture(window), map(24,24), 
     added_player(false),player(texture, map),
     operations(), game_id(game_id),
-     screen(enemies,sprites,player,map,texture,window){
+    screen(enemies,sprites,player,map,texture,window),
+    protagonist_id(protagonist_id){
     initDirections();
     initMap();
     //Y aca le meto el for horrible para cargar todo el mapa?
@@ -142,7 +143,7 @@ void ClientGameModel::addPlayer(int player_id){ //Jugadores O enemigos
     static int pos_x = 2;
     static int pos_y = 2;
 
-    if(!added_player){
+    if(player_id == protagonist_id){
         try{
             added_player = true;
             Coordinates initial_position(pos_x, pos_y);

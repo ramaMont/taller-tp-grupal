@@ -1,7 +1,7 @@
 #include "ThGameModelClient.h"
 
 ThGameModelClient::ThGameModelClient(int user_id, int map_id,
-        int game_id) : ClientGameModel(map_id, game_id), is_running(true){
+        int game_id, int protagonist_id) : ClientGameModel(map_id, game_id, protagonist_id), is_running(true){
     addPlayer(user_id);
 }
 
