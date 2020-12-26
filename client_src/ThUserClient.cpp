@@ -5,8 +5,6 @@
 #include <vector>
 #include <map>
 #include <GameModel.h>
-#include <ThKeyReader.h>
-#include <ThDrawer.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
