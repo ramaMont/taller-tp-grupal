@@ -11,6 +11,10 @@ Jugador::Jugador(Texture &texture ,Cl_Mapa& mapa):
       mapa.agregarJugador(this);
 }
 
+Intersected_object Jugador::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
+    return ray->sprite_colided(coordinates_map);
+} 
+
 void Jugador::complete(Coordinates initial_position,Coordinates initial_direction,int player_id){
    this->posicion = initial_position;
    this->direction = initial_direction;

@@ -27,6 +27,9 @@ public:
 
     explicit Jugador(Texture &texture, Cl_Mapa& mapa);
 
+    // En caso de colisionar con un enemigo durante el raycasting, le mando que aún no encontró una pared
+    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
+
     void complete(Coordinates initial_position,Coordinates initial_direction,int player_id);
 
     // Cambio el arma actual del jugador

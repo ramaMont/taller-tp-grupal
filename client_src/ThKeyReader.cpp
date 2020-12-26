@@ -20,7 +20,7 @@ void ThKeyReader::run(){
 
         if(keys[SDL_SCANCODE_RIGHT]){
             protocol.moveInDirection(
-                Protocol::direction::RIGHT);
+                Protocol::direction::ROTATE_RIGHT);
             th_sender.push(protocol);
         }
         if(keys[SDL_SCANCODE_LEFT]){
