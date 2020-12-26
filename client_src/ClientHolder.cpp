@@ -33,12 +33,15 @@ void ClientHolder::run(){
     ThUserClient th_user_client(id ,th_receiver, th_sender);
     th_receiver.setThUser(&th_user_client);
 
-    th_user_client.start();
     th_receiver.start();
     th_sender.start();
+
+    th_user_client.run();
+
+    th_receiver.stop();
     th_receiver.join();
+    th_sender.stop();
     th_sender.join();
-    th_user_client.join();
 }
 
 void ClientHolder::setId(Protocol& protocol, int& id){

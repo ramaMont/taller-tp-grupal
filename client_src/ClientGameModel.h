@@ -67,7 +67,7 @@ public:
     //void push(Protocol protocol);
     //virtual void processProtocol(Protocol& protocol) = 0;
 
-    void push(Protocol protocol){
+    virtual void push(Protocol protocol){
         operations.push(protocol);
     }
 

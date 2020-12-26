@@ -16,8 +16,6 @@ void ThKeyReader::run(){
     SDL_Event event;
     const Uint8 *keys = SDL_GetKeyboardState(NULL);    
     while (!done) {
-
-
         if(keys[SDL_SCANCODE_RIGHT]){
             protocol.moveInDirection(
                 Protocol::direction::ROTATE_RIGHT);
@@ -38,9 +36,7 @@ void ThKeyReader::run(){
                 Protocol::direction::BACKWARD);
             th_sender.push(protocol);
         }
-
         while (SDL_PollEvent(&event)) { 
-
           switch(event.type) {
             case SDL_QUIT: {
               done = SDL_TRUE;

@@ -1,7 +1,7 @@
 #include "ThGameModelClient.h"
 
 ThGameModelClient::ThGameModelClient(int user_id, int map_id,
-        int game_id) : Thread(),ClientGameModel(map_id, game_id), is_running(true){
+        int game_id) : ClientGameModel(map_id, game_id), is_running(true){
     addPlayer(user_id);
 }
 
@@ -22,8 +22,9 @@ void ThGameModelClient::processProtocol(Protocol& protocol){
 }
 
 void ThGameModelClient::run(){
-    while (is_running){
-        Protocol protocol = operations.pop();
+    while (!operations.empty()){
+        Protocol protocol = operations.front();
+        operations.pop();
         processProtocol(protocol);
     }
 }
@@ -34,8 +35,8 @@ void ThGameModelClient::removePlayer(int user_id){
     map.sacarPosicionable(coordenadas);
 }
 
-void ThGameModelClient::stop(){
-    is_running = false;
+void ThGameModelClient::push(Protocol protocol){
+    operations.push(protocol);
 }
 
 ThGameModelClient::~ThGameModelClient(){

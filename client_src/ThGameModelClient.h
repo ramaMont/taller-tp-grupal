@@ -3,16 +3,18 @@
 
 #include "ClientGameModel.h"
 #include "ThUserClient.h"
+#include <Protocol.h>
 
-class ThGameModelClient :  public Thread , public ClientGameModel{
+class ThGameModelClient : public ClientGameModel{
 private:
 	bool is_running;
+    std::queue<Protocol> operations;
 public:
     explicit ThGameModelClient(int user_id, int map_id, int game_id);
 
     virtual void processProtocol(Protocol& protocol);
-    virtual void run();
-    virtual void stop();
+    void run();
+    virtual void push(Protocol protocol) override;
     void removePlayer(int user_id);
     ~ThGameModelClient();
 };

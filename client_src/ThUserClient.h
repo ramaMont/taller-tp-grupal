@@ -23,6 +23,7 @@ private:
     void createGameModel(int map_id, int id_user, int game_id);
     void waitUntilLaunch();
     void play();
+    void gameLoop();
 public:
     explicit ThUserClient(int user_id, ClThReceiver& th_receiver, 
         ThSender& th_sender);

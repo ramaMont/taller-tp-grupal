@@ -8,6 +8,9 @@
 #include <ThKeyReader.h>
 #include <ThDrawer.h>
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 ThUserClient::ThUserClient(int user_id, ClThReceiver& th_receiver,
         ThSender& th_sender):
     ThUser(user_id), th_receiver(th_receiver), th_sender(th_sender),
@@ -73,7 +76,6 @@ void ThUserClient::waitUntilLaunch(){
                 Protocol protocol(_th_game_model->getId());
                 protocol.setAction(Protocol::action::LAUNCH_GAME);
                 th_sender.push(protocol);
-//                waitForAction(Protocol::action::OK);
                 ready = true;
                 break;
             }
@@ -121,15 +123,7 @@ void ThUserClient::createGameModel(int map_id, int id_user, int game_id){
 // Hacer todo para empezar a jugar la partida.
 void ThUserClient::play(){  
     waitForAction(Protocol::action::BEGIN);
-    ThDrawer th_drawer(th_receiver.getGameModel()->get_window(), th_receiver.getGameModel()->get_screen());
-    ThKeyReader th_key_reader(th_sender);
-    th_drawer.start();
-    th_key_reader.start();
-    _th_game_model->start();
-    th_key_reader.join();
-    th_drawer.stop();
-    th_drawer.join();
-    _th_game_model->join();
+    gameLoop();
 }
 
 void ThUserClient::run(){
@@ -142,6 +136,53 @@ void ThUserClient::run(){
 void ThUserClient::removePlayer(int user_id){
     if (_th_game_model != nullptr){
         _th_game_model->removePlayer(user_id);
+    }
+}
+
+void ThUserClient::gameLoop(){
+    SDL_bool done = SDL_FALSE;
+    Window window(_th_game_model->get_window());
+    Screen screen(_th_game_model->get_screen());
+    int id = th_sender.getId();
+    Protocol protocol(id);
+    SDL_Event event;
+    const Uint8 *keys = SDL_GetKeyboardState(NULL);    
+    while (!done) {
+        if(keys[SDL_SCANCODE_RIGHT]){
+            protocol.moveInDirection(
+                Protocol::direction::ROTATE_RIGHT);
+            th_sender.push(protocol);
+        }
+        if(keys[SDL_SCANCODE_LEFT]){
+            protocol.moveInDirection(
+                Protocol::direction::ROTATE_LEFT);
+            th_sender.push(protocol);
+        }
+        if(keys[SDL_SCANCODE_UP]){
+            protocol.moveInDirection(
+                Protocol::direction::FORWARD);
+            th_sender.push(protocol);
+        }
+        if(keys[SDL_SCANCODE_DOWN]){
+            protocol.moveInDirection(
+                Protocol::direction::BACKWARD);
+            th_sender.push(protocol);
+        }
+        while (SDL_PollEvent(&event)) { 
+            switch(event.type) {
+                case SDL_QUIT: {
+                    done = SDL_TRUE;
+                }
+            }
+        }
+
+        _th_game_model->run();
+
+        window.set_no_color();
+        screen.show();
+        window.render();
+
+        SDL_Delay(33);
     }
 }
 
