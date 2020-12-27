@@ -17,11 +17,13 @@ class Texture;
 class Cl_Posicionable{
 protected:
     Coordinates posicion;
-    Texture &texture_drawer;
+    Texture *texture_drawer;
 public:
 
 
-	explicit Cl_Posicionable(Texture &texture_drawer,Coordinates posicion);
+	explicit Cl_Posicionable(Coordinates posicion);
+
+    void set_texture(Texture *a_texture_drawer);
 
 	// Tira excepcion, los objetos con los que colisiono solo pueden ser clases hijas de Posicionable.
     virtual Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);

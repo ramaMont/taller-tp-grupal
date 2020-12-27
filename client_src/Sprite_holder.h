@@ -21,7 +21,7 @@ protected:
     Movable* movable;
 
 public:
-    explicit Sprite_holder(Texture &texture_drawer, Coordinates posicion, int texture, Jugador &player);
+    explicit Sprite_holder(Coordinates posicion, int texture, Jugador &player);
 
     void add_sprite(int num_texture);
 

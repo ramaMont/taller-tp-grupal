@@ -1,8 +1,8 @@
 #include "Movable.h"
 #include <stdio.h>
 
-Movable::Movable(Texture &texture, Coordinates position,Coordinates direction ,Cl_Mapa& mapa, int id):
-        Cl_Posicionable(texture,position),direction(direction), mapa(mapa), id(id){
+Movable::Movable(Coordinates position,Coordinates direction ,Cl_Mapa& mapa, int id):
+        Cl_Posicionable(position),direction(direction), mapa(mapa), id(id){
 }
 
 void Movable::mover_en_una_direccion(Direccion* direccion){

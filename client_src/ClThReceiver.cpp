@@ -1,8 +1,10 @@
 #include "ClThReceiver.h"
 #include <iostream>
 
+#include "GameModelClient.h"
+
 ClThReceiver::ClThReceiver(Socket* socket):
-        socket(socket), _th_user(nullptr), _gameModel(nullptr){
+        socket(socket), _userClient(nullptr), _gameModel(nullptr){
 }
 
 void ClThReceiver::run(){
@@ -14,7 +16,7 @@ void ClThReceiver::run(){
         }
     } catch(...){
         is_running = false;
-        _th_user->stop();
+        _userClient->stop();
     }
 }
 
@@ -22,42 +24,42 @@ void ClThReceiver::stop(){
     is_running = false;
 }
 
-void ClThReceiver::setThUser(ThUser* th_user){
-    _th_user = th_user;
+void ClThReceiver::setUserClient(UserClient* user_client){
+    _userClient = user_client;
 }
 
 void ClThReceiver::processReception(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::CREATE_GAME:
-            _th_user->push(protocol);
+            _userClient->push(protocol);
             break;
         case Protocol::action::JOIN_GAME:
-            _th_user->push(protocol);
+            _userClient->push(protocol);
             break;
         case Protocol::action::OK:
-            _th_user->push(protocol);
+            _userClient->push(protocol);
             break;
         case Protocol::action::LAUNCH_GAME:
-            _th_user->push(protocol);
+            _userClient->push(protocol);
             break;
         case Protocol::action::BEGIN:
-            _th_user->push(protocol);
+            _userClient->push(protocol);
             break;
         case Protocol::action::ERROR:
             _th_user->push(protocol);
             break;
         case Protocol::action::ADD_PLAYER:
             if (_gameModel == nullptr){
-                _th_user->push(protocol);
+                _userClient->push(protocol);
             } else {
                 _gameModel->addPlayer(protocol.getId());
             }
             break;
         case Protocol::action::REMOVE:
-            _th_user->removePlayer(protocol.getUserId());
+            _userClient->removePlayer(protocol.getUserId());
             break;
         case Protocol::action::END:
-            _th_user->push(protocol);
+            _userClient->push(protocol);
             break;
         case Protocol::action::MOVE:
             _gameModel->push(protocol);
@@ -69,11 +71,11 @@ void ClThReceiver::processReception(Protocol& protocol){
     }
 }
 
-void ClThReceiver::setGameModel(ClientGameModel* gameModel){
+void ClThReceiver::setGameModel(GameModelClient* gameModel){
     _gameModel = gameModel;
 }
 
-ClientGameModel* ClThReceiver::getGameModel(){
+GameModelClient* ClThReceiver::getGameModel(){
     return _gameModel;
 }
 

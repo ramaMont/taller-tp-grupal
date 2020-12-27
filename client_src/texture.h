@@ -5,6 +5,8 @@
 #include "window.h"
 #include <vector>
 
+#include <SDL2/SDL_ttf.h>
+
 class Texture {
 
 private:
@@ -13,10 +15,13 @@ private:
     std::vector<SDL_Texture*> sprites;
     std::vector<SDL_Texture*> enemies;
     SDL_Texture* guns;
+    SDL_Texture* life_bar;
     int height;
     int width;
     SDL_Rect imgPartRect;
     int x_lenght_ray; //Prox: ancho pixel: ancho_pantalla/cant_pixeles_x
+
+    TTF_Font* Sans;
 
     void show_weapon(int frame_gun, int current_gun, int left_start_texture, int right_end_texture);
 
@@ -24,7 +29,11 @@ private:
 
     void show_sprites(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int upper_limit, int pos_x, float distance_player_plane);
 
+    void show_text(std::string text, int letter_width, int letter_height, int x_pos);
+
 public:
+
+    void show_life_bar(unsigned int score, int lives, int health, int ammo);
 
     Texture(const Window& window);
 
@@ -39,6 +48,8 @@ public:
 
     // Carga todas las texturas de las armas
     void add_gun_texture(std::string new_texture);
+
+    void add_life_bar_texture(std::string new_texture);
 
     void show_sprite(int pos_x, float distance_player_plane, int number_line_texture, int texture);
 

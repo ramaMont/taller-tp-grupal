@@ -24,7 +24,7 @@ private:
 	Enemy_type* enemy_type;
 
 public:
-	explicit Enemy(Texture &texture,Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador &player ,int id);
+	explicit Enemy(Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador &player ,int id);
 
 	// En caso de colisionar con un enemigo durante el raycasting, le mando que aún no encontró una pared
     Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);

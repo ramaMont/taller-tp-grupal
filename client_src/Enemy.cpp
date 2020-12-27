@@ -40,10 +40,10 @@ static int get_num_texture(Coordinates enemy_position, Coordinates enemy_directi
 }
 
 
-Enemy::Enemy(Texture &texture, Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador &player ,int id):
-    Movable(texture,posicion,direction,mapa,id),Sprite_drawer(this,player),
+Enemy::Enemy(Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador &player ,int id):
+    Movable(posicion,direction,mapa,id),Sprite_drawer(this,player),
    	player(player),
-    moved_frames_continued(0),enemy_type(new Guard(texture)) {}
+    moved_frames_continued(0), enemy_type(nullptr){}
 
 
 Intersected_object Enemy::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){

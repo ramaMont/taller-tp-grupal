@@ -3,9 +3,9 @@
 Background::Background(const Window &window) : renderer(window.getRenderer()) 
 {
 	roof.x = 0;
-	roof.y = (window.get_height())/2;
+	roof.y = (window.get_height()-112)/2;
 	roof.w = window.get_width();
-	roof.h = (window.get_height())/2;
+	roof.h = (window.get_height())-112/2;
 }
 
 void Background::show(){
