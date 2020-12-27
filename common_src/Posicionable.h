@@ -3,19 +3,36 @@
 
 #include "coordinates.h"
 
+class Texture;
+class Ray;
+class Movable;
+
 class Posicionable{
 protected:
     Coordinates posicion;
-    int texture;
+    Texture *texture_drawer;
 public:
-	void set_texture(int num_texture){
-		texture = num_texture;
-	}
-	int get_texture(){
-		return texture;
-	}
-
     explicit Posicionable(Coordinates posicion);
+
+    void set_texture(Texture *a_texture_drawer);
+
+
+	// Tira excepcion, los objetos con los que colisiono solo pueden ser clases hijas de Posicionable.
+    virtual void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
+
+    virtual Coordinates get_position();
+
+    // En ningun otro objeto ademas de SpriteHolder puedo tener otro Posicionable adentro
+    virtual void add(Movable* movable){
+        throw -2;
+    }
+
+	// En ningun otro objeto ademas de SpriteHolder puedo tener otro Posicionable adentro
+    virtual void remove(){
+        throw -2;
+    }
+
+
     virtual Coordinates getPosicion();
     virtual ~Posicionable();
 };

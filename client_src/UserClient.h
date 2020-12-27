@@ -1,7 +1,7 @@
 #ifndef __TH_USER_CLIENT__
 #define __TH_USER_CLIENT__
 
-#include "Cl_Posicionable.h"
+#include <Posicionable.h>
 #include <ThUser.h>
 #include "Protocol.h"
 #include "BlockingQueue.h"
@@ -10,6 +10,10 @@ class ClThReceiver;
 #include "ClThReceiver.h"
 class GameModelClient;
 #include "GameModelClient.h"
+
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 class UserClient{
 private:

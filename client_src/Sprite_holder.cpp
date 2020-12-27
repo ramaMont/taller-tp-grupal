@@ -3,7 +3,7 @@
 #include "Enemy.h"
 
 Sprite_holder::Sprite_holder(Coordinates posicion, int texture, Jugador &player): 
-Cl_Posicionable(posicion),Sprite_drawer(this,player) ,movable(nullptr){
+Posicionable(posicion),Sprite_drawer(this,player) ,movable(nullptr){
   	sprites_textures.push_back(texture);
 }
 
@@ -11,9 +11,9 @@ void Sprite_holder::add_sprite(int num_texture){
   	sprites_textures.push_back(num_texture);
 }
 
-Intersected_object Sprite_holder::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
+void Sprite_holder::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
     spotted();
-    return ray->sprite_colided(coordinates_map);
+    ray->sprite_colided(coordinates_map);
 }    
 
 void Sprite_holder::spotted(){

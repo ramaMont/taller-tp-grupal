@@ -1,7 +1,7 @@
 #ifndef __MOVABLE__
 #define __MOVABLE__
 
-#include "Cl_Posicionable.h"
+#include <Posicionable.h>
 
 #include "coordinates.h"
 class Cl_Mapa;
@@ -12,7 +12,7 @@ class Direccion;
 class Ray;
 #include "ray.h"
 
-class Movable : public Cl_Posicionable{
+class Movable : public Posicionable{
 protected:
 	Coordinates direction;
     Cl_Mapa &mapa;

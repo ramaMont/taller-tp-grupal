@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 Movable::Movable(Coordinates position,Coordinates direction ,Cl_Mapa& mapa, int id):
-        Cl_Posicionable(position),direction(direction), mapa(mapa), id(id){
+        Posicionable(position),direction(direction), mapa(mapa), id(id){
 }
 
 void Movable::mover_en_una_direccion(Direccion* direccion){

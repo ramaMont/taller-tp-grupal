@@ -1,7 +1,7 @@
 #ifndef __ENEMY__
 #define __ENEMY__
 
-#include "Cl_Posicionable.h"
+#include "Posicionable.h"
 
 #include "coordinates.h"
 class Cl_Mapa;
@@ -27,7 +27,7 @@ public:
 	explicit Enemy(Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador &player ,int id);
 
 	// En caso de colisionar con un enemigo durante el raycasting, le mando que aún no encontró una pared
-    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
+    void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
     // Cambio el tipo actual del enemigo
     void new_enemy_type(int new_enemy_type);

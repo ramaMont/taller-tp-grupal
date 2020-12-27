@@ -12,7 +12,7 @@
 // -2 lugar ocupado
 
 Cl_Mapa::Cl_Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
-        std::vector<Cl_Posicionable*>(alto)){
+        std::vector<Posicionable*>(alto)){
     for (int i=0; i<ancho; i++){
         for (int j=0; j<alto; j++){
             mapaJuego[i][j]=nullptr;
@@ -26,7 +26,7 @@ void Cl_Mapa::agregarJugador(Movable* jugador){
     //    [floor(jugador->getPosicion().y)]=jugador;
 }
 
-void Cl_Mapa::agregarPosicionable(Cl_Posicionable* posicionable, 
+void Cl_Mapa::agregarPosicionable(Posicionable* posicionable, 
         Coordinates posicion){
     if(mapaJuego[floor(posicion.x)][floor(posicion.y)]==nullptr){
         mapaJuego[floor(posicion.x)][floor(posicion.y)]=posicionable;
@@ -55,7 +55,7 @@ void Cl_Mapa::sacarPosicionable(Coordinates posicion){
     }
 }
 
-Cl_Posicionable* Cl_Mapa::obtenerPosicionableEn(Coordinates posicion){
+Posicionable* Cl_Mapa::obtenerPosicionableEn(Coordinates posicion){
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)];
 }
 

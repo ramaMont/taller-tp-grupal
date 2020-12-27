@@ -2,7 +2,7 @@
 #define __JUGADOR__
 
 
-#include "Cl_Posicionable.h"
+#include <Posicionable.h>
 
 #include "coordinates.h"
 class Cl_Mapa;

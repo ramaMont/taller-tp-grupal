@@ -72,31 +72,31 @@ void GameModelClient::initMap(){
             if(pos_value<8){
               Coordinates position((float)i,(float)j);
               if(pos_value==1){
-                  Cl_Posicionable *posicionable = new Wall_greystone(position);
+                  Posicionable *posicionable = new Wall_greystone(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);                
               }else if(pos_value==2){
-                  Cl_Posicionable *posicionable = new Wall_bluestone(position);
+                  Posicionable *posicionable = new Wall_bluestone(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==3){
-                  Cl_Posicionable *posicionable = new Wall_purplestone(position);
+                  Posicionable *posicionable = new Wall_purplestone(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==4){
-                  Cl_Posicionable *posicionable = new Wall_colorstone(position);
+                  Posicionable *posicionable = new Wall_colorstone(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==5){
-                  Cl_Posicionable *posicionable = new Wall_eagle(position);
+                  Posicionable *posicionable = new Wall_eagle(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==6){
-                  Cl_Posicionable *posicionable = new Wall_mossy(position);
+                  Posicionable *posicionable = new Wall_mossy(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==7){
-                  Cl_Posicionable *posicionable = new Wall_redbrick(position);
+                  Posicionable *posicionable = new Wall_redbrick(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }

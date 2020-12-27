@@ -19,11 +19,13 @@ void Raycasting::calculate_raycasting(Camera &camera,std::vector<float> &distanc
     Coordinates player_position = player.get_position();
     Coordinates player_direction = player.get_direction();
 	for(int i=-n_rays; i<=n_rays; i++){
+		Intersected_object* intersected_object = nullptr;
 		Coordinates ray_direction = camera.calculate_ray_direction(i,n_rays);
 		float ray_angle = atan(std::abs((float)i/(float)n_rays));
-		Ray ray(ray_angle, ray_direction,distances,player_position,player_direction,map,i);
-		Intersected_object intersected_object = ray.get_colisioned_objects();
-		intersected_object.draw(i+n_rays);
+		Ray ray(ray_angle, ray_direction,distances,player_position,player_direction,map,i,intersected_object);
+		ray.get_colisioned_objects();
+		intersected_object->draw(i+n_rays);
+		delete intersected_object;	
 		/*float distance_player_plane = intersected_object.get_distance_player_plane();
 		int number_line_texture = intersected_object.get_number_line_texture();
 		int texture = intersected_object.get_texture();

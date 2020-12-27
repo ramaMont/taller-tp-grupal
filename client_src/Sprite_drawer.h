@@ -10,14 +10,14 @@ class Raycasting;
 #include "ray_casting.h"
 
 class Posicionable;
-#include <Cl_Posicionable.h>
+#include <Posicionable.h>
 
 #include <coordinates.h>
 
 // Obtiene la informacion necesaria para dibujar sprites, tanto sprites comunes como enemigos
 class Sprite_drawer{
 protected:
-	Cl_Posicionable* posicionable;
+	Posicionable* posicionable;
 	Jugador &player;
 	bool located;
 	float player_distance;
@@ -28,7 +28,7 @@ protected:
 
 
 public:
-    explicit Sprite_drawer(Cl_Posicionable *posicionable, Jugador &player);
+    explicit Sprite_drawer(Posicionable *posicionable, Jugador &player);
 
     virtual void draw(const std::vector<float> &distances, int n_rays)  = 0;
 

@@ -46,9 +46,9 @@ Enemy::Enemy(Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador
     moved_frames_continued(0), enemy_type(nullptr){}
 
 
-Intersected_object Enemy::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
+void Enemy::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
     spotted_sprite();
-    return ray->sprite_colided(coordinates_map);
+    ray->sprite_colided(coordinates_map);
 } 
 
 void Enemy::new_enemy_type(int new_enemy_type){

@@ -1,6 +1,6 @@
 #include "Sprite_drawer.h"
 
-Sprite_drawer::Sprite_drawer(Cl_Posicionable *posicionable, Jugador &player): 
+Sprite_drawer::Sprite_drawer(Posicionable *posicionable, Jugador &player): 
 posicionable(posicionable), player(player) {}   
 
 void Sprite_drawer::set_relative_angle_to_player(){

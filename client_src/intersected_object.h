@@ -1,8 +1,8 @@
 #ifndef __INTERSECTED_OBJECT__
 #define __INTERSECTED_OBJECT__
 
-class Cl_Posicionable;
-#include <Cl_Posicionable.h>
+class Posicionable;
+#include <Posicionable.h>
 
 class Texture;
 class Wall;

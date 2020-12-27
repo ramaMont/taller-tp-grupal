@@ -10,12 +10,12 @@ class Raycasting;
 #include <Jugador.h>
 #include <Movable.h>
 
-#include "Cl_Posicionable.h"
+#include <Posicionable.h>
 
 #include <Sprite_drawer.h>
 
 //Puede tener más de un sprite y además un enemigo
-class Sprite_holder : public Cl_Posicionable, public Sprite_drawer{
+class Sprite_holder : public Posicionable, public Sprite_drawer{
 protected:
 	std::vector<int> sprites_textures;
     Movable* movable;
@@ -25,7 +25,7 @@ public:
 
     void add_sprite(int num_texture);
 
-    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
+    void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
 	void spotted();
 

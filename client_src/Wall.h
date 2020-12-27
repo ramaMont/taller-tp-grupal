@@ -1,14 +1,15 @@
 #ifndef __WALL__
 #define __WALL__
 
-#include "Cl_Posicionable.h"
+#include <Posicionable.h>
+#include "ray.h"
 
-class Wall : public Cl_Posicionable{
+class Wall : public Posicionable{
 
 public:
     explicit Wall(Coordinates posicion);
 
-	Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
+	void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
 	virtual void draw(int ray, float distance, int number_line_texture,bool wall_side_y) = 0;
 

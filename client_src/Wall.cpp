@@ -2,10 +2,10 @@
 #include "../client_src/texture.h"
 
 Wall::Wall(Coordinates posicion): 
-    Cl_Posicionable(posicion){}
+    Posicionable(posicion){}
 
-Intersected_object Wall::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
-	return ray->wall_colided(coordinates_map,first_triangle,this);
+void Wall::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
+	ray->wall_colided(coordinates_map,first_triangle,this);
 }
 //--------------------------------------------------------------------------------------------------------
 

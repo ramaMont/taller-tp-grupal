@@ -6,9 +6,6 @@
 #include <map>
 #include <GameModel.h>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-
 #include <thread>
 #include <chrono>
 #include <iostream>
