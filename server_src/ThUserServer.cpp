@@ -54,7 +54,10 @@ void ThUserServer::processReception(Protocol& protocol){
             try{
                 int map_id = protocol.getId();
                 games_admin.createGame(*this, map_id);
-                respondSuccess(map_id);
+                respondSuccess();
+                Protocol protocol_response(user_id, map_id, game_id);      
+                protocol_response.setAction(Protocol::action::CREATE_GAME);
+                th_sender->push(protocol_response);
             } catch(...){
                 respondError();
             }
@@ -109,6 +112,7 @@ void ThUserServer::setGameId(int game_id){
 }
 
 void ThUserServer::transmit(std::vector<int>& ids_vector){
+    respondSuccess();
     for (auto it = ids_vector.begin(); it != ids_vector.end(); ++it){
         Protocol protocol(*it);
         protocol.setAction(Protocol::action::ADD_PLAYER);

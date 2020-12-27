@@ -19,7 +19,8 @@ void GamesAdmin::cleanZombies(){
         auto th_game = it->second;
         if (th_game->isDone()){
             th_game->stop();
-            th_game->join();
+            if (th_game->wasLaunched())
+                th_game->join();
             delete(th_game);
         } else {
             activeGames.insert(std::pair<int, ThGameModelServer*>
@@ -45,8 +46,10 @@ void GamesAdmin::launchGame(int game_id){
 
 void GamesAdmin::joinGame(ThUserServer& th_user_server, int game_id){
     std::lock_guard<std::mutex> lck(mutex);
-//    cleanZombies();
+    cleanZombies();
     auto th_game = games.at(game_id);
+    if (th_game->wasLaunched())
+        throw -1;
     // Le envio al jugador los ids de todos los jugadores en orden
     // en el que fueron ingresando.
     std::vector<int>& ids_vector = th_game->getIdsVector();

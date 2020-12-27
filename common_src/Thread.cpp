@@ -2,11 +2,10 @@
 #include <thread>
 #include <utility>
 
-Thread::Thread():is_running(false){
+Thread::Thread():is_running(true){
 }
 
 void Thread::start() {
-    is_running = true;
     thread = std::thread(&Thread::run, this);
 }
 
