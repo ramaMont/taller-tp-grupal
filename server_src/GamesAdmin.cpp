@@ -45,7 +45,7 @@ void GamesAdmin::launchGame(int game_id){
 
 void GamesAdmin::joinGame(ThUserServer& th_user_server, int game_id){
     std::lock_guard<std::mutex> lck(mutex);
-    cleanZombies();
+//    cleanZombies();
     auto th_game = games.at(game_id);
     // Le envio al jugador los ids de todos los jugadores en orden
     // en el que fueron ingresando.
