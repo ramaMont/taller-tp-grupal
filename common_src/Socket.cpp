@@ -145,7 +145,7 @@ Socket::~Socket(){
 
 SocketServer::SocketServer(std::string port):Socket(){
     struct addrinfo *pr=0;
-    char localHost[] = "localhost";
+    char localHost[] = "2803:9800:a008:8548:7f0:4b12:f971:5233";
     char* portChar = const_cast<char*>(port.c_str());
     hostOClientConf(&pr, localHost, portChar);
     hostNBind(pr);
@@ -183,7 +183,7 @@ void SocketClient::hostOClientConf(struct addrinfo **pr, char *host,
     int err;
     struct addrinfo hints;  
     memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_INET;       /* IPv4 */
+    hints.ai_family = AF_INET6;       /* IPv4 */
     hints.ai_socktype = SOCK_STREAM; /* TCP  */
     err = getaddrinfo(host, port, &hints, pr);
     if (err != 0) {
@@ -197,7 +197,7 @@ void SocketServer::hostOClientConf(struct addrinfo **pr, char *host,
     int err;
     struct addrinfo hints;  
     memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_INET;       /* IPv4 */
+    hints.ai_family = AF_INET6;       /* IPv4 */
     hints.ai_socktype = SOCK_STREAM; /* TCP  */
     hints.ai_flags = AI_PASSIVE;     /* AI_PASSIVE to bind */
     err = getaddrinfo(host, port, &hints, pr);
