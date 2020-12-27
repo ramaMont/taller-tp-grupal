@@ -21,14 +21,15 @@ private:
 	int frames_since_shot;
 	Gun_type* gun_type;
 	bool shooting;	
+    unsigned int score;
+    int lives;
+    int health;
+    int ammo;
 
 public:
     explicit Jugador(Texture &texture, Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
 
     explicit Jugador(Texture &texture, Cl_Mapa& mapa);
-
-    // En caso de colisionar con un enemigo durante el raycasting, le mando que aún no encontró una pared
-    Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
     void complete(Coordinates initial_position,Coordinates initial_direction,int player_id);
 

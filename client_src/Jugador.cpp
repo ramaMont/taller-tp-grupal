@@ -1,19 +1,22 @@
 #include "Jugador.h"
 
+#include "texture.h"
 
 Jugador::Jugador(Texture &texture, Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id):
-    Movable(texture,posicion,direction,mapa,id), frames_since_shot(0),gun_type(new Gun(texture)),shooting(false){
+    Movable(texture,posicion,direction,mapa,id), 
+    frames_since_shot(0),gun_type(new Gun(texture)),
+    shooting(false),score(10), lives(5), health(100), ammo(20)
+    {
    	mapa.agregarJugador(this);
 }
 
 Jugador::Jugador(Texture &texture ,Cl_Mapa& mapa):
-    Movable(texture,Coordinates(4,4),Coordinates(1,0),mapa,0), frames_since_shot(0),gun_type(new Gun(texture)),shooting(false){
+    Movable(texture,Coordinates(4,4),Coordinates(1,0),mapa,0), 
+    frames_since_shot(0),gun_type(new Gun(texture)),shooting(false),
+    score(1000), lives(5), health(98), ammo(20)
+    {
       mapa.agregarJugador(this);
 }
-
-Intersected_object Jugador::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
-    return ray->sprite_colided(coordinates_map);
-} 
 
 void Jugador::complete(Coordinates initial_position,Coordinates initial_direction,int player_id){
    this->posicion = initial_position;
@@ -50,6 +53,7 @@ void Jugador::update_shots(){
 }
 
 void Jugador::draw(){
+   texture_drawer.show_life_bar(score, lives, health, ammo);
 	gun_type->call_drawer(frames_since_shot/4);
 }
 
