@@ -10,7 +10,6 @@ include_directories(common_src)
 include_directories(server_src)
 include_directories(client_src)
 include_directories(editor_src)
-include_directories(proxy)
 
 
 include(cmake/googletest.cmake)
@@ -24,7 +23,6 @@ add_subdirectory(common_src)
 add_subdirectory(server_src)
 add_subdirectory(client_src)
 add_subdirectory(editor_src)
-add_subdirectory(proxy)
 add_subdirectory(tests)
 
 

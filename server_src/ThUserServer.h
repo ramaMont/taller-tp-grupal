@@ -26,6 +26,7 @@ private:
     void processReception(Protocol& protocol);
     void respondSuccess();
     void respondSuccess(int map_id);
+    void respondError();
 
 public:
     explicit ThUserServer(int user_id, Socket&& socket_peer,

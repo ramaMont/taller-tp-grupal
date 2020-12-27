@@ -30,6 +30,12 @@ void ThUserServer::respondSuccess(int map_id){
     th_sender->push(protocol);
 }
 
+void ThUserServer::respondError(){
+    Protocol protocol(user_id);
+    protocol.setAction(Protocol::action::ERROR);
+    th_sender->push(protocol);
+}
+
 void ThUserServer::initCommunication(){
     Protocol protocol(user_id);
     protocol.setAction(Protocol::action::SET_ID);
@@ -45,14 +51,22 @@ void ThUserServer::initCommunication(){
 void ThUserServer::processReception(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::CREATE_GAME:{
-            int map_id = protocol.getId();
-            games_admin.createGame(*this, map_id);
-            respondSuccess(map_id);
+            try{
+                int map_id = protocol.getId();
+                games_admin.createGame(*this, map_id);
+                respondSuccess(map_id);
+            } catch(...){
+                respondError();
+            }
             break;
         }
         case Protocol::action::JOIN_GAME:{
-            int game_id = protocol.getId();
-            games_admin.joinGame(*this, game_id);
+            try{
+                int game_id = protocol.getId();
+                games_admin.joinGame(*this, game_id);
+            } catch(...){
+                respondError();
+            }
             break;
         }
         case Protocol::action::LAUNCH_GAME:{
