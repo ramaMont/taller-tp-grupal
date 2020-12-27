@@ -5,7 +5,7 @@
 #include <Socket.h>
 #include "ClThReceiver.h"
 #include <ThSender.h>
-#include <ThUserClient.h>
+#include <UserClient.h>
 
 #include <iostream>
 
@@ -30,13 +30,13 @@ void ClientHolder::run(){
     setId(protocol, id);
     ClThReceiver th_receiver(&socket);
     ThSender th_sender(id, &socket);
-    ThUserClient th_user_client(id ,th_receiver, th_sender);
-    th_receiver.setThUser(&th_user_client);
+    UserClient user_client(id ,th_receiver, th_sender);
+    th_receiver.setUserClient(&user_client);
 
     th_receiver.start();
     th_sender.start();
 
-    th_user_client.run();
+    user_client.run();
 
     th_receiver.stop();
     th_receiver.join();

@@ -9,10 +9,11 @@ static void sort_vector(std::vector<Sprite_drawer*> &spotted_sprites){
 	});	
 }
 
-Screen::Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, Cl_Mapa &map,Texture &texture, const Window &window):
+Screen::Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, Cl_Mapa &map,Texture &texture, Window &window):
 	n_rays(window.get_resolution_width()/2),enemies(enemies) ,sprites(sprites), player(player),
 	map(map),
 	texture(texture),
+	window(window),
 	background(window), 
 	raycasting(player, map, n_rays){}
 
@@ -44,6 +45,9 @@ void Screen::initialice_spotted_sprites(std::vector<Sprite_drawer*> &spotted_spr
 
 
 void Screen::show(){
+
+	window.set_no_color();
+
 	unsee_sprites();
 	background.show();
 	Camera camera(player.get_position(),player.get_direction());
@@ -57,4 +61,6 @@ void Screen::show(){
 	}
 
 	player.draw();
+
+	window.render();
 }

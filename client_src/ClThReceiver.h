@@ -7,24 +7,27 @@
 
 #include "Protocol.h"
 #include "Socket.h"
-class ThUser;
-#include "ThUser.h"
-#include "ClientGameModel.h"
+class GameModelClient;
+#include "GameModelClient.h"
+class GameModelClient;
+
+class UserClient;
+#include "UserClient.h"
 
 class ClThReceiver :  public Thread{
 private:
     Socket* socket;
-    ThUser* _th_user;
-    ClientGameModel* _gameModel;
+    UserClient* _userClient;
+    GameModelClient* _gameModel;
 
 public:
     explicit ClThReceiver(Socket *socket);
     virtual void run() override;
     virtual void stop() override;
-    void setThUser(ThUser* th_user);
-    void setGameModel(ClientGameModel* gameModel);
+    void setUserClient(UserClient* user_client);
+    void setGameModel(GameModelClient* gameModel);
     void processReception(Protocol& protocol);
-    ClientGameModel* getGameModel();
+    GameModelClient* getGameModel();
     ~ClThReceiver();
 };
 

@@ -28,6 +28,7 @@ class Screen{
 		Jugador &player;
 		Cl_Mapa &map;
 		Texture &texture;
+		Window &window;
 		Background background;
 		Raycasting raycasting;
 
@@ -41,7 +42,7 @@ class Screen{
 		// Realiza los calculos necesarios para la correcta visualizacion de los sprites: distancia al jugador, etc
 		void initialice_spotted_sprites(std::vector<Sprite_drawer*> &spotted_sprites,Camera &camera);
 	public:
-		Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, Cl_Mapa &map,Texture &texture, const Window &window);
+		Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, Cl_Mapa &map,Texture &texture, Window &window);
 
 		// Llama a los metodos correspondientes para la correcta visualizacion
 		void show();

@@ -1,4 +1,4 @@
-#include "ThUserClient.h"
+#include "UserClient.h"
 
 #include <iostream>
 #include "Cl_Mapa.h"
@@ -9,13 +9,21 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-ThUserClient::ThUserClient(int user_id, ClThReceiver& th_receiver,
+#include <thread>
+#include <chrono>
+#include <iostream>
+#include <sys/time.h>
+
+#include <vector>
+#include <utility>
+
+UserClient::UserClient(int user_id, ClThReceiver& th_receiver,
         ThSender& th_sender):
-    ThUser(user_id), th_receiver(th_receiver), th_sender(th_sender),
-    _th_game_model(nullptr), is_creator(false){
+    th_receiver(th_receiver), th_sender(th_sender),
+    _th_game_model(nullptr), is_creator(false), user_id(user_id){
 }
 
-void ThUserClient::joinOrCreateGame(){
+void UserClient::joinOrCreateGame(){
     int option_input;
     bool ready = false;
     while (!ready){
@@ -63,7 +71,16 @@ void ThUserClient::joinOrCreateGame(){
     std::cout << "Esperando a iniciar la partida\n";
 }
 
-void ThUserClient::waitUntilLaunch(){
+void UserClient::waitForAction(Protocol::action desired_action){
+    bool ready = false;
+    while (!ready){
+        Protocol protocol = operations.pop();
+        if (protocol.getAction() == desired_action)
+            ready = true;
+    }
+}
+
+void UserClient::waitUntilLaunch(){
     int option_input;
     bool ready = false;
     while (!ready){
@@ -84,7 +101,7 @@ void ThUserClient::waitUntilLaunch(){
     }
 }
 
-void ThUserClient::processReception(Protocol& protocol, bool& ready){
+void UserClient::processReception(Protocol& protocol, bool& ready){
     switch (protocol.getAction()){
         case Protocol::action::OK:
             createGameModel(protocol.getMapId(), user_id, protocol.getGameId());
@@ -113,39 +130,42 @@ void ThUserClient::processReception(Protocol& protocol, bool& ready){
     }
 }
 
-void ThUserClient::createGameModel(int map_id, int id_user_protocol, int game_id){
-    _th_game_model = new ThGameModelClient(id_user_protocol, map_id, game_id, user_id);
+void UserClient::createGameModel(int map_id, int id_user_protocol, int game_id){
+    _th_game_model = new GameModelClient(id_user_protocol, map_id, game_id, user_id);
     th_receiver.setGameModel(_th_game_model);
 }
 
 // Hacer todo para empezar a jugar la partida.
-void ThUserClient::play(){  
+void UserClient::play(){  
     waitForAction(Protocol::action::BEGIN);
     gameLoop();
 }
 
-void ThUserClient::run(){
+void UserClient::run(){
     joinOrCreateGame();
     if (is_creator)
         waitUntilLaunch();
     play();
 }
 
-void ThUserClient::removePlayer(int user_id){
+void UserClient::push(Protocol protocol){
+    operations.push(protocol);
+}
+
+void UserClient::stop(){
+    //TODO:Cerrar la cola bloqueante para que se destrabe del pop
+    //is_running = false;
+    operations.stop();
+}
+
+void UserClient::removePlayer(int user_id){
     if (_th_game_model != nullptr){
         _th_game_model->removePlayer(user_id);
     }
 }
 
-void ThUserClient::gameLoop(){
-    SDL_bool done = SDL_FALSE;
-    Window window(_th_game_model->get_window());
-    Screen screen(_th_game_model->get_screen());
-    int id = th_sender.getId();
-    Protocol protocol(id);
-    SDL_Event event;
-    const Uint8 *keys = SDL_GetKeyboardState(NULL);    
-    while (!done) {
+void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done){
+
         if(keys[SDL_SCANCODE_RIGHT]){
             protocol.moveInDirection(
                 Protocol::direction::ROTATE_RIGHT);
@@ -174,17 +194,58 @@ void ThUserClient::gameLoop(){
             }
         }
 
-        _th_game_model->run();
-
-        window.set_no_color();
-        screen.show();
-        window.render();
-
-        SDL_Delay(33);
-    }
 }
 
-ThUserClient::~ThUserClient(){
+void UserClient::gameLoop(){
+    SDL_bool done = SDL_FALSE;
+    Screen screen(_th_game_model->getScreen());
+    int id = th_sender.getId();
+    Protocol protocol(id);
+    SDL_Event event;
+
+    time_t rate = 1000/30;
+
+    struct timeval time_now{};
+    gettimeofday(&time_now, nullptr);
+    time_t total_time = 0;
+    time_t counter = 0;
+    time_t max_time = 0;
+
+    const Uint8 *keys = SDL_GetKeyboardState(NULL);    
+    while (!done) {
+
+        gettimeofday(&time_now, nullptr);
+        time_t time = (time_now.tv_usec / 1000);
+
+        get_keys(keys, event, protocol, done);
+
+        _th_game_model->run();//Proceso los protocolos
+
+        screen.show();
+
+        gettimeofday(&time_now, nullptr);
+        time_t new_time = (time_now.tv_usec / 1000);
+
+        time_t rest;
+        if(new_time>time)
+            rest = new_time - time;
+        else
+            rest = new_time - time + 1000;
+
+
+        if(rest>max_time)
+            max_time = rest;
+
+        total_time+=rest;
+        counter++;
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(rate - rest));
+    }
+    std::cout<<"El maximo fue: "<<max_time<<std::endl;
+    std::cout<<"El tiempo promedio fue:"<<total_time/counter<<std::endl;
+}
+
+UserClient::~UserClient(){
     if (_th_game_model != nullptr)
         delete(_th_game_model);
 }
