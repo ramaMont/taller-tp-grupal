@@ -46,7 +46,7 @@ void ClThReceiver::processReception(Protocol& protocol){
             _userClient->push(protocol);
             break;
         case Protocol::action::ERROR:
-            _th_user->push(protocol);
+            _userClient->push(protocol);
             break;
         case Protocol::action::ADD_PLAYER:
             if (_gameModel == nullptr){
