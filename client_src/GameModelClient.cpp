@@ -5,12 +5,14 @@ GameModelClient::GameModelClient(int user_id, int map_id,
 
         window(640,480,320,200) ,
         texture(window), map(24,24), 
-        added_player(false),player(texture, map),
+        added_player(false),player(map),
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
         protagonist_id(protagonist_id),is_running(true)
         
         {
+        player.set_texture(&texture);
+        player.new_gun_type(1);
         initDirections();
         initMap();
         addPlayer(user_id);
@@ -70,30 +72,38 @@ void GameModelClient::initMap(){
             if(pos_value<8){
               Coordinates position((float)i,(float)j);
               if(pos_value==1){
-                  Cl_Posicionable *posicionable = new Wall_greystone(texture,position);
+                  Cl_Posicionable *posicionable = new Wall_greystone(position);
+                  posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);                
               }else if(pos_value==2){
-                  Cl_Posicionable *posicionable = new Wall_bluestone(texture,position);
+                  Cl_Posicionable *posicionable = new Wall_bluestone(position);
+                  posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==3){
-                  Cl_Posicionable *posicionable = new Wall_purplestone(texture,position);
+                  Cl_Posicionable *posicionable = new Wall_purplestone(position);
+                  posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==4){
-                  Cl_Posicionable *posicionable = new Wall_colorstone(texture,position);
+                  Cl_Posicionable *posicionable = new Wall_colorstone(position);
+                  posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==5){
-                  Cl_Posicionable *posicionable = new Wall_eagle(texture,position);
+                  Cl_Posicionable *posicionable = new Wall_eagle(position);
+                  posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==6){
-                  Cl_Posicionable *posicionable = new Wall_mossy(texture,position);
+                  Cl_Posicionable *posicionable = new Wall_mossy(position);
+                  posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }else if(pos_value==7){
-                  Cl_Posicionable *posicionable = new Wall_redbrick(texture,position);
+                  Cl_Posicionable *posicionable = new Wall_redbrick(position);
+                  posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);
               }
             }else if(pos_value<10){
               Coordinates position((float)i+0.5,(float)j+0.5);
-              Sprite_holder *posicionable = new Sprite_holder(texture,position,a_map[i][j]-8,player);
+              Sprite_holder *posicionable = new Sprite_holder(position,a_map[i][j]-8,player);
+              posicionable->set_texture(&texture);
               posicionable->add_sprite(2);
               sprites.push_back(posicionable);
               map.agregarPosicionable(posicionable,position);
@@ -144,7 +154,9 @@ void GameModelClient::addPlayer(int player_id){ //Jugadores O enemigos
         try{
             Coordinates initial_position(pos_x, pos_y);
             Coordinates initial_direction(0, 1);
-            Enemy* enemy = new Enemy(texture,initial_position, initial_direction, map, player,player_id);
+            Enemy* enemy = new Enemy(initial_position, initial_direction, map, player,player_id);
+            enemy->set_texture(&texture);
+            enemy->new_enemy_type(1);
             sprites.push_back(enemy);
             enemies.push_back(enemy);
             map.agregarPosicionable(enemy,initial_position);    

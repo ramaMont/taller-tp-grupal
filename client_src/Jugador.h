@@ -27,9 +27,9 @@ private:
     int ammo;
 
 public:
-    explicit Jugador(Texture &texture, Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
+    explicit Jugador(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
 
-    explicit Jugador(Texture &texture, Cl_Mapa& mapa);
+    explicit Jugador(Cl_Mapa& mapa);
 
     void complete(Coordinates initial_position,Coordinates initial_direction,int player_id);
 

@@ -2,8 +2,8 @@
 
 #include "Enemy.h"
 
-Sprite_holder::Sprite_holder(Texture &texture_drawer, Coordinates posicion, int texture, Jugador &player): 
-Cl_Posicionable(texture_drawer,posicion),Sprite_drawer(this,player) ,movable(nullptr){
+Sprite_holder::Sprite_holder(Coordinates posicion, int texture, Jugador &player): 
+Cl_Posicionable(posicion),Sprite_drawer(this,player) ,movable(nullptr){
   	sprites_textures.push_back(texture);
 }
 
@@ -46,7 +46,7 @@ void Sprite_holder::draw(const std::vector<float> &distances, int n_rays){
 		if((current_ray)>0 and (current_ray)<2*n_rays){
 			if(distances[current_ray]>player_distance){
 				for(unsigned int j=0; j<sprites_textures.size(); j++){
-					texture_drawer.show_sprite(first_ray + i + n_rays,player_distance ,num_pixel,sprites_textures[j]);
+					texture_drawer->show_sprite(first_ray + i + n_rays,player_distance ,num_pixel,sprites_textures[j]);
 				}
 			}
 		}

@@ -110,11 +110,14 @@ void UserClient::processReception(Protocol& protocol, bool& ready){
             ready = true;
             break;
         case Protocol::action::ADD_PLAYER:{
-            if (_th_game_model == nullptr)
+            if (_th_game_model == nullptr){
+                protocol.getUserId();
                 createGameModel(protocol.getMapId(), protocol.getUserId(), 
                     protocol.getGameId());
-            else
+            }
+            else{
                 _th_game_model->addPlayer(protocol.getUserId());
+            }
             break;
         }
         case Protocol::action::END:

@@ -18,7 +18,7 @@ protected:
     Cl_Mapa &mapa;
     int id;
 public:
-    explicit Movable(Texture &texture, Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
+    explicit Movable(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
     void mover_en_una_direccion(Direccion* direccion);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);

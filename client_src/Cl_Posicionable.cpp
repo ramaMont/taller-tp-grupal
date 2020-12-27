@@ -2,8 +2,12 @@
 
 #include "texture.h"
 
-Cl_Posicionable::Cl_Posicionable(Texture &texture_drawer,Coordinates posicion):
-    posicion(posicion),texture_drawer(texture_drawer){
+Cl_Posicionable::Cl_Posicionable(Coordinates posicion):
+    posicion(posicion){
+}
+
+void Cl_Posicionable::set_texture(Texture *a_texture_drawer){
+	texture_drawer = a_texture_drawer;
 }
 
 Coordinates Cl_Posicionable::get_position(){

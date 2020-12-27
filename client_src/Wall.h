@@ -6,7 +6,7 @@
 class Wall : public Cl_Posicionable{
 
 public:
-    explicit Wall(Texture &texture_drawer,Coordinates posicion);
+    explicit Wall(Coordinates posicion);
 
 	Intersected_object colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
@@ -17,7 +17,7 @@ public:
 class Wall_greystone final : public Wall{
 
 public:
-	Wall_greystone(Texture &texture_drawer,Coordinates posicion);
+	Wall_greystone(Coordinates posicion);
 
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 };
@@ -25,7 +25,7 @@ public:
 class Wall_bluestone final : public Wall{
 
 public:
-	Wall_bluestone(Texture &texture_drawer,Coordinates posicion);
+	Wall_bluestone(Coordinates posicion);
 
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 
@@ -34,7 +34,7 @@ public:
 class Wall_purplestone final : public Wall{
 
 public:
-	Wall_purplestone(Texture &texture_drawer,Coordinates posicion);
+	Wall_purplestone(Coordinates posicion);
 
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 
@@ -44,7 +44,7 @@ public:
 class Wall_colorstone final : public Wall{
 
 public:
-	Wall_colorstone(Texture &texture_drawer,Coordinates posicion);
+	Wall_colorstone(Coordinates posicion);
 
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 
@@ -53,7 +53,7 @@ public:
 class Wall_eagle final : public Wall{
 
 public:
-	Wall_eagle(Texture &texture_drawer,Coordinates posicion);
+	Wall_eagle(Coordinates posicion);
 
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 
@@ -62,7 +62,7 @@ public:
 class Wall_mossy final : public Wall{
 
 public:
-	Wall_mossy(Texture &texture_drawer,Coordinates posicion);
+	Wall_mossy(Coordinates posicion);
 
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 
@@ -72,7 +72,7 @@ public:
 class Wall_redbrick final : public Wall{
 
 public:
-	Wall_redbrick(Texture &texture_drawer,Coordinates posicion);
+	Wall_redbrick(Coordinates posicion);
 
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 
@@ -81,7 +81,7 @@ public:
 class Wall_wood final : public Wall{
 
 public:
-	Wall_wood(Texture &texture_drawer,Coordinates posicion);
+	Wall_wood(Coordinates posicion);
 
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 
