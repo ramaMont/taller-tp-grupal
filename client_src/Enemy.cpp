@@ -42,7 +42,7 @@ static int get_num_texture(Coordinates enemy_position, Coordinates enemy_directi
 
 Enemy::Enemy(Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador &player ,int id):
     Movable(posicion,direction,mapa,id),Sprite_drawer(this,player),
-   	player(player),
+   	player(player), is_moving(false),
     moved_frames_continued(0), enemy_type(nullptr){}
 
 
@@ -67,12 +67,18 @@ void Enemy::new_enemy_type(int new_enemy_type){
 }
 
 void Enemy::moving(){
-	moved_frames_continued++;
-	moved_frames_continued = moved_frames_continued%40;
+	is_moving = true;
 }
 
-void Enemy::still(){
-	moved_frames_continued=0;
+void Enemy::update_frame(){
+	if(is_moving){
+		moved_frames_continued++;
+		moved_frames_continued = moved_frames_continued%40;		
+		is_moving = false;
+	}else{
+		moved_frames_continued = 0;
+	}
+
 }
 
 void Enemy::draw(const std::vector<float> &distances, int n_rays){

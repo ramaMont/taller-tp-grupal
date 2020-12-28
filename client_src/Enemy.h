@@ -20,6 +20,7 @@ class Movable;
 class Enemy : public Movable, public Sprite_drawer{
 private:
 	Jugador &player;	
+	bool is_moving;
 	int moved_frames_continued;
 	Enemy_type* enemy_type;
 
@@ -35,8 +36,7 @@ public:
     // Actualizo el frame del enemigo en caso de que se esté modviendo
 	void moving();
 
-	// Actualizo el frame del enemigo en caso de que esté quieto
-	void still();
+	void update_frame();
 
 	// Dibujo al enemigo
 	void draw(const std::vector<float> &distances, int n_rays);

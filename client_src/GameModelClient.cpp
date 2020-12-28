@@ -132,6 +132,10 @@ void GameModelClient::processMove(Protocol& protocol){
     Movable* movable = movables.at(protocol.getId());
     Direccion* dir = directions.at(protocol.getDirection());
     movable->mover(dir);
+    if(protocol.getId()!=protagonist_id){
+      Enemy* enemy = dynamic_cast<Enemy*>(movable);
+      enemy->moving();
+    }
 }
 
 void GameModelClient::addPlayer(int player_id){ //Jugadores O enemigos
@@ -192,6 +196,12 @@ Screen& GameModelClient::getScreen(){
 
 Movable& GameModelClient::getEnemy(int user_id){
     return *movables.at(user_id);
+}
+
+void  GameModelClient::updateEnemyFrames(){
+  for(unsigned int i=0; i<enemies.size(); i++){
+    enemies[i]->update_frame();
+  }
 }
 
 Cl_Mapa& GameModelClient::getMap(){

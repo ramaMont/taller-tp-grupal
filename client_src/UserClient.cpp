@@ -230,6 +230,8 @@ void UserClient::gameLoop(){
 
         _th_game_model->run();//Proceso los protocolos
 
+        _th_game_model->updateEnemyFrames();
+
         screen.show();
 
         gettimeofday(&time_now, nullptr);

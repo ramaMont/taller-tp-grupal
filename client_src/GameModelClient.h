@@ -77,6 +77,7 @@ public:
     Window& getWindow();
     Screen& getScreen();
     Movable& getEnemy(int user_id);
+    void updateEnemyFrames();
 
 
     Cl_Mapa& getMap();
