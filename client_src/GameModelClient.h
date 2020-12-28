@@ -72,12 +72,14 @@ public:
     //void push(Protocol protocol);
     //virtual void processProtocol(Protocol& protocol) = 0;
 
+    void player_shoot();
+
     void addPlayer(int player_id);
     Jugador& getPlayer();
     Window& getWindow();
     Screen& getScreen();
     Movable& getEnemy(int user_id);
-    void updateEnemyFrames();
+    void updateFrameAnimations();
 
 
     Cl_Mapa& getMap();

@@ -195,6 +195,13 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
                 Protocol::direction::BACKWARD);
             th_sender.push(protocol);
         }
+
+        else if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
+          _th_game_model->player_shoot();
+        }        
+
+
+
         while (SDL_PollEvent(&event)) { 
             switch(event.type) {
                 case SDL_QUIT: {
@@ -230,7 +237,7 @@ void UserClient::gameLoop(){
 
         _th_game_model->run();//Proceso los protocolos
 
-        _th_game_model->updateEnemyFrames();
+        _th_game_model->updateFrameAnimations();
 
         screen.show();
 

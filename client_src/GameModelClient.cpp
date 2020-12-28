@@ -182,6 +182,10 @@ void GameModelClient::removePlayer(int id){
 
 }
 
+void GameModelClient::player_shoot(){
+  player.shoot();
+}
+
 Jugador& GameModelClient::getPlayer(){
     return player;
 }
@@ -198,10 +202,13 @@ Movable& GameModelClient::getEnemy(int user_id){
     return *movables.at(user_id);
 }
 
-void  GameModelClient::updateEnemyFrames(){
+void  GameModelClient::updateFrameAnimations(){
   for(unsigned int i=0; i<enemies.size(); i++){
     enemies[i]->update_frame();
   }
+  player.update_shots();
+  //Y despues acá meter las puertas tambien
+
 }
 
 Cl_Mapa& GameModelClient::getMap(){
