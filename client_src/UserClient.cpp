@@ -214,6 +214,7 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
 
 void UserClient::gameLoop(){
     SDL_bool done = SDL_FALSE;
+    _th_game_model->showWindow();
     Screen screen(_th_game_model->getScreen());
     int id = th_sender.getId();
     Protocol protocol(id);

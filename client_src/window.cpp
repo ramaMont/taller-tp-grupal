@@ -9,11 +9,15 @@
 Window::Window(int width, int height, int resolution_width, int resolution_high) :
         width(width), height(height),resolution_width(resolution_width),resolution_high(resolution_high) {
     int state = SDL_CreateWindowAndRenderer(
-        width, height, SDL_RENDERER_ACCELERATED,
+        width, height, SDL_RENDERER_ACCELERATED | SDL_WINDOW_HIDDEN,
         &this->window, &this->renderer);
     if (state) {
         throw Exception("Error al crear ventana");
     }   
+}
+
+void Window::showWindow(){
+    SDL_ShowWindow(this->window);
 }
 
 void Window::set_color(int r, int g, int b, int alpha) {

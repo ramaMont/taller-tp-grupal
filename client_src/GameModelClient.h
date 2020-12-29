@@ -74,6 +74,8 @@ public:
 
     void player_shoot();
 
+    void showWindow();
+
     void addPlayer(int player_id);
     Jugador& getPlayer();
     Window& getWindow();

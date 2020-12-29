@@ -208,7 +208,10 @@ void  GameModelClient::updateFrameAnimations(){
   }
   player.update_shots();
   //Y despues acá meter las puertas tambien
+}
 
+void GameModelClient::showWindow(){
+  window.showWindow();
 }
 
 Cl_Mapa& GameModelClient::getMap(){

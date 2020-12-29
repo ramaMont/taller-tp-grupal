@@ -23,6 +23,7 @@ public:
     int get_resolution_width() const{
         return resolution_width;
     }
+    void showWindow();
     void render();
     SDL_Renderer* getRenderer() const;
     ~Window();
