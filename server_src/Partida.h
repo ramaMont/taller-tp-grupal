@@ -3,19 +3,24 @@
 
 #include <string>
 #include <vector>
+
 #include <map>
 #include <ctime>
-#include <Jugador.h>
+#include <Player.h>
 #include <Mapa.h>
 #include <yaml-cpp/yaml.h>
-
+//>>>>>>> origin/main
 
 class Partida{
 private:
     std::string params;
-    std::map<std::string, Jugador *> jugadores;
-    std::vector<Jugador *> bots;
+/*<<<<<<< HEAD*/
+    std::map<std::string, Player*> jugadores;
+    std::vector<Player*> bots;
     time_t tiempo_inicial;
+/*=======
+    std::vector<Player *> jugadores;*/
+//>>>>>>> origin/main
 public:
     explicit Partida(const std::string& params);
     void run();
@@ -26,7 +31,7 @@ public:
     void recibirEventos();
     bool todosMuertos();
     void mostrarGanadores();
-    void mayoresPuntajes(std::string& buffer, size_t (Jugador::*funcion)());
+    void mayoresPuntajes(std::string& buffer, size_t (Player::*funcion)());
     ~Partida();
 };
 

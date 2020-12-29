@@ -1,7 +1,10 @@
 #ifndef __BOT_H__
 #define __BOT_H__
 
-#include "Mapa.h"
+//#include "Mapa.h"
+class Mapa;
+class Player;
+//#include "Player.h"
 #include <vector>
 
 extern "C"{
@@ -29,10 +32,10 @@ class Bot{
 	public:
 	Bot(const Mapa& mapa);
     void cargarMapa();
-	int getEvent(const Jugador* jugador, const std::vector<Jugador*>& enemigos);
+	int getEvent(const Player* jugador, const std::vector<Player*>& enemigos);
 	static int luaObtenerObjetoMapa(lua_State *L);
-	int pushInfoJugador(const Jugador* jugador);
-	int pushInfoEnemigos(const Jugador* j, const std::vector<Jugador*>& enemigos);
+	int pushInfoJugador(const Player* jugador);
+	int pushInfoEnemigos(const Player* j, const std::vector<Player*>& enemigos);
 	~Bot();
 };
 

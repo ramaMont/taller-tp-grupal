@@ -2,32 +2,32 @@
 #define __ITEM__
 
 #include "Posicionable.h"
-class Jugador;
+class Player;
 
 
 class Item: public Posicionable {
 	public:
 	explicit Item(Coordinates p);
-	virtual bool usar(Jugador* jugador) = 0;
+	virtual bool usar(Player* jugador) = 0;
 };
 
 
 class Comida: public Item {
 	public:
 	explicit Comida(Coordinates p): Item(p) { }
-	bool usar(Jugador* jugador) override;
+	bool usar(Player* jugador) override;
 };
 
 class KitMedico: public Item {
 	public:
 	explicit KitMedico(Coordinates p): Item(p) { }
-	bool usar(Jugador* jugador) override;
+	bool usar(Player* jugador) override;
 };
 
 class Sangre: public Item {
 	public:
 	explicit Sangre(Coordinates p): Item(p) { }
-	bool usar(Jugador* jugador) override;
+	bool usar(Player* jugador) override;
 };
 
 
@@ -36,14 +36,14 @@ class Balas: public Item {
 	public:
 	explicit Balas(Coordinates p);
 	explicit Balas(Coordinates p, int cant);
-	bool usar(Jugador* jugador) override;
+	bool usar(Player* jugador) override;
 };
 
 
 class Llave: public Item {
 	public:
 	explicit Llave(Coordinates p): Item(p) { }
-	bool usar(Jugador* jugador) override;
+	bool usar(Player* jugador) override;
 };
 
 
@@ -52,7 +52,7 @@ class Tesoro: public Item {
 	int puntuacion;
 	public:
 	explicit Tesoro(int puntuacion, Coordinates p);
-	bool usar(Jugador* jugador) override;
+	bool usar(Player* jugador) override;
 };
 
 class Cruz: public Tesoro {

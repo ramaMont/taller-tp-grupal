@@ -1,5 +1,5 @@
 #include "Item.h"
-#include "Jugador.h"
+#include "Player.h"
 #include "ParamReaderServer.h"
 
 
@@ -7,15 +7,15 @@ Item::Item(Coordinates p): Posicionable(p) {
 	atravesable(true);
 }
 
-bool Comida::usar(Jugador* jugador){
+bool Comida::usar(Player* jugador){
 	return jugador->agregarVida((int)configuracion["puntos_comida"]);
 }
 
-bool KitMedico::usar(Jugador* jugador){
+bool KitMedico::usar(Player* jugador){
 	return jugador->agregarVida((int)configuracion["puntos_kit"]);
 }
 
-bool Sangre::usar(Jugador* jugador){
+bool Sangre::usar(Player* jugador){
 	if (jugador->estaPorMorir()){
 		jugador->agregarVida(1);
 		return true;
@@ -32,12 +32,12 @@ Balas::Balas(Coordinates p, int cant): Item(p){
 	this->cantidad = cant;
 }
 
-bool Balas::usar(Jugador* jugador){
+bool Balas::usar(Player* jugador){
 	return jugador->agregarBalas(this->cantidad);
 }
 
 
-bool Llave::usar(Jugador* jugador){
+bool Llave::usar(Player* jugador){
 	return jugador->agregarLlave();
 }
 
@@ -45,7 +45,7 @@ bool Llave::usar(Jugador* jugador){
 Tesoro::Tesoro(int puntuacion, Coordinates p): Item(p), puntuacion(puntuacion){
 }
 
-bool Tesoro::usar(Jugador* jugador){
+bool Tesoro::usar(Player* jugador){
 	jugador->agregarPuntos(this->puntuacion);
 	return true;
 }

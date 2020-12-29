@@ -1,7 +1,14 @@
 #ifndef __SOLDADO__
 #define __SOLDADO__
 
+class Arma;
+class Cuchillo;
+class Pistola;
+class Ametralladora;
+class CanionDeCadena;
+class Lanzacohetes;
 #include "Arma.h"
+#include <set>
 #include <vector>
 
 class Soldado {
@@ -10,12 +17,12 @@ class Soldado {
 
     public:
     Soldado(int &balas): balas(balas) { }
-	virtual void disparar(Jugador *jugador, std::vector<Jugador*>&) = 0;
-	virtual void soltarArma(Jugador *jugador) = 0;
+	virtual void disparar(Player *jugador, std::vector<Player*>&) = 0;
+	virtual void soltarArma(Player *jugador) = 0;
 	virtual bool estaListo() = 0;
 	virtual int numeroArma() const = 0;
-    void obtenerEnemigosCercanos(std::vector<Jugador*>& enemigos,
-       Jugador* jugador, std::set<std::pair<int, Jugador*>>& jugadores);
+    void obtenerEnemigosCercanos(std::vector<Player*>& enemigos,
+       Player* jugador, std::set<std::pair<int, Player*>>& jugadores);
 };
 
 
@@ -26,8 +33,8 @@ class Perro: public Soldado {
 	
 	public:
 	Perro(int& n);
-	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;
-	void soltarArma(Jugador *jugador) override;
+	void disparar(Player *jugador, std::vector<Player*>&) override;
+	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -39,8 +46,8 @@ class Guardia: public Soldado {
 	
 	public:
 	Guardia(int& balas);
-	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;
-	void soltarArma(Jugador *jugador) override;
+	void disparar(Player *jugador, std::vector<Player*>&) override;
+	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -53,8 +60,8 @@ class SS: public Soldado {
 	public:
 	SS(int &balas);
 	bool agregarArma(Ametralladora *ametralladora);
-	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;	
-	void soltarArma(Jugador *jugador) override;
+	void disparar(Player *jugador, std::vector<Player*>&) override;	
+	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -67,8 +74,8 @@ class Oficial: public Soldado {
 	public:
 	Oficial(int &balas);
 	bool agregarArma(CanionDeCadena *canion);
-	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;
-	void soltarArma(Jugador *jugador) override;
+	void disparar(Player *jugador, std::vector<Player*>&) override;
+	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -81,8 +88,8 @@ class Mutante: public Soldado {
 	public:
 	Mutante(int &balas);
 	bool agregarArma(Lanzacohetes *lanzacohetes);
-	void disparar(Jugador *jugador, std::vector<Jugador*>&) override;	
-	void soltarArma(Jugador *jugador) override;
+	void disparar(Player *jugador, std::vector<Player*>&) override;	
+	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -91,7 +98,7 @@ class Mutante: public Soldado {
 
 class EstadoSoldado {
 	private:
-	Jugador *jugador;
+	Player *jugador;
 	Soldado *soldado;
 	Perro perro;
 	Guardia guardia;
@@ -101,12 +108,12 @@ class EstadoSoldado {
 	Soldado *soldado_anterior;
 	
 	public:
-	explicit EstadoSoldado(Jugador *jugador, int& balas);
+	explicit EstadoSoldado(Player *jugador, int& balas);
 	int armaActual() const;
 	bool agregarArma(Arma* arma);
 	void cambiarArma(int numero_arma);
 	void soltarArma();
-	void disparar(std::vector<Jugador*>& enemigos);
+	void disparar(std::vector<Player*>& enemigos);
 	void recargarBalas();
 };
 

@@ -1,21 +1,22 @@
 #include "Objeto.h"
 
 #include "ParamReaderServer.h"
+#include "Mapa.h"
 #include <thread>
 #include <chrono>
 
 
-void ParedFalsa::abrir(Jugador *jugador){
+void ParedFalsa::abrir(Player *jugador){
 	if (jugador->get_coordinates().calculate_distance(this->posicion) <= 1)
 		jugador->getMapa().sacarPosicionable(this->posicion);
 }
 
 
-void Puerta::abrir(Jugador *jugador){
+void Puerta::abrir(Player *jugador){
     abrirPuerta(jugador);
 }
 
-void Puerta::abrirPuerta(Jugador *jugador){
+void Puerta::abrirPuerta(Player *jugador){
 	if (jugador->get_coordinates().calculate_distance(this->posicion) > 1)
 		return;
 	atravesable(true);
@@ -31,7 +32,7 @@ void Puerta::cerrar(){
 }
 
 
-void PuertaCerrada::abrir(Jugador *jugador){
+void PuertaCerrada::abrir(Player *jugador){
 	if (this->llave || jugador->usarLlave())
 		abrirPuerta(jugador);
 }

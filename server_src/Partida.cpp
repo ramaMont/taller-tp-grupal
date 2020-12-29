@@ -65,14 +65,14 @@ void Partida::recibirEventos(){
 
 bool Partida::todosMuertos(){
 	bool ganador = false;
-	for (std::pair<std::string,Jugador*> j: this->jugadores){
+	for (std::pair<std::string,Player*> j: this->jugadores){
 		if (j.second->estaVivo()){
 			if (ganador)
 				return false;
 			ganador = true;
 		}
 	}
-	for (Jugador* j: this->bots){
+	for (Player* j: this->bots){
 		if (j->estaVivo()){
 			if (ganador)
 				return false;
@@ -85,17 +85,17 @@ bool Partida::todosMuertos(){
 
 void Partida::mostrarGanadores(){
 	std::string buffer;
-	size_t (Jugador::*funcion)();
+	size_t (Player::*funcion)();
 	
 	buffer.append("Enemigos Matados:\n");
-	funcion = &Jugador::getEnemigosMatados;
+	funcion = &Player::getEnemigosMatados;
 	mayoresPuntajes(buffer, funcion);
 	
 	buffer.append("Puntuacion:\n");
-	funcion = &Jugador::getPuntuacion;
+	funcion = &Player::getPuntuacion;
 	mayoresPuntajes(buffer, funcion);
 	
-	funcion = &Jugador::getBalasDisparadas;
+	funcion = &Player::getBalasDisparadas;
 	buffer.append("Balas Disparadas:\n");
 	mayoresPuntajes(buffer, funcion);
 
@@ -103,10 +103,10 @@ void Partida::mostrarGanadores(){
 }
 
 
-void Partida::mayoresPuntajes(std::string& buffer,size_t (Jugador::*funcion)()){
+void Partida::mayoresPuntajes(std::string& buffer,size_t (Player::*funcion)()){
 	std::set<std::pair<size_t, std::string>> enemigos;
 	
-	for (std::pair<std::string, Jugador*> j: this->jugadores){
+	for (std::pair<std::string, Player*> j: this->jugadores){
 		std::pair<size_t, std::string> p((j.second->*funcion)(), j.first);
 		enemigos.insert(p);
 	}

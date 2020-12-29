@@ -19,9 +19,13 @@ public:
 
     explicit Posicionable(Coordinates posicion);
     virtual Coordinates getPosicion();
+//<<<<<<< HEAD
     bool atravesable();
     void atravesable(bool booleano);
-    ~Posicionable();
+    //~Posicionable();
+//=======
+    virtual ~Posicionable();
+//>>>>>>> origin/main
 };
 
 #endif

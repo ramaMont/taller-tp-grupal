@@ -3,8 +3,8 @@
 
 #include "Posicionable.h"
 #include "coordinates.h"
-class Jugador;
-#include "Jugador.h"
+class Player;
+#include "Player.h"
 
 class Objeto: public Posicionable {
 	public:
@@ -15,7 +15,7 @@ class Objeto: public Posicionable {
 class ParedFalsa: public Objeto {
 	public:
 	ParedFalsa(Coordinates coordenadas): Objeto(coordenadas) { }
-	void abrir(Jugador *jugador);
+	void abrir(Player *jugador);
 };
 
 
@@ -25,8 +25,8 @@ class Puerta: public Objeto {
 	
 	public:
 	Puerta(Coordinates coordenadas): Objeto(coordenadas) { }
-	virtual void abrir(Jugador *jugador);
-	void abrirPuerta(Jugador *jugador);
+	virtual void abrir(Player *jugador);
+	void abrirPuerta(Player *jugador);
 	void cerrar();
 };
 
@@ -37,7 +37,7 @@ class PuertaCerrada: public Puerta {
 	
 	public:
 	PuertaCerrada(Coordinates coordenadas): Puerta(coordenadas) { }
-	void abrir(Jugador *jugador) override;
+	void abrir(Player *jugador) override;
 };
 
 

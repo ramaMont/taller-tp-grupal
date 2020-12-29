@@ -1,7 +1,8 @@
 #include "Arma.h"
 
 #include "ParamReaderServer.h"
-#include "Jugador.h"
+#include "Player.h"
+#include "Mapa.h"
 #include <cstdlib>
 #include <ctime>
 #include <typeinfo>
@@ -17,8 +18,8 @@
 // Cuchillo
 
 
-void Cuchillo::disparar(Jugador* jugador, angulos_enemigos_t& enemigos){
-	for (std::pair<int, Jugador*> e: enemigos){
+void Cuchillo::disparar(Player* jugador, angulos_enemigos_t& enemigos){
+	for (std::pair<int, Player*> e: enemigos){
 		if (jugador->calcularDistancia(e.second) < DISTANCIA_CUCHILLO){
 		    srand (time(0));
 			int danio = rand() % (int)configuracion["maximo_danio"] + 1;
@@ -49,7 +50,7 @@ bool colisionaConObjeto(Mapa& mapa, const Coordinates& inicio,
 	return false;
 }
 
-void atacar(Jugador* jugador, Jugador* enemigo, float precision, int angulo){
+void atacar(Player* jugador, Player* enemigo, float precision, int angulo){
 	double distancia = jugador->calcularDistancia(enemigo);
 		
     float danio = precision - 
@@ -62,7 +63,7 @@ void atacar(Jugador* jugador, Jugador* enemigo, float precision, int angulo){
 }
 
 
-bool dispararBala(Jugador* jugador, float precision, int angulo, Jugador* enemigo){
+bool dispararBala(Player* jugador, float precision, int angulo, Player* enemigo){
 	srand (time(NULL));
 	int n_rand = rand() % PORCENTAJE;
 	if ((n_rand / PORCENTAJE) > precision)	// Falla el tiro
@@ -78,8 +79,8 @@ bool dispararBala(Jugador* jugador, float precision, int angulo, Jugador* enemig
 
 // Pistola
 
-void Pistola::disparar(Jugador* jugador, angulos_enemigos_t& enemigos){
-	for (std::pair<int, Jugador*> e: enemigos){
+void Pistola::disparar(Player* jugador, angulos_enemigos_t& enemigos){
+	for (std::pair<int, Player*> e: enemigos){
 		if (dispararBala(jugador, configuracion["precision_pistola"],
 		    e.first, e.second))
 			return;
@@ -89,37 +90,37 @@ void Pistola::disparar(Jugador* jugador, angulos_enemigos_t& enemigos){
 
 // Ametralladora
 
-void Ametralladora::disparar(Jugador* jugador, angulos_enemigos_t& enemigos){
-	for (std::pair<int, Jugador*> e: enemigos){
+void Ametralladora::disparar(Player* jugador, angulos_enemigos_t& enemigos){
+	for (std::pair<int, Player*> e: enemigos){
 		if (dispararBala(jugador, configuracion["precision_ametralladora"],
 		    e.first, e.second))
 			return;
 	}
 }
 
-bool Ametralladora::usar(Jugador* jugador){
+bool Ametralladora::usar(Player* jugador){
 	return jugador->agregarArma(this);
 }
 
 
 // Canion de Cadena
 
-void CanionDeCadena::disparar(Jugador* jugador, angulos_enemigos_t& enemigos){
-	for (std::pair<int, Jugador*> e: enemigos){
+void CanionDeCadena::disparar(Player* jugador, angulos_enemigos_t& enemigos){
+	for (std::pair<int, Player*> e: enemigos){
 		if (dispararBala(jugador, configuracion["precision_canion"], 
 		    e.first, e.second))
 			return;
 	}
 }
 
-bool CanionDeCadena::usar(Jugador* jugador){
+bool CanionDeCadena::usar(Player* jugador){
 	return jugador->agregarArma(this);
 }
 
 
 // Lanzacohetes
 
-void Lanzacohetes::disparar(Jugador* jugador, std::vector<Jugador*>& enemigos){	
+void Lanzacohetes::disparar(Player* jugador, std::vector<Player*>& enemigos){	
 	Coordinates posicion = jugador->get_coordinates();
 	const Coordinates& dir = jugador->get_direction();
 	posicion.increment_on_direction(dir, 1);
@@ -127,7 +128,7 @@ void Lanzacohetes::disparar(Jugador* jugador, std::vector<Jugador*>& enemigos){
 	cohete.disparar(jugador, enemigos);
 }
 
-bool Lanzacohetes::usar(Jugador* jugador){
+bool Lanzacohetes::usar(Player* jugador){
 	return jugador->agregarArma(this);
 }
 
@@ -138,7 +139,7 @@ Cohete::Cohete(Coordinates posicion, Coordinates dir):
     Posicionable(posicion), direccion(dir) { 
 }
 
-void Cohete::disparar(Jugador* jugador, std::vector<Jugador*>& enemigos){
+void Cohete::disparar(Player* jugador, std::vector<Player*>& enemigos){
 	Mapa& mapa = jugador->getMapa();
 	mapa.agregarPosicionable(this, this->posicion);
 	avanzar(mapa);
@@ -154,8 +155,8 @@ void Cohete::avanzar(Mapa& mapa){
 	return avanzar(mapa);
 }
 
-void Cohete::explotar(Jugador* jugador, std::vector<Jugador*>& enemigos){
-	for (Jugador* enemigo: enemigos){
+void Cohete::explotar(Player* jugador, std::vector<Player*>& enemigos){
+	for (Player* enemigo: enemigos){
 		double distancia = this->posicion.calculate_distance(
 			enemigo->get_coordinates());
 		
