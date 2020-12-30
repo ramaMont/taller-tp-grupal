@@ -22,7 +22,7 @@ void Cuchillo::disparar(Player* jugador, angulos_enemigos_t& enemigos){
 	for (std::pair<int, Player*> e: enemigos){
 		if (jugador->calcularDistancia(e.second) < DISTANCIA_CUCHILLO){
 		    srand (time(0));
-			int danio = rand() % (int)configuracion["maximo_danio"] + 1;
+			int danio = rand() % (int)configs[CONFIG::maximo_danio] + 1;
 			bool murio = e.second->recibirDanio(danio);
 			if (murio)
 				jugador->agregarEnemigoMuerto();
@@ -54,9 +54,9 @@ void atacar(Player* jugador, Player* enemigo, float precision, int angulo){
 	double distancia = jugador->calcularDistancia(enemigo);
 		
     float danio = precision - 
-                  distancia * configuracion["baja_de_precision_por_distancia"];
-	danio -= angulo/(int)configuracion["rango_de_disparo"];
-	danio *= (int)configuracion["maximo_danio"];
+                  distancia * configs[CONFIG::baja_precision_distancia];
+	danio -= angulo/(int)configs[CONFIG::rango_de_disparo];
+	danio *= (int)configs[CONFIG::maximo_danio];
 	bool murio = enemigo->recibirDanio(std::ceil(danio));
 	if (murio)
 		jugador->agregarEnemigoMuerto();
@@ -81,7 +81,7 @@ bool dispararBala(Player* jugador, float precision, int angulo, Player* enemigo)
 
 void Pistola::disparar(Player* jugador, angulos_enemigos_t& enemigos){
 	for (std::pair<int, Player*> e: enemigos){
-		if (dispararBala(jugador, configuracion["precision_pistola"],
+		if (dispararBala(jugador, configs[CONFIG::precision_pistola],
 		    e.first, e.second))
 			return;
 	}
@@ -92,7 +92,7 @@ void Pistola::disparar(Player* jugador, angulos_enemigos_t& enemigos){
 
 void Ametralladora::disparar(Player* jugador, angulos_enemigos_t& enemigos){
 	for (std::pair<int, Player*> e: enemigos){
-		if (dispararBala(jugador, configuracion["precision_ametralladora"],
+		if (dispararBala(jugador, configs[CONFIG::precision_ametralladora],
 		    e.first, e.second))
 			return;
 	}
@@ -107,7 +107,7 @@ bool Ametralladora::usar(Player* jugador){
 
 void CanionDeCadena::disparar(Player* jugador, angulos_enemigos_t& enemigos){
 	for (std::pair<int, Player*> e: enemigos){
-		if (dispararBala(jugador, configuracion["precision_canion"], 
+		if (dispararBala(jugador, configs[CONFIG::precision_canion], 
 		    e.first, e.second))
 			return;
 	}
@@ -160,14 +160,14 @@ void Cohete::explotar(Player* jugador, std::vector<Player*>& enemigos){
 		double distancia = this->posicion.calculate_distance(
 			enemigo->get_coordinates());
 		
-		if (distancia > (int)configuracion["distancia_explosion_cohete"])
+		if (distancia > (int)configs[CONFIG::distancia_explosion_cohete])
 			continue;
 		if (colisionaConObjeto(jugador->getMapa(), this->posicion,
 			enemigo->get_coordinates()))
 			continue;
 			
-        float danio = (int)configuracion["maximo_danio"] * 
-              (1 - distancia /(int)configuracion["distancia_explosion_cohete"]);
+        float danio = (int)configs[CONFIG::maximo_danio] * 
+              (1 - distancia /(int)configs[CONFIG::distancia_explosion_cohete]);
 		bool murio = enemigo->recibirDanio(std::ceil(danio));
 		if (murio)
 			jugador->agregarEnemigoMuerto();

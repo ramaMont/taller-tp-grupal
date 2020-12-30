@@ -118,7 +118,7 @@ void Soldado::obtenerEnemigosCercanos(std::vector<Player*>& enemigos,
 			continue;
 		float angulo = jugador->calcularAngulo(enemigo);
 		int grados = radianesAGrados(angulo);
-		if (grados <= configuracion["rango_de_disparo"])
+		if (grados <= configs[CONFIG::rango_de_disparo])
 		    jugadores.insert(std::pair<int,Player*>(grados,enemigo));
 	}
 }
@@ -167,14 +167,14 @@ void SS::disparar(Player *jugador, std::vector<Player*>& enemigos){
 	float tiempo_presionado = 0.3;   /* Pasado por parametro */
 	float tiempo_transcurrido = 0;
 	while (tiempo_transcurrido < tiempo_presionado && this->balas > 0){
-		for (int i = 0; (i < configuracion["balas_por_rafaga_ametralladora"]) 
+		for (int i = 0; (i < configs[CONFIG::frecuencia_ametralladora]) 
 		     && (this->balas > 0); i ++){
 			this->ametralladora->disparar(jugador, set_jugadores);
 			this->balas --;
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(
-		(int)(configuracion["frecuencia_rafaga_ametralladora"]*1000)));
-		tiempo_transcurrido += configuracion["frecuencia_rafaga_ametralladora"]*1000;
+		(int)(configs[CONFIG::frecuencia_ametralladora]*1000)));
+		tiempo_transcurrido += configs[CONFIG::frecuencia_ametralladora]*1000;
 	}
 }
 
@@ -213,7 +213,7 @@ void Oficial::disparar(Player *jugador, std::vector<Player*>& enemigos){
 		this->canion->disparar(jugador, set_jugadores);
 		this->balas --;
 		std::this_thread::sleep_for(std::chrono::milliseconds(
-		(int)(configuracion["frecuencia_disparo_canion"]*1000)));
+		(int)(configs[CONFIG::frecuencia_canion]*1000)));
 	}	
 }
 
@@ -247,7 +247,7 @@ bool Mutante::agregarArma(Lanzacohetes *lanzacohetes){
 
 void Mutante::disparar(Player *jugador, std::vector<Player*>& enemigos){
 	this->lanzacohetes->disparar(jugador, enemigos);
-	this->balas -= (int)configuracion["balas_gastadas_lanzacohetes"];
+	this->balas -= (int)configs[CONFIG::balas_gastadas_lanzacohetes];
 }
 
 void Mutante::soltarArma(Player *jugador){
@@ -257,7 +257,7 @@ void Mutante::soltarArma(Player *jugador){
 }
 
 bool Mutante::estaListo(){
-	return this->balas > configuracion["balas_gastadas_lanzacohetes"]
+	return this->balas > configs[CONFIG::balas_gastadas_lanzacohetes]
 	       && this->lanzacohetes != nullptr;
 }
 

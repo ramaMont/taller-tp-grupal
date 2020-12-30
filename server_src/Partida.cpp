@@ -54,7 +54,7 @@ void Partida::recibirEventos(){
 		// realizar evento
 		time_t tiempo_actual = time(0);
 		double segundos = difftime(tiempo_actual, this->tiempo_inicial);
-		if (segundos/SEGUNDOS_POR_MINUTOS > configuracion["minutos_partida"])
+		if (segundos/SEGUNDOS_POR_MINUTOS > configs[CONFIG::minutos_partida])
 			break;
 		if (todosMuertos())
 			break;

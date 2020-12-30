@@ -14,7 +14,6 @@
 class Partida{
 private:
     std::string params;
-/*<<<<<<< HEAD*/
     std::map<std::string, Player*> jugadores;
     std::vector<Player*> bots;
     time_t tiempo_inicial;

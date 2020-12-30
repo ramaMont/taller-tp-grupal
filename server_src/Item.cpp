@@ -8,11 +8,11 @@ Item::Item(Coordinates p): Posicionable(p) {
 }
 
 bool Comida::usar(Player* jugador){
-	return jugador->agregarVida((int)configuracion["puntos_comida"]);
+	return jugador->agregarVida((int)configs[CONFIG::puntos_comida]);
 }
 
 bool KitMedico::usar(Player* jugador){
-	return jugador->agregarVida((int)configuracion["puntos_kit"]);
+	return jugador->agregarVida((int)configs[CONFIG::puntos_kit]);
 }
 
 bool Sangre::usar(Player* jugador){
@@ -25,7 +25,7 @@ bool Sangre::usar(Player* jugador){
 
 
 Balas::Balas(Coordinates p): Item(p){
-	this->cantidad = (int)configuracion["cantidad_balas"];
+	this->cantidad = (int)configs[CONFIG::cantidad_balas];
 }
 
 Balas::Balas(Coordinates p, int cant): Item(p){
@@ -50,15 +50,15 @@ bool Tesoro::usar(Player* jugador){
 	return true;
 }
 
-Cruz::Cruz(Coordinates p): Tesoro((int)configuracion["puntos_cruz"], p){
+Cruz::Cruz(Coordinates p): Tesoro((int)configs[CONFIG::puntos_cruz], p){
 }
 
-Copa::Copa(Coordinates p): Tesoro((int)configuracion["puntos_copa"], p){
+Copa::Copa(Coordinates p): Tesoro((int)configs[CONFIG::puntos_copa], p){
 }
 
-Cofre::Cofre(Coordinates p): Tesoro((int)configuracion["puntos_cofre"], p){
+Cofre::Cofre(Coordinates p): Tesoro((int)configs[CONFIG::puntos_cofre], p){
 }
 
-Corona::Corona(Coordinates p): Tesoro((int)configuracion["puntos_corona"], p){
+Corona::Corona(Coordinates p): Tesoro((int)configs[CONFIG::puntos_corona], p){
 }
 

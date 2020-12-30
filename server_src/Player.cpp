@@ -9,9 +9,9 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa):
     Posicionable(position),direction(direction), mapa(mapa), player_id(0),
     soldado(EstadoSoldado(this, this->balas_restantes)){
     mapa.agregarPlayer(this);
-    this->vida = (int)configuracion["vida_maxima"];
-    this->vidasRestantes = (int)configuracion["cantidad_de_vidas"];
-    this->balas_restantes = (int)configuracion["balas_iniciales"];
+    this->vida = (int)configs[CONFIG::vida_maxima];
+    this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
+    this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
     this->puntuacion = 0;
     this->balas_disparadas = 0;
     this->enemigos_matados = 0;
@@ -22,9 +22,9 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id):
         Posicionable(position),direction(direction), mapa(mapa), player_id(id),
     soldado(EstadoSoldado(this, this->balas_restantes)){
     mapa.agregarPlayer(this);
-    this->vida = (int)configuracion["vida_maxima"];
-    this->vidasRestantes = (int)configuracion["cantidad_de_vidas"];
-    this->balas_restantes = (int)configuracion["balas_iniciales"];
+    this->vida = (int)configs[CONFIG::vida_maxima];
+    this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
+    this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
     this->puntuacion = 0;
     this->balas_disparadas = 0;
     this->enemigos_matados = 0;
@@ -98,9 +98,9 @@ void Player::cambiarArma(int numero_arma){
 }
 
 bool Player::agregarVida(int cantidad){
-	if (this->vida == (int)configuracion["vida_maxima"])
+	if (this->vida == (int)configs[CONFIG::vida_maxima])
 		return false;
-	this->vida = std::min(this->vida + cantidad, (int)configuracion["vida_maxima"]);
+	this->vida = std::min(this->vida + cantidad, (int)configs[CONFIG::vida_maxima]);
 	return true;
 }
 	
@@ -109,10 +109,10 @@ void Player::agregarPuntos(int cantidad){
 }
 
 bool Player::agregarBalas(int cant){
-	if (this->balas_restantes == (int)configuracion["balas_maximas"])
+	if (this->balas_restantes == (int)configs[CONFIG::balas_maximas])
 		return false;
 	this->balas_restantes = std::min(this->balas_restantes+cant, 
-	    (int)configuracion["balas_maximas"]);
+	    (int)configs[CONFIG::balas_maximas]);
 	this->soldado.recargarBalas();
 	return true;
 }
@@ -135,7 +135,7 @@ void Player::agregarEnemigoMuerto(){
 }
 
 bool Player::estaPorMorir(){
-	return this->vida <= (int)configuracion["vida_minima"];
+	return this->vida <= (int)configs[CONFIG::vida_minima];
 }
 
 void Player::morir(){
@@ -152,9 +152,9 @@ bool Player::revivir(){
 	if (this->vidasRestantes <= 0)
 		return false;
     mapa.agregarPosicionable(this, posicion_inicial);
-    this->vida = (int)configuracion["vida_maxima"];
+    this->vida = (int)configs[CONFIG::vida_maxima];
     this->vidasRestantes --;
-    this->balas_restantes = (int)configuracion["balas_iniciales"];
+    this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
     this->soldado.cambiarArma(N_PISTOLA);
     return true;
 }

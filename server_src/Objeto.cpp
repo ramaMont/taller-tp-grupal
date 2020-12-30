@@ -23,7 +23,7 @@ void Puerta::abrirPuerta(Player *jugador){
 	
 	// Cambiar a un evento
 	std::this_thread::sleep_for (std::chrono::seconds(
-	    (int)configuracion["segundos_cerrar_puerta"]));
+	    (int)configs[CONFIG::segundos_cerrar_puerta]));
 	cerrar();	
 }
 
