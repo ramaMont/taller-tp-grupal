@@ -197,7 +197,9 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
         }
 
         else if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
-          _th_game_model->player_shoot();
+            protocol.setAction(
+                Protocol::action::SHOOT);
+            th_sender.push(protocol);
         }        
 
 
