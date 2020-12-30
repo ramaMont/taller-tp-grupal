@@ -11,6 +11,9 @@ class Posicionable{
 protected:
     Coordinates posicion;
     Texture *texture_drawer;
+    int texture;
+    bool esObstaculo;
+    
 public:
     explicit Posicionable(Coordinates posicion);
 
@@ -34,7 +37,13 @@ public:
 
 
     virtual Coordinates getPosicion();
+//<<<<<<< HEAD
+    bool atravesable();
+    void atravesable(bool booleano);
+    //~Posicionable();
+//=======
     virtual ~Posicionable();
+//>>>>>>> origin/main
 };
 
 #endif

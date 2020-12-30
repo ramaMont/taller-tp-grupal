@@ -104,6 +104,19 @@ int Coordinates::get_increase_y()const{
 	return increase;
 }
 
+double Coordinates::calculate_angle(const Coordinates& direction,
+    const Coordinates& position) const{
+	float var_x = position.x - this->x;
+	float var_y = position.y - this->y;
+	double product = var_x * direction.x + var_y * direction.y;
+	double length1 = sqrt(var_x * var_x + var_y * var_y);
+	double length2 = sqrt(direction.x*direction.x + direction.y*direction.y);
+	double angle = product / (length1 * length2);
+	if (std::floor(angle) == 1)
+		return 0;
+	return acos(angle);
+}
+
 // void Coordinates::set_x(double a_x){
 //     this->x = a_x;
 // }
