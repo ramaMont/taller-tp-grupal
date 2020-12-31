@@ -28,7 +28,7 @@ public:
     Mapa& operator=(Mapa&& other);
     
     void soltar(Posicionable* objeto, const Coordinates& posicion);
-    void soltar(Posicionable objeto);
+    void soltar(Posicionable* objeto);
     bool hayObstaculoEn(const Coordinates& posicion) const;
     bool hayObstaculoEn(float x, float y) const;
     bool hayPuertaEn(float x, float y) const;

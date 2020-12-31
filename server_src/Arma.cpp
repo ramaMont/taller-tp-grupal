@@ -7,8 +7,6 @@
 #include <ctime>
 #include <typeinfo>
 
-#include <iostream>
-
 #define PASO 1
 #define ROTACION_45 0.7071
 #define PORCENTAJE 100
@@ -68,7 +66,7 @@ bool dispararBala(Player* jugador, float precision, int angulo, Player* enemigo)
 	int n_rand = rand() % PORCENTAJE;
 	if ((n_rand / PORCENTAJE) > precision)	// Falla el tiro
 		return true;
-		
+
 	if (colisionaConObjeto(jugador->getMapa(), jugador->get_coordinates(),
 	    enemigo->get_coordinates()))	// Hay un objeto en el medio
 	    return false;
