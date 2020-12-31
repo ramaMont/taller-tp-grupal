@@ -6,6 +6,7 @@ class Player;
 #include "Item.h"
 class Mapa;
 #include <set>
+#include <map>
 
 
 #define N_CUCHILLO 0
@@ -19,7 +20,7 @@ typedef std::set<std::pair<int, Player*>> angulos_enemigos_t;
 class Arma {
 	public:
 	virtual void disparar(Player* jugador, angulos_enemigos_t& enemigos) {}
-	virtual void disparar(Player* jugador, std::vector<Player*>& enemigos) {}
+	virtual void disparar(Player* jugador, std::map<int, Player*>& enemigos) {}
 };
 
 
@@ -55,7 +56,7 @@ class CanionDeCadena: public Arma, public Item {
 class Lanzacohetes: public Arma, public Item {
 	public:
 	explicit Lanzacohetes(Coordinates p): Item(p) { }
-	void disparar(Player* jugador, std::vector<Player*>& enemigos) override;
+	void disparar(Player* jugador, std::map<int, Player*>& enemigos) override;
 	bool usar(Player* jugador) override;
 };
 
@@ -66,9 +67,9 @@ class Cohete: public Posicionable{
 	
 	public:
 	Cohete(Coordinates posicion, const Coordinates dir);
-	void disparar(Player* jugador, std::vector<Player*>& enemigos);
+	void disparar(Player* jugador, std::map<int, Player*>& enemigos);
 	void avanzar(Mapa& mapa);
-	void explotar(Player* jugador, std::vector<Player*>& enemigos);
+	void explotar(Player* jugador, std::map<int, Player*>& enemigos);
 };
 	
 

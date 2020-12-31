@@ -17,16 +17,19 @@ protected:
 	Coordinates direction;
     Cl_Mapa &mapa;
     int id;
+    Coordinates initial_position;
 public:
     explicit Movable(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
     void mover_en_una_direccion(Direccion* direccion);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);
+    void setInitialPosition(Coordinates initial_position);
     Coordinates get_direction() const;
 
-    int getId(){
-    	return id;
-    }
+    int getId();
+
+    void die();
+    void resurrect();
 
     ~Movable();  
 };

@@ -13,6 +13,11 @@ private:
     std::map<int,ThSender *> users_sender;
     std::atomic<bool> launched;
 
+    void processShoot(Protocol protocol);
+    void processShooted(Protocol protocol);
+    void processDie(Protocol protocol);
+    void processResurrect(Protocol protocol);
+
 public:
     explicit ThGameModelServer(ThUserServer& th_user_server, int map_id,
         int game_id);

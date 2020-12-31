@@ -150,6 +150,7 @@ void GameModelClient::addPlayer(int player_id){ //Jugadores O enemigos
             player.complete(initial_position,initial_direction,player_id);
             movables.insert(std::pair<int, Jugador*>(player_id, &player));
             id_insertion_order.push_back(player_id);
+            player.setInitialPosition(initial_position);
             ++pos_x;
             ++pos_y;
         } catch(...){
@@ -166,6 +167,7 @@ void GameModelClient::addPlayer(int player_id){ //Jugadores O enemigos
             map.agregarPosicionable(enemy,initial_position);    
             movables.insert(std::pair<int, Movable*>(player_id, enemy));
             id_insertion_order.push_back(player_id);
+            enemy->setInitialPosition(initial_position);
             ++pos_x;
             ++pos_y;
         } catch(...){
@@ -244,8 +246,21 @@ void GameModelClient::processProtocol(Protocol& protocol){
             processMove(protocol);
             break;
         case Protocol::action::SHOOT:
-
+            processShoot(protocol);
             break;
+        case Protocol::action::SHOOTED:
+            processShooted(protocol);
+            break;
+        case Protocol::action::DIE:{
+            auto movable = movables.at(protocol.getId());
+            movable->die();
+            break;
+        }
+        case Protocol::action::RESURRECT:{
+            auto movable = movables.at(protocol.getId());
+            movable->resurrect();
+            break;
+        }
         case Protocol::action::REMOVE:
             removePlayer(protocol.getUserId());
             break;
@@ -260,6 +275,16 @@ void GameModelClient::run(){
         operations.pop();
         processProtocol(protocol);
     }
+}
+
+void GameModelClient::processShoot(Protocol protocol){
+    if (protagonist_id == protocol.getId()){
+        player.shoot();
+    }
+}
+
+void GameModelClient::processShooted(Protocol protocol){
+    player.updateHealth(-protocol.getDamage());
 }
 
 

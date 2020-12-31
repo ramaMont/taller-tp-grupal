@@ -5,9 +5,11 @@
 #include <algorithm>
 
 
-Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa):
+Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, 
+		BlockingQueue<Protocol>& game_model_queue):
     Posicionable(position),direction(direction), mapa(mapa), player_id(0),
-    soldado(EstadoSoldado(this, this->balas_restantes)){
+    soldado(EstadoSoldado(this, this->balas_restantes)), 
+	_game_model_queue(game_model_queue){
     mapa.agregarPlayer(this);
     this->vida = (int)configs[CONFIG::vida_maxima];
     this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
@@ -18,9 +20,11 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa):
     this->llave = false;  
 }
 
-Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id):
-        Posicionable(position),direction(direction), mapa(mapa), player_id(id),
-    soldado(EstadoSoldado(this, this->balas_restantes)){
+Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id,
+		BlockingQueue<Protocol>& game_model_queue):
+    Posicionable(position),direction(direction), mapa(mapa), player_id(id),
+    soldado(EstadoSoldado(this, this->balas_restantes)),
+	_game_model_queue(game_model_queue){
     mapa.agregarPlayer(this);
     this->vida = (int)configs[CONFIG::vida_maxima];
     this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
@@ -74,14 +78,18 @@ double Player::calcularDistancia(const Coordinates& posicion){
 
 bool Player::recibirDanio(int danio){
 	this->vida = std::max(this->vida - danio, 0);
+	Protocol protocol(player_id, danio, Protocol::action::SHOOTED);
+	_game_model_queue.push(protocol);
 	if (this->vida == 0){
-		morir();
+		Protocol protocol(player_id);
+		protocol.setAction(Protocol::action::DIE);
+		_game_model_queue.push(protocol);
 		return true;
 	}
 	return false;
 }
 
-void Player::disparar(std::vector<Player*>& jugadores){
+void Player::disparar(std::map<int, Player*>& jugadores){
 	this->soldado.disparar(jugadores);
 }
 
@@ -141,16 +149,19 @@ bool Player::estaPorMorir(){
 void Player::morir(){
 	this->soldado.soltarArma();
 	this->mapa.soltar(Balas(this->posicion, 10));
+	mapa.sacarPosicionable(this->posicion);
 	if (this->llave){
 		this->mapa.soltar(Llave(this->posicion));
 		this->llave = false;
 	}
-	revivir();
+	if (this->vidasRestantes > 0){
+		Protocol protocol(player_id);
+		protocol.setAction(Protocol::action::RESURRECT);
+		_game_model_queue.push(protocol);
+	}
 }
 
 bool Player::revivir(){
-	if (this->vidasRestantes <= 0)
-		return false;
     mapa.agregarPosicionable(this, posicion_inicial);
     this->vida = (int)configs[CONFIG::vida_maxima];
     this->vidasRestantes --;

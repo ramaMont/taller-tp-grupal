@@ -4,6 +4,7 @@
 #include "Protocol.h"
 #include "Posicionable.h"
 #include "coordinates.h"
+#include <BlockingQueue.h>
 
 #include "Mapa.h"
 class Mapa;
@@ -12,7 +13,7 @@ class Direccion;
 class EstadoSoldado;
 #include "Soldado.h"
 #include "Item.h"
-#include <vector>
+#include <map>
 
 
 
@@ -30,11 +31,13 @@ private:
     size_t puntuacion;
     size_t balas_disparadas;
     size_t enemigos_matados;
+    BlockingQueue<Protocol>& _game_model_queue;
     
 public:
-    explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa);
     explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa,
-        int id);
+        BlockingQueue<Protocol>& game_model_queue);
+    explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa,
+        int id, BlockingQueue<Protocol>& game_model_queue);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);
     Coordinates get_coordinates() const;
@@ -45,7 +48,7 @@ public:
     double calcularAngulo(const Coordinates& dir, const Coordinates& posicion);
     double calcularDistancia(Player* jugador);
     double calcularDistancia(const Coordinates& posicion);    
-    void disparar(std::vector<Player*>&);
+    void disparar(std::map<int, Player*>&);
     bool recibirDanio(int danio);
     bool usar(Item* item);
     bool agregarArma(Arma* arma);

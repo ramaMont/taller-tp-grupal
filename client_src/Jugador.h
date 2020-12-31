@@ -45,6 +45,8 @@ public:
     // Llamo a la funcion correspondiente para que dibuje el arma
     void draw();
 
+    void updateHealth(int amount);
+
     ~Jugador();  
 };
 

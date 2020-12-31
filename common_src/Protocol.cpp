@@ -16,6 +16,11 @@ Protocol::Protocol(int user_id, int map_id):
     _direction(Protocol::direction::STAY), damage(map_id), _game_id(0){
 }
 
+Protocol::Protocol(int user_id, int danio, Protocol::action action):
+    _action(action), id(user_id), 
+    _direction(Protocol::direction::STAY), damage(danio), _game_id(0){
+}
+
 Protocol::Protocol(int user_id, int map_id, int game_id):
     _action(Protocol::action::NONE), id(user_id), 
     _direction(Protocol::direction::STAY), damage(map_id), _game_id(game_id){
@@ -40,6 +45,9 @@ int Protocol::getUserId(){
 }
 int Protocol::getGameId(){
     return _game_id;
+}
+int Protocol::getDamage(){
+    return damage;
 }
 
 Protocol::direction Protocol::getDirection(){

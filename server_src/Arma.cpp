@@ -120,7 +120,7 @@ bool CanionDeCadena::usar(Player* jugador){
 
 // Lanzacohetes
 
-void Lanzacohetes::disparar(Player* jugador, std::vector<Player*>& enemigos){	
+void Lanzacohetes::disparar(Player* jugador, std::map<int, Player*>& enemigos){	
 	Coordinates posicion = jugador->get_coordinates();
 	const Coordinates& dir = jugador->get_direction();
 	posicion.increment_on_direction(dir, 1);
@@ -139,7 +139,7 @@ Cohete::Cohete(Coordinates posicion, Coordinates dir):
     Posicionable(posicion), direccion(dir) { 
 }
 
-void Cohete::disparar(Player* jugador, std::vector<Player*>& enemigos){
+void Cohete::disparar(Player* jugador, std::map<int, Player*>& enemigos){
 	Mapa& mapa = jugador->getMapa();
 	mapa.agregarPosicionable(this, this->posicion);
 	avanzar(mapa);
@@ -155,8 +155,9 @@ void Cohete::avanzar(Mapa& mapa){
 	return avanzar(mapa);
 }
 
-void Cohete::explotar(Player* jugador, std::vector<Player*>& enemigos){
-	for (Player* enemigo: enemigos){
+void Cohete::explotar(Player* jugador, std::map<int, Player*>& enemigos){
+    for (auto it = enemigos.begin(); it != enemigos.end(); ++it){
+        auto* enemigo = it->second;
 		double distancia = this->posicion.calculate_distance(
 			enemigo->get_coordinates());
 		

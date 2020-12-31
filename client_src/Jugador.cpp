@@ -57,6 +57,9 @@ void Jugador::draw(){
 	gun_type->call_drawer(frames_since_shot/4);
 }
 
+void Jugador::updateHealth(int amount){
+	health += amount;
+}
 
 Jugador::~Jugador(){
 	if(gun_type!=nullptr)

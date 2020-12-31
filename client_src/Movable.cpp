@@ -43,8 +43,26 @@ Coordinates Movable::get_direction() const{
     return direction;
 }
 
+int Movable::getId(){
+    return id;
+}
+
 void Movable::set_direction(Coordinates direction){
     this->direction = direction;
+}
+
+void Movable::setInitialPosition(Coordinates initial_position){
+    this->initial_position = initial_position;
+}
+
+void Movable::die(){
+	//TODO: Animaciones de muerte =O.
+	mapa.sacarPosicionable(this->posicion);
+}
+
+void Movable::resurrect(){
+	//TODO: Resetear vida y demas atributos
+	mapa.agregarPosicionable(this, this->initial_position);
 }
 
 Movable::~Movable(){

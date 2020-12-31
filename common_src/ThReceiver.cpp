@@ -62,6 +62,18 @@ void ThReceiver::processReception(Protocol& protocol){
         case Protocol::action::MOVE:
             _gameModel->push(protocol);
             break;
+        case Protocol::action::SHOOT:
+            _gameModel->push(protocol);
+            break;
+        case Protocol::action::SHOOTED:
+            _gameModel->push(protocol);
+            break;
+        case Protocol::action::DIE:
+            _gameModel->push(protocol);
+            break;
+        case Protocol::action::RESURRECT:
+            _gameModel->push(protocol);
+            break;
         default:
             // TODO: la parte que no es crear o unirse a una partida,
             // se lo envia directamente al game model

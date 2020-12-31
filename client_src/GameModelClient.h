@@ -60,6 +60,9 @@ private:
     void initDirections();
     void cleanDirections();
 
+    void processShoot(Protocol protocol);
+    void processShooted(Protocol protocol);
+
 public:
     explicit GameModelClient(int user_id, int map_id, int game_id, int protagonist_id);
 

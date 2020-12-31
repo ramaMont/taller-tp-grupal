@@ -51,7 +51,7 @@ void GameModel::addPlayer(int player_id){
         Coordinates initial_position(pos_x, pos_y);
         Coordinates initial_direction(0, 1);
         Player* player = new Player(initial_position, initial_direction,
-            map, player_id);
+            map, player_id, operations);
         players.insert(std::pair<int, Player*>(player_id, player));
         id_insertion_order.push_back(player_id);
         ++pos_x;

@@ -19,7 +19,19 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
             echoProtocol(protocol);
             break;
         case Protocol::action::SHOOT:
-            // TODO
+            processShoot(protocol);
+            echoProtocol(protocol);
+            break;
+        case Protocol::action::SHOOTED:
+            processShooted(protocol);
+            break;
+        case Protocol::action::RESURRECT:
+            processResurrect(protocol);
+            echoProtocol(protocol);
+            break;
+        case Protocol::action::DIE:
+            processDie(protocol);
+            echoProtocol(protocol);
             break;
         default:
             break;
@@ -38,6 +50,26 @@ void ThGameModelServer::echoProtocol(Protocol protocol){
         user_sender->push(protocol);
         ++it;
     }
+}
+
+void ThGameModelServer::processShoot(Protocol protocol){
+    Player* player = players.at(protocol.getId());
+    player->disparar(players);
+}
+
+void ThGameModelServer::processShooted(Protocol protocol){
+    auto th_user_sender = users_sender.at(protocol.getId());
+    th_user_sender->push(protocol);
+}
+
+void ThGameModelServer::processResurrect(Protocol protocol){
+    Player* player = players.at(protocol.getId());
+    player->revivir();
+}
+
+void ThGameModelServer::processDie(Protocol protocol){
+    Player* player = players.at(protocol.getId());
+    player->morir();
 }
 
 void ThGameModelServer::run(){
