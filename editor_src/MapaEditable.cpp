@@ -7,8 +7,8 @@ void MapaEditable::cargarMapaExistente() {
     // TODO: meter este comportamiento en una clase. (RAII)
     YAML::Node map = YAML::LoadFile(archivo_mapa);
 
-    if (!map["nombre"] | !map["filas"] |
-        !map["columnas"] | !map["elementos"]) {
+    if ((!map["nombre"] || !map["filas"]) |
+        (!map["columnas"] || !map["elementos"])) {
         std::cout << "Invalid map" << std::endl;
         return;
     }

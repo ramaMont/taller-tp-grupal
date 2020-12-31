@@ -1,17 +1,30 @@
-cmake_minimum_required(VERSION 3.1)
-project(qt5-demo)
+cmake_minimum_required(VERSION 3.0)
+set(BINARY ${CMAKE_PROJECT_NAME}_editor)
+set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno-inline -pthread")
 
-add_subdirectory(third-party/yaml-cpp)
+# Find includes in the build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# Find the QtWidgets library
-find_package(Qt5Widgets)
+# Turn on automatic invocation of the MOC, UIC & RCC
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 
-add_executable(editor
-  ResourcesWidget.cpp
-  Editor.cpp
-  MapaEditable.cpp
-  MapWidget.cpp
-  main.cpp)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
-# Use the Widgets module from Qt 5.
-target_link_libraries(editor Qt5::Widgets yaml-cpp)
+file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
+
+set(SOURCES ${SOURCES})
+
+add_executable(${BINARY}_run ${SOURCES})
+
+file(COPY imgs/
+        DESTINATION imgs/)
+
+# Si incluyo los source en la lib, explota por alguna razon, no encuentra 
+# las cosas de Qt.
+add_library(${BINARY}_lib)
+# add_library(${BINARY}_lib STATIC ${SOURCES})
+
+target_link_libraries(${BINARY}_run Qt5::Widgets yaml-cpp ${CMAKE_PROJECT_NAME}_common_lib)
+

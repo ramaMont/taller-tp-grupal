@@ -16,7 +16,7 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     this->setWindowTitle(QString("Editor de Mapas - Wolfenstein 3D"));
     fabricarMenu();
 
-    this->setStyleSheet("QWidget {background-image: url(../imgs/fondo3.png) }"
+    this->setStyleSheet("QWidget {background-image: url(imgs/fondo3.png) }"
     "QLabel { color : white; }"
     "QMenuBar {color: white;}"
     "QMenu::item {color: white;}"
@@ -28,25 +28,6 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
 
     // Obtengo los recursos con los que se crearan los mapas
     recursos_del_juego = obtenerMapaRecursos();
-
-
-    /*
-    // Creo un widget para el boton de editar mapas.
-    widgetEditarMapa = new QWidget(this);
-    widgetEditarMapa->setObjectName(QStringLiteral("widgetEditarMapa"));
-    widgetEditarMapa->setGeometry(QRect(50, 20, 81, 80));
-
-    horizontalLayoutEditarMapa = new QHBoxLayout(widgetEditarMapa);
-    horizontalLayoutEditarMapa->setObjectName(QStringLiteral("horizontalLayoutEditarMapa"));
-    horizontalLayoutEditarMapa->setContentsMargins(0, 0, 0, 0);
-
-    botonEditarMapa = new QPushButton(widgetEditarMapa);
-    botonEditarMapa->setObjectName(QStringLiteral("botonEditarMapa"));
-    botonEditarMapa->setText("Cargar Mapa");
-
-    horizontalLayoutEditarMapa->addWidget(botonEditarMapa);
-
-    */
 
     // Creo un widget para la creacion del mapa, con su widget y labels.
     widgetCrearMapa = new QWidget(this);
@@ -61,31 +42,23 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     horizontalLayoutCrearMapa->setObjectName(QStringLiteral("horizontalLayout"));
     horizontalLayoutCrearMapa->setContentsMargins(0, 0, 0, 0);
 
-    /*
-    botonCrearMapa = new QPushButton(widgetCrearMapa);
-    botonCrearMapa->setText("Crear Mapa");
-    botonCrearMapa->setObjectName(QStringLiteral("botonCrearMapa"));
-
-    inputNombreMapa = new QLineEdit(widgetCrearMapa);
-    inputNombreMapa->setObjectName(QStringLiteral("nombreMapa"));
-    inputNombreMapa->setClearButtonEnabled(false);
-
-    inputCantidadFilas = new QLineEdit(widgetCrearMapa);
-    inputCantidadFilas->setObjectName(QStringLiteral("filas"));
-    inputCantidadFilas->setClearButtonEnabled(false);
-
-    inputCantidadColumnas = new QLineEdit(widgetCrearMapa);
-    inputCantidadColumnas->setObjectName(QStringLiteral("columnas"));
-    inputCantidadColumnas->setClearButtonEnabled(false);
-
-    */
-
     horizontalLayoutCrearMapa->addWidget(filasLabel);
 
+    // Creo el area donde se dibujará el mapa, tabien con scroll.
+    scrollMapArea = new QScrollArea(this);
+    scrollMapArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    scrollMapArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    scrollMapArea->setWidgetResizable(true);
+    scrollMapArea->setGeometry(QRect(230, 60, 750, 700));
+
+    mapWidget = new MapWidget(this, recursos_del_juego);
+    mapWidget->setStyleSheet("QWidget {background-image: url(imgs/fondo32.png) }");
+    scrollMapArea->setWidget(mapWidget);
+    scrollMapArea->show();
 
     // Creo un widget para los recursos con los que armaremos el mapa.
-    widgetRecursos = new ResourcesWidget(this, recursos_del_juego);
-    widgetRecursos->setStyleSheet("QWidget {background-image: url(../imgs/fondo33.png) }");
+    widgetRecursos = new ResourcesWidget(this, recursos_del_juego, mapWidget);
+    widgetRecursos->setStyleSheet("QWidget {background-image: url(imgs/fondo33.png) }");
 
     // Agrego una barra de scroll por si los elementos son muchos.
     scrollResourcesArea = new QScrollArea(this);
@@ -96,41 +69,8 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     scrollResourcesArea->setWidget(widgetRecursos);
     scrollResourcesArea->show();
 
-    // Creo el area donde se dibujará el mapa, tabien con scroll.
-    scrollMapArea = new QScrollArea(this);
-    scrollMapArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    scrollMapArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    scrollMapArea->setWidgetResizable(true);
-    scrollMapArea->setGeometry(QRect(230, 60, 750, 700));
-
-    mapWidget = new MapWidget(this, recursos_del_juego);
-    mapWidget->setStyleSheet("QWidget {background-image: url(../imgs/fondo32.png) }");
-    scrollMapArea->setWidget(mapWidget);
-    scrollMapArea->show();
-
     setScrollBarStyle(scrollResourcesArea);
     setScrollBarStyle(scrollMapArea);
-
-    /*
-    widgetMapaGuardar = new QWidget(this);
-    widgetMapaGuardar->setObjectName(
-        QStringLiteral("widgetCrearMapa"));
-    widgetMapaGuardar->setGeometry(QRect(50, 720, 811, 30));
-
-    horizontalLayoutSave = new QHBoxLayout(widgetMapaGuardar);
-    horizontalLayoutSave->setObjectName(QStringLiteral("horizontalLayout"));
-    horizontalLayoutSave->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    horizontalLayoutSave->setContentsMargins(0, 0, 0, 0);
-
-    botonGuardarMapa = new QPushButton(this);
-    botonGuardarMapa->setObjectName(QStringLiteral("botonGuardarMapa"));
-    botonGuardarMapa->setText("Guardar");
-
-    const QSize size = QSize(70, 30);
-    botonGuardarMapa->setFixedSize(size);
-    horizontalLayoutSave->addWidget(botonGuardarMapa,
-                                    Qt::AlignCenter | Qt::AlignTop);
-    */
 
     // Conecto eventos
     QMetaObject::connectSlotsByName(this);
@@ -294,7 +234,6 @@ void Editor::desplegarFileDialog() {
 void Editor::cargarArchivoMapa() {
     if (mapWidget->hayMapaCreado()) {
         // Mensaje de confirmación.
-        QMessageBox::StandardButton reply;
         QMessageBox messageBox(QMessageBox::Question, "Alerta",
                                     "El mapa actual se limpiará. "
                                     "Está seguro?",
@@ -320,12 +259,6 @@ void Editor::guardarMapa() {
     if (!mapWidget->hayMapaCreado()) return;
     // Sincronizo el mapa visual con el real y guardo.
     mapWidget->guardarMapa();
-    // Mensaje de éxito
-    QMessageBox* messageBox = new QMessageBox(this);
-    messageBox->setText("Mapa guardado con exito!");
-    messageBox->setWindowTitle("Aviso");
-    messageBox->setIcon(QMessageBox::Information);
-    messageBox->show();
 }
 
 void Editor::fabricarMenu() {
@@ -359,46 +292,48 @@ std::map<std::string, std::string> Editor::obtenerMapaRecursos() {
 
     // Armas y jugadores.
     mapa.insert(std::pair<std::string, std::string>("guardia",
-                                                    "../imgs/guardia.png"));
+                                                    "imgs/guardia.png"));
     mapa.insert(std::pair<std::string, std::string>("jugador",
-                                                    "../imgs/jugador.png"));
+                                                    "imgs/jugador.png"));
     mapa.insert(std::pair<std::string, std::string>("ametralladora",
-                                                    "../imgs/ametralladora.png"));
+                                                    "imgs/ametralladora.png"));
     mapa.insert(std::pair<std::string, std::string>("canion_de_fuego",
-                                                    "../imgs/canion_de_fuego.png"));
+                                                    "imgs/canion_de_fuego.png"));
     mapa.insert(std::pair<std::string, std::string>("lanzacohetes",
-                                                    "../imgs/lanzacohetes.png"));
+                                                    "imgs/lanzacohetes.png"));
     // Pickeables
     mapa.insert(std::pair<std::string, std::string>("llave",
-                                                    "../imgs/llave.png"));
+                                                    "imgs/llave.png"));
     mapa.insert(std::pair<std::string, std::string>("medicina",
-                                                    "../imgs/medicina.png"));
+                                                    "imgs/medicina.png"));
     mapa.insert(std::pair<std::string, std::string>("trofeo",
-                                                    "../imgs/trofeo.png"));
+                                                    "imgs/trofeo.png"));
     mapa.insert(std::pair<std::string, std::string>("balas",
-                                                    "../imgs/balas.png"));
+                                                    "imgs/balas.png"));
     mapa.insert(std::pair<std::string, std::string>("comida",
-                                                    "../imgs/comida.png"));
+                                                    "imgs/comida.png"));
 
     // Decoraciones
     mapa.insert(std::pair<std::string, std::string>("agua",
-                                                    "../imgs/agua.png"));
+                                                    "imgs/agua.png"));
     mapa.insert(std::pair<std::string, std::string>("barril",
-                                                    "../imgs/barril.png"));
+                                                    "imgs/barril.png"));
 
     // Paredes y puertas
     mapa.insert(std::pair<std::string, std::string>("pared",
-                                                    "../imgs/pared_1.png"));
-    mapa.insert(std::pair<std::string, std::string>("pared_falsa",
-                                                    "../imgs/pared_falsa.png"));
-    mapa.insert(std::pair<std::string, std::string>("pasadizo_1",
-                                                    "../imgs/pasadizo_1.png"));
-    mapa.insert(std::pair<std::string, std::string>("pasadizo_2",
-                                                    "../imgs/pasadizo_2.png"));
+                                                    "imgs/pared_1.png"));
+    mapa.insert(std::pair<std::string, std::string>("pared_1",
+                                                    "imgs/pared_2.png"));
+    mapa.insert(std::pair<std::string, std::string>("pared_2",
+                                                    "imgs/pared_3.png"));
+    mapa.insert(std::pair<std::string, std::string>("pared_3",
+                                                    "imgs/pared_4.png"));
+    mapa.insert(std::pair<std::string, std::string>("pasadizo",
+                                                    "imgs/pasadizo.png"));
     mapa.insert(std::pair<std::string, std::string>("puerta",
-                                                    "../imgs/puerta.png"));
+                                                    "imgs/puerta.png"));
     mapa.insert(std::pair<std::string, std::string>("puerta_con_llave",
-                                                    "../imgs/puerta_con_llave.png"));
+                                                    "imgs/puerta_con_llave.png"));
 
     return mapa;
 }

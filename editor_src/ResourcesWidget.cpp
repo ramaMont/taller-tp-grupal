@@ -7,8 +7,8 @@
 
 ResourcesWidget::ResourcesWidget(QWidget *parent,
                                 const std::map<std::string, std::string>&
-                                    recursos_del_juego)
-    : QFrame(parent), recursos_del_juego(recursos_del_juego) {
+                                    recursos_del_juego, MapWidget* map)
+    : QFrame(parent), map(map), recursos_del_juego(recursos_del_juego) {
     this->setObjectName(QStringLiteral("widgetRecursos"));
     verticalLayout = new QVBoxLayout(this);
     verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
@@ -34,6 +34,19 @@ void ResourcesWidget::mousePressEvent(QMouseEvent *event) {
     QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
     if (!child)
         return;
+
+    QString object_name = child->objectName();
+
+    if ((event->button() == Qt::RightButton) && (object_name.startsWith("pared"))) {
+        // Si es click derecho y era una pared tengo que mostrar la opt de pintar bordes.
+        QMenu contextMenu;
+        contextMenu.addAction("Pared principal", this, [=] {
+            map->pintarParedes(object_name);
+        });
+        QPoint globalPos = mapToGlobal(event->pos());
+        contextMenu.exec(globalPos);
+        return;
+    }
 
     // Preparo la data a guardar en el clipboard (imagen y elemento)
     const QPixmap* pixmap = child->pixmap();

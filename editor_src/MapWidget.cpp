@@ -22,6 +22,7 @@ MapWidget::MapWidget(QWidget *parent,
     highlighted_label = nullptr;
     this->setLayout(gridLayout);
     setAcceptDrops(true);
+    mapa = nullptr;
 }
 
 bool MapWidget::hayMapaCreado() {
@@ -169,7 +170,7 @@ void MapWidget::agregarColumnaAPartirDe(int columna) {
     if (nueva_columna >= MAX_FC) {
         std::string message = "El máximo de columnas es de "
             + std::to_string(MAX_FC);
-        mostrarWarning(QString::fromStdString(message));
+        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
     // Agrego una nueva columna con vacios
@@ -197,7 +198,7 @@ void MapWidget::agregarFilaAPartirDe(int fila) {
     if (nueva_fila >= MAX_FC) {
         std::string message = "El máximo de filas es de "
             + std::to_string(MAX_FC);
-        mostrarWarning(QString::fromStdString(message));
+        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
     // Agrego una nueva fila con vacios
@@ -225,7 +226,7 @@ void MapWidget::eliminarFila(int fila) {
     if (ultima_fila < MIN_FC) {
         std::string message = "El minimo de filas es de "
             + std::to_string(MIN_FC);
-        mostrarWarning(QString::fromStdString(message));
+        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
 
@@ -260,7 +261,7 @@ void MapWidget::eliminarColumna(int columna) {
     if (ultima_columna < MIN_FC) {
         std::string message = "El minimo de columnas es de "
             + std::to_string(MIN_FC);
-        mostrarWarning(QString::fromStdString(message));
+        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
 
@@ -459,7 +460,44 @@ void MapWidget::actualizarNombreVentana() {
 
 void MapWidget::guardarMapa() {
     sincronizarMapaYVista();
-    mapa->guardarMapa();
+    if (validarParedes()) {
+        mapa->guardarMapa();
+        std::string message = "Mapa guardado con éxito!";
+        mostrarWarning(QString::fromStdString(message), QMessageBox::Information);
+    } else {
+        std::string message = "Los bordes del mapa deben ser paredes!";
+        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
+    }
+}
+
+bool MapWidget::validarParedes() {
+    // Validar que todos los bordes sean paredes.
+    // TODO: Se podria usar excepciones
+    int filas = mapa->getFilas();
+    int columnas = mapa->getColumnas();
+    for (int c=0; c < columnas; c++) {
+        std::string pos_primera_fila = "pos_0_" + std::to_string(c);
+        std::string pos_ultima_fila = "pos_" + std::to_string(filas-1)
+            + "_" + std::to_string(c);
+        QLabel* label_primera_fila_e = findChild<QLabel*>(QString::fromStdString(pos_primera_fila + "_element"));
+        QLabel* label_ultima_fila_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_fila + "_element"));
+        if ((!label_primera_fila_e->text().startsWith("pared")) ||
+            (!label_ultima_fila_e->text().startsWith("pared")))
+            return false;
+    }
+
+    for (int f=0; f < filas; f++) {
+        std::string pos_primera_columna = "pos_" + std::to_string(f) + "_0";
+        std::string pos_ultima_columna = "pos_" + std::to_string(f)
+            + "_" + std::to_string(columnas-1);
+        QLabel* label_primera_columna_e = findChild<QLabel*>(QString::fromStdString(pos_primera_columna + "_element"));
+        QLabel* label_ultima_columna_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_columna + "_element"));
+        if ((!label_primera_columna_e->text().startsWith("pared")) ||
+            (!label_ultima_columna_e->text().startsWith("pared")))
+            return false;
+    }
+
+    return true;
 }
 
 void MapWidget::sincronizarMapaYVista() {
@@ -468,7 +506,6 @@ void MapWidget::sincronizarMapaYVista() {
     for (int i = 0; i < gridLayout->count(); i++) {
         QLabel* label = static_cast<QLabel*> (gridLayout->itemAt(i)->widget());
         if (label->objectName().endsWith("_element")) continue;
-        std::cout << label->objectName().toStdString() << std::endl;
         QLabel* hidden_label = findChild<QLabel*>(label->objectName()
                                + "_element");
         mapa->actualizarElemento(label->objectName().toStdString(),
@@ -486,10 +523,10 @@ void MapWidget::limpiarGridYMapa() {
     }
 }
 
-void MapWidget::mostrarWarning(QString message) {
+void MapWidget::mostrarWarning(QString message, QMessageBox::Icon icon) {
     QMessageBox messageBox(this);
     messageBox.setStyleSheet(
-        "QWidget {background-image: url(../imgs/fondo3.png) }"
+        "QWidget {background-image: url(imgs/fondo3.png) }"
     "QLabel { color : white; }"
     "QMenuBar {color: white;}"
     "QMenu::item {color: white;}"
@@ -497,10 +534,42 @@ void MapWidget::mostrarWarning(QString message) {
     "QPushButton {color: white;}"
     "QButton {color: white;}"
     "QDialogButton {color: white}"
-    "QDialogButtonBox {color: white;}"
-    );
+    "QDialogButtonBox {color: white;}");
     messageBox.setText(message);
-    messageBox.setWindowTitle("Error");
-    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.setWindowTitle("Aviso");
+    messageBox.setIcon(icon);
     messageBox.exec();
+}
+
+void MapWidget::pintarParedes(QString object_name) {
+    std::string imagen = mapa_recursos.at(object_name.toStdString());
+    int filas = mapa->getFilas();
+    int columnas = mapa->getColumnas();
+    for (int c=0; c < columnas; c++) {
+        std::string pos_primera_fila = "pos_0_" + std::to_string(c);
+        std::string pos_ultima_fila = "pos_" + std::to_string(filas-1)
+            + "_" + std::to_string(c);
+        QLabel* label_primera_fila = findChild<QLabel*>(QString::fromStdString(pos_primera_fila));
+        QLabel* label_ultima_fila = findChild<QLabel*>(QString::fromStdString(pos_ultima_fila));
+        QLabel* label_primera_fila_e = findChild<QLabel*>(QString::fromStdString(pos_primera_fila + "_element"));
+        QLabel* label_ultima_fila_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_fila + "_element"));
+        label_primera_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
+        label_primera_fila_e->setText(object_name);
+        label_ultima_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
+        label_ultima_fila_e->setText(object_name);
+    }
+
+    for (int f=0; f < filas; f++) {
+        std::string pos_primera_columna = "pos_" + std::to_string(f) + "_0";
+        std::string pos_ultima_columna = "pos_" + std::to_string(f)
+            + "_" + std::to_string(columnas-1);
+        QLabel* label_primera_fila = findChild<QLabel*>(QString::fromStdString(pos_primera_columna));
+        QLabel* label_ultima_fila = findChild<QLabel*>(QString::fromStdString(pos_ultima_columna));
+        QLabel* label_primera_fila_e = findChild<QLabel*>(QString::fromStdString(pos_primera_columna + "_element"));
+        QLabel* label_ultima_fila_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_columna + "_element"));
+        label_primera_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
+        label_primera_fila_e->setText(object_name);
+        label_ultima_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
+        label_ultima_fila_e->setText(object_name);
+    }
 }

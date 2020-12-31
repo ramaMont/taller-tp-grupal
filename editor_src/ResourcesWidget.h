@@ -3,6 +3,7 @@
 #include <Qt>
 #include <map>
 #include <string>
+#include "MapWidget.h"
 
 #ifndef RESOURCESWIDGET_H
 #define RESOURCESWIDGET_H
@@ -15,13 +16,14 @@ class ResourcesWidget : public QFrame
  public:
     explicit ResourcesWidget(QWidget *parent,
                              const std::map<std::string, std::string>&
-                              recursos_del_juego);
+                              recursos_del_juego, MapWidget* map);
 
  protected:
     void mousePressEvent(QMouseEvent *event) override;
 
  private:
     QVBoxLayout *verticalLayout;
+    MapWidget* map;
     std::map<std::string, std::string> recursos_del_juego;
 };
 

@@ -15,6 +15,8 @@
 
 #define MIN_WIDTH_SIZE 80
 #define MIN_HEIGHT_SIZE 80
+#define MESSAGEBOX_TYPE_INFO 0
+#define MESSAGEBOX_TYPE_ALERT 1
 
 class MapWidget : public QFrame
 {
@@ -29,6 +31,7 @@ class MapWidget : public QFrame
     void cargarMapaDesdeArchivo(const std::string& map_file);
     void actualizarNombreVentana();
     void actualizarLabelFyC();
+    void pintarParedes(QString object_name);
 
  protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -53,7 +56,8 @@ class MapWidget : public QFrame
     void agregarFilaAPartirDe(int fila);
     void eliminarFila(int fila);
     void eliminarColumna(int fila);
-    void mostrarWarning(QString message);
+    void mostrarWarning(QString message, QMessageBox::Icon icon);
+    bool validarParedes();
     void intercambiarLabels(const std::string& pos_1,
                             const std::string& pos_2);
     void crearCeldaVacia(const std::string& pos, const int& fila,

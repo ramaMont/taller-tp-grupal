@@ -8,14 +8,16 @@
 #define CARGAR_DESDE_ARCHIVO 1
 #define NUEVO_MAPA 0
 
+#ifndef MAPAEDITABLE_H
+#define MAPAEDITABLE_H
+
 class MapaEditable {
  public:
     MapaEditable(const int& flag,
                  const std::string& nombre,
                  const std::string& archivo_mapa,
                  const int& filas, const int& columnas)
-                 : filas(filas),
-                 nombre(nombre), columnas(columnas) {
+                 : nombre(nombre), filas(filas), columnas(columnas) {
       if (flag == CARGAR_DESDE_ARCHIVO) {
          this->archivo_mapa = archivo_mapa;
          cargarMapaExistente();
@@ -51,3 +53,5 @@ class MapaEditable {
     int filas;
     int columnas;
 };
+
+#endif // MAPAEDITABLE_H
