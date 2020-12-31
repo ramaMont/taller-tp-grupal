@@ -1,41 +1,56 @@
 #ifndef __DIRECCION__
 #define __DIRECCION__
 
-#include "Posicion.h"
-class Jugador;
-#include "Jugador.h"
+#include "coordinates.h"
+#include "Player.h"
+class Player;
 
 class Direccion{
 public:
-    virtual Posicion mover(Jugador* jugador) = 0;
+    virtual Coordinates mover(Player* jugador, Coordinates direction) = 0;
+    virtual ~Direccion();
 };
 
 class DirAdelante : public Direccion{
 public:
     DirAdelante();
-    virtual Posicion mover(Jugador* jugador) override;
-    ~DirAdelante();
+    virtual Coordinates mover(Player* jugador, Coordinates direction) override;
+    virtual ~DirAdelante();
 };
 
 class DirAtras : public Direccion{
 public:
     DirAtras();
-    virtual Posicion mover(Jugador* jugador) override;
-    ~DirAtras();
+    virtual Coordinates mover(Player* jugador, Coordinates direction) override;
+    virtual ~DirAtras();
 };
 
-class DirRotIzq : public Direccion{
+class DirIzquierda : public Direccion{
 public:
-    DirRotIzq();
-    virtual Posicion mover(Jugador* jugador) override;
-    ~DirRotIzq();
+    DirIzquierda();
+    virtual Coordinates mover(Player* jugador, Coordinates direction) override;
+    virtual ~DirIzquierda();
 };
 
-class DirRotDer : public Direccion{
+class DirDerecha : public Direccion{
 public:
-    DirRotDer();
-    virtual Posicion mover(Jugador* jugador) override;
-    ~DirRotDer();
+    DirDerecha();
+    virtual Coordinates mover(Player* jugador, Coordinates direction) override;
+    virtual ~DirDerecha();
+};
+
+class DirRotDerecha : public Direccion{
+public:
+    DirRotDerecha();
+    virtual Coordinates mover(Player* jugador, Coordinates direction) override;
+    virtual ~DirRotDerecha();
+};
+
+class DirRotIzquierda : public Direccion{
+public:
+    DirRotIzquierda();
+    virtual Coordinates mover(Player* jugador, Coordinates direction) override;
+    virtual ~DirRotIzquierda();
 };
 
 #endif

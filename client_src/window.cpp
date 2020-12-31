@@ -6,14 +6,18 @@
 #include <iostream>
 
 
-Window::Window(int width, int height) :
-        width(width), height(height) {
+Window::Window(int width, int height, int resolution_width, int resolution_high) :
+        width(width), height(height),resolution_width(resolution_width),resolution_high(resolution_high) {
     int state = SDL_CreateWindowAndRenderer(
-        width, height, SDL_RENDERER_ACCELERATED,
+        width, height, SDL_RENDERER_ACCELERATED | SDL_WINDOW_HIDDEN,
         &this->window, &this->renderer);
     if (state) {
         throw Exception("Error al crear ventana");
     }   
+}
+
+void Window::showWindow(){
+    SDL_ShowWindow(this->window);
 }
 
 void Window::set_color(int r, int g, int b, int alpha) {
@@ -24,6 +28,14 @@ void Window::set_color(int r, int g, int b, int alpha) {
 
 void Window::set_no_color() {
     this->set_color(0x33,0x33,0x33,0xFF);
+}
+
+int Window::get_width()const {
+    return width;
+}
+
+int Window::get_height() const{
+    return height;
 }
 
 void Window::render() {
@@ -45,4 +57,6 @@ Window::~Window() {
         SDL_DestroyWindow(this->window);
         this->window = nullptr;
     }
+
+    SDL_Quit();
 }

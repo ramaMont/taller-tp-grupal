@@ -1,54 +1,96 @@
 #include "Direccion.h"
-#define GRADOS_ROTACION 10.00
+#include "math.h"
+static const double step_size=0.15;
+static double inc = 0.15;
 
+
+Direccion::~Direccion(){
+}
+//-----------------------------------------------------------------------------
 DirAdelante::DirAdelante(){
 }
 
-Posicion DirAdelante::mover(Jugador* jugador){
-    Posicion posActual = jugador->getPosicion();
-    Posicion posNueva(posActual.getPosX()+posActual.getAngulo().getX(),
-      posActual.getPosY()+posActual.getAngulo().getY(), posActual.getAngulo());
-    return posNueva;
+Coordinates DirAdelante::mover(Player* jugador, Coordinates direction){
+    Coordinates posActual = jugador->getPosicion();
+    posActual.increment_on_direction(direction,step_size);
+    return posActual;
 }
 
 DirAdelante::~DirAdelante(){
 }
-
+//-----------------------------------------------------------------------------
 DirAtras::DirAtras(){
 }
 
-Posicion DirAtras::mover(Jugador* jugador){
-    Posicion posActual = jugador->getPosicion();
-    Posicion posNueva(posActual.getPosX()-posActual.getAngulo().getX(),
-      posActual.getPosY()-posActual.getAngulo().getY(), posActual.getAngulo());
-    return posNueva;
+Coordinates DirAtras::mover(Player* jugador, Coordinates direction){
+    Coordinates posActual = jugador->getPosicion();
+    posActual.increment_on_direction(direction,-step_size);
+    return posActual;
 }
 
 DirAtras::~DirAtras(){
 }
-
-DirRotIzq::DirRotIzq(){
+//-----------------------------------------------------------------------------
+DirIzquierda::DirIzquierda(){
 }
 
-Posicion DirRotIzq::mover(Jugador* jugador){
-    Posicion posActual = jugador->getPosicion();
-    Angulo nuevo_angulo = posActual.getAngulo() + GRADOS_ROTACION;
-    Posicion posNueva(posActual.getPosX(), posActual.getPosY(), nuevo_angulo);
-    return posNueva;
+Coordinates DirIzquierda::mover(Player* jugador, Coordinates direction){
+    Coordinates posActual = jugador->getPosicion();
+    Coordinates new_direction = direction.get_perpendicular_direction();
+    if (direction.y_positive()){
+        posActual.increment_on_direction(new_direction,-step_size);
+    }else{
+        posActual.increment_on_direction(new_direction,step_size);
+    }
+    return posActual;
 }
 
-DirRotIzq::~DirRotIzq(){
+DirIzquierda::~DirIzquierda(){
+}
+//-----------------------------------------------------------------------------
+DirDerecha::DirDerecha(){
 }
 
-DirRotDer::DirRotDer(){
+Coordinates DirDerecha::mover(Player* jugador, Coordinates direction){
+    Coordinates posActual = jugador->getPosicion();
+    Coordinates new_direction = direction.get_perpendicular_direction();
+    if (direction.y_positive()){
+        posActual.increment_on_direction(new_direction,step_size);
+    }else{
+        posActual.increment_on_direction(new_direction,-step_size);
+    }
+    return posActual;
 }
 
-Posicion DirRotDer::mover(Jugador* jugador){
-    Posicion posActual = jugador->getPosicion();
-    Angulo nuevo_angulo = posActual.getAngulo() - GRADOS_ROTACION;
-    Posicion posNueva(posActual.getPosX(), posActual.getPosY(), nuevo_angulo);
-    return posNueva;
+DirDerecha::~DirDerecha(){
 }
 
-DirRotDer::~DirRotDer(){
+//-----------------------------------------------------------------------------
+
+DirRotDerecha::DirRotDerecha(){
+}
+
+Coordinates DirRotDerecha::mover(Player* jugador, Coordinates direction){
+    Coordinates dirActual = jugador->get_direction();
+    dirActual.rotate(-inc);
+    jugador->set_direction(dirActual);
+    return jugador->get_coordinates();
+}
+
+DirRotDerecha::~DirRotDerecha(){
+}
+
+//-----------------------------------------------------------------------------
+
+DirRotIzquierda::DirRotIzquierda(){
+}
+
+Coordinates DirRotIzquierda::mover(Player* jugador, Coordinates direction){
+    Coordinates dirActual = jugador->get_direction();
+    dirActual.rotate(inc);
+    jugador->set_direction(dirActual);
+    return jugador->get_coordinates();
+}
+
+DirRotIzquierda::~DirRotIzquierda(){
 }

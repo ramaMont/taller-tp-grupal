@@ -1,71 +1,37 @@
 #include <math.h>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
 #include "ray_casting.h"
-
-#include "window.h"
-
-#include "camera.h"
-#include "player.h"
-#include "coordinates.h"
-
 #include "ray.h"
 
-
-Raycasting::Raycasting(Player &a_player,const std::vector<std::vector<int>> &a_map,const Window &window)
-    : player(a_player), map(a_map),renderer(window.getRenderer()) 
-    {
-    h=480;
-    n_rays = 160;
-
-    roof.x = 00;
-	roof.y = 240;
-	roof.w = 640;
-	roof.h = 240;
-
-}
+Raycasting::Raycasting(Jugador &a_player,Cl_Mapa &a_map, int n_rays)
+    : player(a_player), map(a_map),n_rays(n_rays){}
 
 
-void Raycasting::draw(float distance_player_plane,float pos_x){
-	int lineHeight = (int)(h / distance_player_plane);
-	int drawStart = -lineHeight / 2 + h / 2;
-	if(drawStart < 0)drawStart = 0;
-	int drawEnd = lineHeight / 2 + h / 2;
-	if(drawEnd >= h)drawEnd = h - 1;
-
-    if(player.get_direction().y>0){
-	    for(int i=0; i<640/(2*n_rays);i++){
-			SDL_RenderDrawLine(renderer,i+ 640*(pos_x+n_rays)/(2*n_rays), drawStart,i+ 640*(pos_x+n_rays)/(2*n_rays), drawEnd);
-		}
-	}else{//Si estoy aca empiezo x la derecha
-	    for(int i=0; i<640/(2*n_rays);i++){
-			SDL_RenderDrawLine(renderer,i+ 640 - 640*(pos_x+n_rays)/(2*n_rays), drawStart,i+640- 640*(pos_x+n_rays)/(2*n_rays), drawEnd);
-		}		
-	}
-}
 
 
-void Raycasting::calculate_ray_casting(){
-    //Ademas del raycasting, estas funciones sirven 
-    // para hacer el techo oscuro, y el piso claro con un triangulo (despues pasar a otra clase)
-    SDL_SetRenderDrawColor(renderer, 0x6E, 0x6E, 0x6E, 0 );
-    SDL_RenderFillRect( renderer, &roof );
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+void Raycasting::calculate_raycasting(Camera &camera,std::vector<float> &distances){
 
-    /* Futuro mutex acá (en un thread proceso 
-    botones, actualizo la posicion, etc y en otro 
-    corro esto, que recibe la posicion, por esta mismma razon
-    recibe una copia, así una vez recibida, pueden correr
-    ambos en simultaneo)*/
-    Coordinates player_coordinates = player.get_coordinates();
+	//Desactivo todos los sprites que fueron vistos el anterior frame
+    Coordinates player_position = player.get_position();
     Coordinates player_direction = player.get_direction();
-    Camera camera(player_coordinates,player_direction);
 	for(int i=-n_rays; i<=n_rays; i++){
+		Intersected_object* intersected_object = nullptr;
 		Coordinates ray_direction = camera.calculate_ray_direction(i,n_rays);
 		float ray_angle = atan(std::abs((float)i/(float)n_rays));
-		Ray ray(ray_angle, ray_direction,player_coordinates,player_direction,map);
-		float wall_distance = ray.calculate_ray_distance();
-		draw(wall_distance,i);
+		Ray ray(ray_angle, ray_direction,distances,player_position,player_direction,map,i,intersected_object);
+		ray.get_colisioned_objects();
+		intersected_object->draw(i+n_rays);
+		delete intersected_object;	
+		/*float distance_player_plane = intersected_object.get_distance_player_plane();
+		int number_line_texture = intersected_object.get_number_line_texture();
+		int texture = intersected_object.get_texture();
+		bool wall_side_y = intersected_object.get_side_wall_colided();
+		texture_drawer.show_wall(i,distance_player_plane,number_line_texture,texture, wall_side_y);*/
 	}
+
+
 }
