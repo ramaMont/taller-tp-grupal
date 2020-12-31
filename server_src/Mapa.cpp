@@ -86,7 +86,7 @@ void Mapa::agregarPosicionable(Posicionable* posicionable,
 	}else{
 		std::vector<Posicionable*>& vec = 
 		    mapaJuego[floor(posicion.x)][floor(posicion.y)];
-		if (vec.back()->atravesable()){
+		if (!vec.back() || vec.back()->atravesable()){
 			vec.push_back(posicionable);
 		}else{
 			throw -2;//Quiero guardar algo donde ya hay otra cosa
@@ -150,8 +150,8 @@ void Mapa::soltar(Posicionable* objeto, const Coordinates& posicion){
 	mapaJuego[floor(posicion.x)][floor(posicion.y)].push_back(objeto);
 }
 
-void Mapa::soltar(Posicionable objeto){
-	soltar(&objeto, objeto.getPosicion());
+void Mapa::soltar(Posicionable* objeto){
+	soltar(objeto, objeto->getPosicion());
 }
 
 bool Mapa::hayObstaculoEn(const Coordinates& posicion) const{
@@ -161,8 +161,11 @@ bool Mapa::hayObstaculoEn(const Coordinates& posicion) const{
 bool Mapa::hayObstaculoEn(float x, float y) const{
 	if (floor(x) < 0 || floor(x) >= ancho ||
 	    floor(y) < 0 || floor(y) >= alto) return true;
-	return !(mapaJuego[floor(x)][floor(y)].empty() ||
-	    mapaJuego[floor(x)][floor(y)].back()->atravesable());
+	if (mapaJuego[floor(x)][floor(y)].empty())
+		return false;
+	if (mapaJuego[floor(x)][floor(y)].back()->atravesable())
+		return false;
+	return true;
 }
 
 bool Mapa::hayPuertaEn(float x, float y) const{

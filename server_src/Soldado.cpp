@@ -8,8 +8,6 @@
 #include <thread>
 #include <chrono>
 
-#include <iostream>
-
 #define GRADOS_180 180
 #define PI 3.14159265358979323846
 
@@ -165,17 +163,11 @@ bool SS::agregarArma(Ametralladora *ametr){
 void SS::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	std::set<std::pair<int, Player*>> set_jugadores;
 	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
-	float tiempo_presionado = 0.3;   /* Pasado por parametro */
-	float tiempo_transcurrido = 0;
-	while (tiempo_transcurrido < tiempo_presionado && this->balas > 0){
-		for (int i = 0; (i < configs[CONFIG::frecuencia_ametralladora]) 
-		     && (this->balas > 0); i ++){
-			this->ametralladora->disparar(jugador, set_jugadores);
-			this->balas --;
-		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(
-		(int)(configs[CONFIG::frecuencia_ametralladora]*1000)));
-		tiempo_transcurrido += configs[CONFIG::frecuencia_ametralladora]*1000;
+
+	for (int i = 0; (i < configs[CONFIG::frecuencia_ametralladora]) 
+	    && (this->balas > 0); i++){
+	    this->ametralladora->disparar(jugador, set_jugadores);
+	    this->balas --;
 	}
 }
 
@@ -210,12 +202,8 @@ bool Oficial::agregarArma(CanionDeCadena *canion){
 void Oficial::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	std::set<std::pair<int, Player*>> set_jugadores;
 	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
-	for (int i = 0; (i < 1/*tiempo presionado*/) && (this->balas > 0); i ++){
-		this->canion->disparar(jugador, set_jugadores);
-		this->balas --;
-		std::this_thread::sleep_for(std::chrono::milliseconds(
-		(int)(configs[CONFIG::frecuencia_canion]*1000)));
-	}	
+	this->canion->disparar(jugador, set_jugadores);
+	this->balas --;	
 }
 
 void Oficial::soltarArma(Player *jugador){

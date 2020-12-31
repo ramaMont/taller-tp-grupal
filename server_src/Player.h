@@ -22,12 +22,12 @@ private:
     Coordinates direction;
     Mapa &mapa;
     int player_id;
-    Coordinates posicion_inicial;
     int vidasRestantes;
     int vida;
     int balas_restantes;
     bool llave;
     EstadoSoldado soldado;
+    Coordinates posicion_inicial;
     size_t puntuacion;
     size_t balas_disparadas;
     size_t enemigos_matados;
