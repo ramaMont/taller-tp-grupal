@@ -50,6 +50,7 @@ void Cl_Mapa::sacarPosicionable(Coordinates posicion){
         try{
             mapaJuego[floor(posicion.x)][floor(posicion.y)]->remove();
         }catch (int e){
+            printf("remuevoo\n");
             mapaJuego[floor(posicion.x)][floor(posicion.y)]=nullptr;
         }
     }

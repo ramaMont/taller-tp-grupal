@@ -216,6 +216,10 @@ void GameModelClient::showWindow(){
   window.showWindow();
 }
 
+void GameModelClient::hideWindow(){
+  window.hideWindow();
+}
+
 Cl_Mapa& GameModelClient::getMap(){
     return map;
 }

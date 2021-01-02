@@ -62,6 +62,7 @@ void Movable::die(){
 
 void Movable::resurrect(){
 	//TODO: Resetear vida y demas atributos
+    posicion = initial_position;
 	mapa.agregarPosicionable(this, this->initial_position);
 }
 

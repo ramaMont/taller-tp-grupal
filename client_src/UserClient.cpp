@@ -262,6 +262,7 @@ void UserClient::gameLoop(){
 
         std::this_thread::sleep_for(std::chrono::milliseconds(rate - rest));
     }
+    _th_game_model->hideWindow();
     std::cout<<"El maximo fue: "<<max_time<<std::endl;
     std::cout<<"El tiempo promedio fue:"<<total_time/counter<<std::endl;
 }

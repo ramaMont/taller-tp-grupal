@@ -24,6 +24,7 @@ public:
         return resolution_width;
     }
     void showWindow();
+    void hideWindow();
     void render();
     SDL_Renderer* getRenderer() const;
     ~Window();

@@ -20,6 +20,10 @@ void Window::showWindow(){
     SDL_ShowWindow(this->window);
 }
 
+void Window::hideWindow(){
+    SDL_HideWindow(this->window);
+}
+
 void Window::set_color(int r, int g, int b, int alpha) {
     SDL_SetRenderDrawColor(this->renderer,
                            r, g, b, alpha);

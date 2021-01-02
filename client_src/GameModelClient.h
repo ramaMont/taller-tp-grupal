@@ -79,6 +79,8 @@ public:
 
     void showWindow();
 
+    void hideWindow();
+
     void addPlayer(int player_id);
     Jugador& getPlayer();
     Window& getWindow();
