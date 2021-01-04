@@ -23,20 +23,31 @@ void ClientHolder::logginScreen(){
 
 void ClientHolder::run(){
     logginScreen();
-    int id;
-    Protocol protocol;
-    SocketClient socket(_host_dns, _port);
-    socket.recive(protocol, sizeof(Protocol));
-    setId(protocol, id);
-    ClThReceiver th_receiver(&socket);
-    ThSender th_sender(id, &socket);
-    UserClient user_client(id ,th_receiver, th_sender);
-    th_receiver.setUserClient(&user_client);
+    
+    // Mandar esto a un metodo de ClientHolder que se llame logged().
+    // Los threads los lanza como punteros. Y despues en el destructor hacer delete,
+    // si fueron lanzados.
+    // int id;
+    // Protocol protocol;
+    // SocketClient socket(_host_dns, _port);
+    // socket.recive(protocol, sizeof(Protocol));
+    // setId(protocol, id);
+    // ClThReceiver th_receiver(&socket);
+    // ThSender th_sender(id, &socket);
+    // UserClient user_client(id ,th_receiver, th_sender);
+    // th_receiver.setUserClient(&user_client);
 
-    th_receiver.start();
-    th_sender.start();
+    // th_receiver.start();
+    // th_sender.start();
+// 
+    // user_client.run();
 
-    user_client.run();
+    // QApplication app();
+    // // Instancio el greeter
+    // LoginWindow loginWindow(this);
+    // loginWindow.show();
+    // // Arranca el loop de la UI
+    // app.exec();
 
     th_receiver.stop();
     th_receiver.join();
