@@ -49,10 +49,10 @@ void ClientHolder::run(){
     // // Arranca el loop de la UI
     // app.exec();
 
-    th_receiver.stop();
-    th_receiver.join();
-    th_sender.stop();
-    th_sender.join();
+    // th_receiver.stop();
+    // th_receiver.join();
+    // th_sender.stop();
+    // th_sender.join();
 }
 
 void ClientHolder::setId(Protocol& protocol, int& id){

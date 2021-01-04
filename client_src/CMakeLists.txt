@@ -1,3 +1,5 @@
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+
 set(BINARY ${CMAKE_PROJECT_NAME}_client)
 set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno-inline -pthread")
 
@@ -10,9 +12,9 @@ add_executable(${BINARY}_run ${SOURCES})
 file(COPY data/
         DESTINATION data/)
 
-add_library(${BINARY}_lib STATIC ${SOURCES})
+#add_library(${BINARY}_lib STATIC ${SOURCES})
 
-target_link_libraries(${BINARY}_run SDL2 SDL2_image SDL2_ttf ${CMAKE_PROJECT_NAME}_common_lib)
+target_link_libraries(${BINARY}_run Qt5::Widgets SDL2 SDL2_image SDL2_ttf ${CMAKE_PROJECT_NAME}_common_lib)
 
 
 install(FILES textures/bluestone.mat DESTINATION ${CMAKE_BINARY_DIR})
