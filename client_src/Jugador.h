@@ -1,6 +1,10 @@
 #ifndef __JUGADOR__
 #define __JUGADOR__
 
+#include <thread>
+#include <chrono>
+#include <iostream>
+#include <sys/time.h>
 
 #include <Posicionable.h>
 
@@ -18,10 +22,12 @@ class Gun_type;
 
 class Jugador final : public Movable{
 private:
-	int frames_since_shot;
+	int shot_frame;
 	Gun_type* gun_type;
 	bool shooting;	
     unsigned int score;
+    time_t fire_rate;
+    time_t time_shot_start;
     int lives;
     int health;
     int ammo;
@@ -38,6 +44,8 @@ public:
 
     // Inicializo la animacion de disparo o la actualizo en caso de que siga disparando
     void shoot();
+
+    bool can_shoot();
 
     // Actualizo el frame del arma
     void update_shots();

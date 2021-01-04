@@ -173,7 +173,7 @@ void UserClient::removePlayer(int user_id){
     }
 }
 
-void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done){
+void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Jugador& jugador){
 
         if(keys[SDL_SCANCODE_RIGHT]){
             protocol.moveInDirection(
@@ -196,11 +196,15 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
             th_sender.push(protocol);
         }
 
-        else if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
-            protocol.setAction(
-                Protocol::action::SHOOT);
-            th_sender.push(protocol);
-        }        
+        if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
+            if(jugador.can_shoot()){
+                protocol.setAction(
+                    Protocol::action::SHOOT);
+                th_sender.push(protocol);
+            }
+        }else{
+            //player.stopped_shooting();
+        }      
 
 
 
@@ -230,13 +234,15 @@ void UserClient::gameLoop(){
     time_t counter = 0;
     time_t max_time = 0;
 
+    Jugador& jugador = _th_game_model->getPlayer();
+
     const Uint8 *keys = SDL_GetKeyboardState(NULL);    
     while (!done) {
 
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        get_keys(keys, event, protocol, done);
+        get_keys(keys, event, protocol, done, jugador);
 
         _th_game_model->run();//Proceso los protocolos
 

@@ -1,15 +1,22 @@
 #ifndef __GUN_TYPE__
 #define __GUN_TYPE__
 
+#include <thread>
+#include <chrono>
+#include <iostream>
+#include <sys/time.h>
+
 class Texture;
 
 //Los distintos tipos de armas que puede tener el jugador
 class Gun_type{
 protected:
 	Texture *texture_drawer;
+	time_t fire_rate;
 public:
-	Gun_type(Texture *texture_drawer);
+	Gun_type(Texture *texture_drawer,time_t fire_rate);
     virtual void call_drawer(int frame) = 0;
+    time_t get_fire_rate();
     virtual ~Gun_type(){};
 };
 
