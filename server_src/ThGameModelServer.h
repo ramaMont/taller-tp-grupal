@@ -4,6 +4,8 @@
 #include <GameModel.h>
 class ThUserServer;
 #include "ThUserServer.h"
+#include "ThGameEvents.h"
+#include "ThBots.h"
 
 #include <atomic>
 #include <map>
@@ -12,6 +14,8 @@ class ThGameModelServer : public GameModel{
 private:
     std::map<int,ThSender *> users_sender;
     std::atomic<bool> launched;
+    ThGameEvents th_game_events;
+    ThBots th_bots;
 
     void processShoot(Protocol protocol);
     void processShooted(Protocol protocol);

@@ -107,6 +107,18 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)].back();
 }
 
+
+void usarItems(std::vector<Posicionable*>& items, Player* jugador){
+    for (auto it = items.begin(); it < items.end(); it++){
+        if (typeid(*it) == typeid(Puerta))
+            continue;
+        if (static_cast<Item*>(*it)->usar(jugador)){
+            delete(*it);
+            items.erase(it);
+        }
+    }
+}
+
 void Mapa::moveme(Player* jugador, const Coordinates& posicion){
     if (floor(posicion.x) >= ancho || floor(posicion.y) >= alto)
         throw -1;
@@ -117,10 +129,10 @@ void Mapa::moveme(Player* jugador, const Coordinates& posicion){
         return;
     }
     try {
-		Posicionable* posicionable = obtenerPosicionableEn(posicion);
-		if (posicionable && typeid(*posicionable) == typeid(Item) &&
-			static_cast<Item*>(posicionable)->usar(jugador))
-			sacarPosicionable(posicion);
+        std::vector<Posicionable*>& posicionables =
+            mapaJuego[floor(posicion.x)][floor(posicion.y)];
+        if (!posicionables.empty() && posicionables.front()->atravesable())
+            usarItems(posicionables, jugador);
         agregarPosicionable(jugador, posicion);
         sacarPosicionable(posJugador);
     } catch(int e){
@@ -193,5 +205,4 @@ Mapa::~Mapa(){
                 }
             }
         }
-    }
 }

@@ -6,7 +6,9 @@
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
         int map_id, int game_id):
-    GameModel(map_id, game_id), launched(false){
+    GameModel(map_id, game_id), launched(false),
+    th_game_events(operations),
+    th_bots(this, operations, players, map, 1){
     addThSender(th_user_server.getSender());
     addPlayer(th_user_server.getId());
     th_user_server.setGameModel(this);
@@ -77,6 +79,8 @@ void ThGameModelServer::run(){
     Protocol protocol;
     protocol.setAction(Protocol::action::BEGIN);
     echoProtocol(protocol);
+    //th_game_events.start();
+    th_bots.start();
     try{
         while (is_running){
             protocol = operations.pop();
@@ -102,6 +106,8 @@ void ThGameModelServer::removePlayer(int user_id){
 void ThGameModelServer::stop(){
     is_running = false;
     operations.stop();
+    //th_game_events.stop();
+    th_bots.stop();
 }
 
 bool ThGameModelServer::isDone(){
@@ -118,4 +124,7 @@ ThGameModelServer::~ThGameModelServer(){
     // Todos los jugadores son limpiados en la funcion 
     // removePlayer la cual es llamada cada vez que un jugador
     // se desconecta o se frena la ejecucion de un ThUserServer
+    
+    //th_game_events.join();
+    th_bots.join();
 }

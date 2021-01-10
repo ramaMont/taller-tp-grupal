@@ -7,6 +7,7 @@
 #include <ctime>
 #include <typeinfo>
 
+
 #define PASO 1
 #define ROTACION_45 0.7071
 #define PORCENTAJE 100
@@ -19,7 +20,6 @@
 void Cuchillo::disparar(Player* jugador, angulos_enemigos_t& enemigos){
 	for (std::pair<int, Player*> e: enemigos){
 		if (jugador->calcularDistancia(e.second) < DISTANCIA_CUCHILLO){
-		    srand (time(0));
 			int danio = rand() % (int)configs[CONFIG::maximo_danio] + 1;
 			bool murio = e.second->recibirDanio(danio);
 			if (murio)
@@ -54,7 +54,8 @@ void atacar(Player* jugador, Player* enemigo, float precision, int angulo){
     float danio = precision - 
                   distancia * configs[CONFIG::baja_precision_distancia];
 	danio -= angulo/(int)configs[CONFIG::rango_de_disparo];
-	danio *= (int)configs[CONFIG::maximo_danio];
+	int n_rand = rand() % (int)configs[CONFIG::maximo_danio] + 1;
+	danio *= n_rand;
 	bool murio = enemigo->recibirDanio(std::ceil(danio));
 	if (murio)
 		jugador->agregarEnemigoMuerto();
@@ -62,7 +63,6 @@ void atacar(Player* jugador, Player* enemigo, float precision, int angulo){
 
 
 bool dispararBala(Player* jugador, float precision, int angulo, Player* enemigo){
-	srand (time(NULL));
 	int n_rand = rand() % PORCENTAJE;
 	if ((n_rand / PORCENTAJE) > precision)	// Falla el tiro
 		return true;

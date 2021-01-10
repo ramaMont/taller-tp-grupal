@@ -164,7 +164,7 @@ void SS::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	std::set<std::pair<int, Player*>> set_jugadores;
 	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
 
-	for (int i = 0; (i < configs[CONFIG::frecuencia_ametralladora]) 
+	for (int i = 0; (i < configs[CONFIG::balas_rafaga_ametralladora]) 
 	    && (this->balas > 0); i++){
 	    this->ametralladora->disparar(jugador, set_jugadores);
 	    this->balas --;

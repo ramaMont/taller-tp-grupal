@@ -20,11 +20,6 @@ void Puerta::abrirPuerta(Player *jugador){
 	if (jugador->get_coordinates().calculate_distance(this->posicion) > 1)
 		return;
 	atravesable(true);
-	
-	// Cambiar a un evento
-	std::this_thread::sleep_for (std::chrono::seconds(
-	    (int)configs[CONFIG::segundos_cerrar_puerta]));
-	cerrar();	
 }
 
 void Puerta::cerrar(){
