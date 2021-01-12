@@ -34,12 +34,17 @@ void ClientHolder::crearPartida(const std::string& id_mapa,
     socket->recive(protocol_response, sizeof(protocol_response));
     processReception(protocol_response);
     game_id = protocol_response.getGameId();
-    // _cl_th_receiver = new ClThReceiver(&socket);
-    // _cl_th_receiver->start();
+    _cl_th_receiver = new ClThReceiver(socket, *this);
+    _cl_th_receiver->start();
 }
 
 void ClientHolder::unirseAPartida(std::string& id_partida) {
-//    int game_id = std::stoi(id_partida);
+    int game_id = std::stoi(id_partida);
+    Protocol protocol_send(game_id);
+
+    protocol_send.setAction(Protocol::action::JOIN_GAME);
+    socket->send(protocol_send, sizeof(protocol_send));
+    addLoggedUsers();
 
 }
 
@@ -64,11 +69,11 @@ void ClientHolder::run(){
     // // Arranca el loop de la UI
     app.exec();
     std::cout << "CERRE LA APP" << std::endl;
-//  TODO:
-//  Lanzar juego:
-//  play();
+    // Comienzo el juego luego del setup inicial
+    UserClient user_client(*_th_sender, *_game_model);
+    user_client.play();
      
-    std::cout << "Finalizada";
+    std::cout << "Finalizada\n";
 }
 
 void ClientHolder::setId(Protocol& protocol){
@@ -78,11 +83,11 @@ void ClientHolder::setId(Protocol& protocol){
 }
 
 void ClientHolder::launchGame() {
-
     Protocol protocol(_game_model->getId());
     protocol.setAction(Protocol::action::LAUNCH_GAME);
     socket->send(protocol, sizeof(protocol));
-
+    _th_sender = new ThSender(user_id, socket);
+    _th_sender->start();
 }
 
 void ClientHolder::processReception(Protocol& protocol){
@@ -120,6 +125,21 @@ void ClientHolder::processReception(Protocol& protocol){
 
 void ClientHolder::createGameModel(int map_id, int id_user_protocol, int game_id){
     _game_model = new GameModelClient(id_user_protocol, map_id, game_id, user_id);
+}
+
+void ClientHolder::startGame(){
+    // TODO:Cerrar ventana de QT
+
+}
+
+void ClientHolder::addLoggedUsers(){
+    Protocol protocol_response;
+    bool ready = false;
+    while (!ready){
+        socket->recive(protocol_response, sizeof(protocol_response));
+        
+    }
+
 }
 
 ClientHolder::~ClientHolder(){

@@ -3,8 +3,8 @@
 
 #include "GameModelClient.h"
 
-ClThReceiver::ClThReceiver(Socket* socket):
-        socket(socket), _userClient(nullptr), _gameModel(nullptr){
+ClThReceiver::ClThReceiver(Socket* socket, ClientHolder& client_holder):
+        socket(socket), _client_holder(client_holder), _gameModel(nullptr){
 }
 
 void ClThReceiver::run(){
@@ -16,7 +16,6 @@ void ClThReceiver::run(){
         }
     } catch(...){
         is_running = false;
-        _userClient->stop();
     }
 }
 
@@ -24,12 +23,11 @@ void ClThReceiver::stop(){
     is_running = false;
 }
 
-void ClThReceiver::setUserClient(UserClient* user_client){
-    _userClient = user_client;
-}
-
 void ClThReceiver::processReception(Protocol& protocol){
     switch (protocol.getAction()){
+        case Protocol::action::BEGIN:
+            _client_holder.startGame();
+            break;
         case Protocol::action::ADD_PLAYER:
             _gameModel->addPlayer(protocol.getId());
             break;
