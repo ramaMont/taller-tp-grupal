@@ -209,10 +209,10 @@ void LoginWindow::crearPartida(){
     // Conecto eventos
     QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
     QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
-
+    int game_id;
     // Show the dialog as modal
     if (dialog.exec() == QDialog::Accepted){
-        int game_id;
+        
         // If the user didn't dismiss the dialog, do something with the fields
         std::string id_mapa = lineEditIDMapa.text().toStdString();
 
@@ -226,8 +226,9 @@ void LoginWindow::crearPartida(){
             return;
         }
 
-        waitUntilLaunch(game_id);
+
     }
+    waitUntilLaunch(game_id);
 }
 
 void LoginWindow::waitUntilLaunch(int& game_id) {
@@ -237,7 +238,9 @@ void LoginWindow::waitUntilLaunch(int& game_id) {
     mostrarWarning(QString::fromStdString(message),
                    QMessageBox::Information, true);
     std::cout << "LANZANDO!!!";
-    //client_holder.launchGame();
+    client_holder.launchGame();
+//    QCoreApplication::quit();
+    qApp->exit();
 }
 
 void LoginWindow::waitUntilAnotherUserLaunch() {

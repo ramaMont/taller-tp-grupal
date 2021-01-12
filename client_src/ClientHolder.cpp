@@ -15,15 +15,6 @@ ClientHolder::ClientHolder():
     _cl_th_receiver(nullptr), _th_sender(nullptr){
 }
 
-void ClientHolder::logginScreen(){
-    std::cout << "Ingrese su nick name:\n";
-    std::cin >> _player_name;
-    std::cout << "El server al que quiere conectarse\n";
-    std::cin >> _host_dns;
-    std::cout << "El puerto al que quiere conectarse\n";
-    std::cin >> _port;
-}
-
 void ClientHolder::crearPartida(const std::string& id_mapa,
             int& game_id){
     int map_id = std::stoi(id_mapa);
@@ -33,8 +24,10 @@ void ClientHolder::crearPartida(const std::string& id_mapa,
     socket->send(protocol_send, sizeof(protocol_send));
     socket->recive(protocol_response, sizeof(protocol_response));
     processReception(protocol_response);
+    socket->recive(protocol_response, sizeof(protocol_response));
+    processReception(protocol_response);
     game_id = protocol_response.getGameId();
-    _cl_th_receiver = new ClThReceiver(socket, *this);
+    _cl_th_receiver = new ClThReceiver(socket, *this, _game_model);
     _cl_th_receiver->start();
 }
 
@@ -59,7 +52,7 @@ void ClientHolder::logged(std::string& nombre, std::string& puerto, std::string&
     std::cout << "Id del jugador: " << std::to_string(user_id);
 }
 
-void ClientHolder::run(){
+void ClientHolder::logginScreen(){
     char *argv[] = {NULL};
     int argc = 1;
     QApplication app(argc, argv);
@@ -69,7 +62,12 @@ void ClientHolder::run(){
     // // Arranca el loop de la UI
     app.exec();
     std::cout << "CERRE LA APP" << std::endl;
-    // Comienzo el juego luego del setup inicial
+    qApp->exit();
+}
+
+void ClientHolder::run(){
+    logginScreen();
+    // Comienzo el juego luego del setup inicial   
     UserClient user_client(*_th_sender, *_game_model);
     user_client.play();
      

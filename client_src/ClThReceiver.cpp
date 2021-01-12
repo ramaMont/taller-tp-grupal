@@ -3,8 +3,9 @@
 
 #include "GameModelClient.h"
 
-ClThReceiver::ClThReceiver(Socket* socket, ClientHolder& client_holder):
-        socket(socket), _client_holder(client_holder), _gameModel(nullptr){
+ClThReceiver::ClThReceiver(Socket* socket, ClientHolder& client_holder,
+        GameModelClient* game_model_client):
+        socket(socket), _client_holder(client_holder), _gameModel(game_model_client){
 }
 
 void ClThReceiver::run(){

@@ -41,7 +41,7 @@ private:
     QBoxLayout* layout;
     QWidget* loginScreen;
     QWidget* partidaScreen;
-    ClientHolder client_holder;
+    ClientHolder& client_holder;
 };
 
 #endif // GREETER_H

@@ -22,9 +22,9 @@ private:
     void processReception(Protocol& protocol);
     void createGameModel(int map_id, int id_user_protocol, int game_id);
     void addLoggedUsers();
+    void logginScreen();
 public:
     ClientHolder();
-    void logginScreen();
     void run();
     void crearPartida(const std::string& id_mapa, int& game_id);
     void unirseAPartida(std::string& id_partida);

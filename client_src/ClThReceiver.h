@@ -10,6 +10,7 @@
 class GameModelClient;
 #include "GameModelClient.h"
 
+
 class ClientHolder;
 #include "ClientHolder.h"
 
@@ -20,7 +21,7 @@ private:
     GameModelClient* _gameModel;
 
 public:
-    explicit ClThReceiver(Socket *socket, ClientHolder& client_holder);
+    explicit ClThReceiver(Socket *socket, ClientHolder& client_holder, GameModelClient* game_model_client);
     virtual void run() override;
     virtual void stop() override;
     void setGameModel(GameModelClient* gameModel);
