@@ -21,7 +21,6 @@ private:
     void setId(Protocol& protocol);
     void processReception(Protocol& protocol);
     void createGameModel(int map_id, int id_user_protocol, int game_id);
-    void launchGame();
     void addLoggedUsers();
 public:
     ClientHolder();
@@ -31,6 +30,7 @@ public:
     void unirseAPartida(std::string& id_partida);
     void logged(std::string& nombre, std::string& puerto, std::string& servidor);
     void startGame();
+    void launchGame();
     ~ClientHolder();
 };
 

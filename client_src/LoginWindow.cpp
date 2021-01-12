@@ -143,14 +143,14 @@ bool LoginWindow::validarCampos() {
     if ((puerto_qstring.length() == 0) || (nombre_qstring.length() == 0)
         || (server_qstring.length() == 0)) {
         mostrarWarning(QString("Todos los campos deben completarse!"),
-                       QMessageBox::Warning);
+                       QMessageBox::Warning, true);
         return false;
     }
 
     puerto_qstring.toInt(&puerto_entero);
     if (!puerto_entero) {
         mostrarWarning(QString("El puerto debe ser un numero!"),
-                       QMessageBox::Warning);
+                       QMessageBox::Warning, true);
         return false;
     }
 
@@ -163,7 +163,7 @@ bool LoginWindow::validarCampos() {
         client_holder.logged(nombre, puerto, server);
     } catch (...) {
         mostrarWarning(QString("El servidor no es correcto!"),
-                       QMessageBox::Warning);
+                       QMessageBox::Warning, true);
         return false;
     }
 
@@ -222,9 +222,28 @@ void LoginWindow::crearPartida(){
             client_holder.crearPartida(id_mapa, game_id);
         } catch (...) {
             mostrarWarning(QString("Ha ocurrido un error, intente nuevamente"),
-                        QMessageBox::Warning);
+                        QMessageBox::Warning, true);
+            return;
         }
+
+        waitUntilLaunch(game_id);
     }
+}
+
+void LoginWindow::waitUntilLaunch(int& game_id) {
+    std::string message = "ID de Partida: " + std::to_string(game_id)
+        + "\n";
+    message += "Presione OK para lanzar la partida";
+    mostrarWarning(QString::fromStdString(message),
+                   QMessageBox::Information, true);
+    std::cout << "LANZANDO!!!";
+    //client_holder.launchGame();
+}
+
+void LoginWindow::waitUntilAnotherUserLaunch() {
+    mostrarWarning(QString("Una vez que el creador lance la partida, el juego iniciará automáticamente."),
+                        QMessageBox::Information, false);
+    // TODO: ?? Que hago aca?
 }
 
 void LoginWindow::unirseAPartida() {
@@ -259,11 +278,18 @@ void LoginWindow::unirseAPartida() {
         // TODO: usar el id partida
         std::string id_partida = lineEditIdPartida.text().toStdString();
         //QCoreApplication::exit();
-        client_holder.unirseAPartida(id_partida);
+        try {
+            client_holder.unirseAPartida(id_partida);
+        } catch (...) {
+            mostrarWarning(QString("Ha ocurrido un error, intente nuevamente"),
+                        QMessageBox::Warning, true);
+            return;
+        }
+        waitUntilAnotherUserLaunch();
     }
 }
 
-void LoginWindow::mostrarWarning(QString message, QMessageBox::Icon icon) {
+void LoginWindow::mostrarWarning(QString message, QMessageBox::Icon icon, bool buttons) {
     QMessageBox messageBox(this);
     messageBox.setStyleSheet(
     "QWidget {background-image: url(../imgs/fondo3.png); background-color: brown; }"
@@ -278,5 +304,8 @@ void LoginWindow::mostrarWarning(QString message, QMessageBox::Icon icon) {
     messageBox.setText(message);
     messageBox.setWindowTitle("Aviso");
     messageBox.setIcon(icon);
+    if (!buttons) {
+        messageBox.setStandardButtons(0);
+    }
     messageBox.exec();
 }

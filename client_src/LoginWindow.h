@@ -32,7 +32,9 @@ private:
     void crearPartidaScreen();
     void connectEvents();
     void login();
-    void mostrarWarning(QString message, QMessageBox::Icon icon);
+    void mostrarWarning(QString message, QMessageBox::Icon icon, bool buttons);
+    void waitUntilLaunch(int& game_id);
+    void waitUntilAnotherUserLaunch();
     bool validarCampos();
     void crearPartida();
     void unirseAPartida();
