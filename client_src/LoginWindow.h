@@ -20,10 +20,11 @@
 #include <QScrollArea>
 #include <QMessageBox>
 #include <QBoxLayout>
+#include "ClientHolder.h"
 
 class LoginWindow : public QWidget {
 public:
-    explicit LoginWindow(QWidget *parent = 0);
+    LoginWindow(ClientHolder& client_holder, QWidget *parent = 0);
 
 private:
     // Creo los widgets asignandole un padre
@@ -38,6 +39,7 @@ private:
     QBoxLayout* layout;
     QWidget* loginScreen;
     QWidget* partidaScreen;
+    ClientHolder client_holder;
 };
 
 #endif // GREETER_H

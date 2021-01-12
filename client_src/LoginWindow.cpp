@@ -10,7 +10,7 @@
 #include <QBoxLayout>
 
 
-LoginWindow::LoginWindow(QWidget *parent) : QWidget(parent) {
+LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) : QWidget(parent), client_holder(client_holder) {
 
     // Tamaño y titulo de la ventana
     this->resize(900, 900);
@@ -147,7 +147,7 @@ bool LoginWindow::validarCampos() {
         return false;
     }
 
-    // puerto = puerto_qstring.toInt(&puerto_entero);
+    puerto_qstring.toInt(&puerto_entero);
     if (!puerto_entero) {
         mostrarWarning(QString("El puerto debe ser un numero!"),
                        QMessageBox::Warning);
@@ -155,6 +155,17 @@ bool LoginWindow::validarCampos() {
     }
 
     // TODO: Usar puerto, nombre_qstring, server_qstring para mandar al sv.
+    std::string nombre = nombre_qstring.toStdString();
+    std::string puerto = puerto_qstring.toStdString();
+    std::string server = server_qstring.toStdString();
+
+    try {
+        client_holder.logged(nombre, puerto, server);
+    } catch (...) {
+        mostrarWarning(QString("El servidor no es correcto!"),
+                       QMessageBox::Warning);
+        return false;
+    }
 
     return true;
 }
@@ -202,10 +213,11 @@ void LoginWindow::crearPartida() {
     // Show the dialog as modal
     if (dialog.exec() == QDialog::Accepted) {
         // If the user didn't dismiss the dialog, do something with the fields
-        QString id_mapa = lineEditIDMapa.text();
-        std::cout << id_mapa.toStdString() << std::endl;
+        std::string id_mapa = lineEditIDMapa.text().toStdString();
 
         // TODO: usar el id_mapa
+        //QCoreApplication::quit();
+        client_holder.crearPartida(id_mapa);
     }
 }
 
@@ -238,11 +250,10 @@ void LoginWindow::unirseAPartida() {
 
     // Show the dialog as modal
     if (dialog.exec() == QDialog::Accepted) {
-        // If the user didn't dismiss the dialog, do something with the fields
-        QString id_partida = lineEditIdPartida.text();
-        std::cout << id_partida.toStdString() << std::endl;
-
         // TODO: usar el id partida
+        std::string id_partida = lineEditIdPartida.text().toStdString();
+        //QCoreApplication::exit();
+        client_holder.unirseAPartida(id_partida);
     }
 }
 

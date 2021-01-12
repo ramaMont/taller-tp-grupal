@@ -20,10 +20,64 @@ UserClient::UserClient(int user_id, ClThReceiver& th_receiver,
     _th_game_model(nullptr), is_creator(false), user_id(user_id){
 }
 
+void UserClient::joinGame(int& game_id) {
+    bool ready = false;
+    Protocol protocol_response;
+    while (!ready) {
+        Protocol protocol(game_id);
+        protocol.setAction(Protocol::action::JOIN_GAME);
+        th_sender.push(protocol);
+        protocol_response = operations.pop();
+        processReception(protocol_response, ready);
+    }
+
+    ready = false;
+
+    while (!ready) {
+        protocol_response = operations.pop();
+        processReception(protocol_response, ready);
+    }
+    /*
+    if (!is_creator) {
+        protocol_response = operations.pop();
+        processReception(protocol_response, ready);
+    }
+    */
+    std::cout << "Esperando a iniciar la partida\n";
+}
+
+void UserClient::createGame(int& id_map) {
+    bool ready = false;
+    Protocol protocol_response;
+    while (!ready){
+        Protocol protocol(id_map);
+        protocol.setAction(Protocol::action::CREATE_GAME);
+        th_sender.push(protocol);
+        is_creator = true;
+        protocol_response = operations.pop();
+        processReception(protocol_response, ready);
+    }
+
+    ready = false;
+
+    while (!ready){
+        protocol_response = operations.pop();
+        processReception(protocol_response, ready);
+    }
+
+    if (!is_creator){
+        protocol_response = operations.pop();
+        processReception(protocol_response, ready);
+    }
+    std::cout << "Esperando a iniciar la partida\n";
+    launchGame();
+}
+
 void UserClient::joinOrCreateGame(){
     int option_input;
     bool ready = false;
     Protocol protocol_response;
+
     while (!ready){
         std::cout << "Introduzca 1 para crear partida\n";
         std::cout << "Introduzca 2 unirse a una partida\n";
@@ -79,6 +133,12 @@ void UserClient::waitForAction(Protocol::action desired_action){
         if (protocol.getAction() == desired_action)
             ready = true;
     }
+}
+
+void UserClient::launchGame() {
+    Protocol protocol(_th_game_model->getId());
+    protocol.setAction(Protocol::action::LAUNCH_GAME);
+    th_sender.push(protocol);
 }
 
 void UserClient::waitUntilLaunch(){
@@ -145,7 +205,7 @@ void UserClient::createGameModel(int map_id, int id_user_protocol, int game_id){
 }
 
 // Hacer todo para empezar a jugar la partida.
-void UserClient::play(){  
+void UserClient::play(){
     waitForAction(Protocol::action::BEGIN);
     gameLoop();
 }

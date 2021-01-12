@@ -2,15 +2,6 @@ cmake_minimum_required(VERSION 3.0)
 set(BINARY ${CMAKE_PROJECT_NAME}_editor)
 set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno-inline -pthread")
 
-# Find includes in the build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-# Turn on automatic invocation of the MOC, UIC & RCC
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
-
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
 

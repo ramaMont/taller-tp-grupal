@@ -5,6 +5,17 @@ project(TPWOLFSTEIN)
 set(CMAKE_CXX_STANDARD 11)
 # set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno-inline -pthread")
 
+
+# Find includes in the build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+# Turn on automatic invocation of the MOC, UIC & RCC
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+
 # Si se omite el include de abajo, los tests no pueden encontrar los headers
 include_directories(common_src)
 include_directories(server_src)

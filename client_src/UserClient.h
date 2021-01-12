@@ -28,6 +28,7 @@ private:
     int user_id;    
 
     void joinOrCreateGame();
+    void launchGame();
     void processReception(Protocol& protocol, bool& ready);
     void createGameModel(int map_id, int id_user_protocol, int game_id);
     void waitUntilLaunch();
@@ -40,6 +41,8 @@ public:
     explicit UserClient(int user_id, ClThReceiver& th_receiver, 
         ThSender& th_sender);
     virtual void run();
+    void joinGame(int& game_id);
+    void createGame(int& map_id);
 
     void push(Protocol protocol);
 
