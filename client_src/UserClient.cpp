@@ -37,12 +37,10 @@ void UserClient::joinGame(int& game_id) {
         protocol_response = operations.pop();
         processReception(protocol_response, ready);
     }
-    /*
-    if (!is_creator) {
-        protocol_response = operations.pop();
-        processReception(protocol_response, ready);
-    }
-    */
+
+    protocol_response = operations.pop();
+    processReception(protocol_response, ready);
+
     std::cout << "Esperando a iniciar la partida\n";
 }
 
@@ -57,7 +55,6 @@ void UserClient::createGame(int& id_map) {
         protocol_response = operations.pop();
         processReception(protocol_response, ready);
     }
-
     ready = false;
 
     while (!ready){
@@ -70,7 +67,7 @@ void UserClient::createGame(int& id_map) {
         processReception(protocol_response, ready);
     }
     std::cout << "Esperando a iniciar la partida\n";
-    launchGame();
+
 }
 
 void UserClient::joinOrCreateGame(){
@@ -234,48 +231,43 @@ void UserClient::removePlayer(int user_id){
 }
 
 void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Jugador& jugador){
+    if(keys[SDL_SCANCODE_RIGHT]){
+        protocol.moveInDirection(
+            Protocol::direction::ROTATE_RIGHT);
+        th_sender.push(protocol);
+    }
+    if(keys[SDL_SCANCODE_LEFT]){
+        protocol.moveInDirection(
+            Protocol::direction::ROTATE_LEFT);
+        th_sender.push(protocol);
+    }
+    if(keys[SDL_SCANCODE_UP]){
+        protocol.moveInDirection(
+            Protocol::direction::FORWARD);
+        th_sender.push(protocol);
+    }
+    if(keys[SDL_SCANCODE_DOWN]){
+        protocol.moveInDirection(
+            Protocol::direction::BACKWARD);
+        th_sender.push(protocol);
+    }
 
-        if(keys[SDL_SCANCODE_RIGHT]){
-            protocol.moveInDirection(
-                Protocol::direction::ROTATE_RIGHT);
+    if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
+        if(jugador.can_shoot()){
+            protocol.setAction(
+                Protocol::action::SHOOT);
             th_sender.push(protocol);
         }
-        if(keys[SDL_SCANCODE_LEFT]){
-            protocol.moveInDirection(
-                Protocol::direction::ROTATE_LEFT);
-            th_sender.push(protocol);
-        }
-        if(keys[SDL_SCANCODE_UP]){
-            protocol.moveInDirection(
-                Protocol::direction::FORWARD);
-            th_sender.push(protocol);
-        }
-        if(keys[SDL_SCANCODE_DOWN]){
-            protocol.moveInDirection(
-                Protocol::direction::BACKWARD);
-            th_sender.push(protocol);
-        }
-
-        if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
-            if(jugador.can_shoot()){
-                protocol.setAction(
-                    Protocol::action::SHOOT);
-                th_sender.push(protocol);
-            }
-        }else{
-            //player.stopped_shooting();
-        }      
-
-
-
-        while (SDL_PollEvent(&event)) { 
-            switch(event.type) {
-                case SDL_QUIT: {
-                    done = SDL_TRUE;
-                }
+    }else{
+        //player.stopped_shooting();
+    }
+    while (SDL_PollEvent(&event)) { 
+        switch(event.type) {
+            case SDL_QUIT: {
+                done = SDL_TRUE;
             }
         }
-
+    }
 }
 
 void UserClient::gameLoop(){
@@ -298,7 +290,6 @@ void UserClient::gameLoop(){
 
     const Uint8 *keys = SDL_GetKeyboardState(NULL);    
     while (!done) {
-
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 

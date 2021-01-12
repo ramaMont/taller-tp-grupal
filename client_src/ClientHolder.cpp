@@ -10,8 +10,9 @@
 
 #include <iostream>
 
-ClientHolder::ClientHolder(){
-    socket = nullptr;
+ClientHolder::ClientHolder(): 
+    user_id(-1), socket(nullptr), _game_model(nullptr), 
+    _cl_th_receiver(nullptr), _th_sender(nullptr){
 }
 
 void ClientHolder::logginScreen(){
@@ -23,38 +24,23 @@ void ClientHolder::logginScreen(){
     std::cin >> _port;
 }
 
-void ClientHolder::crearPartida(std::string& id_mapa) {
+void ClientHolder::crearPartida(const std::string& id_mapa,
+            int& game_id){
     int map_id = std::stoi(id_mapa);
-    ClThReceiver th_receiver(socket);
-    ThSender th_sender(id, socket);
-    UserClient user_client(id, th_receiver, th_sender);
-    th_receiver.setUserClient(&user_client);
-
-    th_receiver.start();
-    th_sender.start();
-
-    user_client.createGame(map_id);
-    th_receiver.stop();
-    th_receiver.join();
-    th_sender.stop();
-    th_sender.join();
+    Protocol protocol_send(map_id);
+    Protocol protocol_response;
+    protocol_send.setAction(Protocol::action::CREATE_GAME);
+    socket->send(protocol_send, sizeof(protocol_send));
+    socket->recive(protocol_response, sizeof(protocol_response));
+    processReception(protocol_response);
+    game_id = protocol_response.getGameId();
+    // _cl_th_receiver = new ClThReceiver(&socket);
+    // _cl_th_receiver->start();
 }
 
 void ClientHolder::unirseAPartida(std::string& id_partida) {
-    int game_id = std::stoi(id_partida);
-    ClThReceiver th_receiver(socket);
-    ThSender th_sender(id, socket);
-    UserClient user_client(id, th_receiver, th_sender);
-    th_receiver.setUserClient(&user_client);
+//    int game_id = std::stoi(id_partida);
 
-    th_receiver.start();
-    th_sender.start();
-
-    user_client.joinGame(game_id);
-    th_receiver.stop();
-    th_receiver.join();
-    th_sender.stop();
-    th_sender.join();
 }
 
 void ClientHolder::logged(std::string& nombre, std::string& puerto, std::string& servidor){
@@ -65,45 +51,10 @@ void ClientHolder::logged(std::string& nombre, std::string& puerto, std::string&
     socket = new SocketClient(_host_dns, _port);
     socket->recive(protocol, sizeof(Protocol));
     setId(protocol);
-    std::cout << "Id del jugador: " << std::to_string(id);
-    //ClThReceiver th_receiver(&socket);
-    //ThSender th_sender(id, &socket);
-    //UserClient user_client(id, th_receiver, th_sender);
-    //th_receiver.setUserClient(&user_client);
-
-    //th_receiver.start();
-    //th_sender.start();
-
-    //user_client.run();
-    //th_receiver.stop();
-    //th_receiver.join();
-    //th_sender.stop();
-    //th_sender.join();
+    std::cout << "Id del jugador: " << std::to_string(user_id);
 }
 
 void ClientHolder::run(){
-    //logginScreen();
-    //Mandar esto a un metodo de ClientHolder que se llame logged().
-    //Los threads los lanza como punteros. Y despues en el destructor hacer delete,
-    //si fueron lanzados.
-    //int id;
-    //Protocol protocol;
-    //SocketClient socket(_host_dns, _port);
-    //socket.recive(protocol, sizeof(Protocol));
-    //setId(protocol, id);
-    //ClThReceiver th_receiver(&socket);
-    //ThSender th_sender(id, &socket);
-    //UserClient user_client(id ,th_receiver, th_sender);
-    //th_receiver.setUserClient(&user_client);
-    //
-    //th_receiver.start();
-    //th_sender.start();
-    // 
-    //user_client.run();
-    //std::thread t1
-    // (
-    //     [&]
-    //     {
     char *argv[] = {NULL};
     int argc = 1;
     QApplication app(argc, argv);
@@ -113,25 +64,71 @@ void ClientHolder::run(){
     // // Arranca el loop de la UI
     app.exec();
     std::cout << "CERRE LA APP" << std::endl;
-    //play();
-    //     }
-    // );
-    // t1.join();
+//  TODO:
+//  Lanzar juego:
+//  play();
      
-     std::cout << "Finalizada";
-
-    //th_receiver.stop();
-    //th_receiver.join();
-    //th_sender.stop();
-    //th_sender.join();
+    std::cout << "Finalizada";
 }
 
 void ClientHolder::setId(Protocol& protocol){
     if (protocol.getAction() != Protocol::action::SET_ID)
         throw -1;
-    id = protocol.getId();
+    user_id = protocol.getId();
+}
+
+void ClientHolder::launchGame() {
+
+    Protocol protocol(_game_model->getId());
+    protocol.setAction(Protocol::action::LAUNCH_GAME);
+    socket->send(protocol, sizeof(protocol));
+
+}
+
+void ClientHolder::processReception(Protocol& protocol){
+    switch (protocol.getAction()){
+        case Protocol::action::OK:
+            break;
+        case Protocol::action::CREATE_GAME:
+            createGameModel(protocol.getMapId(), user_id, protocol.getGameId());
+            std::cout << "Partida creada\nId de Partida: " << 
+                protocol.getGameId() << std::endl;
+            break;
+        case Protocol::action::ADD_PLAYER:{
+            if (_game_model == nullptr){
+                protocol.getUserId();
+                createGameModel(protocol.getMapId(), protocol.getUserId(), 
+                    protocol.getGameId());
+            }
+            else{
+                _game_model->addPlayer(protocol.getUserId());
+            }
+            break;
+        }
+        case Protocol::action::END:
+            break;
+        case Protocol::action::ERROR:
+            // TODO: algo salio mal.
+            throw -1;
+            break;
+        default:
+            std::cout << "Nunca deberia entrar acá\n";
+            // TODO: algo salio muy mal.
+            break;
+    }
+}
+
+void ClientHolder::createGameModel(int map_id, int id_user_protocol, int game_id){
+    _game_model = new GameModelClient(id_user_protocol, map_id, game_id, user_id);
 }
 
 ClientHolder::~ClientHolder(){
-    delete socket;
+    if (socket != nullptr)
+        delete socket;
+    if (_game_model != nullptr)
+        delete _game_model;
+    if (_cl_th_receiver != nullptr)
+        delete _cl_th_receiver;
+    if (_th_sender != nullptr)
+        delete _th_sender;
 }

@@ -30,36 +30,11 @@ void ClThReceiver::setUserClient(UserClient* user_client){
 
 void ClThReceiver::processReception(Protocol& protocol){
     switch (protocol.getAction()){
-        case Protocol::action::CREATE_GAME:
-            _userClient->push(protocol);
-            break;
-        case Protocol::action::JOIN_GAME:
-            _userClient->push(protocol);
-            break;
-        case Protocol::action::OK:
-            _userClient->push(protocol);
-            break;
-        case Protocol::action::LAUNCH_GAME:
-            _userClient->push(protocol);
-            break;
-        case Protocol::action::BEGIN:
-            _userClient->push(protocol);
-            break;
-        case Protocol::action::ERROR:
-            _userClient->push(protocol);
-            break;
         case Protocol::action::ADD_PLAYER:
-            if (_gameModel == nullptr){
-                _userClient->push(protocol);
-            } else {
-                _gameModel->addPlayer(protocol.getId());
-            }
+            _gameModel->addPlayer(protocol.getId());
             break;
         case Protocol::action::REMOVE:
-            _userClient->removePlayer(protocol.getUserId());
-            break;
-        case Protocol::action::END:
-            _userClient->push(protocol);
+            _gameModel->removePlayer(protocol.getUserId());
             break;
         case Protocol::action::MOVE:
             _gameModel->push(protocol);

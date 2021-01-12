@@ -183,7 +183,7 @@ void LoginWindow::connectEvents() {
                      this, &LoginWindow::unirseAPartida);
 }
 
-void LoginWindow::crearPartida() {
+void LoginWindow::crearPartida(){
     QDialog dialog(this);
     dialog.setWindowTitle(QString("Crear Partida"));
     dialog.setStyleSheet("background-image: url(invalid);"
@@ -211,13 +211,19 @@ void LoginWindow::crearPartida() {
     QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
 
     // Show the dialog as modal
-    if (dialog.exec() == QDialog::Accepted) {
+    if (dialog.exec() == QDialog::Accepted){
+        int game_id;
         // If the user didn't dismiss the dialog, do something with the fields
         std::string id_mapa = lineEditIDMapa.text().toStdString();
 
         // TODO: usar el id_mapa
         //QCoreApplication::quit();
-        client_holder.crearPartida(id_mapa);
+        try {
+            client_holder.crearPartida(id_mapa, game_id);
+        } catch (...) {
+            mostrarWarning(QString("Ha ocurrido un error, intente nuevamente"),
+                        QMessageBox::Warning);
+        }
     }
 }
 

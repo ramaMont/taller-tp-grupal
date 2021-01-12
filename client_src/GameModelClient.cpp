@@ -1,21 +1,18 @@
 #include "GameModelClient.h"
 
 GameModelClient::GameModelClient(int user_id, int map_id,
-        int game_id, int protagonist_id) : 
-
+            int game_id, int protagonist_id) : 
         window(640,480,320,200) ,
         texture(window), map(24,24), 
         added_player(false),player(map),
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
-        protagonist_id(protagonist_id),is_running(true)
-        
-        {
-        player.set_texture(&texture);
-        player.new_gun_type(1);
-        initDirections();
-        initMap();
-        addPlayer(user_id);
+        protagonist_id(protagonist_id),is_running(true) {
+    player.set_texture(&texture);
+    player.new_gun_type(1);
+    initDirections();
+    initMap();
+    addPlayer(user_id);
 }
 
 /* 
