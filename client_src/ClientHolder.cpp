@@ -62,7 +62,7 @@ void ClientHolder::logginScreen(){
     // // Arranca el loop de la UI
     app.exec();
     std::cout << "CERRE LA APP" << std::endl;
-    startGame();
+//    startGame();
 }
 
 void ClientHolder::run(){
