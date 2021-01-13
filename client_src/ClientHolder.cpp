@@ -34,7 +34,6 @@ void ClientHolder::crearPartida(const std::string& id_mapa,
 void ClientHolder::unirseAPartida(std::string& id_partida) {
     int game_id = std::stoi(id_partida);
     Protocol protocol_send(game_id);
-
     protocol_send.setAction(Protocol::action::JOIN_GAME);
     socket->send(protocol_send, sizeof(protocol_send));
     addLoggedUsers();
@@ -134,9 +133,16 @@ void ClientHolder::addLoggedUsers(){
     bool ready = false;
     while (!ready){
         socket->recive(protocol_response, sizeof(protocol_response));
-        
+        processReception(protocol_response);
+        if (protocol_response.getAction() == Protocol::action::END)
+            ready = true;
     }
-
+    socket->recive(protocol_response, sizeof(protocol_response));
+    processReception(protocol_response);
+    _cl_th_receiver = new ClThReceiver(socket, *this, _game_model);
+    _cl_th_receiver->start();
+    _th_sender = new ThSender(user_id, socket);
+    _th_sender->start();
 }
 
 ClientHolder::~ClientHolder(){
@@ -144,8 +150,12 @@ ClientHolder::~ClientHolder(){
         delete socket;
     if (_game_model != nullptr)
         delete _game_model;
-    if (_cl_th_receiver != nullptr)
+    if (_cl_th_receiver != nullptr){
+        _cl_th_receiver->stop();
         delete _cl_th_receiver;
-    if (_th_sender != nullptr)
+    }
+    if (_th_sender != nullptr){
+        _th_sender->stop();
         delete _th_sender;
+    }
 }
