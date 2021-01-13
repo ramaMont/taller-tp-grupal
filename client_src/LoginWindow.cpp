@@ -239,8 +239,7 @@ void LoginWindow::waitUntilLaunch(int& game_id) {
                    QMessageBox::Information, true);
     std::cout << "LANZANDO!!!";
     client_holder.launchGame();
-//    QCoreApplication::quit();
-    qApp->exit();
+    QCoreApplication::quit();
 }
 
 void LoginWindow::waitUntilAnotherUserLaunch() {

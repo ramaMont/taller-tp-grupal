@@ -62,15 +62,14 @@ void ClientHolder::logginScreen(){
     // // Arranca el loop de la UI
     app.exec();
     std::cout << "CERRE LA APP" << std::endl;
-    qApp->exit();
+    startGame();
 }
 
 void ClientHolder::run(){
     logginScreen();
     // Comienzo el juego luego del setup inicial   
     UserClient user_client(*_th_sender, *_game_model);
-    user_client.play();
-     
+    user_client.play();   
     std::cout << "Finalizada\n";
 }
 
@@ -127,7 +126,7 @@ void ClientHolder::createGameModel(int map_id, int id_user_protocol, int game_id
 
 void ClientHolder::startGame(){
     // TODO:Cerrar ventana de QT
-
+    qApp->exit();
 }
 
 void ClientHolder::addLoggedUsers(){
