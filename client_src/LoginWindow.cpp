@@ -17,7 +17,7 @@ LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) : QWidget
     this->setWindowTitle(QString("Wolfenstein 3D"));
 
     this->setStyleSheet(
-    "QWidget {background-image: url(../login_background.jpg) }"
+    "QWidget {background-image: url(data/login_background.jpg) }"
     "QLabel { color : white; }"
     "QLineEdit { color : white; }"
     "QMenuBar {color: white;}"
@@ -212,12 +212,9 @@ void LoginWindow::crearPartida(){
     int game_id;
     // Show the dialog as modal
     if (dialog.exec() == QDialog::Accepted){
-        
         // If the user didn't dismiss the dialog, do something with the fields
         std::string id_mapa = lineEditIDMapa.text().toStdString();
 
-        // TODO: usar el id_mapa
-        //QCoreApplication::quit();
         try {
             client_holder.crearPartida(id_mapa, game_id);
         } catch (...) {
