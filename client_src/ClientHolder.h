@@ -18,6 +18,7 @@ private:
     GameModelClient* _game_model;
     ClThReceiver* _cl_th_receiver;
     ThSender* _th_sender;
+    bool ready_to_play;
     void setId(Protocol& protocol);
     void processReception(Protocol& protocol);
     void createGameModel(int map_id, int id_user_protocol, int game_id);

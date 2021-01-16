@@ -12,7 +12,7 @@
 
 ClientHolder::ClientHolder(): 
     user_id(-1), socket(nullptr), _game_model(nullptr), 
-    _cl_th_receiver(nullptr), _th_sender(nullptr){
+    _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false){
 }
 
 void ClientHolder::crearPartida(const std::string& id_mapa,
@@ -60,12 +60,13 @@ void ClientHolder::logginScreen(){
     loginWindow.show();
     // // Arranca el loop de la UI
     app.exec();
-    std::cout << "CERRE LA APP" << std::endl;
 //    startGame();
 }
 
 void ClientHolder::run(){
     logginScreen();
+
+    if (!ready_to_play) return;
     // Comienzo el juego luego del setup inicial   
     UserClient user_client(*_th_sender, *_game_model);
     user_client.play();   
@@ -84,6 +85,7 @@ void ClientHolder::launchGame() {
     socket->send(protocol, sizeof(protocol));
     _th_sender = new ThSender(user_id, socket);
     _th_sender->start();
+    ready_to_play = true;
 }
 
 void ClientHolder::processReception(Protocol& protocol){
