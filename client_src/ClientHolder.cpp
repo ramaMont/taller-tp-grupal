@@ -85,7 +85,6 @@ void ClientHolder::launchGame() {
     socket->send(protocol, sizeof(protocol));
     _th_sender = new ThSender(user_id, socket);
     _th_sender->start();
-    ready_to_play = true;
 }
 
 void ClientHolder::processReception(Protocol& protocol){
@@ -127,6 +126,7 @@ void ClientHolder::createGameModel(int map_id, int id_user_protocol, int game_id
 
 void ClientHolder::startGame(){
     // TODO:Cerrar ventana de QT
+    ready_to_play = true;
     qApp->exit();
 }
 
