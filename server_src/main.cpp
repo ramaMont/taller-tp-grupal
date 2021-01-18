@@ -1,10 +1,11 @@
 #include <iostream>
 #include "ServerHolder.h"
-#include <map>
+#include <ctime>
 
 
 int main(int argc, char** argv){
-	try {
+    srand(time(0));
+    try {
         ServerHolder serverHolder(argc, argv);
         serverHolder.run();
     } catch(...) {

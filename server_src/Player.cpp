@@ -148,9 +148,9 @@ bool Player::estaPorMorir(){
 
 void Player::morir(){
 	this->soldado.soltarArma();
+	mapa.sacarPosicionable(this->posicion);
 	Balas* balas = new Balas(this->posicion, 10);
 	this->mapa.soltar(balas);
-	mapa.sacarPosicionable(this->posicion);
 	if (this->llave){
 		Llave* llaves = new Llave(this->posicion);
 		this->mapa.soltar(llaves);

@@ -39,6 +39,7 @@ class Pistola: public Arma {
 
 class Ametralladora: public Arma, public Item {
 	public:
+	Ametralladora(): Item(Coordinates(0,0))  {}
 	explicit Ametralladora(Coordinates p): Item(p) { }
 	void disparar(Player* jugador, angulos_enemigos_t& enemigos) override;
 	bool usar(Player* jugador) override;
@@ -47,6 +48,7 @@ class Ametralladora: public Arma, public Item {
 
 class CanionDeCadena: public Arma, public Item {
 	public:
+	CanionDeCadena(): Item(Coordinates(0,0)) {}
 	explicit CanionDeCadena(Coordinates p): Item(p) { }
 	void disparar(Player* jugador, angulos_enemigos_t& enemigos) override;
 	bool usar(Player* jugador) override;
@@ -55,6 +57,7 @@ class CanionDeCadena: public Arma, public Item {
 
 class Lanzacohetes: public Arma, public Item {
 	public:
+	Lanzacohetes(): Item(Coordinates(0,0))  {}
 	explicit Lanzacohetes(Coordinates p): Item(p) { }
 	void disparar(Player* jugador, std::map<int, Player*>& enemigos) override;
 	bool usar(Player* jugador) override;

@@ -55,7 +55,8 @@ class Guardia: public Soldado {
 
 class SS: public Soldado {
 	private:
-	Ametralladora *ametralladora;
+	Ametralladora ametralladora;
+	bool tieneArma;
 	
 	public:
 	SS(int &balas);
@@ -69,7 +70,8 @@ class SS: public Soldado {
 
 class Oficial: public Soldado {
 	private:
-	CanionDeCadena *canion;
+	CanionDeCadena canion;
+	bool tieneArma;
 	
 	public:
 	Oficial(int &balas);
@@ -83,7 +85,8 @@ class Oficial: public Soldado {
 
 class Mutante: public Soldado {
 	private:
-	Lanzacohetes *lanzacohetes;
+	Lanzacohetes lanzacohetes;
+	bool tieneArma;
 	
 	public:
 	Mutante(int &balas);
