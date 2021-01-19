@@ -12,16 +12,19 @@
 std::map<int, float> configs;
 
 #include <iostream>
+#include <MapLoader.h>
 
 ClientHolder::ClientHolder(): 
     user_id(-1), socket(nullptr), _game_model(nullptr), 
     _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false){
 }
 
-void ClientHolder::crearPartida(const std::string& id_mapa,
-            int& game_id){
-    int map_id = std::stoi(id_mapa);
-    Protocol protocol_send(map_id);
+void ClientHolder::crearPartida(const std::string& map_filename,
+            int bots_cty ,int& game_id){
+    _map_filename = map_filename;
+    MapLoader mapLoader(map_filename);
+    int map_id_checksum = mapLoader.getChecksum();
+    Protocol protocol_send(bots_cty, map_id_checksum);
     Protocol protocol_response;
     protocol_send.setAction(Protocol::action::CREATE_GAME);
     socket->send(protocol_send, sizeof(protocol_send));
@@ -95,15 +98,19 @@ void ClientHolder::processReception(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::OK:
             break;
-        case Protocol::action::CREATE_GAME:
-            createGameModel(protocol.getMapId(), user_id, protocol.getGameId());
+        case Protocol::action::CREATE_GAME:{
+            // TODO: agregar en el createGameModel la cantidad de Bots
+            // 
+            createGameModel(_map_filename, user_id, protocol.getGameId());
             std::cout << "Partida creada\nId de Partida: " << 
                 protocol.getGameId() << std::endl;
             break;
+        }
         case Protocol::action::ADD_PLAYER:{
+            // TODO: Hacer decodificacion de checksum del mapa que envia el servidor.
             if (_game_model == nullptr){
-                protocol.getUserId();
-                createGameModel(protocol.getMapId(), protocol.getUserId(), 
+                MapLoader mapLoader(protocol.getMapId());
+                createGameModel(mapLoader.getFileName(), protocol.getUserId(), 
                     protocol.getGameId());
             }
             else{
@@ -124,8 +131,8 @@ void ClientHolder::processReception(Protocol& protocol){
     }
 }
 
-void ClientHolder::createGameModel(int map_id, int id_user_protocol, int game_id){
-    _game_model = new GameModelClient(id_user_protocol, map_id, game_id, user_id);
+void ClientHolder::createGameModel(std::string map_filename, int id_user_protocol, int game_id){
+    _game_model = new GameModelClient(id_user_protocol, map_filename, game_id, user_id);
 }
 
 void ClientHolder::startGame(){

@@ -5,8 +5,8 @@
 #include <utility>
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
-        int map_id, int game_id):
-    GameModel(map_id, game_id), launched(false){
+        std::string map_filename, int game_id):
+    GameModel(map_filename, game_id), launched(false){
     addThSender(th_user_server.getSender());
     addPlayer(th_user_server.getId());
     th_user_server.setGameModel(this);

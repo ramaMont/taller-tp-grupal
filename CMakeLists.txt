@@ -26,8 +26,8 @@ include_directories(server_src)
 include_directories(client_src)
 include_directories(editor_src)
 
-file(COPY maps/
-        DESTINATION maps/)
+file(COPY data/
+        DESTINATION data/)
 
 include(cmake/googletest.cmake)
 fetch_googletest(

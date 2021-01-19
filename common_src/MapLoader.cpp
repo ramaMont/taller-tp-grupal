@@ -6,7 +6,7 @@
 #include <dirent.h>
 #include "string.h"
 
-const std::string MAPS_PATH("../maps/");
+const std::string MAPS_PATH("../data/maps/");
 
 MapLoader::MapLoader(std::string file) : file_name(file){
     std::string command = "md5sum " + MAPS_PATH + file;

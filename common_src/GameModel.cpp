@@ -3,8 +3,8 @@
 #include <vector>
 #include <utility>
 
-GameModel::GameModel(int map_id, int game_id):
-        Thread(), map(map_id), operations(), game_id(game_id){
+GameModel::GameModel(std::string map_filename, int game_id):
+        Thread(), map(map_filename), operations(), game_id(game_id){
     initDirections();
 } 
 

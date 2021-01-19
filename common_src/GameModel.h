@@ -31,7 +31,7 @@ protected:
     void cleanDirections();
 
 public:
-    explicit GameModel(int map_id, int game_id);
+    explicit GameModel(std::string map_filename, int game_id);
 
     virtual void run() override = 0;
     virtual void stop() override = 0;

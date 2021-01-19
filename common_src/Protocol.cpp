@@ -65,6 +65,10 @@ int Protocol::getConfId(){
     return id;
 }
 
+int Protocol::getBotsCty(){
+    return id;
+}
+
 float Protocol::getConfiguration(){
     return _float_aux;
 }

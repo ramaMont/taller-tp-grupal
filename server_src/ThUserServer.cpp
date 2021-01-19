@@ -4,6 +4,7 @@
 #include <exception>
 #include <vector>
 #include <ConfigVariable.h>
+#include <MapLoader.h>
 
 ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
         GamesAdmin& games_admin):
@@ -16,7 +17,6 @@ ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
 }
 
 void ThUserServer::sendConfiguration(){
-    // TODO: Envio de configuracion al peer.
     for(auto &config : configs){
         Protocol protocol_config(config.first, config.second);
         socket_peer.send(protocol_config, sizeof(protocol_config));
@@ -60,10 +60,13 @@ void ThUserServer::processReception(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::CREATE_GAME:{
             try{
-                int map_id = protocol.getId();
-                games_admin.createGame(*this, map_id);
+                // TODO: cambiar map_id al string con el map_filename 
+                // y agregar cantidad de bots en el createGame
+                MapLoader mapLoader(protocol.getMapId());
+                // int bots_cty = protocol.getBotsCty();
+                games_admin.createGame(*this, mapLoader.getFileName());
                 respondSuccess();
-                Protocol protocol_response(user_id, map_id, game_id);      
+                Protocol protocol_response(user_id, protocol.getMapId(), game_id);      
                 protocol_response.setAction(Protocol::action::CREATE_GAME);
                 th_sender->push(protocol_response);
             } catch(...){

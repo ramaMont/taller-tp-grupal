@@ -31,6 +31,7 @@ public:
     int getGameId();
     int getDamage();
     int getConfId();
+    int getBotsCty();
     float getConfiguration();
     void setAction(Protocol::action action);
     ~Protocol();

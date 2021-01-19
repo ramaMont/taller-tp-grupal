@@ -186,13 +186,14 @@ void LoginWindow::connectEvents() {
 
 void LoginWindow::cargarMapasDisponibles(QComboBox& combo_mapa,
         std::map<std::string, std::string>& mapas) {
-    if (auto dir = opendir("../common_src/mapas/")) {
+    const std::string dir_maps = "../data/maps/";
+    if (auto dir = opendir(dir_maps.c_str())) {
         while (auto f = readdir(dir)) {
             if (!f->d_name || f->d_name[0] == '.')
                 continue;
 
             std::string filename(f->d_name);
-            YAML::Node map = YAML::LoadFile("../common_src/mapas/" + filename);
+            YAML::Node map = YAML::LoadFile(dir_maps + filename);
             std::string map_name = map["nombre"].as<std::string>();
             combo_mapa.addItem(QString::fromStdString(map_name));
             mapas.insert(std::pair<std::string, std::string>(map_name,
@@ -222,6 +223,7 @@ void LoginWindow::crearPartida(){
 
     // Cantidad de bots
     QComboBox combo_bots;
+    combo_bots.addItem("0");
     combo_bots.addItem("1");
     combo_bots.addItem("2");
     combo_bots.addItem("3");
@@ -243,12 +245,11 @@ void LoginWindow::crearPartida(){
         std::string nombre_mapa = combo_mapa.currentText().toStdString();
         std::string archivo_mapa = mapas[nombre_mapa];
         int cantidad_bots = combo_bots.currentText().toInt();
-        //TODO: Utilizar la cantidad de bots y el archivo mapa.
-        cantidad_bots += 1;
 
         try {
-            // client_holder.crearPartida(nombre_mapa, cantidad_bots, game_id);
-            client_holder.crearPartida("1", game_id);
+            // Al crear partida, enviar nombre del archivo del mapa y la cantidad de bots.
+            client_holder.crearPartida(archivo_mapa, cantidad_bots, game_id);
+            //client_holder.crearPartida("1", game_id);
         } catch (...) {
             mostrarWarning(QString("Ha ocurrido un error, intente nuevamente"),
                         QMessageBox::Warning, true);

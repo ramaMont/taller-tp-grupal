@@ -19,7 +19,7 @@ private:
     void processResurrect(Protocol protocol);
 
 public:
-    explicit ThGameModelServer(ThUserServer& th_user_server, int map_id,
+    explicit ThGameModelServer(ThUserServer& th_user_server, std::string map_filename,
         int game_id);
     virtual void processProtocol(Protocol& protocol) override;
     virtual void run() override;

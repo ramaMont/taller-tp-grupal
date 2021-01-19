@@ -15,7 +15,7 @@ private:
     int ancho;
     std::vector<std::vector<std::vector<Posicionable*>>> mapaJuego;
 public:
-    explicit Mapa(int map_id);
+    explicit Mapa(std::string map_filename);
     explicit Mapa(int alto, int ancho);
     void agregarPlayer(Player* jugador);
     void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);

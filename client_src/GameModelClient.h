@@ -67,7 +67,7 @@ private:
     void processShooted(Protocol protocol);
 
 public:
-    explicit GameModelClient(int user_id, int map_id, int game_id, int protagonist_id);
+    explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id);
 
     virtual void processProtocol(Protocol& protocol);
     void run();

@@ -51,7 +51,7 @@ void initMap(Mapa& map){
 }
 
 
-Mapa::Mapa(int map_id):
+Mapa::Mapa(std::string map_filename):
         alto(24),
         ancho(24),
         mapaJuego(ancho, std::vector<std::vector<Posicionable*>>(alto)){

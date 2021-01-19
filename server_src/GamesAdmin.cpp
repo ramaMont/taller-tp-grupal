@@ -9,6 +9,7 @@
 #include <map>
 #include <utility>
 #include <vector>
+#include <string>
 
 GamesAdmin::GamesAdmin(): current_game_id(0){
 }
@@ -30,10 +31,10 @@ void GamesAdmin::cleanZombies(){
     games.swap(activeGames);    
 }
 
-void GamesAdmin::createGame(ThUserServer& th_user_server, const int& map_id){
+void GamesAdmin::createGame(ThUserServer& th_user_server, const std::string& map_filename){
     std::lock_guard<std::mutex> lck(mutex);
     cleanZombies();
-    ThGameModelServer* th_game = new ThGameModelServer(th_user_server, map_id,
+    ThGameModelServer* th_game = new ThGameModelServer(th_user_server, map_filename,
         current_game_id);
     games.insert(std::pair<int, ThGameModelServer*>(th_game->getId(), th_game));
     th_user_server.setGameId(current_game_id);

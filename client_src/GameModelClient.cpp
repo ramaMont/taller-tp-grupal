@@ -1,6 +1,6 @@
 #include "GameModelClient.h"
 
-GameModelClient::GameModelClient(int user_id, int map_id,
+GameModelClient::GameModelClient(int user_id, std::string map_filename,
             int game_id, int protagonist_id) : 
         window(640,480,320,200) ,
         texture(window), map(24,24), 

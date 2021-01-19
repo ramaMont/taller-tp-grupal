@@ -18,17 +18,19 @@ private:
     GameModelClient* _game_model;
     ClThReceiver* _cl_th_receiver;
     ThSender* _th_sender;
+    std::string _map_filename;
     bool ready_to_play;
     void setId(Protocol& protocol);
     void processReception(Protocol& protocol);
-    void createGameModel(int map_id, int id_user_protocol, int game_id);
+    void createGameModel(std::string map_filename, int id_user_protocol, int game_id);
     void addLoggedUsers();
     void logginScreen();
     void receiveConfiguration();
 public:
     ClientHolder();
     void run();
-    void crearPartida(const std::string& id_mapa, int& game_id);
+    void crearPartida(const std::string& map_filename, 
+        int bots_cty, int& game_id);
     void unirseAPartida(std::string& id_partida);
     void logged(std::string& nombre, std::string& puerto, std::string& servidor);
     void startGame();
