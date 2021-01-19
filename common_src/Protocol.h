@@ -37,6 +37,7 @@ private:
     Protocol::direction _direction;
     std::uint16_t damage;
     std::uint16_t _game_id;
+    float _float_aux;
 };
 
 #endif
