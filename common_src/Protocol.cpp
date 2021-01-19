@@ -30,6 +30,13 @@ Protocol::Protocol(int id, Protocol::direction direction):
         _action(Protocol::action::MOVE), id(id), _direction(direction),
         damage(0), _game_id(0), _float_aux(0){
 }
+
+Protocol::Protocol(int config_number, float config_value):
+        _action(Protocol::action::CONFIG), id(config_number),
+        _direction(Protocol::direction::STAY), damage(0),
+        _game_id(0), _float_aux(config_value){
+}
+
 Protocol::action Protocol::getAction(){
     return _action;
 }
@@ -53,6 +60,15 @@ int Protocol::getDamage(){
 Protocol::direction Protocol::getDirection(){
     return _direction;
 }
+
+int Protocol::getConfId(){
+    return id;
+}
+
+float Protocol::getConfiguration(){
+    return _float_aux;
+}
+
 void Protocol::moveInDirection(Protocol::direction direction){
     _action = Protocol::action::MOVE;
     _direction = direction;

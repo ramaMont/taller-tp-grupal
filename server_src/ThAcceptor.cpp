@@ -21,6 +21,7 @@ void ThAcceptor::cleanZombies(){
 ThAcceptor::ThAcceptor(const std::string& port, GamesAdmin& games_admin):
     Thread(), socket_aceptador(port), games_admin(games_admin){
 }
+
 void ThAcceptor::run(){
     try{
         int current_id = 0;
@@ -38,11 +39,13 @@ void ThAcceptor::run(){
         is_running = false;
     }
 }
+
 void ThAcceptor::stop(){
     is_running = false;
     socket_aceptador.shutdown();
     socket_aceptador.close();
 }
+
 ThAcceptor::~ThAcceptor(){
     for (size_t i = 0; i < user_peers.size(); i++){
         user_peers[i]->stop();

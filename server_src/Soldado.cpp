@@ -1,7 +1,7 @@
 #include "Soldado.h"
 
 #include "Mapa.h"
-#include "ParamReaderServer.h"
+#include <ConfigVariable.h>
 
 #include <unistd.h>
 #include <typeinfo>

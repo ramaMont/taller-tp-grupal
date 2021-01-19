@@ -3,6 +3,8 @@
 #include <yaml-cpp/yaml.h>
 #include <string>
 
+#include <ConfigVariable.h>
+
 std::map<int, float> configs;
 
 

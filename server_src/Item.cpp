@@ -1,7 +1,6 @@
 #include "Item.h"
 #include "Player.h"
-#include "ParamReaderServer.h"
-
+#include <ConfigVariable.h>
 
 Item::Item(Coordinates p): Posicionable(p) { 
 	atravesable(true);

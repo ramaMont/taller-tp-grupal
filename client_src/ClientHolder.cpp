@@ -8,6 +8,9 @@
 #include <QApplication>
 #include <LoginWindow.h>
 
+#include <ConfigVariable.h>
+std::map<int, float> configs;
+
 #include <iostream>
 
 ClientHolder::ClientHolder(): 
@@ -49,6 +52,7 @@ void ClientHolder::logged(std::string& nombre, std::string& puerto, std::string&
     socket->recive(protocol, sizeof(Protocol));
     setId(protocol);
     std::cout << "Id del jugador: " << std::to_string(user_id);
+    receiveConfiguration();
 }
 
 void ClientHolder::logginScreen(){
@@ -60,13 +64,13 @@ void ClientHolder::logginScreen(){
     loginWindow.show();
     // // Arranca el loop de la UI
     app.exec();
-//    startGame();
 }
 
 void ClientHolder::run(){
     logginScreen();
 
-    if (!ready_to_play) return;
+    if (!ready_to_play) 
+        return;
     // Comienzo el juego luego del setup inicial   
     UserClient user_client(*_th_sender, *_game_model);
     user_client.play();   
@@ -145,6 +149,19 @@ void ClientHolder::addLoggedUsers(){
     _cl_th_receiver->start();
     _th_sender = new ThSender(user_id, socket);
     _th_sender->start();
+}
+
+void ClientHolder::receiveConfiguration(){
+    bool ready = false;
+    Protocol protocol_config;
+    while (!ready){
+        socket->recive(protocol_config, sizeof(protocol_config));
+        if (protocol_config.getAction() == Protocol::action::END)
+            ready = true;
+        else
+            configs.insert(std::pair<int, float>((protocol_config.getConfId()),
+                protocol_config.getConfiguration()));
+    }
 }
 
 ClientHolder::~ClientHolder(){

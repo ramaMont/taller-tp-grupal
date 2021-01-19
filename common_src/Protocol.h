@@ -8,7 +8,7 @@ public:
     enum action : std::uint16_t { MOVE, SHOOT, LOAD, PICKUP, OPEN,
             SHOOTED, ADDKILL, ADDPOINTS, ENDGAME, SET_ID,
             JOIN_GAME, CREATE_GAME, OK, ERROR, ADD_PLAYER, LAUNCH_GAME, BEGIN,
-            END, NONE, REMOVE, RESURRECT, DIE };
+            END, NONE, REMOVE, RESURRECT, DIE, CONFIG };
 
     enum direction : std::uint16_t { FORWARD, BACKWARD, LEFT, RIGHT,
             ROTATE_LEFT, ROTATE_RIGHT, STAY};
@@ -19,6 +19,7 @@ public:
     explicit Protocol(int user_id, int danio, Protocol::action action);
     explicit Protocol(int user_id, int map_id, int game_id);
     explicit Protocol(int id, Protocol::direction direction);
+    explicit Protocol(int config_number, float config_value);
     Protocol::action getAction();
     Protocol::direction getDirection();
     void moveInDirection(Protocol::direction direction);
@@ -29,6 +30,8 @@ public:
     int getUserId();
     int getGameId();
     int getDamage();
+    int getConfId();
+    float getConfiguration();
     void setAction(Protocol::action action);
     ~Protocol();
 private:

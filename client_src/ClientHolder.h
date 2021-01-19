@@ -24,6 +24,7 @@ private:
     void createGameModel(int map_id, int id_user_protocol, int game_id);
     void addLoggedUsers();
     void logginScreen();
+    void receiveConfiguration();
 public:
     ClientHolder();
     void run();

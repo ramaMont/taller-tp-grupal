@@ -1,6 +1,6 @@
 #include "Objeto.h"
 
-#include "ParamReaderServer.h"
+#include <ConfigVariable.h>
 #include "Mapa.h"
 #include <thread>
 #include <chrono>

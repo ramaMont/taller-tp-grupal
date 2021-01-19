@@ -3,6 +3,7 @@
 #include <iostream>
 #include <exception>
 #include <vector>
+#include <ConfigVariable.h>
 
 ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
         GamesAdmin& games_admin):
@@ -16,6 +17,13 @@ ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
 
 void ThUserServer::sendConfiguration(){
     // TODO: Envio de configuracion al peer.
+    for(auto &config : configs){
+        Protocol protocol_config(config.first, config.second);
+        socket_peer.send(protocol_config, sizeof(protocol_config));
+    }
+    Protocol protocol_end;
+    protocol_end.setAction(Protocol::action::END);
+    socket_peer.send(protocol_end, sizeof(protocol_end));
 }
 
 void ThUserServer::respondSuccess(){

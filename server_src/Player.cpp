@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "ParamReaderServer.h"
+#include <ConfigVariable.h>
 
 #include <stdio.h>
 #include <algorithm>

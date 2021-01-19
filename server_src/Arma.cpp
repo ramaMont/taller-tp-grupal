@@ -1,6 +1,6 @@
 #include "Arma.h"
 
-#include "ParamReaderServer.h"
+#include <ConfigVariable.h>
 #include "Player.h"
 #include "Mapa.h"
 #include <cstdlib>

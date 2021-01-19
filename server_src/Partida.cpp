@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <set>
-#include "ParamReaderServer.h"
+#include <ConfigVariable.h>
 
 #define ALTO 20	/* cambiar por mapa */
 #define ANCHO 20
