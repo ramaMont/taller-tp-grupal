@@ -78,31 +78,21 @@ void UserClient::gameLoop(){
     while (!done) {
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
-
         get_keys(keys, event, protocol, done, jugador);
-
         _game_model.run();//Proceso los protocolos
-
         _game_model.updateFrameAnimations();
-
         screen.show();
-
         gettimeofday(&time_now, nullptr);
         time_t new_time = (time_now.tv_usec / 1000);
-
         time_t rest;
         if(new_time>time)
             rest = new_time - time;
         else
             rest = new_time - time + 1000;
-
-
         if(rest>max_time)
             max_time = rest;
-
         total_time+=rest;
         counter++;
-
         std::this_thread::sleep_for(std::chrono::milliseconds(rate - rest));
     }
     _game_model.hideWindow();
