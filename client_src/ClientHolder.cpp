@@ -154,10 +154,12 @@ ClientHolder::~ClientHolder(){
         delete _game_model;
     if (_cl_th_receiver != nullptr){
         _cl_th_receiver->stop();
+        _cl_th_receiver->join();
         delete _cl_th_receiver;
     }
     if (_th_sender != nullptr){
         _th_sender->stop();
+        _th_sender->join();
         delete _th_sender;
     }
 }

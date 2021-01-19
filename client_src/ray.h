@@ -22,6 +22,7 @@ class Intersected_object;
 #include "intersected_object.h"
 
 class Wall;
+class Door;
 
 // Implementa un único rayo del raycasting
 class Ray {
@@ -37,17 +38,13 @@ class Ray {
 
 		Cl_Mapa &map;
 		int num_ray;
-
-		Intersected_object* &intersected_object;
+		int n_rays;
 
 		// Incrementa las coordenas a ver en el mapa según cual de las dos posiciones es entera
 		void increment_coordinates(Coordinates &coordinates, int inc_x, int inc_y);
 
 		// Me fijo si una posicion en el mapa tiene algún elemento(es decir, su valor en la matriz NO es 0)
 		Posicionable* get_element(Coordinates &map_coordinates);
-
-		// Devuelve la pared contra la que chocó el rayo
-		void get_wall(Coordinates coordinates_map,bool first_triangle, Wall* object, float distance_player_plane);
 
 		// Calcula la distancia desde el jugador al objeto con el que impactó el rayo
 		double get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle);
@@ -68,14 +65,18 @@ class Ray {
 		// Devuelve las coordenadas hacia el proximo bloque con el que choca el rayo
 		Coordinates get_coordinates_to_next_block(const Coordinates &ray_position, bool &first_triangle);
 
+		void y_door_colided(Coordinates coordinates_map,bool first_triangle,Door *object);
+
+		void x_door_colided(Coordinates coordinates_map,bool first_triangle,Door *object);
+
 
 	public:
 		//Ray angle y ray_direction NO es lo mismo, la primera es relativa al plano de la camara y la segunda NO
-		Ray(const double &ray_angle,const Coordinates &ray_direction,std::vector<float> &distances,const Coordinates &player_position,const Coordinates &player_direction, Cl_Mapa &map, int num_ray, Intersected_object* &intersected_object);
+		Ray(const double &ray_angle,const Coordinates &ray_direction,std::vector<float> &distances,const Coordinates &player_position,const Coordinates &player_direction, Cl_Mapa &map, int num_ray, int _n_rays);
 
 		/*Llama a la funcion recursiva que encuentra al objeto con 
 		el que choca el rayo, partiendo de la posicion inicial, player_position*/
-		void get_colisioned_objects();
+		void draw_ray();
 
 		//Los objetos contra los que colisioné, que no son paredes,
 		// devuelven esta funcion, que llama a la recursiva y continúa buscando una pared
@@ -83,6 +84,8 @@ class Ray {
 
 		// El objeto contra el que colisioné llama a este método si es una pared, y finalizo este rayo		
 		void wall_colided(Coordinates coordinates_map,bool first_triangle,Wall *object);
+
+		void door_colided(Coordinates coordinates_map,bool first_triangle,Door *object);
 
 
 };
