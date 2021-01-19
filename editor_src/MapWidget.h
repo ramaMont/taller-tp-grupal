@@ -58,6 +58,7 @@ class MapWidget : public QFrame
     void eliminarColumna(int fila);
     void mostrarWarning(QString message, QMessageBox::Icon icon);
     bool validarParedes();
+    bool validarPuertas();
     void intercambiarLabels(const std::string& pos_1,
                             const std::string& pos_2);
     void crearCeldaVacia(const std::string& pos, const int& fila,

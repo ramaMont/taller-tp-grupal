@@ -28,6 +28,7 @@
 #include <Jugador.h>
 #include <Cl_Direccion.h>
 #include <Wall.h>
+#include <Door.h>
 #include <Sprite_holder.h>
 #include <Sprite_drawer.h>
 #include <Enemy.h>
@@ -46,6 +47,8 @@ private:
     int game_id;
     Screen screen;
     int protagonist_id;
+
+    Door* door;
 
     std::vector<Sprite_drawer*> sprites;
     std::vector<Enemy*> enemies;
@@ -83,6 +86,7 @@ public:
 
     void addPlayer(int player_id);
     Jugador& getPlayer();
+    Door* getDoor();
     Window& getWindow();
     Screen& getScreen();
     Movable& getEnemy(int user_id);

@@ -40,10 +40,10 @@ void GameModelClient::initMap(){
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+    {1,0,0,0,0,0,2,2,10,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
     {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-    {1,0,8,10,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,8,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -104,7 +104,14 @@ void GameModelClient::initMap(){
               posicionable->add_sprite(2);
               sprites.push_back(posicionable);
               map.agregarPosicionable(posicionable,position);
-            }/*else{ DEJO DE AGREGAR ENEMIGOS ASI
+            }else{//DOOR==10
+              Coordinates position((float)i,(float)j);
+              Door *posicionable = new Door(position);
+              posicionable->set_texture(&texture);
+              door = posicionable;
+              map.agregarPosicionable(posicionable,position);   
+            }
+            /*else{ DEJO DE AGREGAR ENEMIGOS ASI
               Coordinates position((float)i+0.5,(float)j+0.5);
               Coordinates enemy_direction(0,1);
               Enemy *posicionable = new Enemy(texture,position,a_map[i][j]-10,enemy_direction,map,player,"Andy");//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
@@ -189,6 +196,10 @@ Jugador& GameModelClient::getPlayer(){
     return player;
 }
 
+Door* GameModelClient::getDoor(){
+  return door;
+}
+
 Window& GameModelClient::getWindow(){
   return window;
 }
@@ -206,6 +217,7 @@ void  GameModelClient::updateFrameAnimations(){
     enemies[i]->update_frame();
   }
   player.update_shots();
+  door->update_frame();
   //Y despues acá meter las puertas tambien
 }
 
