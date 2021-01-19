@@ -15,6 +15,7 @@ private:
     std::vector<SDL_Texture*> sprites;
     std::vector<SDL_Texture*> enemies;
     SDL_Texture* guns;
+    SDL_Texture* door;
     SDL_Texture* life_bar;
     int height;
     int width;
@@ -49,6 +50,9 @@ public:
     // Carga todas las texturas de las armas
     void add_gun_texture(std::string new_texture);
 
+    // Carga todas las texturas de las puertas
+    void add_door_textures();   
+
     void add_life_bar_texture(std::string new_texture);
 
     void show_sprite(int pos_x, float distance_player_plane, int number_line_texture, int texture);
@@ -78,6 +82,8 @@ public:
 	void show_wall_redbrick(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
 
 	void show_wall_wood(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
+
+    void show_door(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y);
 
 	void show_knife(int frame_gun);
 

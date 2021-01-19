@@ -16,7 +16,7 @@ void UserClient::play(){
     gameLoop();
 }
 
-void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Jugador& jugador){
+void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Jugador& jugador, Door *door){
     if(keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
@@ -47,6 +47,10 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
     }else{
         //player.stopped_shooting();
     }
+    if(keys[SDL_SCANCODE_SPACE]){
+        door->opening();
+    }
+
     while (SDL_PollEvent(&event)) { 
         switch(event.type) {
             case SDL_QUIT: {
@@ -74,12 +78,14 @@ void UserClient::gameLoop(){
 
     Jugador& jugador = _game_model.getPlayer();
 
+    Door *door = _game_model.getDoor();
+
     const Uint8 *keys = SDL_GetKeyboardState(NULL);    
     while (!done) {
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        get_keys(keys, event, protocol, done, jugador);
+        get_keys(keys, event, protocol, done, jugador,door);
 
         _game_model.run();//Proceso los protocolos
 

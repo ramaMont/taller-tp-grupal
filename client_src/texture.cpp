@@ -43,6 +43,14 @@ void Texture::add_gun_texture(std::string new_texture){
 	SDL_FreeSurface(loadedSurface);		
 }
 
+void Texture::add_door_textures(){
+    SDL_Surface* loadedSurface = IMG_Load(("data/textures/door.png"));
+    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
+	door = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+	SDL_FreeSurface(loadedSurface);			
+}
+
 void Texture::add_life_bar_texture(std::string new_texture){
     SDL_Surface* loadedSurface = IMG_Load(("data/textures/" + new_texture+".png").c_str());
 	life_bar = SDL_CreateTextureFromSurface(renderer, loadedSurface);
@@ -73,7 +81,7 @@ Texture::Texture(const Window& window):
 	add_enemy_texture("mutant_pos");
 
 	add_gun_texture("guns");
-
+	add_door_textures();
 	add_life_bar_texture("life_bar");
 
 	this->x_lenght_ray = ceil((float)this->width/(window.get_resolution_width()));//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
@@ -89,9 +97,7 @@ Texture::Texture(const Window& window):
 	if(!Sans){
 		printf("no encuentro la fooont\n");
 	}
-
-
-	}
+}
 
 
 void Texture::show(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int x_pixel, float distance_player_plane){
@@ -291,6 +297,10 @@ void Texture::show_wall_redbrick(int x_pixel,float distance_player_plane, int nu
 void Texture::show_wall_wood(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
 	int current_texture = 2*7 + wall_side_y;
 	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+}
+
+void Texture::show_door(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
+	show(this->door,number_line_texture,0,x_pixel,distance_player_plane);
 }
 
 //0: barril; 1: columna; 2: lampara
