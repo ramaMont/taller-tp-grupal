@@ -2,6 +2,7 @@
 Trabajo practico final Taller Fiuba
 
 # Dependencias
+    coreutils
     cmake
     build-essential
     qt5-default
