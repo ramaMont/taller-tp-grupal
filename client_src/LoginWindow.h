@@ -38,6 +38,8 @@ private:
     bool validarCampos();
     void crearPartida();
     void unirseAPartida();
+    void cargarMapasDisponibles(QComboBox& combo_mapa,
+                                std::map<std::string, std::string>& mapas);
     QBoxLayout* layout;
     QWidget* loginScreen;
     QWidget* partidaScreen;

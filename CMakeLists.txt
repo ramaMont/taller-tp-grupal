@@ -14,6 +14,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+# Copy maps to common folder.
+file(COPY editor_src/mapas/
+        DESTINATION common_src/mapas/)
+
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 # Si se omite el include de abajo, los tests no pueden encontrar los headers

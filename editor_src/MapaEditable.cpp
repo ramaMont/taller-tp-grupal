@@ -49,6 +49,7 @@ void MapaEditable::guardarMapa() {
     }
     out << YAML::EndMap;
     out << YAML::EndMap;
+    std::cout << archivo_mapa << " <- nombre" << std::endl;
     std::ofstream file(archivo_mapa);
     file << out.c_str();
 }

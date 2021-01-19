@@ -8,6 +8,8 @@
 #include <QFormLayout>
 #include <QAbstractItemView>
 #include <QBoxLayout>
+#include <dirent.h>
+#include "yaml-cpp/yaml.h"
 
 
 LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) : QWidget(parent), client_holder(client_holder) {
@@ -96,7 +98,6 @@ void LoginWindow::crearLogInScreen() {
 
 void LoginWindow::login() {
     if (!validarCampos()) return;
-    std::cout << "Campos correctos!" << std::endl;
     loginScreen->hide();
     partidaScreen->show();
 }
@@ -183,6 +184,24 @@ void LoginWindow::connectEvents() {
                      this, &LoginWindow::unirseAPartida);
 }
 
+void LoginWindow::cargarMapasDisponibles(QComboBox& combo_mapa,
+        std::map<std::string, std::string>& mapas) {
+    if (auto dir = opendir("../common_src/mapas/")) {
+        while (auto f = readdir(dir)) {
+            if (!f->d_name || f->d_name[0] == '.')
+                continue;
+
+            std::string filename(f->d_name);
+            YAML::Node map = YAML::LoadFile("../common_src/mapas/" + filename);
+            std::string map_name = map["nombre"].as<std::string>();
+            combo_mapa.addItem(QString::fromStdString(map_name));
+            mapas.insert(std::pair<std::string, std::string>(map_name,
+                                                    f->d_name));
+        }
+        closedir(dir);
+    }
+}
+
 void LoginWindow::crearPartida(){
     QDialog dialog(this);
     dialog.setWindowTitle(QString("Crear Partida"));
@@ -192,14 +211,23 @@ void LoginWindow::crearPartida(){
     // Creo un dialog con un form
     QFormLayout form(&dialog);
 
-    // Agrego una lista con los campos
-    QList<QLineEdit *> fields;
+    // Mapas para mostrar como opciones.
+    std::map<std::string, std::string> mapas;
 
     // Nombre del mapa
-    QLineEdit lineEditIDMapa(&dialog);
-    QString labelIDMapa = QString("ID Mapa");
-    form.addRow(labelIDMapa, &lineEditIDMapa);
-    fields << &lineEditIDMapa;
+    QComboBox combo_mapa;
+    QString label_mapa = QString("Mapa");
+    form.addRow(label_mapa, &combo_mapa);
+    cargarMapasDisponibles(combo_mapa, mapas);
+
+    // Cantidad de bots
+    QComboBox combo_bots;
+    combo_bots.addItem("1");
+    combo_bots.addItem("2");
+    combo_bots.addItem("3");
+    combo_bots.addItem("4");
+    QString label_bots = QString("Bots");
+    form.addRow(label_bots, &combo_bots);
 
     // Botones
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
@@ -210,20 +238,24 @@ void LoginWindow::crearPartida(){
     QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
     QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
     int game_id;
-    // Show the dialog as modal
-    if (dialog.exec() == QDialog::Accepted){
-        // If the user didn't dismiss the dialog, do something with the fields
-        std::string id_mapa = lineEditIDMapa.text().toStdString();
+
+    if (dialog.exec() == QDialog::Accepted) {
+        std::string nombre_mapa = combo_mapa.currentText().toStdString();
+        std::string archivo_mapa = mapas[nombre_mapa];
+        int cantidad_bots = combo_bots.currentText().toInt();
+        //TODO: Utilizar la cantidad de bots y el archivo mapa.
+        cantidad_bots += 1;
 
         try {
-            client_holder.crearPartida(id_mapa, game_id);
+            // client_holder.crearPartida(nombre_mapa, cantidad_bots, game_id);
+            client_holder.crearPartida("1", game_id);
         } catch (...) {
             mostrarWarning(QString("Ha ocurrido un error, intente nuevamente"),
                         QMessageBox::Warning, true);
             return;
         }
-
-
+    } else {
+        return;
     }
     waitUntilLaunch(game_id);
 }
@@ -242,7 +274,6 @@ void LoginWindow::waitUntilLaunch(int& game_id) {
 void LoginWindow::waitUntilAnotherUserLaunch() {
     mostrarWarning(QString("Una vez que el creador lance la partida, el juego iniciará automáticamente."),
                         QMessageBox::Information, false);
-    // TODO: ?? Que hago aca?
 }
 
 void LoginWindow::unirseAPartida() {
