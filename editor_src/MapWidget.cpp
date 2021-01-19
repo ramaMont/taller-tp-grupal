@@ -460,14 +460,42 @@ void MapWidget::actualizarNombreVentana() {
 
 void MapWidget::guardarMapa() {
     sincronizarMapaYVista();
-    if (validarParedes()) {
-        mapa->guardarMapa();
-        std::string message = "Mapa guardado con éxito!";
-        mostrarWarning(QString::fromStdString(message), QMessageBox::Information);
-    } else {
-        std::string message = "Los bordes del mapa deben ser paredes!";
-        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
+    if (!validarParedes()) return;
+    if (!validarPuertas()) return;
+
+    mapa->guardarMapa();
+    std::string message = "Mapa guardado con éxito!";
+    mostrarWarning(QString::fromStdString(message), QMessageBox::Information);
+}
+
+bool MapWidget::validarPuertas() {
+
+    int filas = mapa->getFilas();
+    int columnas = mapa->getColumnas();
+
+    for (int i=1; i < filas-1; i++) {
+        for (int k=1; k < columnas-1; k++) {
+            std::string pos = "pos_" + std::to_string(i) + "_" + std::to_string(k);
+            QLabel* label = findChild<QLabel*>(QString::fromStdString(pos + "_element"));
+            if (label->text().startsWith("puerta")) {
+                std::string fila_previa = "pos_" + std::to_string(i-1) + "_" + std::to_string(k);
+                std::string fila_siguiente = "pos_" + std::to_string(i+1) + "_" + std::to_string(k);
+                std::string columna_previa = "pos_" + std::to_string(i) + "_" + std::to_string(k-1);
+                std::string columna_siguiente = "pos_" + std::to_string(i) + "_" + std::to_string(k+1);
+                QLabel* label_fprevia = findChild<QLabel*>(QString::fromStdString(fila_previa + "_element"));
+                QLabel* label_fsig = findChild<QLabel*>(QString::fromStdString(fila_siguiente + "_element"));
+                QLabel* label_cprevia = findChild<QLabel*>(QString::fromStdString(columna_previa + "_element"));
+                QLabel* label_csig = findChild<QLabel*>(QString::fromStdString(columna_siguiente + "_element"));
+                if (!(label_fprevia->text().startsWith("pared") & label_fsig->text().startsWith("pared")) & 
+                    !(label_cprevia->text().startsWith("pared") & label_csig->text().startsWith("pared"))) {
+                    std::string message = "Las puertas deben estar rodeadas de paredes!";
+                    mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
+                    return false;
+                }
+            }
+        }
     }
+    return true;
 }
 
 bool MapWidget::validarParedes() {
@@ -482,8 +510,11 @@ bool MapWidget::validarParedes() {
         QLabel* label_primera_fila_e = findChild<QLabel*>(QString::fromStdString(pos_primera_fila + "_element"));
         QLabel* label_ultima_fila_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_fila + "_element"));
         if ((!label_primera_fila_e->text().startsWith("pared")) ||
-            (!label_ultima_fila_e->text().startsWith("pared")))
+            (!label_ultima_fila_e->text().startsWith("pared"))) {
+            std::string message = "Los bordes del mapa deben ser paredes!";
+            mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
             return false;
+        }
     }
 
     for (int f=0; f < filas; f++) {
@@ -493,8 +524,11 @@ bool MapWidget::validarParedes() {
         QLabel* label_primera_columna_e = findChild<QLabel*>(QString::fromStdString(pos_primera_columna + "_element"));
         QLabel* label_ultima_columna_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_columna + "_element"));
         if ((!label_primera_columna_e->text().startsWith("pared")) ||
-            (!label_ultima_columna_e->text().startsWith("pared")))
+            (!label_ultima_columna_e->text().startsWith("pared"))) {
+            std::string message = "Los bordes del mapa deben ser paredes!";
+            mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
             return false;
+        }
     }
 
     return true;
