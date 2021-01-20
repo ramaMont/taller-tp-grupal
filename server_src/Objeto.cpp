@@ -6,20 +6,22 @@
 #include <chrono>
 
 
-void ParedFalsa::abrir(Player *jugador){
+bool ParedFalsa::abrir(Player *jugador){
 	if (jugador->get_coordinates().calculate_distance(this->posicion) <= 1)
-		jugador->getMapa().sacarPosicionable(this->posicion);
+		return true;
+    return false;
 }
 
 
-void Puerta::abrir(Player *jugador){
-    abrirPuerta(jugador);
+bool Puerta::abrir(Player *jugador){
+    return abrirPuerta(jugador);
 }
 
-void Puerta::abrirPuerta(Player *jugador){
+bool Puerta::abrirPuerta(Player *jugador){
 	if (jugador->get_coordinates().calculate_distance(this->posicion) > 1)
-		return;
+		return false;
 	atravesable(true);
+    return true;
 }
 
 void Puerta::cerrar(){
@@ -27,8 +29,9 @@ void Puerta::cerrar(){
 }
 
 
-void PuertaCerrada::abrir(Player *jugador){
+bool PuertaCerrada::abrir(Player *jugador){
 	if (this->llave || jugador->usarLlave())
-		abrirPuerta(jugador);
+		return abrirPuerta(jugador);
+    return false;
 }
 		

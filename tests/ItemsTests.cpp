@@ -3,7 +3,8 @@
 #include "Player.h"
 #include "Item.h"
 #include "Posicionable.h"
-
+#include "Event.h"
+#include <iostream>
 
 TEST(ItemsTests, comidaRecupera10puntosDeVida) {
     //arrange
@@ -11,7 +12,7 @@ TEST(ItemsTests, comidaRecupera10puntosDeVida) {
     BlockingQueue<Protocol> bq;
     Player* jugador = new Player(Coordinates(5,5), Coordinates(1,0), mapa, bq);
     Comida* comida = new Comida(Coordinates(6,5));
-    mapa.agregarPosicionable(comida, Coordinates(6,5));
+    mapa.agregarItem(comida, Coordinates(6,5));
     int vida_maxima = jugador->getVida();
     
     //act
@@ -27,6 +28,7 @@ TEST(ItemsTests, comidaRecupera10puntosDeVida) {
     //assert
     EXPECT_EQ (vida_maxima, vida);
 }
+
 /*
 TEST(ItemsTests, kitMedicoRecupera20puntosDeVida) {
     //arrange

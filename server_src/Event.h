@@ -3,6 +3,7 @@
 
 #include <ctime>
 #include "Objeto.h"
+class ThGameEvents;
 
 class Event{
     protected:
@@ -11,9 +12,34 @@ class Event{
 
     public:
     Event();
-    virtual void process() = 0;
+    virtual void process(BlockingQueue<Protocol>& game_model_queue) = 0;
     bool finished();
     virtual ~Event();
+};
+
+
+class OpenEvent: public Event{
+    private:
+    Player* player;
+    Mapa& map;
+    ThGameEvents& th_game_events;
+    
+    public:
+    OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e);
+    virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
+    ~OpenEvent();
+};
+
+
+class FinishGameEvent: public Event{
+    private:
+    std::map<int, Player*>& players;
+
+    public:
+    FinishGameEvent(std::map<int, Player*>& players);
+    virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
+    bool someoneWon();
+    ~FinishGameEvent();
 };
 
 
@@ -23,24 +49,8 @@ class DoorEvent: public Event{
 
     public:
     DoorEvent(Puerta *puerta);
-    virtual void process() override;
+    virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
     ~DoorEvent();
-};
-
-
-class WallEvent: public Event{
-    private:
-    Coordinates position;
-    Coordinates direction;
-    ParedFalsa* object;
-    Mapa& mapa;
-
-    public:
-    WallEvent(Coordinates position, Coordinates dir, 
-        ParedFalsa* pared, Mapa& mapa);
-    virtual void process() override;
-    void move();
-    ~WallEvent();
 };
 
 
@@ -56,7 +66,7 @@ class RocketEvent: public Event{
     public:
     RocketEvent(Coordinates position, Coordinates dir,
     Player* player, std::map<int, Player*>& enemigos);
-    virtual void process() override;
+    virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
     void move();
     void explote();
     bool colisionaConObjeto(const Coordinates& inicio, const Coordinates& fin);

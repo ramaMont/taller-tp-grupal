@@ -3,39 +3,34 @@
 #include <ThGameModelServer.h>
 #include <thread>
 #include <chrono>
+#include <iostream>
 
-#define TIME_SLEEP 500
+#define TIME_SLEEP 200
 
 ThBots::ThBots(ThGameModelServer* th_game_model,
                BlockingQueue<Protocol>& game_model_queue,
                std::map<int,Player*>& players,
-               const Mapa& mapa,
+               const Mapa& map,
                int number_of_bots):
     Thread(),
     players(players),
-    _game_model_queue(game_model_queue){
+    _game_model_queue(game_model_queue),
+    number_of_bots(number_of_bots),
+    th_game_model(th_game_model),
+    map(map){
     is_running = true;
-    int last_id = players.size();
-    for (int player_id=last_id; player_id<last_id+number_of_bots; ++player_id){
-        th_game_model->addPlayer(player_id);
-        Bot* bot = new Bot(mapa);
-        bots[player_id] = bot;   
-
-        // Copiado de GamesAdmin::joinGame
-        // Le envio a todos los jugadores que se ha unido uno nuevo.
-        // Incluido el nuevo jugador asi se agrega en su modelo.
-        Protocol protocol(player_id);   // No se si esta bien
-        protocol.setAction(Protocol::action::ADD_PLAYER);
-        th_game_model->echoProtocol(protocol);
-    }
 }
 
 void ThBots::run(){
+    if (number_of_bots <= 0)
+        return;
+    addBots();
     while (is_running){
         std::this_thread::sleep_for(std::chrono::milliseconds(TIME_SLEEP));
         for (auto it = bots.begin(); it != bots.end() && is_running; ++it){
             try{
                 Player* player = players[it->first];
+player->cambiarArma(N_CUCHILLO);  // Eliminar linea
                 Bot::Event event = it->second->getEvent(player, players);
                 makeEvent(it->first, event);
             } catch(...) { }
@@ -45,6 +40,28 @@ void ThBots::run(){
 
 void ThBots::stop(){
     is_running = false;
+}
+
+void ThBots::addBots(){
+    int bots_added = 0;
+    for (int player_id = 0; player_id < 100; ++player_id){
+        if (players.count(player_id) > 0)
+            continue;
+
+        th_game_model->addPlayer(player_id);
+        Bot* bot = new Bot(map);
+        bots[player_id] = bot;   
+
+        // Copiado de GamesAdmin::joinGame
+        // Le envio a todos los jugadores que se ha unido uno nuevo.
+        Protocol protocol(player_id);  
+        protocol.setAction(Protocol::action::ADD_PLAYER);
+        th_game_model->echoProtocol(protocol);
+ 
+        bots_added++;
+        if (bots_added == number_of_bots)
+            return;
+    }
 }
 
 void ThBots::makeEvent(int player_id, Bot::Event event){

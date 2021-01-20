@@ -3,12 +3,13 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include "ExceptionServer.h"
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
         int map_id, int game_id):
     GameModel(map_id, game_id), launched(false),
     th_game_events(operations),
-    th_bots(this, operations, players, map, 1){
+    th_bots(this, operations, players, map, 0){
     addThSender(th_user_server.getSender());
     addPlayer(th_user_server.getId());
     th_user_server.setGameModel(this);
@@ -56,7 +57,13 @@ void ThGameModelServer::echoProtocol(Protocol protocol){
 
 void ThGameModelServer::processShoot(Protocol protocol){
     Player* player = players.at(protocol.getId());
-    player->disparar(players);
+    try {
+        player->disparar(players);
+    } catch(const RocketException &e) {
+        Event *event = new RocketEvent(player->get_coordinates(),
+            player->get_direction(), player, players);
+        th_game_events.add(event);
+    } catch(...) {}
 }
 
 void ThGameModelServer::processShooted(Protocol protocol){
@@ -74,13 +81,21 @@ void ThGameModelServer::processDie(Protocol protocol){
     player->morir();
 }
 
+void ThGameModelServer::processOpen(Protocol protocol){
+    Player* player = players.at(protocol.getId());
+    OpenEvent event(player, map, th_game_events);
+    event.process(operations);
+}
+
 void ThGameModelServer::run(){
     launched = true;
     Protocol protocol;
     protocol.setAction(Protocol::action::BEGIN);
     echoProtocol(protocol);
-    //th_game_events.start();
+    th_game_events.start();
     th_bots.start();
+    Event* event = new FinishGameEvent(players);
+    th_game_events.add(event);
     try{
         while (is_running){
             protocol = operations.pop();
@@ -106,7 +121,7 @@ void ThGameModelServer::removePlayer(int user_id){
 void ThGameModelServer::stop(){
     is_running = false;
     operations.stop();
-    //th_game_events.stop();
+    th_game_events.stop();
     th_bots.stop();
 }
 
@@ -125,6 +140,6 @@ ThGameModelServer::~ThGameModelServer(){
     // removePlayer la cual es llamada cada vez que un jugador
     // se desconecta o se frena la ejecucion de un ThUserServer
     
-    //th_game_events.join();
+    th_game_events.join();
     th_bots.join();
 }

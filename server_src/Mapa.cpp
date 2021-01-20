@@ -4,7 +4,7 @@
 #include <cmath>
 #include <typeinfo>
 #include "Objeto.h"
-#include "Item.h"
+#include "Event.h"
 
 
 // Codigo de errores en int (despues cambiar a excepciones)
@@ -54,7 +54,8 @@ void initMap(Mapa& map){
 Mapa::Mapa(int map_id):
         alto(24),
         ancho(24),
-        mapaJuego(ancho, std::vector<std::vector<Posicionable*>>(alto)){
+        mapaJuego(ancho, std::vector<std::vector<Posicionable*>>(alto)),
+        items(ancho, std::vector<std::vector<Item*>>(alto)){
    /* for (int i=0; i<ancho; i++){
         for (int j=0; j<alto; j++){
             mapaJuego[i][j]=nullptr;
@@ -64,7 +65,8 @@ Mapa::Mapa(int map_id):
 }
 
 Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
-        std::vector<std::vector<Posicionable*>>(alto)){
+        std::vector<std::vector<Posicionable*>>(alto)),
+        items(ancho, std::vector<std::vector<Item*>>(alto)){
     /*for (int i=0; i<ancho; i++){
         for (int j=0; j<alto; j++){
             mapaJuego[i][j]=nullptr;
@@ -94,9 +96,26 @@ void Mapa::agregarPosicionable(Posicionable* posicionable,
 	}
 }
 
+void Mapa::agregarItem(Item* item, Coordinates posicion){
+	if (floor(posicion.x) < 0 || floor(posicion.x) >= ancho ||
+	    floor(posicion.y) < 0 || floor(posicion.y) >= alto) return;
+	items[floor(posicion.x)][floor(posicion.y)].push_back(item);
+}
+
 void Mapa::sacarPosicionable(Coordinates posicion){
     if (!mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
 	    mapaJuego[floor(posicion.x)][floor(posicion.y)].pop_back();
+}
+
+void Mapa::sacarItem(Coordinates posicion, const std::type_info& type_id){
+    std::vector<Item*>& vec = items[floor(posicion.x)][floor(posicion.y)];
+    for (auto it = vec.begin(); it < vec.end(); ++it){
+        if (typeid(*it) == type_id){
+            delete(*it);
+            vec.erase(it);
+            return;
+        }
+    }
 }
 
 Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
@@ -107,15 +126,9 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)].back();
 }
 
-
-void usarItems(std::vector<Posicionable*>& items, Player* jugador){
+void usarItems(std::vector<Item*>& items, Player *player){
     for (auto it = items.begin(); it < items.end(); it++){
-        if (typeid(*it) == typeid(Puerta))
-            continue;
-        if (static_cast<Item*>(*it)->usar(jugador)){
-            delete(*it);
-            items.erase(it);
-        }
+        (*it)->usar(player);
     }
 }
 
@@ -129,10 +142,8 @@ void Mapa::moveme(Player* jugador, const Coordinates& posicion){
         return;
     }
     try {
-        std::vector<Posicionable*>& posicionables =
-            mapaJuego[floor(posicion.x)][floor(posicion.y)];
-        if (!posicionables.empty() && posicionables.front()->atravesable())
-            usarItems(posicionables, jugador);
+        if (!items[floor(posicion.x)][floor(posicion.y)].empty())
+            usarItems(items[floor(posicion.x)][floor(posicion.y)], jugador);
         agregarPosicionable(jugador, posicion);
         sacarPosicionable(posJugador);
     } catch(int e){
@@ -156,16 +167,6 @@ Mapa& Mapa::operator=(Mapa&& other){
     return *this;
 }
 
-void Mapa::soltar(Posicionable* objeto, const Coordinates& posicion){
-	if (floor(posicion.x) < 0 || floor(posicion.x) >= ancho ||
-	    floor(posicion.y) < 0 || floor(posicion.y) >= alto) return;
-	mapaJuego[floor(posicion.x)][floor(posicion.y)].push_back(objeto);
-}
-
-void Mapa::soltar(Posicionable* objeto){
-	soltar(objeto, objeto->getPosicion());
-}
-
 bool Mapa::hayObstaculoEn(const Coordinates& posicion) const{
 	return hayObstaculoEn(posicion.x, posicion.y);
 }
@@ -187,6 +188,13 @@ bool Mapa::hayPuertaEn(float x, float y) const{
 	return typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Puerta);
 }
 
+bool Mapa::hayJugadorEn(float x, float y) const{
+	if (floor(x) < 0 || floor(x) >= ancho ||
+	    floor(y) < 0 || floor(y) >= alto ||
+	    mapaJuego[floor(x)][floor(y)].empty()) return false;
+	return typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Player);
+}
+
 int Mapa::getAlto() const{
 	return this->alto;
 }
@@ -197,12 +205,14 @@ int Mapa::getAncho() const{
 
 // Se encarga de limpiar los vectores con usuarios y jugadores.
 Mapa::~Mapa(){
-    if (!mapaJuego.empty()){
-        for (int i = 0; i < alto; ++i){
-            for (int j = 0; j < ancho; ++j){
-                for (Posicionable* p: mapaJuego[i][j]){
-                    delete(p);
-                }
+    for (int i = 0; i < alto; ++i){
+        for (int j = 0; j < ancho; ++j){
+            for (Posicionable* p: mapaJuego[i][j]){
+                delete(p);
+            }
+            for (Item* i: items[i][j]){
+                delete(i);
             }
         }
+    }
 }

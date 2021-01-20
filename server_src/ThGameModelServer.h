@@ -21,6 +21,7 @@ private:
     void processShooted(Protocol protocol);
     void processDie(Protocol protocol);
     void processResurrect(Protocol protocol);
+    void processOpen(Protocol protocol);
 
 public:
     explicit ThGameModelServer(ThUserServer& th_user_server, int map_id,

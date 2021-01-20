@@ -25,7 +25,7 @@ local ENEMIGO = 3
 
 
 local PI = 3.1415926535898
-local MOVIMIENTOS = 50
+local MOVIMIENTOS = 5
 
 
 -- Funciones Locales
@@ -141,7 +141,7 @@ function bot.calcularMovimiento(pos_x, pos_y, dir_x, dir_y, ene_x, ene_y)
         angulo = -angulo
     end
     
-    if angulo == 0 then
+    if -0.2 < angulo and angulo < 0.2 then
         return ADELANTE
     elseif angulo < 0 then
         return DERECHA
@@ -155,11 +155,12 @@ function bot.encontrarEnemigo(pos_x, pos_y)
     if not visitados then
         return false
     end
+
     bot.enemigo_actual = {pasos = {}, actual = 1, movimientos = MOVIMIENTOS}
     anterior = visitados[x][y].anterior
     while anterior[1] ~= pos_x or anterior[2] ~= pos_y do
         x, y = anterior[1], anterior[2]
-        table.insert(bot.enemigo_actual.pasos, {x,y})
+        table.insert(bot.enemigo_actual.pasos, 1, {x,y})
         anterior = visitados[x][y].anterior
     end
     return true
@@ -168,14 +169,17 @@ end
 -- Decide para donde moverse en base al camino hacia su enemigo
 function bot.generarMovimiento(pos_x, pos_y, dir_x, dir_y)
     posicion_siguiente = bot.enemigo_actual.pasos[bot.enemigo_actual.actual]
-    if pos_x == posicion_siguiente[1] and pos_y == posicion_siguiente[2] then
-        bot.enemigo_actual.actual = bot.enemigo_actual.actual + 1
-        posicion_siguiente = bot.enemigo_actual.pasos[bot.enemigo_actual.actual]
+
+    if pos_x == posicion_siguiente[1] and pos_y == posicion_siguiente[2] and
+      #bot.enemigo_actual.pasos < bot.enemigo_actual.actual then
+      bot.enemigo_actual.actual = bot.enemigo_actual.actual + 1
+      posicion_siguiente = bot.enemigo_actual.pasos[bot.enemigo_actual.actual]
     end
+
+    bot.enemigo_actual.movimientos = bot.enemigo_actual.movimientos - 1
     x = posicion_siguiente[1]
     y = posicion_siguiente[2]
 
-    bot.enemigo_actual.movimientos = bot.enemigo_actual.movimientos - 1
     if bot.enemigo_actual.movimientos == 0 then
         bot.enemigo_actual = false
     end
@@ -184,10 +188,10 @@ end
 
 -- Agrega las posiciones de los enemigos en el mapa
 function bot.agregarEnemigosAlMapa(...)
-	local arg = {...}
+    local arg = {...}
     for i = 1, #arg/2 do
-		bot.enemigos[i] = {x = math.floor(arg[i+i-1]) + 1,
-		                   y = math.floor(arg[i*2]) + 1}
+        bot.enemigos[i] = {x = math.floor(arg[i+i-1]) + 1,
+		           y = math.floor(arg[i*2]) + 1}
         bot.mapa[bot.enemigos[i].x][bot.enemigos[i].y] = ENEMIGO
     end 
 end
@@ -232,10 +236,10 @@ function bot.generarEvento(n_arma, pos_x, pos_y, dir_x, dir_y, ...)
     if bot.abrePuerta(pos_x, pos_y, dir_x, dir_y) then
         return ABRIR_PUERTA
     end
-    
+   
     bot.borrarEnemigosAnterioresDelMapa();
     bot.agregarEnemigosAlMapa(...)
-       
+
     if bot.tengoEnemigoAdelante(pos_x, pos_y, dir_x, dir_y) then
         return DISPARAR
     end
@@ -243,13 +247,14 @@ function bot.generarEvento(n_arma, pos_x, pos_y, dir_x, dir_y, ...)
     res, x, y = bot.tengoEnemigoAlrededor(pos_x, pos_y)
     if res then
         return bot.calcularMovimiento(pos_x, pos_y, dir_x, dir_y, x, y)
-    end     
+    end  
 
     if not bot.enemigo_actual then 
         if not bot.encontrarEnemigo(pos_x, pos_y) then 
             return ADELANTE
         end
-    end
+    end   
+
     return bot.generarMovimiento(pos_x, pos_y, dir_x, dir_y)
 end
 

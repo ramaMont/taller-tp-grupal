@@ -14,16 +14,21 @@ class ThBots : public Thread{
     std::map<int, Bot*> bots;
     std::map<int, Player*>& players;
     BlockingQueue<Protocol>& _game_model_queue;
+    int number_of_bots;
+    ThGameModelServer* th_game_model;
+    const Mapa& map;
+
+    void addBots();
+    void makeEvent(int player_id, Bot::Event event);
     
     public:
     explicit ThBots(ThGameModelServer* th_game_model,
                     BlockingQueue<Protocol>& game_model_queue,
                     std::map<int,Player*>& players,
-                    const Mapa& mapa,
+                    const Mapa& map,
                     int number_of_bots);
     virtual void run() override;
     virtual void stop() override;
-    void makeEvent(int player_id, Bot::Event event);
     ~ThBots();
 };
 

@@ -150,13 +150,13 @@ int Guardia::numeroArma() const{
 // SS
 
 SS::SS(int &balas): Soldado(balas){
-	this->ametralladora = nullptr;
+	this->tieneArma = false;
 }
 
 bool SS::agregarArma(Ametralladora *ametr){
-	if (this->ametralladora != nullptr)
+	if (this->tieneArma)
 		return false;
-	this->ametralladora = ametr;
+	this->tieneArma = true;
 	return true;
 }
 
@@ -166,19 +166,20 @@ void SS::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 
 	for (int i = 0; (i < configs[CONFIG::balas_rafaga_ametralladora]) 
 	    && (this->balas > 0); i++){
-	    this->ametralladora->disparar(jugador, set_jugadores);
+	    this->ametralladora.disparar(jugador, set_jugadores);
 	    this->balas --;
 	}
 }
 
 void SS::soltarArma(Player *jugador){
 	Mapa &mapa = jugador->getMapa();
-	mapa.soltar(this->ametralladora, jugador->get_coordinates());
-	this->ametralladora = nullptr;
+    Item* arma = new Ametralladora();
+	mapa.agregarItem(arma, jugador->get_coordinates());
+	this->tieneArma = false;
 }
 
 bool SS::estaListo(){
-	return this->balas > 0 && this->ametralladora != nullptr;
+	return this->balas > 0 && this->tieneArma;
 }
 
 int SS::numeroArma() const{
@@ -189,31 +190,32 @@ int SS::numeroArma() const{
 // Oficial
 
 Oficial::Oficial(int &balas): Soldado(balas){
-	this->canion = nullptr;
+	this->tieneArma = false;
 }
 
 bool Oficial::agregarArma(CanionDeCadena *canion){
-	if (this->canion != nullptr)
+	if (this->tieneArma)
 		return false;
-	this->canion = canion;
+	this->tieneArma = true;
     return true;
 }
 	
 void Oficial::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	std::set<std::pair<int, Player*>> set_jugadores;
 	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
-	this->canion->disparar(jugador, set_jugadores);
+	this->canion.disparar(jugador, set_jugadores);
 	this->balas --;	
 }
 
 void Oficial::soltarArma(Player *jugador){
 	Mapa &mapa = jugador->getMapa();
-	mapa.soltar(this->canion, jugador->get_coordinates());
-	this->canion = nullptr;
+    Item* arma = new CanionDeCadena();
+	mapa.agregarItem(arma, jugador->get_coordinates());
+	this->tieneArma = false;
 }
 
 bool Oficial::estaListo(){
-	return this->balas > 0 && this->canion != nullptr;
+	return this->balas > 0 && this->tieneArma;
 }
 
 int Oficial::numeroArma() const{
@@ -224,30 +226,31 @@ int Oficial::numeroArma() const{
 // Mutante
 
 Mutante::Mutante(int &balas): Soldado(balas){
-	this->lanzacohetes = nullptr;
+	this->tieneArma = false;
 }
 
 bool Mutante::agregarArma(Lanzacohetes *lanzacohetes){
-	if (this->lanzacohetes != nullptr)
+	if (this->tieneArma)
 		return false;
-	this->lanzacohetes = lanzacohetes;
+	this->tieneArma = true;
 	return true;	
 }
 
 void Mutante::disparar(Player *jugador, std::map<int, Player*>& enemigos){
-	this->lanzacohetes->disparar(jugador, enemigos);
+	this->lanzacohetes.disparar(jugador, enemigos);
 	this->balas -= (int)configs[CONFIG::balas_gastadas_lanzacohetes];
 }
 
 void Mutante::soltarArma(Player *jugador){
 	Mapa &mapa = jugador->getMapa();
-	mapa.soltar(this->lanzacohetes, jugador->get_coordinates());
-	this->lanzacohetes = nullptr;
+    Item* arma = new Lanzacohetes();
+	mapa.agregarItem(arma, jugador->get_coordinates());
+	this->tieneArma = false;
 }
 
 bool Mutante::estaListo(){
 	return this->balas > configs[CONFIG::balas_gastadas_lanzacohetes]
-	       && this->lanzacohetes != nullptr;
+	       && this->tieneArma;
 }
 
 int Mutante::numeroArma() const{

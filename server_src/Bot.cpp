@@ -33,6 +33,8 @@ int Bot::luaObtenerObjetoMapa(lua_State *L){
 		lua_pushnumber(L, Posicion::Vacio);
 	} else if (bot->mapa.hayPuertaEn(x, y)){
 		lua_pushnumber(L, Posicion::Puerta);
+	} else if (bot->mapa.hayJugadorEn(x, y)){
+		lua_pushnumber(L, Posicion::Vacio);
 	} else {
 		lua_pushnumber(L, Posicion::Ocupado);
 	}	

@@ -2,12 +2,15 @@
 #include "ParamReaderServer.h"
 #include <chrono>
 #include <cmath>
+#include <iostream>
+#include "ThGameEvents.h"
 
 #define WALL_TIME_TO_MOVE 1000
 #define WALL_STEP 0.15
 #define ROCKET_TIME_TO_MOVE 1000
 #define ROCKET_STEP 0.15
 #define STEP 1
+#define MINUTE_SECONDS 60
 
 Event::Event(){
     _time = time(0);
@@ -22,11 +25,73 @@ Event::~Event(){
 }
 
 
+// Open 
+OpenEvent::OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e):
+    Event(), player(player), map(map), th_game_events(game_e){
+}
+
+void OpenEvent::process(BlockingQueue<Protocol>& game_model_queue){
+    Coordinates pos = player->get_coordinates();
+    pos.increment_on_direction(player->get_direction(), 1);
+    Posicionable* p = map.obtenerPosicionableEn(pos);
+    if (p && typeid(p) == typeid(Puerta)){
+        Puerta* puerta = static_cast<Puerta*>(p);
+        if (puerta->abrir(player)){
+            Event* doorE = new DoorEvent(puerta);
+            th_game_events.add(doorE);
+            // Protocol 
+        }
+    }
+    if (p && typeid(p) == typeid(ParedFalsa)){
+        ParedFalsa* wall = static_cast<ParedFalsa*>(p);
+        if (wall->abrir(player)){
+            // Protocol sacar pared
+        }
+    }   
+}
+
+OpenEvent::~OpenEvent(){
+}
+
+
+// Finish Game
+FinishGameEvent::FinishGameEvent(std::map<int, Player*>& players):
+    Event(), players(players){
+}
+
+void FinishGameEvent::process(BlockingQueue<Protocol>& game_model_queue){
+    time_t time_now = time(0);
+    double seconds = difftime(time_now, _time);
+
+    if (seconds/MINUTE_SECONDS > configs[CONFIG::minutos_partida]
+        || someoneWon()){
+        // Protocol finish
+        _finished = true;
+    }
+}
+
+bool FinishGameEvent::someoneWon(){
+    bool winner = false;
+    for (auto it = players.begin(); it != players.end(); ++it){
+        if (it->second->estaVivo()){
+            if (winner)
+                return false;
+            winner = true;
+        }
+    }
+    return true;
+}
+
+FinishGameEvent::~FinishGameEvent(){
+}
+
+
+// Door 
 DoorEvent::DoorEvent(Puerta* puerta): 
     Event(), door(puerta){
 }
 
-void DoorEvent::process(){ 
+void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){ 
     time_t time_now = time(0);
     double seconds = difftime(time_now, _time);
     if (seconds >= configs[CONFIG::segundos_cerrar_puerta]){
@@ -40,41 +105,7 @@ DoorEvent::~DoorEvent(){
 }
 
 
-WallEvent::WallEvent(Coordinates position, Coordinates dir, 
-    ParedFalsa* pared, Mapa& mapa):
-    Event(), position(position), direction(dir),
-    object(pared), mapa(mapa){
-    direction.x = round(direction.x);
-    direction.y = round(direction.y);
-}
-
-void WallEvent::process(){ 
-    time_t time_now = time(0);
-    double seconds = difftime(time_now, _time);
-    if (seconds * 1000 < WALL_TIME_TO_MOVE)
-        return;
-    _time = time_now;
-    move();
-    // protocol mover pared
-}
-
-void WallEvent::move(){
-    Coordinates aux = position;
-    position.increment_on_direction(direction, WALL_STEP);
-    if (mapa.hayObstaculoEn(position)){
-        _finished = true;
-        return;
-    }
-    if (aux != position){ 
-        mapa.sacarPosicionable(aux);
-        mapa.agregarPosicionable(object, position);
-    }
-}
-
-WallEvent::~WallEvent(){
-}
-
-
+// Rocket
 RocketEvent::RocketEvent(Coordinates position, Coordinates dir,
     Player* player, std::map<int, Player*>& enemigos):
     Event(), position(position), direction(dir),
@@ -84,7 +115,7 @@ RocketEvent::RocketEvent(Coordinates position, Coordinates dir,
     mapa.agregarPosicionable(object, position);
 }
 
-void RocketEvent::process(){
+void RocketEvent::process(BlockingQueue<Protocol>& game_model_queue){
     time_t time_now = time(0);
     double seconds = difftime(time_now, _time);
     if (seconds * 1000 < ROCKET_TIME_TO_MOVE)
