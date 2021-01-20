@@ -1,10 +1,11 @@
 #include "GameModelClient.h"
 #include <tuple>
+#include <yaml-cpp/yaml.h>
 
 GameModelClient::GameModelClient(int user_id, std::string map_filename,
             int game_id, int protagonist_id) : 
         window(640,480,320,200) ,
-        texture(window), map(24, 24), 
+        texture(window), map(), 
         added_player(false),player(map),
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
@@ -12,7 +13,7 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,
     player.set_texture(&texture);
     player.new_gun_type(1);
     initDirections();
-    initMap();
+    initMap(map_filename);
     addPlayer(user_id);
 }
 
@@ -35,95 +36,126 @@ void GameModelClient::initDirections(){
     directions[Protocol::direction::ROTATE_RIGHT] = rotRight;
 }
 
-void GameModelClient::initMap(){
-    std::vector<std::vector<int>> a_map{
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,2,10,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-    {1,0,8,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,9,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,9,0,0,0,0,1},
-    {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
+// void GameModelClient::initMap(){
+//     std::vector<std::vector<int>> a_map{
+//     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,0,0,2,2,10,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+//     {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+//     {1,0,8,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,9,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,1},
+//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,9,0,0,0,0,1},
+//     {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+// };
 
-    for(int i=0; i<24; i++){
-      for(int j=0; j<24; j++){
-        int pos_value = a_map[i][j];
-        if(pos_value!=0){
-            if(pos_value<8){
-              Coordinates position((float)i,(float)j);
-              if(pos_value==1){
+//     for(int i=0; i<24; i++){
+//       for(int j=0; j<24; j++){
+//         int pos_value = a_map[i][j];
+//         if(pos_value!=0){
+//             if(pos_value<8){
+//               Coordinates position((float)i,(float)j);
+//               if(pos_value==1){
+//                   Posicionable *posicionable = new Wall_greystone(position);
+//                   posicionable->set_texture(&texture);
+//                   map.agregarPosicionable(posicionable,position);                
+//               }else if(pos_value==2){
+//                   Posicionable *posicionable = new Wall_bluestone(position);
+//                   posicionable->set_texture(&texture);
+//                   map.agregarPosicionable(posicionable,position);
+//               }else if(pos_value==3){
+//                   Posicionable *posicionable = new Wall_purplestone(position);
+//                   posicionable->set_texture(&texture);
+//                   map.agregarPosicionable(posicionable,position);
+//               }else if(pos_value==4){
+//                   Posicionable *posicionable = new Wall_colorstone(position);
+//                   posicionable->set_texture(&texture);
+//                   map.agregarPosicionable(posicionable,position);
+//               }else if(pos_value==5){
+//                   Posicionable *posicionable = new Wall_eagle(position);
+//                   posicionable->set_texture(&texture);
+//                   map.agregarPosicionable(posicionable,position);
+//               }else if(pos_value==6){
+//                   Posicionable *posicionable = new Wall_mossy(position);
+//                   posicionable->set_texture(&texture);
+//                   map.agregarPosicionable(posicionable,position);
+//               }else if(pos_value==7){
+//                   Posicionable *posicionable = new Wall_redbrick(position);
+//                   posicionable->set_texture(&texture);
+//                   map.agregarPosicionable(posicionable,position);
+//               }
+//             }else if(pos_value<10){
+//               Coordinates position((float)i+0.5,(float)j+0.5);
+//               Sprite_holder *posicionable = new Sprite_holder(position,a_map[i][j]-8,player);
+//               posicionable->set_texture(&texture);
+//               posicionable->add_sprite(2);
+//               sprites.push_back(posicionable);
+//               map.agregarPosicionable(posicionable,position);
+//             }else{//DOOR==10
+//               Coordinates position((float)i,(float)j);
+//               Door *posicionable = new Door(position);
+//               posicionable->set_texture(&texture);
+//               door = posicionable;
+//               map.agregarPosicionable(posicionable,position);   
+//             }
+//             /*else{ DEJO DE AGREGAR ENEMIGOS ASI
+//               Coordinates position((float)i+0.5,(float)j+0.5);
+//               Coordinates enemy_direction(0,1);
+//               Enemy *posicionable = new Enemy(texture,position,a_map[i][j]-10,enemy_direction,map,player,"Andy");//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
+//               posicionable->new_enemy_type(1);//Tipo de enemmigo por defecto
+//               sprites.push_back(posicionable);
+//               enemies.push_back(posicionable);
+//               map.agregarPosicionable(posicionable,position);             
+//             }*/
+//         }
+//       }
+//     }
+// }
+
+void GameModelClient::initMap(std::string map_filename){
+	std::string MAPS_PATH = "../data/maps/";
+    YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
+    int alto = map_node["filas"].as<int>();
+    int ancho = map_node["columnas"].as<int>();
+    map.resize(ancho, alto);
+    YAML::Node map_elements = map_node["elementos"];
+    std::string position="pos_";
+    for (int i=0; i<alto; i++){
+        for (int j=0; j<ancho; j++){
+            std::string actual_position = position + std::to_string(i) + "_" +
+                std::to_string(j);
+            std::string elemento = map_elements[actual_position].as<std::string>();
+            Coordinates position((float)i,(float)j);
+            if (elemento == "pared"){
                   Posicionable *posicionable = new Wall_greystone(position);
                   posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);                
-              }else if(pos_value==2){
-                  Posicionable *posicionable = new Wall_bluestone(position);
-                  posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);
-              }else if(pos_value==3){
-                  Posicionable *posicionable = new Wall_purplestone(position);
-                  posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);
-              }else if(pos_value==4){
-                  Posicionable *posicionable = new Wall_colorstone(position);
-                  posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);
-              }else if(pos_value==5){
-                  Posicionable *posicionable = new Wall_eagle(position);
-                  posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);
-              }else if(pos_value==6){
-                  Posicionable *posicionable = new Wall_mossy(position);
-                  posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);
-              }else if(pos_value==7){
-                  Posicionable *posicionable = new Wall_redbrick(position);
-                  posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);
-              }
-            }else if(pos_value<10){
-              Coordinates position((float)i+0.5,(float)j+0.5);
-              Sprite_holder *posicionable = new Sprite_holder(position,a_map[i][j]-8,player);
-              posicionable->set_texture(&texture);
-              posicionable->add_sprite(2);
-              sprites.push_back(posicionable);
-              map.agregarPosicionable(posicionable,position);
-            }else{//DOOR==10
-              Coordinates position((float)i,(float)j);
-              Door *posicionable = new Door(position);
-              posicionable->set_texture(&texture);
-              door = posicionable;
-              map.agregarPosicionable(posicionable,position);   
+                  map.agregarPosicionable(posicionable,position);   
+            } else if (elemento == "puerta"){
+                Door *posicionable = new Door(position);
+                posicionable->set_texture(&texture);
+                door = posicionable;
+                map.agregarPosicionable(posicionable,position);   
+            } else if (elemento == "vacio"){
+                // No hace falta hacer nada.
             }
-            /*else{ DEJO DE AGREGAR ENEMIGOS ASI
-              Coordinates position((float)i+0.5,(float)j+0.5);
-              Coordinates enemy_direction(0,1);
-              Enemy *posicionable = new Enemy(texture,position,a_map[i][j]-10,enemy_direction,map,player,"Andy");//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
-              posicionable->new_enemy_type(1);//Tipo de enemmigo por defecto
-              sprites.push_back(posicionable);
-              enemies.push_back(posicionable);
-              map.agregarPosicionable(posicionable,position);             
-            }*/
         }
-      }
     }
+    map.agregarJugador(&player);
 }
 
 void GameModelClient::cleanDirections(){
@@ -183,7 +215,7 @@ void GameModelClient::addPlayer(int player_id){ //Jugadores O enemigos
 
 void GameModelClient::removePlayer(int id){
     Movable* removableEnemy = movables[id];
-    map.delete_element(removableEnemy->get_position());
+    map.sacarPosicionable(removableEnemy->get_position());
     movables.erase(id);
     //Y me falta eliminarlos tambien del vector sprites y del vector enemies
 

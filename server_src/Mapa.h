@@ -8,12 +8,14 @@
 class Player;
 
 #include "coordinates.h"
+#include <yaml-cpp/yaml.h>
 
 class Mapa{
 private:
     int alto;
     int ancho;
     std::vector<std::vector<std::vector<Posicionable*>>> mapaJuego;
+    void initMap(Mapa& map, YAML::Node map_node);
 public:
     explicit Mapa(std::string map_filename);
     explicit Mapa(int alto, int ancho);
@@ -36,7 +38,5 @@ public:
     int getAncho() const;    
     ~Mapa();
 };
-
-void initMap(Mapa& map);
 
 #endif

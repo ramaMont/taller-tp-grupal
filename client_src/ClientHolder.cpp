@@ -110,7 +110,7 @@ void ClientHolder::processReception(Protocol& protocol){
             // TODO: Hacer decodificacion de checksum del mapa que envia el servidor.
             if (_game_model == nullptr){
                 MapLoader mapLoader(protocol.getMapId());
-                createGameModel(mapLoader.getFileName(), protocol.getUserId(), 
+                createGameModel("mapa_bueno.yaml", protocol.getUserId(), 
                     protocol.getGameId());
             }
             else{

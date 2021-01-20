@@ -6,14 +6,14 @@ Jugador::Jugador(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int 
       Movable(posicion,direction,mapa,id), 
       shot_frame(0), gun_type(nullptr),
       shooting(false),score(10), lives(5), health(100), ammo(20){
-   	mapa.agregarJugador(this);
+//   	mapa.agregarJugador(this);
 }
 
 Jugador::Jugador(Cl_Mapa& mapa):
       Movable(Coordinates(4,4),Coordinates(1,0),mapa,0), 
       shot_frame(0), gun_type(nullptr),shooting(false),
       score(1000), lives(5), health(98), ammo(20){
-    mapa.agregarJugador(this);
+//    mapa.agregarJugador(this);
 }
 
 void Jugador::complete(Coordinates initial_position,Coordinates initial_direction,int player_id){

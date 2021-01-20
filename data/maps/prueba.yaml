@@ -51,10 +51,10 @@ elementos:
   pos_12_1: vacio
   pos_12_10: vacio
   pos_12_11: vacio
-  pos_12_12: vacio
+  pos_12_12: guardia
   pos_12_13: vacio
   pos_12_14: pared
-  pos_12_2: vacio
+  pos_12_2: guardia
   pos_12_3: vacio
   pos_12_4: vacio
   pos_12_5: vacio
@@ -111,10 +111,10 @@ elementos:
   pos_2_1: vacio
   pos_2_10: vacio
   pos_2_11: vacio
-  pos_2_12: vacio
+  pos_2_12: guardia
   pos_2_13: vacio
   pos_2_14: pared
-  pos_2_2: vacio
+  pos_2_2: guardia
   pos_2_3: vacio
   pos_2_4: vacio
   pos_2_5: vacio

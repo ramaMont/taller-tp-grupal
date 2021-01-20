@@ -27,8 +27,7 @@ public:
     void sacarPosicionable(Coordinates posicion);
     Posicionable* obtenerPosicionableEn(Coordinates posicion);
     void moveme(Movable* jugador, const Coordinates& posicion);
-
-    void delete_element(Coordinates position_to_remove);
+    void resize(int ancho, int alto);
 
     ~Cl_Mapa();
 };

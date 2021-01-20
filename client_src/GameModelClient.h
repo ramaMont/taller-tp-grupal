@@ -59,7 +59,7 @@ private:
     void move(int player_id);
     void shoot();
     void processMove(Protocol& protocol);
-    void initMap();
+    void initMap(std::string map_filename);
     void initDirections();
     void cleanDirections();
 
