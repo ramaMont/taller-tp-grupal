@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <ConfigVariable.h>
 
-#include <stdio.h>
+#include <iostream>
 #include <algorithm>
 
 
@@ -94,7 +94,12 @@ void Player::disparar(std::map<int, Player*>& jugadores){
 }
 
 bool Player::usar(Item* item){
-	return item->usar(this);
+    bool b = item->usar(this);
+    if (b){
+       mapa.sacarItem(posicion, typeid(*item));
+       // Protocol sacar item del mapa
+    }
+    return b;
 }
 
 bool Player::agregarArma(Arma* arma){
@@ -148,12 +153,12 @@ bool Player::estaPorMorir(){
 
 void Player::morir(){
 	this->soldado.soltarArma();
-	mapa.sacarPosicionable(this->posicion);
+	mapa.sacarPosicionable(this->posicion);	
 	Balas* balas = new Balas(this->posicion, 10);
-	this->mapa.soltar(balas);
+	this->mapa.agregarItem(balas, this->posicion);
 	if (this->llave){
 		Llave* llaves = new Llave(this->posicion);
-		this->mapa.soltar(llaves);
+		this->mapa.agregarItem(llaves, this->posicion);
 		this->llave = false;
 	}
 	if (this->vidasRestantes > 0){

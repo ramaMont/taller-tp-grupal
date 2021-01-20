@@ -3,30 +3,33 @@
 #include "Player.h"
 #include "Item.h"
 #include "Posicionable.h"
-/*
+#include "Event.h"
+#include <iostream>
+
 TEST(ItemsTests, comidaRecupera10puntosDeVida) {
     //arrange
     Mapa mapa(20,20);
-    Coordinates posicion(11, 15);
-    Coordinates direccion(1, 0);
-    Jugador jugador(posicion, direccion,  mapa);
-    Comida comida(posicion);
-    int vida_maxima = jugador.getVida();
+    BlockingQueue<Protocol> bq;
+    Player* jugador = new Player(Coordinates(5,5), Coordinates(1,0), mapa, bq);
+    Comida* comida = new Comida(Coordinates(6,5));
+    mapa.agregarItem(comida, Coordinates(6,5));
+    int vida_maxima = jugador->getVida();
     
     //act
-	int danio = 20; 
-    jugador.recibirDanio(danio); // Para bajar su vida
-    int vida = jugador.getVida();
-    //assert
-    EXPECT_EQ (vida, vida_maxima-danio);
+    int danio = 10; 
+    jugador->recibirDanio(danio); // Para bajar su vida
     
-    //act
-    jugador.usar(&comida); 
-    int vida_nueva = jugador.getVida();
+    DirAdelante dirAdelante;
+    while (jugador->get_coordinates() != Coordinates(6,5)){
+        jugador->mover(&dirAdelante);
+    }
+    int vida = jugador->getVida();
+ 
     //assert
-    EXPECT_EQ (vida_nueva, vida + 10);
+    EXPECT_EQ (vida_maxima, vida);
 }
 
+/*
 TEST(ItemsTests, kitMedicoRecupera20puntosDeVida) {
     //arrange
     Mapa mapa(20,20);

@@ -63,17 +63,4 @@ class Lanzacohetes: public Arma, public Item {
 	bool usar(Player* jugador) override;
 };
 
-
-class Cohete: public Posicionable{
-	private:
-	const Coordinates direccion;
-	
-	public:
-	Cohete(Coordinates posicion, const Coordinates dir);
-	void disparar(Player* jugador, std::map<int, Player*>& enemigos);
-	void avanzar(Mapa& mapa);
-	void explotar(Player* jugador, std::map<int, Player*>& enemigos);
-};
-	
-
 #endif

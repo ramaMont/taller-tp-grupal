@@ -164,7 +164,7 @@ void SS::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	std::set<std::pair<int, Player*>> set_jugadores;
 	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
 
-	for (int i = 0; (i < configs[CONFIG::frecuencia_ametralladora]) 
+	for (int i = 0; (i < configs[CONFIG::balas_rafaga_ametralladora]) 
 	    && (this->balas > 0); i++){
 	    this->ametralladora.disparar(jugador, set_jugadores);
 	    this->balas --;
@@ -173,13 +173,13 @@ void SS::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 
 void SS::soltarArma(Player *jugador){
 	Mapa &mapa = jugador->getMapa();
-	Item* arma = new Ametralladora();
-    mapa.soltar(arma, jugador->get_coordinates());
-    this->tieneArma = false;
+    Item* arma = new Ametralladora();
+	mapa.agregarItem(arma, jugador->get_coordinates());
+	this->tieneArma = false;
 }
 
 bool SS::estaListo(){
-	 return this->balas > 0 && this->tieneArma;
+	return this->balas > 0 && this->tieneArma;
 }
 
 int SS::numeroArma() const{
@@ -210,8 +210,8 @@ void Oficial::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 void Oficial::soltarArma(Player *jugador){
 	Mapa &mapa = jugador->getMapa();
     Item* arma = new CanionDeCadena();
-	mapa.soltar(arma, jugador->get_coordinates());
-    this->tieneArma = false;
+	mapa.agregarItem(arma, jugador->get_coordinates());
+	this->tieneArma = false;
 }
 
 bool Oficial::estaListo(){
@@ -244,7 +244,7 @@ void Mutante::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 void Mutante::soltarArma(Player *jugador){
 	Mapa &mapa = jugador->getMapa();
     Item* arma = new Lanzacohetes();
-	mapa.soltar(arma, jugador->get_coordinates());
+	mapa.agregarItem(arma, jugador->get_coordinates());
 	this->tieneArma = false;
 }
 

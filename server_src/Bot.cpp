@@ -33,6 +33,8 @@ int Bot::luaObtenerObjetoMapa(lua_State *L){
 		lua_pushnumber(L, Posicion::Vacio);
 	} else if (bot->mapa.hayPuertaEn(x, y)){
 		lua_pushnumber(L, Posicion::Puerta);
+	} else if (bot->mapa.hayJugadorEn(x, y)){
+		lua_pushnumber(L, Posicion::Vacio);
 	} else {
 		lua_pushnumber(L, Posicion::Ocupado);
 	}	
@@ -59,7 +61,7 @@ void Bot::cargarMapa(){
 }
 
 
-int Bot::getEvent(const Player* jugador,const std::map<int, Player*>& enemigos){
+Bot::Event Bot::getEvent(const Player* jugador,const std::map<int, Player*>& enemigos){
 	lua_getfield(this->script, -1, "generarEvento");
 	if (!lua_isfunction(this->script, -1))
 		throw std::runtime_error("Lua no pudo generar un evento\n");
@@ -68,7 +70,7 @@ int Bot::getEvent(const Player* jugador,const std::map<int, Player*>& enemigos){
 	argc += pushInfoEnemigos(jugador, enemigos);
 
 	lua_pcall(this->script, argc, 1, 0);
-	int evento = lua_tonumber(this->script, -1);
+	Bot::Event evento = (Bot::Event) lua_tonumber(this->script, -1);
 	lua_pop(this->script, 1);
 	return evento;
 }

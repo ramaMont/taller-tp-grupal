@@ -3,9 +3,11 @@
 #include <ConfigVariable.h>
 #include "Player.h"
 #include "Mapa.h"
+#include "ExceptionServer.h"
 #include <cstdlib>
 #include <ctime>
 #include <typeinfo>
+
 
 #define PASO 1
 #define ROTACION_45 0.7071
@@ -53,7 +55,8 @@ void atacar(Player* jugador, Player* enemigo, float precision, int angulo){
     float danio = precision - 
                   distancia * configs[CONFIG::baja_precision_distancia];
 	danio -= angulo/(int)configs[CONFIG::rango_de_disparo];
-	danio *= (int)configs[CONFIG::maximo_danio];
+	int n_rand = rand() % (int)configs[CONFIG::maximo_danio] + 1;
+	danio *= n_rand;
 	bool murio = enemigo->recibirDanio(std::ceil(danio));
 	if (murio)
 		jugador->agregarEnemigoMuerto();
@@ -117,57 +120,9 @@ bool CanionDeCadena::usar(Player* jugador){
 // Lanzacohetes
 
 void Lanzacohetes::disparar(Player* jugador, std::map<int, Player*>& enemigos){	
-	Coordinates posicion = jugador->get_coordinates();
-	const Coordinates& dir = jugador->get_direction();
-	posicion.increment_on_direction(dir, 1);
-	Cohete cohete(posicion, dir);
-	cohete.disparar(jugador, enemigos);
+	throw RocketException();
 }
 
 bool Lanzacohetes::usar(Player* jugador){
 	return jugador->agregarArma(this);
 }
-
-
-// Cohete
-
-Cohete::Cohete(Coordinates posicion, Coordinates dir): 
-    Posicionable(posicion), direccion(dir) { 
-}
-
-void Cohete::disparar(Player* jugador, std::map<int, Player*>& enemigos){
-	Mapa& mapa = jugador->getMapa();
-	mapa.agregarPosicionable(this, this->posicion);
-	avanzar(mapa);
-	explotar(jugador, enemigos);
-}
-
-void Cohete::avanzar(Mapa& mapa){
-	mapa.sacarPosicionable(this->posicion);
-	this->posicion.increment_on_direction(this->direccion, 1);
-	if (mapa.hayObstaculoEn(this->posicion))
-        return;
-    mapa.agregarPosicionable(this, this->posicion);
-	return avanzar(mapa);
-}
-
-void Cohete::explotar(Player* jugador, std::map<int, Player*>& enemigos){
-    for (auto it = enemigos.begin(); it != enemigos.end(); ++it){
-        auto* enemigo = it->second;
-		double distancia = this->posicion.calculate_distance(
-			enemigo->get_coordinates());
-		
-		if (distancia > (int)configs[CONFIG::distancia_explosion_cohete])
-			continue;
-		if (colisionaConObjeto(jugador->getMapa(), this->posicion,
-			enemigo->get_coordinates()))
-			continue;
-			
-        float danio = (int)configs[CONFIG::maximo_danio] * 
-              (1 - distancia /(int)configs[CONFIG::distancia_explosion_cohete]);
-		bool murio = enemigo->recibirDanio(std::ceil(danio));
-		if (murio)
-			jugador->agregarEnemigoMuerto();
-	}	
-}
-	
