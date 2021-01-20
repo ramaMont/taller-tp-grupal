@@ -83,7 +83,7 @@ void ThGameModelServer::processDie(Protocol protocol){
     Player* player = players.at(protocol.getId());
     player->morir();
 }
-
+/*
 void ThGameModelServer::processOpen(Protocol& protocol){
     // TODO: Calcular que puerta abrir y eso.
     // Modificar al protocolo para que al momento de enviarselo nuevamente.
@@ -91,15 +91,15 @@ void ThGameModelServer::processOpen(Protocol& protocol){
     // Por ahora:
     echoProtocol(protocol);
 }
+*/
 
-/*
-void ThGameModelServer::processOpen(Protocol protocol){
+void ThGameModelServer::processOpen(Protocol& protocol){
     Player* player = players.at(protocol.getId());
     OpenEvent event(player, map, th_game_events);
-    event.process(operations);
+    event.process(this);
 
 }
-*/
+
 
 void ThGameModelServer::run(){
     launched = true;

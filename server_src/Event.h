@@ -3,7 +3,9 @@
 
 #include <ctime>
 #include "Objeto.h"
+#include "ThGameModelServer.h"
 class ThGameEvents;
+#include "ThGameEvents.h"
 
 class Event{
     protected:
@@ -26,7 +28,7 @@ class OpenEvent: public Event{
     
     public:
     OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e);
-    virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
+    void process(ThGameModelServer& game_model);
     ~OpenEvent();
 };
 

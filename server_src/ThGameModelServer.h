@@ -4,7 +4,9 @@
 #include <GameModel.h>
 class ThUserServer;
 #include "ThUserServer.h"
+//class ThGameEvents;
 #include "ThGameEvents.h"
+class ThBots;
 #include "ThBots.h"
 
 #include <atomic>

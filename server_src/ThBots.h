@@ -5,6 +5,7 @@
 #include <BlockingQueue.h>
 #include <Protocol.h>
 class ThGameModelServer;
+#include <ThGameModelServer.h>
 #include <Bot.h>
 
 #include <map>

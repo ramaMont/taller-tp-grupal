@@ -1,6 +1,5 @@
 #include "ThBots.h"
 
-#include <ThGameModelServer.h>
 #include <thread>
 #include <chrono>
 #include <iostream>
