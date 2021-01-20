@@ -2,6 +2,7 @@
 #define __DOOR__
 
 #include <string>
+#include <Movable.h>
 #include "Posicionable.h"
 class Ray;
 
@@ -9,9 +10,14 @@ class Door : public Posicionable{
 private:
 	int current_frame;
 	std::string state;
+	Movable* movable;
 
 public:
     explicit Door(Coordinates posicion);
+
+    void add(Movable* movable) override;
+
+    void remove() override;
 
 	void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
