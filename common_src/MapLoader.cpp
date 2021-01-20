@@ -26,7 +26,6 @@ MapLoader::MapLoader(uint16_t map_id_checksum){
         throw -1;
     }
 
-    std::cout<<"List of Files & Folders:-\n";
     for(d=readdir(dr); d!=NULL; d=readdir(dr)){
         if ( strcmp(d->d_name, ".") == 0 || strcmp(d->d_name, "..") == 0)
             continue;

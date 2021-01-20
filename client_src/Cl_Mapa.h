@@ -19,6 +19,7 @@ private:
     std::vector<std::vector<Posicionable*>> mapaJuego;
     Movable* player;
 public:
+    Cl_Mapa();
     explicit Cl_Mapa(int alto, int ancho);
     void agregarJugador(Movable* jugador);
     void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);

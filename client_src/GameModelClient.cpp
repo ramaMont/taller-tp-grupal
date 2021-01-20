@@ -1,9 +1,10 @@
 #include "GameModelClient.h"
+#include <tuple>
 
 GameModelClient::GameModelClient(int user_id, std::string map_filename,
             int game_id, int protagonist_id) : 
         window(640,480,320,200) ,
-        texture(window), map(24,24), 
+        texture(window), map(24, 24), 
         added_player(false),player(map),
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
@@ -277,6 +278,9 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::REMOVE:
             removePlayer(protocol.getUserId());
             break;
+        case Protocol::action::OPEN:
+            openDoor(protocol);
+            break;
         default:
             break;
     }
@@ -303,6 +307,15 @@ void GameModelClient::processShooted(Protocol protocol){
 
 void GameModelClient::push(Protocol protocol){
     operations.push(protocol);
+}
+
+void GameModelClient::openDoor(const Protocol& protocol){
+    // TODO: con la posicion decirle a la puerta que se abra:
+    // std::tuple<int, int> position = protocol.getPosition();
+    // std::get<0>(position) += 1; // Accedo a la posicion X
+    // std::get<1>(position) += 1; // Accedo a la posicion Y
+    // pero por ahora:
+    door->opening();
 }
 
 GameModelClient::~GameModelClient(){

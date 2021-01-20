@@ -2,6 +2,7 @@
 #define __PROTOCOL__
 
 #include <cstdint>
+#include <tuple>
 
 struct __attribute__((packed)) Protocol {
 public:
@@ -33,6 +34,7 @@ public:
     int getConfId();
     int getBotsCty();
     float getConfiguration();
+    std::tuple<int, int> getPosition() const;
     void setAction(Protocol::action action);
     ~Protocol();
 private:

@@ -65,6 +65,7 @@ private:
 
     void processShoot(Protocol protocol);
     void processShooted(Protocol protocol);
+    void openDoor(const Protocol& protocol);
 
 public:
     explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id);

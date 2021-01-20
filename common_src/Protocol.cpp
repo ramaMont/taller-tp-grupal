@@ -1,5 +1,6 @@
 #include "Protocol.h"
 #include<arpa/inet.h>
+#include <tuple>
 
 Protocol::Protocol():
     _action(Protocol::action::NONE), id(0), 
@@ -71,6 +72,14 @@ int Protocol::getBotsCty(){
 
 float Protocol::getConfiguration(){
     return _float_aux;
+}
+
+
+
+std::tuple<int, int> Protocol::getPosition() const{
+    int pos_x = id;
+    int pos_y = damage;
+    return std::make_tuple(pos_x, pos_y);
 }
 
 void Protocol::moveInDirection(Protocol::direction direction){

@@ -50,6 +50,9 @@ void ClThReceiver::processReception(Protocol& protocol){
         case Protocol::action::RESURRECT:
             _gameModel->push(protocol);
             break;
+        case Protocol::action::OPEN:
+            _gameModel->push(protocol);
+            break;
         default:
             // TODO: la parte que no es crear o unirse a una partida,
             // se lo envia directamente al game model

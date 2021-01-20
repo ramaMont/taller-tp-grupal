@@ -11,6 +11,9 @@
 // -1 lugar no encontrado
 // -2 lugar ocupado
 
+Cl_Mapa::Cl_Mapa(): alto(0), ancho(0){
+}
+
 Cl_Mapa::Cl_Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
         std::vector<Posicionable*>(alto)){
     for (int i=0; i<ancho; i++){

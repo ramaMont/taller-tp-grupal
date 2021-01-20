@@ -33,6 +33,9 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
             processDie(protocol);
             echoProtocol(protocol);
             break;
+        case Protocol::action::OPEN:
+            processOpen(protocol);
+            break;
         default:
             break;
     }
@@ -70,6 +73,14 @@ void ThGameModelServer::processResurrect(Protocol protocol){
 void ThGameModelServer::processDie(Protocol protocol){
     Player* player = players.at(protocol.getId());
     player->morir();
+}
+
+void ThGameModelServer::processOpen(Protocol& protocol){
+    // TODO: Calcular que puerta abrir y eso.
+    // Modificar al protocolo para que al momento de enviarselo nuevamente.
+    // al cliente le diga la posicion de la puerta a abrir.
+    // Por ahora:
+    echoProtocol(protocol);
 }
 
 void ThGameModelServer::run(){

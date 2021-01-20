@@ -48,7 +48,10 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
         //player.stopped_shooting();
     }
     if(keys[SDL_SCANCODE_SPACE]){
-        door->opening();
+        //door->opening();
+        protocol.setAction(
+            Protocol::action::OPEN);
+        th_sender.push(protocol);
     }
 
     while (SDL_PollEvent(&event)) { 
