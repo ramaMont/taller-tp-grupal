@@ -247,9 +247,7 @@ void LoginWindow::crearPartida(){
         int cantidad_bots = combo_bots.currentText().toInt();
 
         try {
-            // Al crear partida, enviar nombre del archivo del mapa y la cantidad de bots.
             client_holder.crearPartida(archivo_mapa, cantidad_bots, game_id);
-            //client_holder.crearPartida("1", game_id);
         } catch (...) {
             mostrarWarning(QString("Ha ocurrido un error, intente nuevamente"),
                         QMessageBox::Warning, true);
