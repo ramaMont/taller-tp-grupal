@@ -116,13 +116,13 @@ void MapWidget::intercambiarLabels(const std::string& pos_1,
     QPixmap image_1;
     QPixmap image_2;
 
-    if (element_1.toStdString() != "vacio") {
+    if (element_1.toStdString() != "empty") {
         image_1 = label_visual_1->pixmap()->copy();
     } else {
         image_1 = QPixmap();
     }
 
-    if (element_2.toStdString() != "vacio") {
+    if (element_2.toStdString() != "empty") {
         image_2 = label_visual_2->pixmap()->copy();
     } else {
         image_2 = QPixmap();
@@ -137,21 +137,21 @@ void MapWidget::intercambiarLabels(const std::string& pos_1,
 void MapWidget::crearCeldaVacia(const std::string& pos,
                                 const int& fila,
                                 const int& columna) {
-    // Genero el label visual y el elemento vacio.
+    // Genero el label visual y el elemento empty.
     QLabel* label = new QLabel(this);
     QLabel* hidden_label = new QLabel(this);
     hidden_label->setVisible(false);
     QString label_name = QString::fromStdString(pos);
     label->setObjectName(label_name);
     hidden_label->setObjectName(label_name + "_element");
-    hidden_label->setText("vacio");
+    hidden_label->setText("empty");
     label->setFixedWidth(MIN_WIDTH_SIZE);
     label->setFixedHeight(MIN_HEIGHT_SIZE);
     label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
     // Agrego al layout.
     gridLayout->addWidget(label, fila, columna);
     gridLayout->addWidget(hidden_label);
-    mapa->cargarElemento(pos, "vacio");
+    mapa->cargarElemento(pos, "empty");
 }
 
 void MapWidget::actualizarLabelFyC() {
@@ -173,7 +173,7 @@ void MapWidget::agregarColumnaAPartirDe(int columna) {
         mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
-    // Agrego una nueva columna con vacios
+    // Agrego una nueva columna con emptys
     for (int i=0; i < mapa->getFilas(); i++) {
         std::string pos = "pos_" + std::to_string(i)
             + "_" + std::to_string(nueva_columna);
@@ -201,7 +201,7 @@ void MapWidget::agregarFilaAPartirDe(int fila) {
         mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
-    // Agrego una nueva fila con vacios
+    // Agrego una nueva fila con emptys
     for (int i=0; i < mapa->getColumnas(); i++) {
         std::string pos = "pos_" + std::to_string(nueva_fila)
             + "_" + std::to_string(i);
@@ -340,8 +340,8 @@ void MapWidget::pointAndClick(QLabel* label_visual, QLabel* label_elemento) {
 
 void MapWidget::ejecutarDrag(QMouseEvent *event, QLabel* label_visual,
                              QLabel* label_elemento) {
-    // Si es un elemento vacio, no tiene sentido drag & drop a partir de este.
-    if (label_elemento->text().toStdString() == "vacio") return;
+    // Si es un elemento empty, no tiene sentido drag & drop a partir de este.
+    if (label_elemento->text().toStdString() == "empty") return;
 
     const QPixmap* pixmap = label_visual->pixmap();
 
@@ -366,7 +366,7 @@ void MapWidget::ejecutarDrag(QMouseEvent *event, QLabel* label_visual,
     drag->exec(Qt::CopyAction | Qt::MoveAction,
             Qt::CopyAction);
     label_visual->setPixmap(QPixmap());
-    label_elemento->setText("vacio");
+    label_elemento->setText("empty");
 }
 
 void MapWidget::mousePressEvent(QMouseEvent *event) {
@@ -416,17 +416,17 @@ void MapWidget::fabricarMapa(const int& flag) {
                 // Si se carga un mapa existente, obtengo el elemento y dibujo
                 std::string elemento, imagen;
                 mapa->obtenerElemento(pos, elemento);
-                if (elemento != "vacio") {
+                if (elemento != "empty") {
                     imagen = mapa_recursos.at(elemento);
                     hidden_label->setText(QString::fromStdString(elemento));
                     label->setPixmap(QPixmap(QString::fromStdString(imagen)));
                 } else {
-                    hidden_label->setText(QString::fromStdString("vacio"));
+                    hidden_label->setText(QString::fromStdString("empty"));
                 }
                 elemento.clear();
             } else {
-                mapa->cargarElemento(pos, "vacio");
-                hidden_label->setText(QString::fromStdString("vacio"));
+                mapa->cargarElemento(pos, "empty");
+                hidden_label->setText(QString::fromStdString("empty"));
             }
             label->setFixedWidth(MIN_WIDTH_SIZE);
             label->setFixedHeight(MIN_HEIGHT_SIZE);
