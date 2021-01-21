@@ -21,7 +21,6 @@ int ThUser::getId(){
 }
 
 void ThUser::stop(){
-    //TODO:Cerrar la cola bloqueante para que se destrabe del pop
     is_running = false;
     operations.stop();
 }

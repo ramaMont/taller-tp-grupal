@@ -107,7 +107,6 @@ void ClientHolder::processReception(Protocol& protocol){
             break;
         }
         case Protocol::action::ADD_PLAYER:{
-            // TODO: Hacer decodificacion de checksum del mapa que envia el servidor.
             if (_game_model == nullptr){
                 MapLoader mapLoader(protocol.getMapId());
                 createGameModel(mapLoader.getFileName(), protocol.getUserId(), 
@@ -136,7 +135,6 @@ void ClientHolder::createGameModel(std::string map_filename, int id_user_protoco
 }
 
 void ClientHolder::startGame(){
-    // TODO:Cerrar ventana de QT
     ready_to_play = true;
     qApp->exit();
 }

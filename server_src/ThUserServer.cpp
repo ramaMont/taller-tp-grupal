@@ -90,8 +90,8 @@ void ThUserServer::processReception(Protocol& protocol){
             break;
         }
         default:
+            // Algo salio muy mal.
             std::cout << "Nunca deberia entrar acá\n";
-            // TODO: algo salio muy mal.
             break;
     }
 }

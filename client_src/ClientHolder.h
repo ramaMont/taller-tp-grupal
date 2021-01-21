@@ -33,6 +33,7 @@ public:
         int bots_cty, int& game_id);
     void unirseAPartida(std::string& id_partida);
     void logged(std::string& nombre, std::string& puerto, std::string& servidor);
+    // Se cierra todo lo correspondiente a qt y se setea en true el booleano ready to play
     void startGame();
     void launchGame();
     ~ClientHolder();
