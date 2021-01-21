@@ -15,7 +15,7 @@ ParamReaderServer::ParamReaderServer(int argc, char** argv):
 }
 
 void ParamReaderServer::getConfiguration(){
-	std::string ruta_config = "../../server_src/";
+	std::string ruta_config = "../data/";
 	YAML::Node config = YAML::LoadFile(ruta_config.append(args.at(2)));
 
 	configs[CONFIG::minutos_partida] = 
