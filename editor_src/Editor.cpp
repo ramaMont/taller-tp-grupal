@@ -16,7 +16,7 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     this->setWindowTitle(QString("Editor de Mapas - Wolfenstein 3D"));
     fabricarMenu();
 
-    this->setStyleSheet("QWidget {background-image: url(imgs/fondo3.png) }"
+    this->setStyleSheet("QWidget {background-image: url(../data/login_background.jpg) }"
     "QLabel { color : white; }"
     "QMenuBar {color: white;}"
     "QMenu::item {color: white;}"
@@ -52,13 +52,13 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     scrollMapArea->setGeometry(QRect(230, 60, 750, 700));
 
     mapWidget = new MapWidget(this, recursos_del_juego);
-    mapWidget->setStyleSheet("QWidget {background-image: url(imgs/fondo32.png) }");
+    mapWidget->setStyleSheet("QWidget {background-image: url(../data/textures/fondo32.png) }");
     scrollMapArea->setWidget(mapWidget);
     scrollMapArea->show();
 
     // Creo un widget para los recursos con los que armaremos el mapa.
     widgetRecursos = new ResourcesWidget(this, recursos_del_juego, mapWidget);
-    widgetRecursos->setStyleSheet("QWidget {background-image: url(imgs/fondo33.png) }");
+    widgetRecursos->setStyleSheet("QWidget {background-image: url(../data/textures/fondo33.png) }");
 
     // Agrego una barra de scroll por si los elementos son muchos.
     scrollResourcesArea = new QScrollArea(this);
@@ -291,49 +291,59 @@ std::map<std::string, std::string> Editor::obtenerMapaRecursos() {
     std::map<std::string, std::string> mapa;
 
     // Armas y jugadores.
-    mapa.insert(std::pair<std::string, std::string>("guardia",
-                                                    "imgs/guardia.png"));
-    mapa.insert(std::pair<std::string, std::string>("jugador",
-                                                    "imgs/jugador.png"));
-    mapa.insert(std::pair<std::string, std::string>("ametralladora",
-                                                    "imgs/ametralladora.png"));
-    mapa.insert(std::pair<std::string, std::string>("canion_de_fuego",
-                                                    "imgs/canion_de_fuego.png"));
-    mapa.insert(std::pair<std::string, std::string>("lanzacohetes",
-                                                    "imgs/lanzacohetes.png"));
+    mapa.insert(std::pair<std::string, std::string>("player_front",
+                                                    "../data/textures/player_front.png"));
+    mapa.insert(std::pair<std::string, std::string>("player_left",
+                                                    "../data/textures/player_left.png"));
+    mapa.insert(std::pair<std::string, std::string>("player_right",
+                                                    "../data/textures/player_right.png"));
+    mapa.insert(std::pair<std::string, std::string>("player_back",
+                                                    "../data/textures/player_back.png"));
+    mapa.insert(std::pair<std::string, std::string>("machine_gun",
+                                                    "../data/textures/machine_gun.png"));
+    mapa.insert(std::pair<std::string, std::string>("fire_canon",
+                                                    "../data/textures/fire_canon.png"));
+    mapa.insert(std::pair<std::string, std::string>("rocket_launcher",
+                                                    "../data/textures/rocket_launcher.png"));
     // Pickeables
-    mapa.insert(std::pair<std::string, std::string>("llave",
-                                                    "imgs/llave.png"));
-    mapa.insert(std::pair<std::string, std::string>("medicina",
-                                                    "imgs/medicina.png"));
-    mapa.insert(std::pair<std::string, std::string>("trofeo",
-                                                    "imgs/trofeo.png"));
-    mapa.insert(std::pair<std::string, std::string>("balas",
-                                                    "imgs/balas.png"));
-    mapa.insert(std::pair<std::string, std::string>("comida",
-                                                    "imgs/comida.png"));
+    mapa.insert(std::pair<std::string, std::string>("key",
+                                                    "../data/textures/key.png"));
+    mapa.insert(std::pair<std::string, std::string>("medicine",
+                                                    "../data/textures/medicine.png"));
+    mapa.insert(std::pair<std::string, std::string>("trophie",
+                                                    "../data/textures/trophie.png"));
+    mapa.insert(std::pair<std::string, std::string>("bullets",
+                                                    "../data/textures/bullets.png"));
+    mapa.insert(std::pair<std::string, std::string>("food",
+                                                    "../data/textures/food.png"));
 
     // Decoraciones
-    mapa.insert(std::pair<std::string, std::string>("agua",
-                                                    "imgs/agua.png"));
-    mapa.insert(std::pair<std::string, std::string>("barril",
-                                                    "imgs/barril.png"));
+    mapa.insert(std::pair<std::string, std::string>("water",
+                                                    "../data/textures/water.png"));
+    mapa.insert(std::pair<std::string, std::string>("barrel",
+                                                    "../data/textures/barrel.png"));
 
-    // Paredes y puertas
-    mapa.insert(std::pair<std::string, std::string>("pared",
-                                                    "imgs/pared_1.png"));
-    mapa.insert(std::pair<std::string, std::string>("pared_1",
-                                                    "imgs/pared_2.png"));
-    mapa.insert(std::pair<std::string, std::string>("pared_2",
-                                                    "imgs/pared_3.png"));
-    mapa.insert(std::pair<std::string, std::string>("pared_3",
-                                                    "imgs/pared_4.png"));
-    mapa.insert(std::pair<std::string, std::string>("pasadizo",
-                                                    "imgs/pasadizo.png"));
-    mapa.insert(std::pair<std::string, std::string>("puerta",
-                                                    "imgs/puerta.png"));
-    mapa.insert(std::pair<std::string, std::string>("puerta_con_llave",
-                                                    "imgs/puerta_con_llave.png"));
+    // Paredes y doors
+    mapa.insert(std::pair<std::string, std::string>("wall_bluestone",
+                                                    "../data/textures/wall_bluestone_editor.png"));
+    mapa.insert(std::pair<std::string, std::string>("wall_greystone",
+                                                    "../data/textures/wall_greystone_editor.png"));
+    mapa.insert(std::pair<std::string, std::string>("wall_colorstone",
+                                                    "../data/textures/wall_colorstone_editor.png"));
+    mapa.insert(std::pair<std::string, std::string>("wall_colorstone",
+                                                    "../data/textures/wall_wood.png"));
+    mapa.insert(std::pair<std::string, std::string>("passage",
+                                                    "../data/textures/passage.png"));
+    mapa.insert(std::pair<std::string, std::string>("door",
+                                                    "../data/textures/door_editor.png"));
+    mapa.insert(std::pair<std::string, std::string>("key_door",
+                                                    "../data/textures/key_door.png"));
+    mapa.insert(std::pair<std::string, std::string>("pillar",
+                                                    "../data/textures/pillar.png"));
+    mapa.insert(std::pair<std::string, std::string>("table",
+                                                    "../data/textures/table.png"));
+    mapa.insert(std::pair<std::string, std::string>("greenlight",
+                                                    "../data/textures/greenlight.png"));
 
     return mapa;
 }
