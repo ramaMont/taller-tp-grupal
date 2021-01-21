@@ -57,4 +57,4 @@ build
 
 #sprites
 /editor_src/imgs/sprites
-textures
+#textures
