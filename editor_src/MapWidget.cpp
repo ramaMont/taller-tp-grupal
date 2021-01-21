@@ -404,6 +404,7 @@ void MapWidget::fabricarMapa(const int& flag) {
         for (int k=0; k < columnas; k++) {
             // Creo un label visual, que guarda la imagen del recurso
             // y un label oculto, que guarda el nombre del elemento.
+            bool error = false;
             QLabel* label = new QLabel(this);
             QLabel* hidden_label = new QLabel(this);
             hidden_label->setVisible(false);
@@ -417,9 +418,20 @@ void MapWidget::fabricarMapa(const int& flag) {
                 std::string elemento, imagen;
                 mapa->obtenerElemento(pos, elemento);
                 if (elemento != "empty") {
-                    imagen = mapa_recursos.at(elemento);
-                    hidden_label->setText(QString::fromStdString(elemento));
-                    label->setPixmap(QPixmap(QString::fromStdString(imagen)));
+                    try {
+                        imagen = mapa_recursos.at(elemento);
+                    } catch(...) {
+                        error = true;
+                        mostrarWarning("El mapa cargado contiene elementos"
+                            " desconocidos! Los mismos se reemplazarán por vacios",
+                            QMessageBox::Warning);
+                    }
+                    if (!error) {
+                        hidden_label->setText(QString::fromStdString(elemento));
+                        label->setPixmap(QPixmap(QString::fromStdString(imagen)));
+                    } else {
+                        hidden_label->setText(QString::fromStdString("empty"));
+                    }
                 } else {
                     hidden_label->setText(QString::fromStdString("empty"));
                 }

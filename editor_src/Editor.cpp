@@ -217,18 +217,22 @@ void Editor::crearMapaNuevo() {
     }
 }
 
-void Editor::desplegarFileDialog() {
+bool Editor::desplegarFileDialog() {
     QString file_name = QFileDialog::getOpenFileName(this,
             tr("Editar Mapa"), "",
             tr("Mapas (*.yaml)"));
 
     std::string map_file = file_name.toUtf8().constData();
 
-    // Cargo un nuevo mapa.
-    mapWidget->cargarMapaDesdeArchivo(map_file);
-
     // Limpio el clipboard, el dialog de file lo utiliza.
     QApplication::clipboard()->clear();
+
+    if (!map_file.empty()) {
+        // Cargo un nuevo mapa.
+        mapWidget->cargarMapaDesdeArchivo(map_file);
+        return true;
+    }
+    return false;
 }
 
 void Editor::cargarArchivoMapa() {
@@ -243,14 +247,18 @@ void Editor::cargarArchivoMapa() {
         messageBox.setButtonText(QMessageBox::No, tr("No"));
 
         if (messageBox.exec() == QMessageBox::Yes) {
-            desplegarFileDialog();
+            if (desplegarFileDialog()) {
+                mapWidget->actualizarNombreVentana();
+                mapWidget->actualizarLabelFyC();
+            }
         } else {
             return;
         }
     } else {
-        desplegarFileDialog();
-        mapWidget->actualizarNombreVentana();
-        mapWidget->actualizarLabelFyC();
+        if (desplegarFileDialog()) {
+            mapWidget->actualizarNombreVentana();
+            mapWidget->actualizarLabelFyC();
+        }
     }
 }
 
