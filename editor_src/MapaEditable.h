@@ -24,7 +24,7 @@ class MapaEditable {
       } else {
          if (filas > MAX_FC || columnas > MAX_FC ||
              filas < MIN_FC || columnas < MIN_FC) throw -1;
-         this->archivo_mapa = "../common_src/mapas/" + nombre + ".yaml";
+         this->archivo_mapa = "../data/maps/" + nombre + ".yaml";
       }
     }
     ~MapaEditable();
