@@ -60,11 +60,11 @@ void ThUserServer::processReception(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::CREATE_GAME:{
             try{
-                // TODO: cambiar map_id al string con el map_filename 
+                // TODO: 
                 // y agregar cantidad de bots en el createGame
                 MapLoader mapLoader(protocol.getMapId());
                 // int bots_cty = protocol.getBotsCty();
-                games_admin.createGame(*this, mapLoader.getFileName());
+                games_admin.createGame(*this, mapLoader.getFileName(), protocol.getMapId());
                 respondSuccess();
                 Protocol protocol_response(user_id, protocol.getMapId(), game_id);      
                 protocol_response.setAction(Protocol::action::CREATE_GAME);
@@ -122,10 +122,10 @@ void ThUserServer::setGameId(int game_id){
     this->game_id = game_id;
 }
 
-void ThUserServer::transmit(std::vector<int>& ids_vector){
+void ThUserServer::transmit(std::vector<int>& ids_vector, int map_id_checksum){
     respondSuccess();
     for (auto it = ids_vector.begin(); it != ids_vector.end(); ++it){
-        Protocol protocol(*it);
+        Protocol protocol(*it, map_id_checksum);
         protocol.setAction(Protocol::action::ADD_PLAYER);
         th_sender->push(protocol);
     }

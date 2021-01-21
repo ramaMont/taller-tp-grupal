@@ -31,11 +31,12 @@ void GamesAdmin::cleanZombies(){
     games.swap(activeGames);    
 }
 
-void GamesAdmin::createGame(ThUserServer& th_user_server, const std::string& map_filename){
+void GamesAdmin::createGame(ThUserServer& th_user_server, 
+        const std::string& map_filename, const int& map_id_checksum){
     std::lock_guard<std::mutex> lck(mutex);
     cleanZombies();
     ThGameModelServer* th_game = new ThGameModelServer(th_user_server, map_filename,
-        current_game_id);
+        current_game_id, map_id_checksum);
     games.insert(std::pair<int, ThGameModelServer*>(th_game->getId(), th_game));
     th_user_server.setGameId(current_game_id);
     ++current_game_id;
@@ -54,7 +55,7 @@ void GamesAdmin::joinGame(ThUserServer& th_user_server, int game_id){
     // Le envio al jugador los ids de todos los jugadores en orden
     // en el que fueron ingresando.
     std::vector<int>& ids_vector = th_game->getIdsVector();
-    th_user_server.transmit(ids_vector);
+    th_user_server.transmit(ids_vector, th_game->getMapIdChecksum());
     // Inserto al jugador nuevo en el game model
     th_game->addPlayer(th_user_server.getId());
     th_game->addThSender(th_user_server.getSender());

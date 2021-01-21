@@ -18,6 +18,7 @@ private:
     std::atomic<bool> launched;
     ThGameEvents th_game_events;
     ThBots th_bots;
+    int map_id_checksum;
 
     void processShoot(Protocol protocol);
     void processShooted(Protocol protocol);
@@ -27,7 +28,7 @@ private:
 
 public:
     explicit ThGameModelServer(ThUserServer& th_user_server, std::string map_filename,
-        int game_id);
+        int game_id, int map_id_checksum);
     virtual void processProtocol(Protocol& protocol) override;
     virtual void run() override;
     virtual void stop() override;
@@ -36,6 +37,7 @@ public:
     void removePlayer(int user_id);
     virtual bool isDone() override;
     bool wasLaunched();
+    int getMapIdChecksum();
     ~ThGameModelServer();
 };
 

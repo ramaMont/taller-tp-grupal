@@ -35,7 +35,7 @@ public:
     ThSender* getSender();
     void setGameModel(ThGameModelServer* th_game_model);
     void setGameId(int game_id);
-    void transmit(std::vector<int>& ids_vector);
+    void transmit(std::vector<int>& ids_vector, int map_id_checksum);
     ~ThUserServer();
 };
 
