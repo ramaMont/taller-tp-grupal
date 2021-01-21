@@ -4,6 +4,8 @@
 #include <cmath>
 #include <iostream>
 #include "ThGameEvents.h"
+#include "ThGameModelServer.h"
+#include <Protocol.h>
 
 #define WALL_TIME_TO_MOVE 1000
 #define WALL_STEP 0.15
@@ -27,10 +29,10 @@ Event::~Event(){
 
 // Open 
 OpenEvent::OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e):
-    Event(), player(player), map(map), th_game_events(game_e){
+    player(player), map(map), th_game_events(game_e){
 }
 
-void OpenEvent::process(BlockingQueue<Protocol>& game_model_queue){
+void OpenEvent::process(ThGameModelServer& game_model){
     Coordinates pos = player->get_coordinates();
     pos.increment_on_direction(player->get_direction(), 1);
     Posicionable* p = map.obtenerPosicionableEn(pos);
@@ -39,7 +41,10 @@ void OpenEvent::process(BlockingQueue<Protocol>& game_model_queue){
         if (puerta->abrir(player)){
             Event* doorE = new DoorEvent(puerta);
             th_game_events.add(doorE);
-            // Protocol 
+            // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
+            Protocol protocol;
+            protocol.setAction(Protocol::action::OPEN);
+            game_model.echoProtocol(protocol);
         }
     }
     if (p && typeid(p) == typeid(ParedFalsa)){
