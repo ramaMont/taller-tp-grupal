@@ -96,8 +96,7 @@ void ThGameModelServer::processOpen(Protocol& protocol){
 void ThGameModelServer::processOpen(Protocol& protocol){
     Player* player = players.at(protocol.getId());
     OpenEvent event(player, map, th_game_events);
-    event.process(this);
-
+    event.process(*this);
 }
 
 

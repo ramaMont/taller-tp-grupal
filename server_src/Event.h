@@ -3,9 +3,8 @@
 
 #include <ctime>
 #include "Objeto.h"
-#include "ThGameModelServer.h"
 class ThGameEvents;
-#include "ThGameEvents.h"
+class ThGameModelServer;
 
 class Event{
     protected:
@@ -20,7 +19,7 @@ class Event{
 };
 
 
-class OpenEvent: public Event{
+class OpenEvent{
     private:
     Player* player;
     Mapa& map;

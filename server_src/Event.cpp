@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include "ThGameEvents.h"
+#include "ThGameModelServer.h"
 #include <Protocol.h>
 
 #define WALL_TIME_TO_MOVE 1000
@@ -28,7 +29,7 @@ Event::~Event(){
 
 // Open 
 OpenEvent::OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e):
-    Event(), player(player), map(map), th_game_events(game_e){
+    player(player), map(map), th_game_events(game_e){
 }
 
 void OpenEvent::process(ThGameModelServer& game_model){
