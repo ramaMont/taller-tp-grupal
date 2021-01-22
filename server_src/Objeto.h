@@ -15,7 +15,7 @@ class Objeto: public Posicionable {
 
 class ParedFalsa: public Objeto {
 	public:
-	ParedFalsa(Coordinates coordenadas): Objeto(coordenadas) { }
+	ParedFalsa(Coordinates coordenadas);
 	bool abrir(Player *jugador);
 };
 
@@ -25,7 +25,7 @@ class Puerta: public Objeto {
 	bool abierta = false;
 	
 	public:
-	Puerta(Coordinates coordenadas): Objeto(coordenadas) { }
+	Puerta(Coordinates coordenadas);
 	virtual bool abrir(Player *jugador);
 	bool abrirPuerta(Player *jugador);
 	void cerrar();

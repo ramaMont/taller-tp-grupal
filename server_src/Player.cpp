@@ -43,6 +43,22 @@ void Player::mover(Direccion* direccion){
         mapa.moveme(this, nuevaPos);
         this->posicion = nuevaPos;
     } catch(...){
+        Coordinates movimiento_unidireccional;
+        movimiento_unidireccional.x = nuevaPos.x;
+        movimiento_unidireccional.y = this->posicion.y;
+        try{
+            mapa.moveme(this, movimiento_unidireccional);
+            this->posicion = movimiento_unidireccional;
+        } catch(...){
+        }
+
+        movimiento_unidireccional.x = this->posicion.x;
+        movimiento_unidireccional.y = nuevaPos.y;
+        try{
+            mapa.moveme(this, movimiento_unidireccional);
+            this->posicion = movimiento_unidireccional;
+        } catch(...){
+        }
     }
 }
 
