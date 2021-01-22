@@ -9,7 +9,7 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,
         added_player(false),player(map),
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
-        protagonist_id(protagonist_id),is_running(true) {
+        protagonist_id(protagonist_id),door(nullptr),is_running(true) {
     player.set_texture(&texture);
     player.new_gun_type(1);
     initDirections();
@@ -140,25 +140,104 @@ void GameModelClient::initMap(std::string map_filename){
             std::string actual_position = position + std::to_string(i) + "_" +
                 std::to_string(j);
             std::string elemento = map_elements[actual_position].as<std::string>();
-            std::string parsed_element;
-            try{
-                 parsed_element = elemento.substr(0,5);
-            } catch (...){
-                parsed_element = elemento;
-            }
             Coordinates position((float)i,(float)j);
-            if (parsed_element == "wall_"){
+            if (elemento == "wall_greystone"){
                   Posicionable *posicionable = new Wall_greystone(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);   
-            } else if (parsed_element == "door"){
+            }else if (elemento == "wall_bluestone"){
+                  Posicionable *posicionable = new Wall_bluestone(position);
+                  posicionable->set_texture(&texture);
+                  map.agregarPosicionable(posicionable,position);   
+            }else if (elemento == "wall_colorstone"){
+                  Posicionable *posicionable = new Wall_colorstone(position);
+                  posicionable->set_texture(&texture);
+                  map.agregarPosicionable(posicionable,position);   
+            }else if (elemento == "bullets"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "fire_canon"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "food"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "greenlight"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position); 
+            }else if (elemento == "key"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "machine_gun"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "medicine"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+			}else if (elemento == "passage"){
+                Posicionable *posicionable = new Wall_eagle(position);
+                posicionable->set_texture(&texture);
+                map.agregarPosicionable(posicionable,position);  
+            }else if (elemento == "pillar"){
+               Sprite_holder *posicionable = new Sprite_holder(position,1,player);
+               posicionable->set_texture(&texture);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "rocket_launcher"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "trophie"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "machine_gun"){
+               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               posicionable->set_texture(&texture);
+               posicionable->add_sprite(2);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "barrel"){
+               Sprite_holder *posicionable = new Sprite_holder(position,0,player);
+               posicionable->set_texture(&texture);
+               sprites.push_back(posicionable);
+               map.agregarPosicionable(posicionable,position);
+            }else if (elemento == "door"){
                 Door *posicionable = new Door(position);
                 posicionable->set_texture(&texture);
                 door = posicionable;
                 map.agregarPosicionable(posicionable,position);   
-            } else if (parsed_element == "empty"){
-                // No hace falta hacer nada.
-            }
+            }/*else if (elemento == "key_door"){
+                Door *posicionable = new Door(position);
+                posicionable->set_texture(&texture);
+                door = posicionable;
+                map.agregarPosicionable(posicionable,position);   
+            }*/
         }
     }
     map.agregarJugador(&player);
@@ -256,7 +335,8 @@ void  GameModelClient::updateFrameAnimations(){
     enemies[i]->update_frame();
   }
   player.update_shots();
-  door->update_frame();
+  if(door!=nullptr)
+  	door->update_frame();
   //Y despues acá meter las puertas tambien
 }
 
