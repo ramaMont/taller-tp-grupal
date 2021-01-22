@@ -19,7 +19,7 @@ LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) : QWidget
     this->setWindowTitle(QString("Wolfenstein 3D"));
 
     this->setStyleSheet(
-    "QWidget {background-image: url(data/login_background.jpg) }"
+    "QWidget {background-image: url(../data/login_background.jpg) }"
     "QLabel { color : white; }"
     "QLineEdit { color : white; }"
     "QMenuBar {color: white;}"

@@ -9,18 +9,18 @@
 #include<string>
 
 void Texture::add_wall_texture(std::string new_texture){
-    SDL_Surface* loadedSurface = IMG_Load(("data/textures/" + new_texture+".png").c_str());
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
     wall_textures.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
 	SDL_FreeSurface(loadedSurface);
 
-    loadedSurface = IMG_Load(("data/textures/" + new_texture+"_shaded.png").c_str());
+    loadedSurface = IMG_Load(("../data/textures/" + new_texture+"_shaded.png").c_str());
     wall_textures.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
 	SDL_FreeSurface(loadedSurface);
 
 }
 
 void Texture::add_sprite_texture(std::string new_texture){
-    SDL_Surface* loadedSurface = IMG_Load(("data/textures/" + new_texture+".png").c_str());
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 0, 0, 0);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
     sprites.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
@@ -28,7 +28,7 @@ void Texture::add_sprite_texture(std::string new_texture){
 }
 
 void Texture::add_enemy_texture(std::string new_texture){
-    SDL_Surface* loadedSurface = IMG_Load(("data/textures/" + new_texture+".png").c_str());
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
     enemies.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
@@ -36,7 +36,7 @@ void Texture::add_enemy_texture(std::string new_texture){
 }
 
 void Texture::add_gun_texture(std::string new_texture){
-    SDL_Surface* loadedSurface = IMG_Load(("data/textures/" + new_texture+".png").c_str());
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
 	guns = SDL_CreateTextureFromSurface(renderer, loadedSurface);
@@ -44,7 +44,7 @@ void Texture::add_gun_texture(std::string new_texture){
 }
 
 void Texture::add_door_textures(){
-    SDL_Surface* loadedSurface = IMG_Load(("data/textures/door.png"));
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/door.png"));
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
 	door = SDL_CreateTextureFromSurface(renderer, loadedSurface);
@@ -52,7 +52,7 @@ void Texture::add_door_textures(){
 }
 
 void Texture::add_life_bar_texture(std::string new_texture){
-    SDL_Surface* loadedSurface = IMG_Load(("data/textures/" + new_texture+".png").c_str());
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
 	life_bar = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);		
 }
@@ -92,7 +92,7 @@ Texture::Texture(const Window& window):
 	}
 
 
-	this->Sans = TTF_OpenFont("data/comic-sans.ttf", 24); //this opens a font style and sets a size
+	this->Sans = TTF_OpenFont("../data/comic-sans.ttf", 24); //this opens a font style and sets a size
 
 	if(!Sans){
 		printf("no encuentro la fooont\n");
