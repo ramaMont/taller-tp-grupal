@@ -2,7 +2,7 @@
 
 #include <yaml-cpp/yaml.h>
 #include <string>
-
+#include <iostream>
 #include <ConfigVariable.h>
 
 std::map<int, float> configs;
@@ -32,6 +32,8 @@ void ParamReaderServer::getConfiguration(){
 	    config["balas_maximas"].as<int>();
 	configs[CONFIG::segundos_cerrar_puerta] = 
 	    config["segundos_cerrar_puerta"].as<int>();
+	configs[CONFIG::open_distance] = 
+	    config["open_distance"].as<float>();
 	configs[CONFIG::precision_pistola] = 
 	    config["precision_pistola"].as<float>();
 	configs[CONFIG::precision_ametralladora] = 

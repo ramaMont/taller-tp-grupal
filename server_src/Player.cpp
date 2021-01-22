@@ -18,6 +18,7 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa,
     this->balas_disparadas = 0;
     this->enemigos_matados = 0;
     this->llave = false;  
+    this->is_alive = true;
 }
 
 Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id,
@@ -33,6 +34,7 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id,
     this->balas_disparadas = 0;
     this->enemigos_matados = 0;
     this->llave = false;  
+    this->is_alive = true;
 }
 
 void Player::mover(Direccion* direccion){
@@ -165,7 +167,9 @@ void Player::morir(){
 		Protocol protocol(player_id);
 		protocol.setAction(Protocol::action::RESURRECT);
 		_game_model_queue.push(protocol);
-	}
+	}else{
+        this->is_alive = false;
+    }
 }
 
 bool Player::revivir(){
@@ -179,7 +183,7 @@ bool Player::revivir(){
 }
 
 bool Player::estaVivo(){
-	return ((this->vida > 0) || (this->vidasRestantes > 0));
+	return this->is_alive;
 }
 
 Mapa& Player::getMapa(){

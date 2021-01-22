@@ -7,6 +7,9 @@
 #include "Player.h"
 class Player;
 #include "Item.h"
+class Objeto;
+class Puerta;
+#include "Objeto.h"
 
 #include "coordinates.h"
 #include <yaml-cpp/yaml.h>
@@ -17,6 +20,7 @@ private:
     int ancho;
     std::vector<std::vector<std::vector<Posicionable*>>> mapaJuego;
     std::vector<std::vector<std::vector<Item*>>> items;
+    std::vector<Puerta*> doors;
     void initMap(Mapa& map, YAML::Node map_node);
 
 public:
@@ -25,9 +29,11 @@ public:
     void agregarPlayer(Player* jugador);
     void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);
     void agregarItem(Item* item, Coordinates posicion);
+    void addDoor(Puerta* door);
     void sacarPosicionable(Coordinates posicion);
     void sacarItem(Coordinates posicion, const std::type_info& type_id);
     Posicionable* obtenerPosicionableEn(Coordinates posicion) const;
+    Objeto* getNearestDoor(Coordinates& position);
     void moveme(Player* jugador, const Coordinates& posicion);
 //    Mapa(const Mapa&) = delete;
     Mapa(Mapa&& other);

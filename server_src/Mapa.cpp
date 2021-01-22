@@ -5,6 +5,7 @@
 #include <typeinfo>
 #include "Objeto.h"
 #include "Event.h"
+#include <ConfigVariable.h>
 
 #include <yaml-cpp/yaml.h>
 #include <string>
@@ -66,8 +67,8 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
                 map.agregarPosicionable(posicionable,position);
             } else if (elemento == "puerta"){
                 Coordinates position((float)i,(float)j);
-                Posicionable* posicionable = new Puerta(position);
-                map.agregarPosicionable(posicionable,position);
+                Puerta* posicionable = new Puerta(position);
+                map.addDoor(posicionable);
             } else if (elemento == "vacio"){
                 // No hace falta hacer nada.
             }
@@ -123,6 +124,11 @@ void Mapa::agregarItem(Item* item, Coordinates posicion){
 	items[floor(posicion.x)][floor(posicion.y)].push_back(item);
 }
 
+void Mapa::addDoor(Puerta* door){
+    doors.push_back(door);
+    agregarPosicionable(door, door->getCoordinates());
+}
+
 void Mapa::sacarPosicionable(Coordinates posicion){
     if (!mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
 	    mapaJuego[floor(posicion.x)][floor(posicion.y)].pop_back();
@@ -145,6 +151,19 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
 	if (mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
 		return nullptr;
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)].back();
+}
+
+Objeto* Mapa::getNearestDoor(Coordinates& position){
+    Objeto* nearest = nullptr;
+    float min_distance = configs[CONFIG::open_distance];
+    for (Objeto* door: doors){
+        float dist = position.calculate_distance(door->getCoordinates());
+        if (dist < min_distance){
+            min_distance = dist;
+            nearest = door;
+        }
+    }
+    return nearest;
 }
 
 void usarItems(std::vector<Item*>& items, Player *player){
