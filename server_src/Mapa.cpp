@@ -73,15 +73,9 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
                 map.agregarPosicionable(posicionable,position);
             } else if (parsed_element == "door"){
                 Coordinates position((float)i,(float)j);
-<<<<<<< HEAD
-                Posicionable* posicionable = new Puerta(position);
-                map.agregarPosicionable(posicionable,position);
-            } else if (parsed_element == "empty"){
-=======
                 Puerta* posicionable = new Puerta(position);
                 map.addDoor(posicionable);
             } else if (elemento == "vacio"){
->>>>>>> c9d566e9fdff59aec9b57db9a877573546008ddc
                 // No hace falta hacer nada.
             }
         }
