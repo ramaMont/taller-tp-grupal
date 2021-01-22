@@ -140,17 +140,23 @@ void GameModelClient::initMap(std::string map_filename){
             std::string actual_position = position + std::to_string(i) + "_" +
                 std::to_string(j);
             std::string elemento = map_elements[actual_position].as<std::string>();
+            std::string parsed_element;
+            try{
+                 parsed_element = elemento.substr(0,5);
+            } catch (...){
+                parsed_element = elemento;
+            }
             Coordinates position((float)i,(float)j);
-            if (elemento == "pared"){
+            if (parsed_element == "wall_"){
                   Posicionable *posicionable = new Wall_greystone(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);   
-            } else if (elemento == "puerta"){
+            } else if (parsed_element == "door"){
                 Door *posicionable = new Door(position);
                 posicionable->set_texture(&texture);
                 door = posicionable;
                 map.agregarPosicionable(posicionable,position);   
-            } else if (elemento == "vacio"){
+            } else if (parsed_element == "empty"){
                 // No hace falta hacer nada.
             }
         }

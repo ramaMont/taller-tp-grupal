@@ -60,15 +60,21 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
             std::string actual_position = position + std::to_string(i) + "_" +
                 std::to_string(j);
             std::string elemento = map_node[actual_position].as<std::string>();
-            if (elemento == "pared"){
+            std::string parsed_element;
+            try{
+                parsed_element = elemento.substr(0,5);
+            } catch(...){
+                parsed_element = elemento;
+            }
+            if (parsed_element == "wall_"){
                 Coordinates position((float)i,(float)j);
                 Posicionable* posicionable = new Posicionable(position);
                 map.agregarPosicionable(posicionable,position);
-            } else if (elemento == "puerta"){
+            } else if (parsed_element == "door"){
                 Coordinates position((float)i,(float)j);
                 Posicionable* posicionable = new Puerta(position);
                 map.agregarPosicionable(posicionable,position);
-            } else if (elemento == "vacio"){
+            } else if (parsed_element == "empty"){
                 // No hace falta hacer nada.
             }
         }
