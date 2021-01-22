@@ -153,7 +153,10 @@ void GameModelClient::initMap(std::string map_filename){
                   Posicionable *posicionable = new Wall_colorstone(position);
                   posicionable->set_texture(&texture);
                   map.agregarPosicionable(posicionable,position);   
-            }else if (elemento == "bullets"){
+            }//Paredes, a partir de ahora meto sprites y los posiciono justo en medio del casillero
+            position.x+=0.5;
+            position.y+=0.5;
+            if (elemento == "bullets"){
                Sprite_holder *posicionable = new Sprite_holder(position,2,player);
                posicionable->set_texture(&texture);
                posicionable->add_sprite(2);
