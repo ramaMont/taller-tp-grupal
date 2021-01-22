@@ -1,15 +1,17 @@
 #include "Objeto.h"
 
 #include <ConfigVariable.h>
+class Mapa;
 #include "Mapa.h"
 #include <thread>
 #include <chrono>
 
+Coordinates& Objeto::getCoordinates(){
+    return this->posicion;
+}
 
 bool ParedFalsa::abrir(Player *jugador){
-	if (jugador->get_coordinates().calculate_distance(this->posicion) <= 1)
-		return true;
-    return false;
+	return true;
 }
 
 
@@ -18,8 +20,6 @@ bool Puerta::abrir(Player *jugador){
 }
 
 bool Puerta::abrirPuerta(Player *jugador){
-	if (jugador->get_coordinates().calculate_distance(this->posicion) > 1)
-		return false;
 	atravesable(true);
     return true;
 }

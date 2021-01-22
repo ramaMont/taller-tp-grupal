@@ -9,6 +9,7 @@ class Player;
 class Objeto: public Posicionable {
 	public:
 	Objeto(Coordinates coordenadas): Posicionable(coordenadas) { }
+    Coordinates& getCoordinates();
 };
 
 

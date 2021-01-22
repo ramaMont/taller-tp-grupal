@@ -107,7 +107,7 @@ void ThGameModelServer::run(){
     protocol.setAction(Protocol::action::BEGIN);
     echoProtocol(protocol);
     th_game_events.start();
-    th_bots.start();
+    //th_bots.start();
     Event* event = new FinishGameEvent(players);
     th_game_events.add(event);
     try{
@@ -159,5 +159,5 @@ ThGameModelServer::~ThGameModelServer(){
     // se desconecta o se frena la ejecucion de un ThUserServer
     
     th_game_events.join();
-    th_bots.join();
+    //th_bots.join();
 }

@@ -15,6 +15,7 @@ balas_maximas: 30
 
 # Objetos
 segundos_cerrar_puerta: 3
+open_distance: 1.5
 
 # Armas
 precision_pistola: 0.8

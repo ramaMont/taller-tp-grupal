@@ -30,7 +30,8 @@ enum CONFIG{
 	puntos_cruz,
 	puntos_copa,
 	puntos_cofre,
-	puntos_corona
+	puntos_corona,
+	open_distance
 };
 
 #endif

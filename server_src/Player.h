@@ -5,6 +5,7 @@
 #include "Posicionable.h"
 #include "coordinates.h"
 #include <BlockingQueue.h>
+#include <atomic>
 
 #include "Mapa.h"
 class Mapa;
@@ -32,6 +33,7 @@ private:
     size_t balas_disparadas;
     size_t enemigos_matados;
     BlockingQueue<Protocol>& _game_model_queue;
+    std::atomic<bool> is_alive;
     
 public:
     explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa,
