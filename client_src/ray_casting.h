@@ -12,8 +12,6 @@
 #include "camera.h"
 #include "window.h"
 #include "background.h"
-class Intersected_object;
-#include "intersected_object.h"
 class Texture;
 #include "texture.h"
 

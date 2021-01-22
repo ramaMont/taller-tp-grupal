@@ -18,9 +18,6 @@ class Cl_Mapa;
 class Posicionable;
 #include <Posicionable.h>
 
-class Intersected_object;
-#include "intersected_object.h"
-
 class Wall;
 class Door;
 
