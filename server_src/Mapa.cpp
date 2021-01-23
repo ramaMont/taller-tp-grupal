@@ -140,6 +140,20 @@ void Mapa::sacarPosicionable(Coordinates posicion){
 	    mapaJuego[floor(posicion.x)][floor(posicion.y)].pop_back();
 }
 
+void Mapa::sacarPosicionable(Coordinates posicion, 
+        const std::type_info& type_id){
+    if (mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
+        return;
+    std::vector<Posicionable*>& vec = 
+        mapaJuego[floor(posicion.x)][floor(posicion.y)];
+    for (auto it = vec.begin(); it < vec.end(); ++it){
+        if (typeid(*it) == type_id){
+            vec.erase(it);
+            return;
+        }
+    }           
+}
+    
 void Mapa::sacarItem(Coordinates posicion, const std::type_info& type_id){
     std::vector<Item*>& vec = items[floor(posicion.x)][floor(posicion.y)];
     for (auto it = vec.begin(); it < vec.end(); ++it){
@@ -222,7 +236,8 @@ bool Mapa::hayObstaculoEn(float x, float y) const{
 	    floor(y) < 0 || floor(y) >= alto) return true;
 	if (mapaJuego[floor(x)][floor(y)].empty())
 		return false;
-	if (mapaJuego[floor(x)][floor(y)].back()->atravesable())
+	if (mapaJuego[floor(x)][floor(y)].back()->atravesable() ||
+        typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Player))
 		return false;
 	return true;
 }

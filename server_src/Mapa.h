@@ -31,6 +31,7 @@ public:
     void agregarItem(Item* item, Coordinates posicion);
     void addDoor(Puerta* door);
     void sacarPosicionable(Coordinates posicion);
+    void sacarPosicionable(Coordinates posicion, const std::type_info& type_id);
     void sacarItem(Coordinates posicion, const std::type_info& type_id);
     Posicionable* obtenerPosicionableEn(Coordinates posicion) const;
     Objeto* getNearestDoor(Coordinates& position);

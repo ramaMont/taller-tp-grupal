@@ -33,13 +33,9 @@ class OpenEvent{
 
 
 class FinishGameEvent: public Event{
-    private:
-    std::map<int, Player*>& players;
-
     public:
-    FinishGameEvent(std::map<int, Player*>& players);
+    FinishGameEvent();
     virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
-    bool someoneWon();
     ~FinishGameEvent();
 };
 
@@ -57,20 +53,11 @@ class DoorEvent: public Event{
 
 class RocketEvent: public Event{
     private:
-    Coordinates position;
-    Coordinates direction;
-    Player* player;
-    std::map<int, Player*>& enemigos;
-    Mapa& mapa;
-    Objeto* object;
+    Rocket* rocket;
 
     public:
-    RocketEvent(Coordinates position, Coordinates dir,
-    Player* player, std::map<int, Player*>& enemigos);
+    RocketEvent(Rocket* rocket);
     virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
-    void move();
-    void explote();
-    bool colisionaConObjeto(const Coordinates& inicio, const Coordinates& fin);
     ~RocketEvent();
 };
 

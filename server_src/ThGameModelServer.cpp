@@ -64,8 +64,9 @@ void ThGameModelServer::processShoot(Protocol protocol){
     try {
         player->disparar(players);
     } catch(const RocketException &e) {
-        Event *event = new RocketEvent(player->get_coordinates(),
-            player->get_direction(), player, players);
+        Rocket* rocket = new Rocket(player->get_coordinates(),
+            player->get_direction(), player, players, *this);
+        Event *event = new RocketEvent(rocket);
         th_game_events.add(event);
     } catch(...) {}
 }
@@ -80,9 +81,23 @@ void ThGameModelServer::processResurrect(Protocol protocol){
     player->revivir();
 }
 
+bool someoneWon(std::map<int, Player*>& players){
+    bool winner = false;
+    for (auto it = players.begin(); it != players.end(); ++it){
+        if (it->second->estaVivo()){
+            if (winner)
+                return false;
+            winner = true;
+        }
+    }
+    return true;
+}
+
 void ThGameModelServer::processDie(Protocol protocol){
     Player* player = players.at(protocol.getId());
     player->morir();
+    if (someoneWon(players)){}
+        //finish game
 }
 /*
 void ThGameModelServer::processOpen(Protocol& protocol){
@@ -108,7 +123,7 @@ void ThGameModelServer::run(){
     echoProtocol(protocol);
     th_game_events.start();
     //th_bots.start();
-    Event* event = new FinishGameEvent(players);
+    Event* event = new FinishGameEvent();
     th_game_events.add(event);
     try{
         while (is_running){

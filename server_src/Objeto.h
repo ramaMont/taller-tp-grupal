@@ -5,6 +5,10 @@
 #include "coordinates.h"
 class Player;
 #include "Player.h"
+class ThGameModelServer;
+class Mapa;
+#include <atomic>
+#include <map>
 
 class Objeto: public Posicionable {
 	public:
@@ -41,5 +45,24 @@ class PuertaCerrada: public Puerta {
 	bool abrir(Player *jugador) override;
 };
 
+
+class Rocket: public Objeto{
+    private:
+    Coordinates position;
+    Coordinates direction;
+    Player* player;
+    std::map<int, Player*>& enemies;
+    Mapa& map;
+    std::atomic<bool> exploded;
+
+    public:
+    Rocket(Coordinates position, Coordinates dir,Player* player,
+        std::map<int, Player*>& enemies, ThGameModelServer& game_model);
+    void move(ThGameModelServer& game_model);
+    void explode();
+    bool hasExploded();
+    bool colisionaConObjeto(const Coordinates& inicio, const Coordinates& fin);
+    ~Rocket();
+};
 
 #endif

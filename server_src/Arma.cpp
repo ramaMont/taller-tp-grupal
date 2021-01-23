@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <typeinfo>
+#include <iostream>
 
 
 #define PASO 1
@@ -40,8 +41,8 @@ bool colisionaConObjeto(Mapa& mapa, const Coordinates& inicio,
 	Coordinates actual(inicio.x, inicio.y);
 	direccion.normalice_direction();
 	actual.increment_on_direction(direccion, PASO);
-
-	while (actual != fin){
+    
+	while (actual != fin && actual.calculate_distance(fin) > 0.3){
 		if (mapa.hayObstaculoEn(actual) && actual != inicio)
 			return true;
 		actual.increment_on_direction(direccion, PASO);
@@ -69,7 +70,7 @@ bool dispararBala(Player* jugador, float precision, int angulo, Player* enemigo)
 		return true;
 
 	if (colisionaConObjeto(jugador->getMapa(), jugador->get_coordinates(),
-	    enemigo->get_coordinates()))	// Hay un objeto en el medio
+	    enemigo->get_coordinates()))	// Hay un objeto en el medio         
 	    return false;
 
     atacar(jugador, enemigo, precision, angulo);	
