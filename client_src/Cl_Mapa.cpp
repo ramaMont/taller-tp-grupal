@@ -83,14 +83,14 @@ void Cl_Mapa::moveme(Movable* jugador, const Coordinates& posicion){
 void Cl_Mapa::resize(int ancho, int alto){
     this->ancho = ancho;
     this->alto = alto;
-    mapaJuego.resize(ancho, std::vector<Posicionable*>(alto));
+    mapaJuego.resize(alto, std::vector<Posicionable*>(ancho));
 }
 
 //Problema: intento borrar tambien la posicion donde almaceno el jugador..."solucion": lo saco manualmente...
 Cl_Mapa::~Cl_Mapa(){
     sacarPosicionable(player->get_position());
-    for(int i=0; i<ancho; i++){
-         for(int j=0; j<alto; j++){
+    for(int i=0; i<alto; i++){
+         for(int j=0; j<ancho; j++){
             if(mapaJuego[i][j]!=nullptr){
                 delete mapaJuego[i][j];
             }

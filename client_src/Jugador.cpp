@@ -17,6 +17,8 @@ Jugador::Jugador(Cl_Mapa& mapa):
 }
 
 void Jugador::complete(Coordinates initial_position,Coordinates initial_direction,int player_id){
+   this->initial_position = initial_position;
+   this->initial_direction = initial_direction;
    this->posicion = initial_position;
    this->direction = initial_direction;
    this->id = player_id;

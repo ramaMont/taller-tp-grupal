@@ -37,6 +37,7 @@ void GamesAdmin::createGame(ThUserServer& th_user_server,
     cleanZombies();
     ThGameModelServer* th_game = new ThGameModelServer(th_user_server, map_filename,
         current_game_id, map_id_checksum);
+    th_game->addPlayer(th_user_server.getId());
     games.insert(std::pair<int, ThGameModelServer*>(th_game->getId(), th_game));
     th_user_server.setGameId(current_game_id);
     ++current_game_id;
@@ -74,6 +75,10 @@ void GamesAdmin::removePlayer(int game_id, int user_id){
         game->removePlayer(user_id);
     } catch(...){
     }
+}
+
+ThGameModelServer* GamesAdmin::getGame(int game_id){
+    return games.at(game_id);
 }
 
 GamesAdmin::~GamesAdmin(){

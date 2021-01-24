@@ -7,6 +7,30 @@ Coordinates::Coordinates(){}
 
 Coordinates::Coordinates(double a_x, double a_y): x(a_x), y(a_y) {}
 
+Coordinates::Coordinates(Protocol::direction direction){
+    switch (direction){
+        case Protocol::direction::FORWARD :
+            this->x = 0;
+            this->y = -1;
+            break;
+        case Protocol::direction::RIGHT :
+            this->x = 1;
+            this->y = 0;
+            break;
+        case Protocol::direction::LEFT :
+            this->x = -1;
+            this->y = 0;
+            break;
+        case Protocol::direction::BACKWARD :
+            this->x = 0;
+            this->y = 1;
+            break;
+        default:
+            this->x = 0;
+            this->y = 0;
+    }
+}
+
 void Coordinates::increment_on_direction(Coordinates movement_direction,
 		double inc){
 	x+= movement_direction.x*inc;
@@ -115,6 +139,22 @@ double Coordinates::calculate_angle(const Coordinates& direction,
 	if (std::floor(angle) == 1)
 		return 0;
 	return acos(angle);
+}
+
+Protocol::direction Coordinates::cast_to_direction(){
+    if (x == 1){
+        return Protocol::direction::RIGHT;
+    }
+    if (x == -1){
+        return Protocol::direction::LEFT;
+    }
+    if (y == -1){
+        return Protocol::direction::FORWARD;
+    }
+    if (y == 1){
+        return Protocol::direction::BACKWARD;
+    }
+	return Protocol::direction::STAY;
 }
 
 // void Coordinates::set_x(double a_x){

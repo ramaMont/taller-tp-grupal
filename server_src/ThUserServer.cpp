@@ -64,10 +64,18 @@ void ThUserServer::processReception(Protocol& protocol){
                 // y agregar cantidad de bots en el createGame
                 MapLoader mapLoader(protocol.getMapId());
                 // int bots_cty = protocol.getBotsCty();
-                games_admin.createGame(*this, mapLoader.getFileName(), protocol.getMapId());
-                respondSuccess();
-                Protocol protocol_response(user_id, protocol.getMapId(), game_id);      
-                protocol_response.setAction(Protocol::action::CREATE_GAME);
+                games_admin.createGame(*this, mapLoader.getFileName(),
+                    protocol.getMapId());
+                respondSuccess(protocol.getMapId());
+                Coordinates player_direction = games_admin.
+                    getGame(game_id)->getPlayer(user_id).get_direction();
+                Coordinates player_position = games_admin.
+                    getGame(game_id)->getPlayer(user_id).get_coordinates();
+                Protocol::direction prot_direction = player_direction.
+                    cast_to_direction();
+                Protocol protocol_response(Protocol::action::CREATE_GAME,
+                    user_id, prot_direction, mapLoader.getChecksum(), 
+                    player_position.x, player_position.y);      
                 th_sender->push(protocol_response);
             } catch(...){
                 respondError();

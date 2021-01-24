@@ -34,6 +34,7 @@ private:
     size_t enemigos_matados;
     BlockingQueue<Protocol>& _game_model_queue;
     std::atomic<bool> is_alive;
+    Coordinates initial_direction;
     
 public:
     explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa,
@@ -42,6 +43,7 @@ public:
         int id, BlockingQueue<Protocol>& game_model_queue);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);
+    void set_direction(std::string direction);
     Coordinates get_coordinates() const;
     Coordinates get_direction() const;
     int getId();
@@ -70,6 +72,7 @@ public:
     size_t getBalasDisparadas();
     size_t getEnemigosMatados();
     size_t getPuntuacion();    
+    void setPosition(Coordinates position);
 
     ~Player();    
       

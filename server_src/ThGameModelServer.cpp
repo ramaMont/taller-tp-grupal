@@ -7,12 +7,12 @@
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
         std::string map_filename, int game_id, int map_id_checksum):
-    GameModel(map_filename, game_id), launched(false),
-    th_game_events(operations),
-    th_bots(this, operations, players, map, 0),
-    map_id_checksum(map_id_checksum){
+        GameModel(map_filename, game_id), launched(false),
+        th_game_events(operations),
+        th_bots(this, operations, players, map, 0),
+        map_id_checksum(map_id_checksum){
     addThSender(th_user_server.getSender());
-    addPlayer(th_user_server.getId());
+
     th_user_server.setGameModel(this);
 }
 
@@ -158,6 +158,6 @@ ThGameModelServer::~ThGameModelServer(){
     // removePlayer la cual es llamada cada vez que un jugador
     // se desconecta o se frena la ejecucion de un ThUserServer
     
-    th_game_events.join();
+    //th_game_events.join();
     //th_bots.join();
 }

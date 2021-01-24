@@ -9,6 +9,9 @@
 
 #include <yaml-cpp/yaml.h>
 #include <string>
+#include <vector>
+#include <map>
+#include <tuple>
 
 
 // Codigo de errores en int (despues cambiar a excepciones)
@@ -75,14 +78,20 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
                 Coordinates position((float)i,(float)j);
                 Puerta* posicionable = new Puerta(position);
                 map.addDoor(posicionable);
-            } else if (elemento == "vacio"){
+            } else if (parsed_element == "playe"){
+                std::string aux = elemento.substr(7, elemento.size() - 5);
+                Coordinates position((float)i,(float)j);
+                std::tuple<Coordinates, std::string> player_data = 
+                    std::make_tuple(position, aux);
+                player_positions.push_back(player_data);
+            } else if (elemento == "empty"){
                 // No hace falta hacer nada.
             }
         }
     }
 }
 
-Mapa::Mapa(std::string map_filename){
+Mapa::Mapa(std::string map_filename): players_added(0){
 	std::string MAPS_PATH = "../data/maps/";
     YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
     alto = map_node["filas"].as<int>();
@@ -94,7 +103,7 @@ Mapa::Mapa(std::string map_filename){
 
 Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
         std::vector<std::vector<Posicionable*>>(alto)),
-        items(ancho, std::vector<std::vector<Item*>>(alto)){
+        items(ancho, std::vector<std::vector<Item*>>(alto)),players_added(0){
     /*for (int i=0; i<ancho; i++){
         for (int j=0; j<alto; j++){
             mapaJuego[i][j]=nullptr;
@@ -103,8 +112,15 @@ Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
 }
 
 void Mapa::agregarPlayer(Player* jugador){
-	const Coordinates& posicion = jugador->getPosicion();
-	mapaJuego[floor(posicion.x)][floor(posicion.y)].push_back(jugador);
+    if (players_added >= (int)player_positions.size())
+        throw -1; // Se quiere agregar un jugador mas a una partida completa
+    auto player_data = player_positions.at(players_added);
+    auto player_position = std::get<0>(player_data);
+    auto player_dir = std::get<1>(player_data);
+    jugador->setPosition(player_position);
+    jugador->set_direction(player_dir);
+	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(jugador);
+    ++players_added;
 }
 
 void Mapa::agregarPosicionable(Posicionable* posicionable, 

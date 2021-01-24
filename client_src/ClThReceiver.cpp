@@ -30,7 +30,7 @@ void ClThReceiver::processReception(Protocol& protocol){
             _client_holder.startGame();
             break;
         case Protocol::action::ADD_PLAYER:
-            _gameModel->addPlayer(protocol.getId());
+            _gameModel->addPlayer(protocol);
             break;
         case Protocol::action::REMOVE:
             _gameModel->removePlayer(protocol.getUserId());

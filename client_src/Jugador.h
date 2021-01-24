@@ -31,6 +31,7 @@ private:
     int lives;
     int health;
     int ammo;
+    Coordinates initial_direction;
 
 public:
     explicit Jugador(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
