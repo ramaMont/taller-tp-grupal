@@ -73,6 +73,15 @@ Texture::Texture(const Window& window):
 	add_sprite_texture("barrel");
 	add_sprite_texture("pillar");
 	add_sprite_texture("greenlight");
+	add_sprite_texture("trophie");
+	add_sprite_texture("rocket_launcher");
+	add_sprite_texture("medicine");
+	add_sprite_texture("machine_gun");
+	add_sprite_texture("key");
+	add_sprite_texture("food");
+	add_sprite_texture("fire_canon");
+	add_sprite_texture("bullets");	
+	add_sprite_texture("table");	
 
 	add_enemy_texture("guard_pos");
 	add_enemy_texture("officer_pos");
@@ -312,8 +321,8 @@ void Texture::show_sprite(int x_pixel, float distance_player_plane, int number_l
 	else if(texture==1){
 		if(number_line_texture>15)	
 			show_sprites(this->sprites[texture],number_line_texture,0,0,x_pixel,distance_player_plane);		
-	}else if(texture==2){
-		show(this->sprites[texture],number_line_texture,0,x_pixel,distance_player_plane);
+	}else{
+		show_sprites(this->sprites[texture],number_line_texture,0,0,x_pixel,distance_player_plane);		
 	}
 }
 
