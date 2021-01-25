@@ -1,29 +1,29 @@
-nombre: map_players_2
+nombre: map_with_players
 filas: 10
 columnas: 15
 elementos:
-  pos_0_0: wall_bluestone
-  pos_0_1: wall_bluestone
-  pos_0_10: wall_bluestone
-  pos_0_11: wall_bluestone
-  pos_0_12: wall_bluestone
-  pos_0_13: wall_bluestone
-  pos_0_14: wall_bluestone
-  pos_0_2: wall_bluestone
-  pos_0_3: wall_bluestone
-  pos_0_4: wall_bluestone
-  pos_0_5: wall_bluestone
-  pos_0_6: wall_bluestone
-  pos_0_7: wall_bluestone
-  pos_0_8: wall_bluestone
-  pos_0_9: wall_bluestone
-  pos_1_0: wall_bluestone
+  pos_0_0: wall_colorstone
+  pos_0_1: wall_colorstone
+  pos_0_10: wall_colorstone
+  pos_0_11: wall_colorstone
+  pos_0_12: wall_colorstone
+  pos_0_13: wall_colorstone
+  pos_0_14: wall_colorstone
+  pos_0_2: wall_colorstone
+  pos_0_3: wall_colorstone
+  pos_0_4: wall_colorstone
+  pos_0_5: wall_colorstone
+  pos_0_6: wall_colorstone
+  pos_0_7: wall_colorstone
+  pos_0_8: wall_colorstone
+  pos_0_9: wall_colorstone
+  pos_1_0: wall_colorstone
   pos_1_1: barrel
   pos_1_10: empty
   pos_1_11: empty
   pos_1_12: empty
   pos_1_13: empty
-  pos_1_14: wall_bluestone
+  pos_1_14: wall_colorstone
   pos_1_2: barrel
   pos_1_3: barrel
   pos_1_4: empty
@@ -32,13 +32,13 @@ elementos:
   pos_1_7: empty
   pos_1_8: empty
   pos_1_9: empty
-  pos_2_0: wall_bluestone
+  pos_2_0: wall_colorstone
   pos_2_1: barrel
   pos_2_10: empty
   pos_2_11: empty
   pos_2_12: empty
   pos_2_13: empty
-  pos_2_14: wall_bluestone
+  pos_2_14: wall_colorstone
   pos_2_2: empty
   pos_2_3: barrel
   pos_2_4: empty
@@ -47,58 +47,58 @@ elementos:
   pos_2_7: empty
   pos_2_8: empty
   pos_2_9: empty
-  pos_3_0: wall_bluestone
+  pos_3_0: wall_colorstone
   pos_3_1: barrel
-  pos_3_10: empty
+  pos_3_10: wall_greystone
   pos_3_11: empty
   pos_3_12: empty
   pos_3_13: empty
-  pos_3_14: wall_bluestone
+  pos_3_14: wall_colorstone
   pos_3_2: barrel
   pos_3_3: barrel
-  pos_3_4: empty
-  pos_3_5: empty
+  pos_3_4: player_front
+  pos_3_5: player_left
   pos_3_6: empty
   pos_3_7: empty
-  pos_3_8: empty
-  pos_3_9: empty
-  pos_4_0: wall_bluestone
+  pos_3_8: wall_greystone
+  pos_3_9: door
+  pos_4_0: wall_colorstone
   pos_4_1: empty
   pos_4_10: empty
   pos_4_11: empty
   pos_4_12: empty
   pos_4_13: empty
-  pos_4_14: wall_bluestone
+  pos_4_14: wall_colorstone
   pos_4_2: empty
-  pos_4_3: empty
-  pos_4_4: empty
-  pos_4_5: empty
+  pos_4_3: barrel
+  pos_4_4: player_right
+  pos_4_5: player_back
   pos_4_6: empty
   pos_4_7: empty
   pos_4_8: empty
   pos_4_9: empty
-  pos_5_0: wall_bluestone
+  pos_5_0: wall_colorstone
   pos_5_1: empty
   pos_5_10: empty
   pos_5_11: empty
   pos_5_12: empty
   pos_5_13: empty
-  pos_5_14: wall_bluestone
+  pos_5_14: wall_colorstone
   pos_5_2: empty
   pos_5_3: empty
   pos_5_4: empty
-  pos_5_5: player_right
+  pos_5_5: empty
   pos_5_6: empty
   pos_5_7: empty
   pos_5_8: empty
   pos_5_9: empty
-  pos_6_0: wall_bluestone
+  pos_6_0: wall_colorstone
   pos_6_1: empty
   pos_6_10: empty
   pos_6_11: empty
   pos_6_12: empty
   pos_6_13: empty
-  pos_6_14: wall_bluestone
+  pos_6_14: wall_colorstone
   pos_6_2: empty
   pos_6_3: empty
   pos_6_4: empty
@@ -107,13 +107,13 @@ elementos:
   pos_6_7: empty
   pos_6_8: empty
   pos_6_9: empty
-  pos_7_0: wall_bluestone
+  pos_7_0: wall_colorstone
   pos_7_1: empty
   pos_7_10: empty
   pos_7_11: empty
   pos_7_12: empty
   pos_7_13: empty
-  pos_7_14: wall_bluestone
+  pos_7_14: wall_colorstone
   pos_7_2: empty
   pos_7_3: empty
   pos_7_4: empty
@@ -122,13 +122,13 @@ elementos:
   pos_7_7: empty
   pos_7_8: empty
   pos_7_9: empty
-  pos_8_0: wall_bluestone
+  pos_8_0: wall_colorstone
   pos_8_1: empty
   pos_8_10: empty
   pos_8_11: empty
   pos_8_12: empty
   pos_8_13: empty
-  pos_8_14: wall_bluestone
+  pos_8_14: wall_colorstone
   pos_8_2: empty
   pos_8_3: empty
   pos_8_4: empty
@@ -137,18 +137,18 @@ elementos:
   pos_8_7: empty
   pos_8_8: empty
   pos_8_9: empty
-  pos_9_0: wall_bluestone
-  pos_9_1: wall_bluestone
-  pos_9_10: wall_bluestone
-  pos_9_11: wall_bluestone
-  pos_9_12: wall_bluestone
-  pos_9_13: wall_bluestone
-  pos_9_14: wall_bluestone
-  pos_9_2: wall_bluestone
-  pos_9_3: wall_bluestone
-  pos_9_4: wall_bluestone
-  pos_9_5: wall_bluestone
-  pos_9_6: wall_bluestone
-  pos_9_7: wall_bluestone
-  pos_9_8: wall_bluestone
-  pos_9_9: wall_bluestone
+  pos_9_0: wall_colorstone
+  pos_9_1: wall_colorstone
+  pos_9_10: wall_colorstone
+  pos_9_11: wall_colorstone
+  pos_9_12: wall_colorstone
+  pos_9_13: wall_colorstone
+  pos_9_14: wall_colorstone
+  pos_9_2: wall_colorstone
+  pos_9_3: wall_colorstone
+  pos_9_4: wall_colorstone
+  pos_9_5: wall_colorstone
+  pos_9_6: wall_colorstone
+  pos_9_7: wall_colorstone
+  pos_9_8: wall_colorstone
+  pos_9_9: wall_colorstone
