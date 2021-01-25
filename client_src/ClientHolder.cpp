@@ -16,7 +16,8 @@ std::map<int, float> configs;
 
 ClientHolder::ClientHolder(): 
     user_id(-1), socket(nullptr), _game_model(nullptr), 
-    _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false), _game_id(-1){
+    _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false),
+    _game_id(-1), _map_id_checksum(-1){
 }
 
 void ClientHolder::crearPartida(const std::string& map_filename,
@@ -95,9 +96,15 @@ void ClientHolder::launchGame() {
 
 void ClientHolder::processReception(Protocol& protocol){
     switch (protocol.getAction()){
-        case Protocol::action::OK:
+        case Protocol::action::OK:{
             _game_id = protocol.getGameId();
+            _map_id_checksum = protocol.getMapId();
+            if (_map_filename.size() == 0){
+                MapLoader mapLoader(_map_id_checksum);
+                _map_filename = mapLoader.getFileName();
+            }
             break;
+        }
         case Protocol::action::CREATE_GAME:{
             // TODO: agregar en el createGameModel la cantidad de Bots
             // 
@@ -109,9 +116,8 @@ void ClientHolder::processReception(Protocol& protocol){
         }
         case Protocol::action::ADD_PLAYER:{
             if (_game_model == nullptr){
-                MapLoader mapLoader(protocol.getMapId());
-                createGameModel(mapLoader.getFileName(), protocol.getUserId(), 
-                    protocol.getGameId());
+                createGameModel(_map_filename, protocol.getUserId(), 
+                    _game_id);
                 _game_model->addPlayer(protocol);
             }
             else{

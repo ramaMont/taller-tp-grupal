@@ -88,7 +88,7 @@ elementos:
   pos_5_3: empty
   pos_5_4: empty
   pos_5_5: player_front
-  pos_5_6: player_left
+  pos_5_6: empty
   pos_5_7: empty
   pos_5_8: empty
   pos_5_9: empty
@@ -102,9 +102,9 @@ elementos:
   pos_6_2: empty
   pos_6_3: empty
   pos_6_4: empty
-  pos_6_5: player_right
-  pos_6_6: player_back
-  pos_6_7: empty
+  pos_6_5: empty
+  pos_6_6: empty
+  pos_6_7: player_left
   pos_6_8: empty
   pos_6_9: empty
   pos_7_0: wall_bluestone

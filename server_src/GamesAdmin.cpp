@@ -53,20 +53,33 @@ void GamesAdmin::joinGame(ThUserServer& th_user_server, int game_id){
     auto th_game = games.at(game_id);
     if (th_game->wasLaunched())
         throw -1;
+    
+    int map_id_checksum = th_game->getMapIdChecksum();
+    int user_id = th_user_server.getId();
     // Le envio al jugador los ids de todos los jugadores en orden
     // en el que fueron ingresando.
+    th_user_server.setGameId(game_id);
     std::vector<int>& ids_vector = th_game->getIdsVector();
-    th_user_server.transmit(ids_vector, th_game->getMapIdChecksum());
+    th_user_server.transmit(ids_vector, map_id_checksum);
+
     // Inserto al jugador nuevo en el game model
-    th_game->addPlayer(th_user_server.getId());
+    th_game->addPlayer(user_id);
     th_game->addThSender(th_user_server.getSender());
     th_user_server.setGameModel(th_game);
-    th_user_server.setGameId(game_id);
+
     // Le envio a todos los jugadores que se ha unido uno nuevo.
     // Incluido el nuevo jugador asi se agrega en su modelo.
-    Protocol protocol(th_user_server.getId());
-    protocol.setAction(Protocol::action::ADD_PLAYER);
-    th_game->echoProtocol(protocol);
+
+    Coordinates player_direction = th_game->getPlayer(user_id).
+        get_direction();
+    Coordinates player_position = th_game->getPlayer(user_id).
+        get_coordinates();
+    Protocol::direction prot_direction = player_direction.
+        cast_to_direction();
+    Protocol protocol_response(Protocol::action::ADD_PLAYER,
+        user_id, prot_direction, map_id_checksum,
+        player_position.x, player_position.y);  
+    th_game->echoProtocol(protocol_response);
 }
 
 void GamesAdmin::removePlayer(int game_id, int user_id){
