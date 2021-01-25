@@ -19,7 +19,9 @@ public:
     Coordinates();
     
     explicit Coordinates(Protocol::direction direction);
-    
+
+    explicit Coordinates(std::string direction);
+
     explicit Coordinates(double a_x, double a_y);
 
     void increment_on_direction(Coordinates movement_direction, double inc);

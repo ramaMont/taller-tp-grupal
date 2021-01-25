@@ -10,24 +10,43 @@ Coordinates::Coordinates(double a_x, double a_y): x(a_x), y(a_y) {}
 Coordinates::Coordinates(Protocol::direction direction){
     switch (direction){
         case Protocol::direction::FORWARD :
-            this->x = 0;
-            this->y = -1;
-            break;
-        case Protocol::direction::RIGHT :
             this->x = 1;
             this->y = 0;
             break;
-        case Protocol::direction::LEFT :
-            this->x = -1;
-            this->y = 0;
-            break;
-        case Protocol::direction::BACKWARD :
+        case Protocol::direction::RIGHT :
             this->x = 0;
             this->y = 1;
+            break;
+        case Protocol::direction::LEFT :
+            this->x = 0;
+            this->y = -1;
+            break;
+        case Protocol::direction::BACKWARD :
+            this->x = -1;
+            this->y = 0;
             break;
         default:
             this->x = 0;
             this->y = 0;
+    }
+}
+
+Coordinates::Coordinates(std::string direction){
+    if (direction == "front"){
+        this->x = 1;
+        this->y = 0;
+    } else if (direction == "right"){
+        this->x = 0;
+        this->y = 1;
+	} else if (direction == "left"){
+        this->x = 0;
+        this->y = -1;
+	} else if (direction == "back"){
+        this->x = -1;
+        this->y = 0;
+	} else {
+        this->x = 0;
+        this->y = 0;
     }
 }
 
@@ -143,16 +162,16 @@ double Coordinates::calculate_angle(const Coordinates& direction,
 
 Protocol::direction Coordinates::cast_to_direction(){
     if (x == 1){
-        return Protocol::direction::RIGHT;
-    }
-    if (x == -1){
-        return Protocol::direction::LEFT;
-    }
-    if (y == -1){
         return Protocol::direction::FORWARD;
     }
-    if (y == 1){
+    if (x == -1){
         return Protocol::direction::BACKWARD;
+    }
+    if (y == 1){
+        return Protocol::direction::RIGHT;
+    }
+    if (y == -1){
+        return Protocol::direction::LEFT;
     }
 	return Protocol::direction::STAY;
 }

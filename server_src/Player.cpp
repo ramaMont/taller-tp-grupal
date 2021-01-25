@@ -75,23 +75,8 @@ void Player::set_direction(Coordinates direction){
 }
 
 void Player::set_direction(std::string direction){
-	Coordinates player_direction;
-    if (direction == "front"){
-        player_direction.x = 0;
-        player_direction.y = -1;
-    }
-    if (direction == "right"){
-        player_direction.x = 1;
-        player_direction.y = 0;
-    }
-    if (direction == "left"){
-        player_direction.x = -1;
-        player_direction.y = 0;
-    }
-    if (direction == "back"){
-        player_direction.x = 0;
-        player_direction.y = 1;
-    }
+    // cambiar esto por la funcion ya creada de coordinates.
+	Coordinates player_direction(direction);
     this->direction = player_direction;
     this->initial_direction = player_direction;
 }
