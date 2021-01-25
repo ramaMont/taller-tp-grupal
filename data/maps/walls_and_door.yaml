@@ -42,7 +42,7 @@ elementos:
   pos_11_2: empty
   pos_11_3: empty
   pos_11_4: empty
-  pos_11_5: empty
+  pos_11_5: player_back
   pos_11_6: empty
   pos_11_7: empty
   pos_11_8: empty
@@ -116,7 +116,7 @@ elementos:
   pos_2_14: wall_bluestone
   pos_2_2: empty
   pos_2_3: empty
-  pos_2_4: empty
+  pos_2_4: player_front
   pos_2_5: empty
   pos_2_6: empty
   pos_2_7: empty
@@ -159,14 +159,14 @@ elementos:
   pos_5_12: empty
   pos_5_13: empty
   pos_5_14: wall_bluestone
-  pos_5_2: empty
+  pos_5_2: player_right
   pos_5_3: empty
   pos_5_4: empty
   pos_5_5: empty
   pos_5_6: empty
   pos_5_7: empty
   pos_5_8: empty
-  pos_5_9: empty
+  pos_5_9: player_left
   pos_6_0: wall_bluestone
   pos_6_1: empty
   pos_6_10: empty

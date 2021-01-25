@@ -55,7 +55,7 @@ elementos:
   pos_12_13: empty
   pos_12_14: wall_greystone
   pos_12_2: empty
-  pos_12_3: empty
+  pos_12_3: player_back
   pos_12_4: empty
   pos_12_5: empty
   pos_12_6: empty
@@ -114,7 +114,7 @@ elementos:
   pos_2_12: empty
   pos_2_13: empty
   pos_2_14: wall_greystone
-  pos_2_2: empty
+  pos_2_2: player_front
   pos_2_3: empty
   pos_2_4: empty
   pos_2_5: empty
@@ -175,7 +175,7 @@ elementos:
   pos_6_13: empty
   pos_6_14: wall_greystone
   pos_6_2: empty
-  pos_6_3: empty
+  pos_6_3: pillar
   pos_6_4: empty
   pos_6_5: empty
   pos_6_6: empty
@@ -205,7 +205,7 @@ elementos:
   pos_8_13: empty
   pos_8_14: wall_greystone
   pos_8_2: empty
-  pos_8_3: empty
+  pos_8_3: barrel
   pos_8_4: empty
   pos_8_5: empty
   pos_8_6: empty

@@ -199,13 +199,13 @@ elementos:
   pos_7_9: empty
   pos_8_0: wall_colorstone
   pos_8_1: empty
-  pos_8_10: empty
+  pos_8_10: player_left
   pos_8_11: empty
   pos_8_12: empty
   pos_8_13: empty
   pos_8_14: wall_colorstone
   pos_8_2: empty
-  pos_8_3: empty
+  pos_8_3: player_right
   pos_8_4: empty
   pos_8_5: empty
   pos_8_6: empty
