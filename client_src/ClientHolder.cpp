@@ -16,7 +16,8 @@ std::map<int, float> configs;
 
 ClientHolder::ClientHolder(): 
     user_id(-1), socket(nullptr), _game_model(nullptr), 
-    _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false){
+    _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false),
+    _game_id(-1), _map_id_checksum(-1){
 }
 
 void ClientHolder::crearPartida(const std::string& map_filename,
@@ -30,9 +31,9 @@ void ClientHolder::crearPartida(const std::string& map_filename,
     socket->send(protocol_send, sizeof(protocol_send));
     socket->recive(protocol_response, sizeof(protocol_response));
     processReception(protocol_response);
+    game_id = _game_id;
     socket->recive(protocol_response, sizeof(protocol_response));
     processReception(protocol_response);
-    game_id = protocol_response.getGameId();
     _cl_th_receiver = new ClThReceiver(socket, *this, _game_model);
     _cl_th_receiver->start();
 }
@@ -43,7 +44,6 @@ void ClientHolder::unirseAPartida(std::string& id_partida) {
     protocol_send.setAction(Protocol::action::JOIN_GAME);
     socket->send(protocol_send, sizeof(protocol_send));
     addLoggedUsers();
-
 }
 
 void ClientHolder::logged(std::string& nombre, std::string& puerto, std::string& servidor){
@@ -96,24 +96,32 @@ void ClientHolder::launchGame() {
 
 void ClientHolder::processReception(Protocol& protocol){
     switch (protocol.getAction()){
-        case Protocol::action::OK:
+        case Protocol::action::OK:{
+            _game_id = protocol.getGameId();
+            _map_id_checksum = protocol.getMapId();
+            if (_map_filename.size() == 0){
+                MapLoader mapLoader(_map_id_checksum);
+                _map_filename = mapLoader.getFileName();
+            }
             break;
+        }
         case Protocol::action::CREATE_GAME:{
             // TODO: agregar en el createGameModel la cantidad de Bots
             // 
-            createGameModel(_map_filename, user_id, protocol.getGameId());
+            createGameModel(_map_filename, user_id, _game_id);
             std::cout << "Partida creada\nId de Partida: " << 
-                protocol.getGameId() << std::endl;
+                _game_id << std::endl;
+            _game_model->addPlayer(protocol);
             break;
         }
         case Protocol::action::ADD_PLAYER:{
             if (_game_model == nullptr){
-                MapLoader mapLoader(protocol.getMapId());
-                createGameModel(mapLoader.getFileName(), protocol.getUserId(), 
-                    protocol.getGameId());
+                createGameModel(_map_filename, protocol.getUserId(), 
+                    _game_id);
+                _game_model->addPlayer(protocol);
             }
             else{
-                _game_model->addPlayer(protocol.getUserId());
+                _game_model->addPlayer(protocol);
             }
             break;
         }

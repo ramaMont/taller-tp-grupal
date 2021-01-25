@@ -38,6 +38,12 @@ Protocol::Protocol(int config_number, float config_value):
         _game_id(0), _float_aux(config_value){
 }
 
+Protocol::Protocol(Protocol::action action, int user_id, Protocol::direction direction, int map_id, int pos_x, int pos_y):
+        _action(action), id(user_id),
+        _direction(direction), damage(map_id),
+        _game_id(pos_x), _float_aux((float)pos_y){
+}
+
 Protocol::action Protocol::getAction(){
     return _action;
 }
@@ -74,11 +80,9 @@ float Protocol::getConfiguration(){
     return _float_aux;
 }
 
-
-
 std::tuple<int, int> Protocol::getPosition() const{
-    int pos_x = id;
-    int pos_y = damage;
+    int pos_x = _game_id;
+    int pos_y = (int)_float_aux;
     return std::make_tuple(pos_x, pos_y);
 }
 

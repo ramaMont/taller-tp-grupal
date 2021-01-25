@@ -64,10 +64,18 @@ void ThUserServer::processReception(Protocol& protocol){
                 // y agregar cantidad de bots en el createGame
                 MapLoader mapLoader(protocol.getMapId());
                 // int bots_cty = protocol.getBotsCty();
-                games_admin.createGame(*this, mapLoader.getFileName(), protocol.getMapId());
-                respondSuccess();
-                Protocol protocol_response(user_id, protocol.getMapId(), game_id);      
-                protocol_response.setAction(Protocol::action::CREATE_GAME);
+                games_admin.createGame(*this, mapLoader.getFileName(),
+                    protocol.getMapId());
+                respondSuccess(protocol.getMapId());
+                Coordinates player_direction = games_admin.
+                    getGame(game_id)->getPlayer(user_id).get_direction();
+                Coordinates player_position = games_admin.
+                    getGame(game_id)->getPlayer(user_id).get_coordinates();
+                Protocol::direction prot_direction = player_direction.
+                    cast_to_direction();
+                Protocol protocol_response(Protocol::action::CREATE_GAME,
+                    user_id, prot_direction, mapLoader.getChecksum(), 
+                    player_position.x, player_position.y);      
                 th_sender->push(protocol_response);
             } catch(...){
                 respondError();
@@ -105,9 +113,9 @@ void ThUserServer::run(){
         }
     } catch(...){
         is_running = false;
-        if (game_id != -1)
-            games_admin.removePlayer(game_id, user_id);
     }
+    if (game_id != -1)
+        games_admin.removePlayer(game_id, user_id);
 }
 
 ThSender* ThUserServer::getSender(){
@@ -123,11 +131,18 @@ void ThUserServer::setGameId(int game_id){
 }
 
 void ThUserServer::transmit(std::vector<int>& ids_vector, int map_id_checksum){
-    respondSuccess();
+    respondSuccess(map_id_checksum);
     for (auto it = ids_vector.begin(); it != ids_vector.end(); ++it){
-        Protocol protocol(*it, map_id_checksum);
-        protocol.setAction(Protocol::action::ADD_PLAYER);
-        th_sender->push(protocol);
+        Coordinates player_direction = games_admin.
+            getGame(game_id)->getPlayer(*it).get_direction();
+        Coordinates player_position = games_admin.
+            getGame(game_id)->getPlayer(*it).get_coordinates();
+        Protocol::direction prot_direction = player_direction.
+            cast_to_direction();
+        Protocol protocol_response(Protocol::action::ADD_PLAYER,
+            *it, prot_direction, map_id_checksum, 
+            player_position.x, player_position.y);      
+        th_sender->push(protocol_response);
     }
     Protocol protocol;
     protocol.setAction(Protocol::action::END);

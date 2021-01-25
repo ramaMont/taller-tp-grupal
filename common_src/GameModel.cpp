@@ -41,6 +41,7 @@ void GameModel::processMove(Protocol& protocol){
 }
 
 void GameModel::push(Protocol protocol){
+    std::lock_guard<std::mutex> lck(m);
     operations.push(protocol);
 }
 

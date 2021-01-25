@@ -14,7 +14,6 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,
     player.new_gun_type(1);
     initDirections();
     initMap(map_filename);
-    addPlayer(user_id);
 }
 
 /* 
@@ -263,27 +262,26 @@ void GameModelClient::processMove(Protocol& protocol){
     }
 }
 
-void GameModelClient::addPlayer(int player_id){ //Jugadores O enemigos
-    static int pos_x = 2;
-    static int pos_y = 2;
+void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
+    auto protocol_position = protocol.getPosition();
+    Coordinates player_position((double)std::get<0>(protocol_position), (double)std::get<1>(protocol_position));
+    Protocol::direction player_direction = protocol.getDirection();
+    Coordinates initial_direction(player_direction);
+    int player_id = protocol.getUserId();
 
     if(player_id == protagonist_id){
         try{
             added_player = true;
-            Coordinates initial_position(pos_x, pos_y);
-            Coordinates initial_direction(0, 1);
-            player.complete(initial_position,initial_direction,player_id);
+            Coordinates initial_position = player_position;
+            player.complete(initial_position, initial_direction,player_id);
             movables.insert(std::pair<int, Jugador*>(player_id, &player));
-            id_insertion_order.push_back(player_id);
+            map.agregarPosicionable(&player,initial_position);  
             player.setInitialPosition(initial_position);
-            ++pos_x;
-            ++pos_y;
         } catch(...){
         }
     }else{
         try{
-            Coordinates initial_position(pos_x, pos_y);
-            Coordinates initial_direction(0, 1);
+            Coordinates initial_position = player_position;
             Enemy* enemy = new Enemy(initial_position, initial_direction, map, player,player_id);
             enemy->set_texture(&texture);
             enemy->new_enemy_type(1);
@@ -291,10 +289,7 @@ void GameModelClient::addPlayer(int player_id){ //Jugadores O enemigos
             enemies.push_back(enemy);
             map.agregarPosicionable(enemy,initial_position);    
             movables.insert(std::pair<int, Movable*>(player_id, enemy));
-            id_insertion_order.push_back(player_id);
             enemy->setInitialPosition(initial_position);
-            ++pos_x;
-            ++pos_y;
         } catch(...){
         }        
     }
@@ -357,10 +352,6 @@ Cl_Mapa& GameModelClient::getMap(){
 
 int GameModelClient::getId(){
     return game_id;
-}
-
-std::vector<int>& GameModelClient::getIdsVector(){
-    return id_insertion_order;
 }
 
 GameModelClient& GameModelClient::operator=(GameModelClient&& other){

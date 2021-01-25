@@ -20,6 +20,8 @@ private:
     ThSender* _th_sender;
     std::string _map_filename;
     bool ready_to_play;
+    int _game_id;
+    int _map_id_checksum;
     void setId(Protocol& protocol);
     void processReception(Protocol& protocol);
     void createGameModel(std::string map_filename, int id_user_protocol, int game_id);

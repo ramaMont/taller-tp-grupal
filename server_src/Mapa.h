@@ -13,6 +13,8 @@ class Puerta;
 
 #include "coordinates.h"
 #include <yaml-cpp/yaml.h>
+#include <map>
+#include <tuple>
 
 class Mapa{
 private:
@@ -21,7 +23,10 @@ private:
     std::vector<std::vector<std::vector<Posicionable*>>> mapaJuego;
     std::vector<std::vector<std::vector<Item*>>> items;
     std::vector<Puerta*> doors;
+    std::vector<std::tuple<Coordinates, std::string>> player_positions;
+    int players_added;
     void initMap(Mapa& map, YAML::Node map_node);
+
 
 public:
     explicit Mapa(std::string map_filename);

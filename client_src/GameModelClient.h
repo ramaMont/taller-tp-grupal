@@ -41,7 +41,6 @@ private:
 	bool added_player;
     Jugador player;	
 	std::queue<Protocol> operations;
-    std::vector<int> id_insertion_order;
     std::map<int,Movable*> movables;
     std::map<Protocol::direction, Direccion* > directions;
     int game_id;
@@ -85,7 +84,7 @@ public:
 
     void hideWindow();
 
-    void addPlayer(int player_id);
+    void addPlayer(Protocol& protocol);
     Jugador& getPlayer();
     Door* getDoor();
     Window& getWindow();
@@ -96,8 +95,6 @@ public:
 
     Cl_Mapa& getMap();
     int getId();
-
-    std::vector<int>& getIdsVector();
 
     GameModelClient(const GameModelClient&) = delete;
     GameModelClient(GameModelClient&& other) = delete;

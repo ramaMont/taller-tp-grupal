@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <math.h>
+
+#include <Protocol.h>
+
 //Coordenadas, representan tanto posiciones como direcciones de un vector
 /*Nota: como todos sus atributos son 
 accedidos con tanta frecuencia que conviene hacerlos 
@@ -14,8 +17,12 @@ public:
     double y;
 
     Coordinates();
+    
+    explicit Coordinates(Protocol::direction direction);
 
-    Coordinates(double a_x, double a_y);
+    explicit Coordinates(std::string direction);
+
+    explicit Coordinates(double a_x, double a_y);
 
     void increment_on_direction(Coordinates movement_direction, double inc);
 
@@ -51,6 +58,8 @@ public:
     double calculate_distance_to_vector(const Coordinates vector_direction, const Coordinates vector_position);
 
     double calculate_distance(const Coordinates &a_position) const;
+
+    Protocol::direction cast_to_direction();
 
 	//Según la direccion a la que apunta mi rayo, me fijo en una celda distinta
     int get_increase_x()const;

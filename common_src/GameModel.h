@@ -13,6 +13,7 @@ class ThSender;
 #include <atomic>
 #include <map>
 #include <vector>
+#include <mutex>
 
 class GameModel : public Thread{
 protected:
@@ -22,6 +23,7 @@ protected:
     std::map<int,Player*> players;
     std::map<Protocol::direction, Direccion* > directions;
     int game_id;
+    std::mutex m;
 
     void updateEvent();
     void movePlayer(int player_id);

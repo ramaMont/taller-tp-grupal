@@ -74,6 +74,13 @@ void Player::set_direction(Coordinates direction){
     this->direction = direction;
 }
 
+void Player::set_direction(std::string direction){
+    // cambiar esto por la funcion ya creada de coordinates.
+	Coordinates player_direction(direction);
+    this->direction = player_direction;
+    this->initial_direction = player_direction;
+}
+
 int Player::getId(){
     return player_id;
 }
@@ -98,7 +105,7 @@ bool Player::recibirDanio(int danio){
 	this->vida = std::max(this->vida - danio, 0);
 	Protocol protocol(player_id, danio, Protocol::action::SHOOTED);
 	_game_model_queue.push(protocol);
-	if (this->vida == 0){
+	if (this->vida <= 0){
 		Protocol protocol(player_id);
 		protocol.setAction(Protocol::action::DIE);
 		_game_model_queue.push(protocol);
@@ -230,8 +237,10 @@ int Player::getBalas(){
 	return this->balas_restantes;
 }
 
+void Player::setPosition(Coordinates position){
+	this->posicion = position;
+	this->posicion_inicial = position;
+}
 
 Player::~Player(){
 }
-
-
