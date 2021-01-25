@@ -64,7 +64,7 @@ Posicionable* Cl_Mapa::obtenerPosicionableEn(Coordinates posicion){
 
 void Cl_Mapa::moveme(Movable* jugador, const Coordinates& posicion){
 	
-    if (posicion.x > ancho || posicion.y > alto)
+    if (posicion.x > alto || posicion.y > ancho)
         throw -1;
     if (posicion.x < 0 || posicion.y < 0)
         throw -1;

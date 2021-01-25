@@ -97,7 +97,7 @@ Mapa::Mapa(std::string map_filename): players_added(0){
     alto = map_node["filas"].as<int>();
     ancho = map_node["columnas"].as<int>();
     mapaJuego.resize(ancho, std::vector<std::vector<Posicionable*>>(alto));
-    items.resize(ancho, std::vector<std::vector<Item*>>(alto));
+    items.resize(alto, std::vector<std::vector<Item*>>(ancho));
     initMap(*this, map_node["elementos"]);
 }
 
@@ -195,7 +195,7 @@ void usarItems(std::vector<Item*>& items, Player *player){
 }
 
 void Mapa::moveme(Player* jugador, const Coordinates& posicion){
-    if (floor(posicion.x) >= ancho || floor(posicion.y) >= alto)
+    if (floor(posicion.x) >= alto || floor(posicion.y) >= ancho)
         throw -1;
     if (floor(posicion.x) < 0 || floor(posicion.y) < 0)
         throw -1;
