@@ -86,6 +86,67 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
                 player_positions.push_back(player_data);
             } else if (elemento == "empty"){
                 // No hace falta hacer nada.
+            } else if (elemento == "key_door"){
+                Coordinates position((float)i,(float)j);
+                PuertaCerrada* posicionable = new PuertaCerrada(position);
+                map.addDoor(posicionable);
+            } else if (elemento == "passage"){
+                Coordinates position((float)i,(float)j);
+                ParedFalsa* posicionable = new ParedFalsa(position);
+                map.agregarPosicionable(posicionable, position);
+            } else if (elemento == "food"){
+                Coordinates position((float)i,(float)j);
+                Comida* posicionable = new Comida(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "medicine"){
+                Coordinates position((float)i,(float)j);
+                KitMedico* posicionable = new KitMedico(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "blood"){
+                Coordinates position((float)i,(float)j);
+                Sangre* posicionable = new Sangre(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "bullets"){
+                Coordinates position((float)i,(float)j);
+                Balas* posicionable = new Balas(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "key"){
+                Coordinates position((float)i,(float)j);
+                Llave* posicionable = new Llave(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "trophie"){   // cross
+                Coordinates position((float)i,(float)j);
+                Cruz* posicionable = new Cruz(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "trophie"){
+                Coordinates position((float)i,(float)j);
+                Copa* posicionable = new Copa(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "trophie"){    //
+                Coordinates position((float)i,(float)j);
+                Cofre* posicionable = new Cofre(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "trophie"){    //
+                Coordinates position((float)i,(float)j);
+                Corona* posicionable = new Corona(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "machine_gun"){
+                Coordinates position((float)i,(float)j);
+                Ametralladora* posicionable = new Ametralladora(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "fire_canon"){
+                Coordinates position((float)i,(float)j);
+                CanionDeCadena* posicionable = new CanionDeCadena(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "rocket_launcher"){
+                Coordinates position((float)i,(float)j);
+                Lanzacohetes* posicionable = new Lanzacohetes(position);
+                map.agregarItem(posicionable, position);
+            } else if (elemento == "barrel" || elemento == "pillar" ||
+                       elemento == "table"){
+                Coordinates position((float)i,(float)j);
+                Posicionable* posicionable = new Posicionable(position);
+                map.agregarPosicionable(posicionable, position);
             }
         }
     }

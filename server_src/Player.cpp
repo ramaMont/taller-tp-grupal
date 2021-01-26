@@ -89,8 +89,8 @@ double Player::calcularAngulo(Player* jugador){
 	return jugador->calcularAngulo(this->direction, this->posicion);
 }
 
-double Player::calcularAngulo(const Coordinates& direccion, const Coordinates& posicion){
-	return posicion.calculate_angle(direccion, this->posicion);
+double Player::calcularAngulo(const Coordinates& direccion, const Coordinates& other_pos){
+	return other_pos.calculate_angle(direccion, this->posicion);
 }
 
 double Player::calcularDistancia(Player* jugador){

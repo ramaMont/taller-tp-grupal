@@ -25,9 +25,10 @@ bool ParedFalsa::abrir(Player *jugador){
 }
 
 
-Puerta::Puerta(Coordinates coordenadas): Objeto(coordenadas) {
+Puerta::Puerta(Coordinates coordenadas): Objeto(coordenadas), reopen(false){
     posicion.x += 0.5;  // Para estar en el centro de la posicion
     posicion.y += 0.5;  // Para estar en el centro de la posicion
+    has_event = false;
 }
 
 bool Puerta::abrir(Player *jugador){
@@ -37,17 +38,25 @@ bool Puerta::abrir(Player *jugador){
 bool Puerta::abrirPuerta(Player *jugador){
     double angle = jugador->get_coordinates().calculate_angle(
         jugador->get_direction(), posicion);
-    if (angle < 1){
-        atravesable(true);
-        return true;
+    if (angle > 1)
+        return false;
+    if (has_event){
+        reopen = true;
+        return false;
     }
-    return false;
+    has_event = true;
+    atravesable(true);
+    return true;
 }
 
 void Puerta::cerrar(){
 	atravesable(false);
+	has_event = false;
 }
 
+std::atomic<bool>& Puerta::getReopen(){
+    return reopen;
+}
 
 bool PuertaCerrada::abrir(Player *jugador){
 	if (this->llave || jugador->usarLlave())
