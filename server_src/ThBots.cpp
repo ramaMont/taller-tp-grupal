@@ -56,9 +56,17 @@ void ThBots::addBots(){
 
         // Copiado de GamesAdmin::joinGame
         // Le envio a todos los jugadores que se ha unido uno nuevo.
-        Protocol protocol(player_id);  
-        protocol.setAction(Protocol::action::ADD_PLAYER);
-        th_game_model->echoProtocol(protocol);
+        int map_id_checksum = th_game_model->getMapIdChecksum();
+        Coordinates player_direction = th_game_model->getPlayer(player_id).
+                get_direction();
+        Coordinates player_position = th_game_model->getPlayer(player_id).
+                get_coordinates();
+        Protocol::direction prot_direction = player_direction.
+                cast_to_direction();
+        Protocol protocol_response(Protocol::action::ADD_PLAYER,
+                                   player_id, prot_direction, map_id_checksum,
+                                   player_position.x, player_position.y);
+        th_game_model->echoProtocol(protocol_response);
  
         bots_added++;
         if (bots_added == number_of_bots)

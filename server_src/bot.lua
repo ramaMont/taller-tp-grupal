@@ -31,9 +31,9 @@ local MOVIMIENTOS = 5
 -- Funciones Locales
 
 function bot.crearVertices()
-	for i = 1, bot.mapa_size.ancho do 
+	for i = 1, bot.mapa_size.alto do
 	    bot.grafo[i] = {}
-		for j = 1, bot.mapa_size.alto do
+		for j = 1, bot.mapa_size.ancho do
 		    if (bot.mapa[i][j] ~= OCUPADO) then
 				bot.grafo[i][j] = {x = i, y = j, aristas = {}}
             end
@@ -42,15 +42,15 @@ function bot.crearVertices()
 end
 
 function bot.agregarArista(v_x, v_y, x, y)
-    if (1 <= x and x <= bot.mapa_size.ancho and
-        1 <= y and y <= bot.mapa_size.alto and bot.mapa[x][y] ~= OCUPADO) then
+    if (1 <= x and x <= bot.mapa_size.alto and
+        1 <= y and y <= bot.mapa_size.ancho and bot.mapa[x][y] ~= OCUPADO) then
         table.insert(bot.grafo[v_x][v_y].aristas, bot.grafo[x][y])
     end
 end
 
 function bot.crearAristas()
-	for i = 1, bot.mapa_size.ancho do 
-		for j = 1, bot.mapa_size.alto do
+	for i = 1, bot.mapa_size.alto do
+		for j = 1, bot.mapa_size.ancho do
 		    if (bot.mapa[i][j] ~= OCUPADO) then
 				bot.agregarArista(i, j, i-1, j)
 				bot.agregarArista(i, j, i+1, j)
@@ -94,9 +94,9 @@ end
 function bot.bfs(inicio_x, inicio_y)
     cola = {}
     visitados = {}
- 	for i = 1, bot.mapa_size.ancho do 
+ 	for i = 1, bot.mapa_size.alto do
  	    visitados[i] = {}
-		for j = 1, bot.mapa_size.alto do
+		for j = 1, bot.mapa_size.ancho do
 		    visitados[i][j] = {v = false, anterior = 0}
 		end
 	end
@@ -208,15 +208,19 @@ end
 -- Funciones publicas
 
 function bot.cargarMapa(objeto, ancho, alto)
+print("1")
     bot.mapa_size.ancho = ancho
     bot.mapa_size.alto = alto
-	for x = 1, ancho do 
+    print("2")
+	for x = 1, alto do
 	    bot.mapa[x] = {}
-		for y = 1, alto do
+		for y = 1, ancho do
 			bot.mapa[x][y]  = obtenerObjetoMapa(objeto, x - 1, y - 1)
 		end
 	end
+	print("3")
 	bot.crearGrafo()
+	print("4")
 end
 
 function bot.generarEvento(n_arma, pos_x, pos_y, dir_x, dir_y, ...)
