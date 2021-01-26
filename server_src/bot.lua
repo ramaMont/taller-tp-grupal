@@ -208,19 +208,15 @@ end
 -- Funciones publicas
 
 function bot.cargarMapa(objeto, ancho, alto)
-print("1")
     bot.mapa_size.ancho = ancho
     bot.mapa_size.alto = alto
-    print("2")
 	for x = 1, alto do
 	    bot.mapa[x] = {}
 		for y = 1, ancho do
 			bot.mapa[x][y]  = obtenerObjetoMapa(objeto, x - 1, y - 1)
 		end
 	end
-	print("3")
 	bot.crearGrafo()
-	print("4")
 end
 
 function bot.generarEvento(n_arma, pos_x, pos_y, dir_x, dir_y, ...)

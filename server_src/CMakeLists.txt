@@ -5,9 +5,6 @@ set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno
 
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
 
-file(COPY bot.lua
-        DESTINATION bot.lua)
-
 set(SOURCES ${SOURCES})
 
 FIND_PACKAGE(Lua 5.3 REQUIRED)

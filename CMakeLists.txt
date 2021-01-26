@@ -29,6 +29,9 @@ include_directories(editor_src)
 file(COPY data/
         DESTINATION data/)
 
+file(COPY server_src/bot.lua
+        DESTINATION data/bot/)
+
 include(cmake/googletest.cmake)
 fetch_googletest(
     ${PROJECT_SOURCE_DIR}/cmake
