@@ -46,7 +46,7 @@ Bot::Bot(const Mapa& mapa): mapa(mapa){
 	this->script = luaL_newstate();
 	luaL_openlibs(this->script);
 	lua_register(this->script, "obtenerObjetoMapa", luaObtenerObjetoMapa);
-	checkLua(this->script,luaL_dofile(this->script,"../../server_src/bot.lua"));
+	checkLua(this->script,luaL_dofile(this->script,"bot.lua"));
     cargarMapa();
 }
 

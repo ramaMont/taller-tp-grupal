@@ -9,16 +9,12 @@ ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
         std::string map_filename, int game_id, int map_id_checksum, int bots_cty):
         GameModel(map_filename, game_id), launched(false),
         th_game_events(operations),
-        th_bots(this, operations, players, map, 0),
+        th_bots(this, operations, players, map, bots_cty),
         map_id_checksum(map_id_checksum), _bots_cty(bots_cty){
     addThSender(th_user_server.getSender());
     th_user_server.setGameModel(this);
     addPlayer(th_user_server.getId());
-    unsigned short int bot_id = -1;
-    for (int i=0; i < bots_cty; ++i ){
-        addPlayer(bot_id);
-        --bot_id;
-    }
+    th_bots.addBots();
 }
 
 void ThGameModelServer::processProtocol(Protocol& protocol){
@@ -127,7 +123,7 @@ void ThGameModelServer::run(){
     protocol.setAction(Protocol::action::BEGIN);
     echoProtocol(protocol);
     th_game_events.start();
-    //th_bots.start();
+    th_bots.start();
     Event* event = new FinishGameEvent();
     th_game_events.add(event);
     try{
@@ -184,5 +180,6 @@ ThGameModelServer::~ThGameModelServer(){
     
     th_game_events.stop();
     th_game_events.join();
-    //th_bots.join();
+    th_bots.stop();
+    th_bots.join();
 }

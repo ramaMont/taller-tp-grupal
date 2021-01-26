@@ -18,7 +18,6 @@ class ThBots : public Thread{
     ThGameModelServer* th_game_model;
     const Mapa& map;
 
-    void addBots();
     void makeEvent(int player_id, Bot::Event event);
     
     public:
@@ -28,6 +27,7 @@ class ThBots : public Thread{
                     const Mapa& map,
                     int number_of_bots);
     virtual void run() override;
+    void addBots();
     virtual void stop() override;
     ~ThBots();
 };

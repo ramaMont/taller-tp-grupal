@@ -54,7 +54,10 @@ dkms.conf
 #extras
 .vscode
 build
+/bot.lua
 
 #sprites
 /editor_src/imgs/sprites
 #textures
+
+

@@ -24,7 +24,7 @@ ThBots::ThBots(ThGameModelServer* th_game_model,
 void ThBots::run(){
     if (number_of_bots <= 0)
         return;
-    addBots();
+//    addBots();
     while (is_running){
         std::this_thread::sleep_for(std::chrono::milliseconds(TIME_SLEEP));
         for (auto it = bots.begin(); it != bots.end() && is_running; ++it){
@@ -43,6 +43,8 @@ void ThBots::stop(){
 }
 
 void ThBots::addBots(){
+    if (number_of_bots <= 0)
+        return;
     int bots_added = 0;
     for (int player_id = 0; player_id < 100; ++player_id){
         if (players.count(player_id) > 0)
