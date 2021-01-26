@@ -14,6 +14,7 @@ private:
     std::vector<SDL_Texture*> wall_textures;
     std::vector<SDL_Texture*> sprites;
     std::vector<SDL_Texture*> enemies;
+    std::vector<SDL_Texture*> shooting_effect;
     SDL_Texture* guns;
     SDL_Texture* door;
     SDL_Texture* life_bar;
@@ -29,6 +30,9 @@ private:
 
     // Carga todas las texturas de sprites
     void add_sprite_texture(std::string new_texture);
+
+    // Carga todas las texturas de efectos de disparo
+    void add_shooting_effect_texture(std::string new_texture);
 
     // Carga todas las texturas de enemigos
     void add_enemy_texture(std::string new_texture);
@@ -68,19 +72,19 @@ public:
     void show_sprite(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int texture);
 
     //llama al show enemy con la textura del perro
-	void show_dog(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+	void show_dog(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
 
     //llama al show enemy con la textura del guardia
-	void show_guard(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+	void show_guard(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
 
     //llama al show enemy con la textura del oficial
-	void show_officer(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+	void show_officer(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
 
     //llama al show enemy con la textura del ss
-	void show_ss(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+	void show_ss(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
 
     //llama al show enemy con la textura del mutante
-	void show_mutant(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture);
+	void show_mutant(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
 
     //llama al show wall con la textura de la pared gris
 	void show_wall_greystone(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);

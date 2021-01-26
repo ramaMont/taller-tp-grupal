@@ -7,8 +7,11 @@ class Texture;
 class Enemy_type{
 protected:
 	Texture *texture_drawer;
+	int frames_shooting;
 public:
 	Enemy_type(Texture *texture_drawer);
+	void shoot();
+	void update_shooting();
     virtual void call_drawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame) = 0;
     virtual ~Enemy_type(){};
 };

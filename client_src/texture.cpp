@@ -27,6 +27,14 @@ void Texture::add_sprite_texture(std::string new_texture){
 	SDL_FreeSurface(loadedSurface);	
 }
 
+void Texture::add_shooting_effect_texture(std::string new_texture){
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
+    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
+    shooting_effect.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
+	SDL_FreeSurface(loadedSurface);		
+}
+
 void Texture::add_enemy_texture(std::string new_texture){
     SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
@@ -88,6 +96,8 @@ Texture::Texture(const Window& window):
 	add_enemy_texture("dog_pos");
 	add_enemy_texture("ss_pos");
 	add_enemy_texture("mutant_pos");
+
+	add_shooting_effect_texture("guard_shooting");
 
 	add_gun_texture("guns");
 	add_door_textures();
@@ -232,23 +242,25 @@ void Texture::show_enemy(SDL_Texture* texture, int state, int frame,int x_pixel,
 }
 
 
-void Texture::show_guard(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
+void Texture::show_guard(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
 	show_enemy(this->enemies[0], state, frame, x_pixel, distance_player_plane, number_line_texture);
+	if(is_shooting)
+		show_enemy(this->shooting_effect[0],state,0,x_pixel,distance_player_plane, number_line_texture);
 }
 
-void Texture::show_officer(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
+void Texture::show_officer(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
 	show_enemy(this->enemies[1], state, frame, x_pixel, distance_player_plane, number_line_texture);
 }
 
-void Texture::show_dog(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
+void Texture::show_dog(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
 	show_enemy(this->enemies[2], state, frame, x_pixel, distance_player_plane, number_line_texture);
 }
 
-void Texture::show_ss(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
+void Texture::show_ss(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
 	show_enemy(this->enemies[3], state, frame, x_pixel, distance_player_plane, number_line_texture);
 }
 
-void Texture::show_mutant(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
+void Texture::show_mutant(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
 	show_enemy(this->enemies[4], state, frame, x_pixel, distance_player_plane, number_line_texture);
 }
 

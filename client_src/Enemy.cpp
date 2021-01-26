@@ -70,7 +70,12 @@ void Enemy::moving(){
 	is_moving = true;
 }
 
+void Enemy::shoot(){
+	enemy_type->shoot();
+}
+
 void Enemy::update_frame(){
+	enemy_type->update_shooting();
 	if(is_moving){
 		moved_frames_continued++;
 		moved_frames_continued = moved_frames_continued%40;		

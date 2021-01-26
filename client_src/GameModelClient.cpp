@@ -398,6 +398,10 @@ void GameModelClient::run(){
 void GameModelClient::processShoot(Protocol protocol){
     if (protagonist_id == protocol.getId()){
         player.shoot();
+    }else{
+      Movable* movable= movables[protocol.getId()];
+      Enemy* enemy = dynamic_cast<Enemy*>(movable);
+      enemy->shoot();
     }
 }
 

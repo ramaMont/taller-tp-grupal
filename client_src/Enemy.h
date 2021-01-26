@@ -36,6 +36,8 @@ public:
     // Actualizo el frame del enemigo en caso de que se esté modviendo
 	void moving();
 
+	void shoot();
+
 	void update_frame();
 
 	// Dibujo al enemigo
