@@ -19,6 +19,7 @@ private:
     ThGameEvents th_game_events;
     ThBots th_bots;
     int map_id_checksum;
+    int _bots_cty;
 
     void processShoot(Protocol protocol);
     void processShooted(Protocol protocol);
@@ -28,7 +29,7 @@ private:
 
 public:
     explicit ThGameModelServer(ThUserServer& th_user_server, std::string map_filename,
-        int game_id, int map_id_checksum);
+        int game_id, int map_id_checksum, int bots_cty);
     virtual void processProtocol(Protocol& protocol) override;
     virtual void run() override;
     virtual void stop() override;
@@ -38,6 +39,7 @@ public:
     virtual bool isDone() override;
     bool wasLaunched();
     int getMapIdChecksum();
+    int getBotsCty();
     ~ThGameModelServer();
 };
 

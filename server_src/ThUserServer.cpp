@@ -63,9 +63,9 @@ void ThUserServer::processReception(Protocol& protocol){
                 // TODO: 
                 // y agregar cantidad de bots en el createGame
                 MapLoader mapLoader(protocol.getMapId());
-                // int bots_cty = protocol.getBotsCty();
+                int bots_cty = protocol.getBotsCty();
                 games_admin.createGame(*this, mapLoader.getFileName(),
-                    protocol.getMapId());
+                    protocol.getMapId(), bots_cty);
                 respondSuccess(protocol.getMapId());
                 Coordinates player_direction = games_admin.
                     getGame(game_id)->getPlayer(user_id).get_direction();
@@ -77,6 +77,7 @@ void ThUserServer::processReception(Protocol& protocol){
                     user_id, prot_direction, mapLoader.getChecksum(), 
                     player_position.x, player_position.y);      
                 th_sender->push(protocol_response);
+                sendBotsPositions();
             } catch(...){
                 respondError();
             }
@@ -147,6 +148,26 @@ void ThUserServer::transmit(std::vector<int>& ids_vector, int map_id_checksum){
     Protocol protocol;
     protocol.setAction(Protocol::action::END);
     th_sender->push(protocol);
+}
+
+void ThUserServer::sendBotsPositions(){
+    auto th_game = games_admin.getGame(game_id);
+    int bots_cty = th_game->getBotsCty();
+    int map_id_checksum = th_game->getMapIdChecksum();
+    std::vector<int>& ids_vector = th_game->getIdsVector();
+    for (int i = 1; (i - 1) < bots_cty; ++i){
+        int bot_id = ids_vector.at(i);
+        Coordinates player_direction = th_game->getPlayer(bot_id).
+            get_direction();
+        Coordinates player_position = th_game->getPlayer(bot_id).
+            get_coordinates();
+        Protocol::direction prot_direction = player_direction.
+            cast_to_direction();
+        Protocol protocol_response(Protocol::action::ADD_PLAYER,
+            bot_id, prot_direction, map_id_checksum, 
+            player_position.x, player_position.y);      
+        th_sender->push(protocol_response);
+    }
 }
 
 ThUserServer::~ThUserServer(){

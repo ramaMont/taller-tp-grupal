@@ -6,14 +6,19 @@
 #include "ExceptionServer.h"
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
-        std::string map_filename, int game_id, int map_id_checksum):
+        std::string map_filename, int game_id, int map_id_checksum, int bots_cty):
         GameModel(map_filename, game_id), launched(false),
         th_game_events(operations),
         th_bots(this, operations, players, map, 0),
-        map_id_checksum(map_id_checksum){
+        map_id_checksum(map_id_checksum), _bots_cty(bots_cty){
     addThSender(th_user_server.getSender());
-
     th_user_server.setGameModel(this);
+    addPlayer(th_user_server.getId());
+    unsigned short int bot_id = -1;
+    for (int i=0; i < bots_cty; ++i ){
+        addPlayer(bot_id);
+        --bot_id;
+    }
 }
 
 void ThGameModelServer::processProtocol(Protocol& protocol){
@@ -166,6 +171,10 @@ bool ThGameModelServer::wasLaunched(){
 
 int ThGameModelServer::getMapIdChecksum(){
     return map_id_checksum;
+}
+
+int ThGameModelServer::getBotsCty(){
+    return _bots_cty;
 }
 
 ThGameModelServer::~ThGameModelServer(){

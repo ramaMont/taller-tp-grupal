@@ -32,12 +32,12 @@ void GamesAdmin::cleanZombies(){
 }
 
 void GamesAdmin::createGame(ThUserServer& th_user_server, 
-        const std::string& map_filename, const int& map_id_checksum){
+        const std::string& map_filename, const int& map_id_checksum,
+        int bots_cty){
     std::lock_guard<std::mutex> lck(mutex);
     cleanZombies();
     ThGameModelServer* th_game = new ThGameModelServer(th_user_server, map_filename,
-        current_game_id, map_id_checksum);
-    th_game->addPlayer(th_user_server.getId());
+        current_game_id, map_id_checksum, bots_cty);
     games.insert(std::pair<int, ThGameModelServer*>(th_game->getId(), th_game));
     th_user_server.setGameId(current_game_id);
     ++current_game_id;

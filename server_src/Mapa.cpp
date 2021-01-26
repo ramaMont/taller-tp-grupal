@@ -96,7 +96,7 @@ Mapa::Mapa(std::string map_filename): players_added(0){
     YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
     alto = map_node["filas"].as<int>();
     ancho = map_node["columnas"].as<int>();
-    mapaJuego.resize(ancho, std::vector<std::vector<Posicionable*>>(alto));
+    mapaJuego.resize(alto, std::vector<std::vector<Posicionable*>>(ancho));
     items.resize(alto, std::vector<std::vector<Item*>>(ancho));
     initMap(*this, map_node["elementos"]);
 }
