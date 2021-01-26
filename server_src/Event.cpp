@@ -79,14 +79,18 @@ FinishGameEvent::~FinishGameEvent(){
 
 // Door 
 DoorEvent::DoorEvent(Puerta* puerta): 
-    Event(), door(puerta){
+    Event(), door(puerta), reopen(puerta->getReopen()){
 }
 
 void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){ 
+    if (reopen){
+        _time = time(0);
+        reopen = false;
+        return;
+    }
     time_t time_now = time(0);
     double seconds = difftime(time_now, _time);
-    if (seconds >= configs[CONFIG::segundos_cerrar_puerta]){
-        door->cerrar();
+    if (seconds > configs[CONFIG::segundos_cerrar_puerta]){
         // protocol cerrar puerta
         _finished = true;
     }

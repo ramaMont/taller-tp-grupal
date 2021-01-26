@@ -27,6 +27,14 @@ void Texture::add_sprite_texture(std::string new_texture){
 	SDL_FreeSurface(loadedSurface);	
 }
 
+void Texture::add_shooting_effect_texture(std::string new_texture){
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
+    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
+    shooting_effect.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
+	SDL_FreeSurface(loadedSurface);		
+}
+
 void Texture::add_enemy_texture(std::string new_texture){
     SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
@@ -89,6 +97,8 @@ Texture::Texture(const Window& window):
 	add_enemy_texture("ss_pos");
 	add_enemy_texture("mutant_pos");
 
+	add_shooting_effect_texture("guard_shooting");
+
 	add_gun_texture("guns");
 	add_door_textures();
 	add_life_bar_texture("life_bar");
@@ -109,30 +119,7 @@ Texture::Texture(const Window& window):
 }
 
 
-void Texture::show(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int x_pixel, float distance_player_plane){
 
-	float lineHeight = (this->height / distance_player_plane);
-	int initial_position_y =  -lineHeight/2 + height/2;
-
-	float pixel_length = lineHeight/64;
-
-	int x_initial_pos = x_lenght_ray*x_pixel;
-
-	int height_ray = (int)ceil(pixel_length*64);
-	//if(height_ray<height){
-		imgPartRect.x = x_pixel_line; //Desde qué pixel en X quiero
-		imgPartRect.y = y_pixel_line;	//Desde qué pixel en Y quiero
-		imgPartRect.w = 1; //Cantidad de pixeles en X que tomo
-		imgPartRect.h = 64; //Cantidad de pixeles en Y que tomo
-		//printf("(int)ceil(pixel_length*64): %i \n",(int)ceil(pixel_length*64) );
-	     const SDL_Rect sdlDst = {
-	        x_initial_pos, //Posicion inicial de X donde voy a mostrar el pixel
-	        initial_position_y, //Posicion inicial de Y donde voy a mostrar el pixel
-	        (int)x_lenght_ray, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
-	        height_ray//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
-	    };     
-	    SDL_RenderCopy(this->renderer, texture, &imgPartRect, &sdlDst);
-}
 
 void Texture::show_life_bar(unsigned int score, int lives, int health, int ammo){
 		imgPartRect.x = 0; //Desde qué pixel en X quiero
@@ -158,48 +145,6 @@ void Texture::show_life_bar(unsigned int score, int lives, int health, int ammo)
 	    	show_text(text_health,20,80,390);	    	    	
 	    }
 	    show_text(std::to_string(ammo).c_str(),20,80,480);	    
-}
-
-
-void Texture::show_weapon(int frame_gun, int current_gun, int left_start_texture, int right_end_texture){
-		imgPartRect.x = 65*frame_gun + left_start_texture; //Desde qué pixel en X quiero
-		imgPartRect.y = current_gun*65;	//Desde qué pixel en Y quiero
-		imgPartRect.w = right_end_texture-left_start_texture; //Cantidad de pixeles en X que tomo
-		imgPartRect.h = 64; //Cantidad de pixeles en Y que tomo
-
-		int widht_drawable_pixel = right_end_texture - left_start_texture;
-	    const SDL_Rect sdlDst = {
-	        width/2 - (65/2 - left_start_texture)*4, //Posicion inicial de X donde voy a mostrar el pixel
-	        height - 320, //Posicion inicial de Y donde voy a mostrar el pixel
-	        widht_drawable_pixel*5, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
-	        320//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
-	    };   
-	    SDL_RenderCopy(this->renderer, guns, &imgPartRect, &sdlDst);
-}
-
-void Texture::show_sprites(SDL_Texture* texture,int x_pixel_line,int y_pixel_line,int upper_limit,int x_pixel, float distance_player_plane){
-
-	float lineHeight = (this->height / distance_player_plane);
-	int initial_position_y =  -lineHeight/2 + height/2;
-
-	float pixel_length = lineHeight/64;
-
-	int x_initial_pos = x_lenght_ray*x_pixel;
-
-	int height_ray = (int)ceil((pixel_length)*64);
-	//if(height_ray<height){
-		imgPartRect.x = x_pixel_line; //Desde qué pixel en X quiero
-		imgPartRect.y = y_pixel_line +  upper_limit;	//Desde qué pixel en Y quiero
-		imgPartRect.w = 1; //Cantidad de pixeles en X que tomo
-		imgPartRect.h = 64 - upper_limit; //Cantidad de pixeles en Y que tomo
-		//printf("(int)ceil(pixel_length*64): %i \n",(int)ceil(pixel_length*64) );
-	     const SDL_Rect sdlDst = {
-	        x_initial_pos, //Posicion inicial de X donde voy a mostrar el pixel
-	        initial_position_y + (int)(pixel_length*upper_limit), //Posicion inicial de Y donde voy a mostrar el pixel
-	        (int)x_lenght_ray, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
-	        height_ray - (int)(pixel_length*upper_limit)//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
-	    };     
-	    SDL_RenderCopy(this->renderer, texture, &imgPartRect, &sdlDst);
 }
 
 void Texture::show_text(std::string text, int letter_width, int letter_height, int x_pos){
@@ -228,6 +173,22 @@ void Texture::show_text(std::string text, int letter_width, int letter_height, i
 	SDL_DestroyTexture(Message);	
 }
 
+void Texture::show_weapon(int frame_gun, int current_gun, int left_start_texture, int right_end_texture){
+	int widht_drawable_pixel = right_end_texture - left_start_texture;
+
+	int first_x_pixel = 65*frame_gun + left_start_texture;
+	int cant_x_pixels = widht_drawable_pixel;
+	int first_y_pixel = current_gun*65;
+	int cant_y_pixels = 64;
+
+	int windows_x_pos = width/2 - (65/2 - left_start_texture)*4;
+	int windows_y_pos = height - 320;
+	int length_x = widht_drawable_pixel*5;
+	int lenght_y = 320;
+
+	generic_show(guns,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
+}
+
 void Texture::show_knife(int frame_gun){
 		show_weapon(frame_gun,0,27,53);
 }
@@ -242,88 +203,156 @@ void Texture::show_chain_gun(int frame_gun){
 }
 
 
+void Texture::generic_show(SDL_Texture* texture, int first_x_pixel, int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\
+		int windows_x_pos, int length_x, int windows_y_pos, int length_y){
 
-void Texture::show_dog(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
-	show_sprites(this->enemies[2],65*state + number_line_texture,frame*65,32 ,x_pixel,distance_player_plane);
+		imgPartRect.x = first_x_pixel; //Desde qué pixel en X quiero
+		imgPartRect.w = cant_x_pixels; //Cantidad de pixeles en X que tomo
+		imgPartRect.y = first_y_pixel;	//Desde qué pixel en Y quiero
+		imgPartRect.h = cant_y_pixel; //Cantidad de pixeles en Y que tomo
+	     const SDL_Rect sdlDst = {
+	        windows_x_pos, //Posicion inicial de X donde voy a mostrar el pixel
+	        windows_y_pos, //Posicion inicial de Y donde voy a mostrar el pixel
+	        length_x, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
+	        length_y//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
+	    };     
+	    SDL_RenderCopy(this->renderer, texture, &imgPartRect, &sdlDst);
+
 }
 
-void Texture::show_guard(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
-	if(number_line_texture>15 and number_line_texture<49)
-		show_sprites(this->enemies[0],65*state + number_line_texture,frame*65,15 ,x_pixel,distance_player_plane);
+void Texture::show_enemy(SDL_Texture* texture, int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
+	float lineHeight = (this->height / distance_player_plane);
+	int initial_position_y =  -lineHeight/2 + this->height/2;
+	float pixel_length = lineHeight/64;
+	int x_initial_pos = x_lenght_ray*x_pixel;
+	int height_ray = (int)ceil((pixel_length)*64);
+
+
+	int first_x_pixel = 65*state + number_line_texture;
+	int cant_x_pixels = 1;
+	int first_y_pixel = frame*65;
+	int cant_y_pixels = 64;
+
+	int windows_x_pos = x_initial_pos;
+	int windows_y_pos = initial_position_y;
+	int length_x = x_lenght_ray;
+	int lenght_y = height_ray;
+
+	generic_show(texture,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 
-void Texture::show_officer(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
-	if(number_line_texture>15 and number_line_texture<49)		
-		show_sprites(this->enemies[1],65*state + number_line_texture,frame*65,12, x_pixel,distance_player_plane);
+
+void Texture::show_guard(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
+	show_enemy(this->enemies[0], state, frame, x_pixel, distance_player_plane, number_line_texture);
+	if(is_shooting)
+		show_enemy(this->shooting_effect[0],state,0,x_pixel,distance_player_plane, number_line_texture);
 }
 
-void Texture::show_ss(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
-	if(number_line_texture>0 and number_line_texture<64)		
-		show_sprites(this->enemies[3],65*state + number_line_texture,frame*65,8, x_pixel,distance_player_plane);
+void Texture::show_officer(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
+	show_enemy(this->enemies[1], state, frame, x_pixel, distance_player_plane, number_line_texture);
 }
 
-void Texture::show_mutant(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
-	if(number_line_texture>15 and number_line_texture<49)	
-		show_sprites(this->enemies[4],65*state + number_line_texture,frame*65,17, x_pixel,distance_player_plane);
+void Texture::show_dog(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
+	show_enemy(this->enemies[2], state, frame, x_pixel, distance_player_plane, number_line_texture);
+}
+
+void Texture::show_ss(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
+	show_enemy(this->enemies[3], state, frame, x_pixel, distance_player_plane, number_line_texture);
+}
+
+void Texture::show_mutant(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
+	show_enemy(this->enemies[4], state, frame, x_pixel, distance_player_plane, number_line_texture);
+}
+
+
+void Texture::show_wall(SDL_Texture* texture,int x_pixel,float distance_player_plane, int number_line_texture){
+	float lineHeight = (this->height / distance_player_plane);
+	int initial_position_y =  -lineHeight/2 + height/2;
+
+	float pixel_length = lineHeight/64;
+
+	int x_initial_pos = x_lenght_ray*x_pixel;
+
+	int height_ray = (int)ceil(pixel_length*64);	
+
+	int first_x_pixel = number_line_texture;
+	int cant_x_pixels = 1;
+	int first_y_pixel = 0;
+	int cant_y_pixels = 64;
+
+	int windows_x_pos = x_initial_pos;
+	int windows_y_pos = initial_position_y;
+	int length_x = x_lenght_ray;
+	int lenght_y = height_ray;
+
+	generic_show(texture,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 
 
 void Texture::show_wall_greystone(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
 	int current_texture = wall_side_y;
-	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+	show_wall(this->wall_textures[current_texture], x_pixel, distance_player_plane, number_line_texture);
 }
 
 void Texture::show_wall_bluestone(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
 	int current_texture = 2*1 + wall_side_y;
-	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+	show_wall(this->wall_textures[current_texture], x_pixel, distance_player_plane, number_line_texture);
 }
 
 void Texture::show_wall_purplestone(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
 	int current_texture = 2*2 + wall_side_y;
-	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+	show_wall(this->wall_textures[current_texture], x_pixel, distance_player_plane, number_line_texture);
 }
 
 void Texture::show_wall_colorstone(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
 	int current_texture = 2*3 + wall_side_y;
-	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+	show_wall(this->wall_textures[current_texture], x_pixel, distance_player_plane, number_line_texture);
 }
 
 void Texture::show_wall_eagle(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
 	int current_texture = 2*4 + wall_side_y;
-	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+	show_wall(this->wall_textures[current_texture], x_pixel, distance_player_plane, number_line_texture);
 }
 
 void Texture::show_wall_mossy(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
 	int current_texture = 2*5 + wall_side_y;
-	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+	show_wall(this->wall_textures[current_texture], x_pixel, distance_player_plane, number_line_texture);
 }
 
 void Texture::show_wall_redbrick(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
 	int current_texture = 2*6 + wall_side_y;
-	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+	show_wall(this->wall_textures[current_texture], x_pixel, distance_player_plane, number_line_texture);
 }
 
 void Texture::show_wall_wood(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
 	int current_texture = 2*7 + wall_side_y;
-	show(this->wall_textures[current_texture],number_line_texture,0,x_pixel,distance_player_plane);
+	show_wall(this->wall_textures[current_texture], x_pixel, distance_player_plane, number_line_texture);
 }
 
 void Texture::show_door(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y){
-	show(this->door,number_line_texture,0,x_pixel,distance_player_plane);
+	show_wall(door, x_pixel, distance_player_plane, number_line_texture);
 }
 
-//0: barril; 1: columna; 2: lampara
-void Texture::show_sprite(int x_pixel, float distance_player_plane, int number_line_texture, int texture){
-	if(texture==0){
-		if(number_line_texture>15 and number_line_texture<48)	
-			show_sprites(this->sprites[texture],number_line_texture,0,31,x_pixel,distance_player_plane);
+static void sort_values(int &first_value, int &second_value){
+	if(first_value>second_value){
+		int temporal_value = first_value;
+		first_value = second_value;
+		second_value = temporal_value;
 	}
-	else if(texture==1){
-		if(number_line_texture>15)	
-			show_sprites(this->sprites[texture],number_line_texture,0,0,x_pixel,distance_player_plane);		
-	}else{
-		show_sprites(this->sprites[texture],number_line_texture,0,0,x_pixel,distance_player_plane);		
-	}
+}
+
+void Texture::show_sprite(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int texture){
+	sort_values(first_x_pixel,last_x_pixel);
+	sort_values(first_number_line_texture,last_number_line_texture);
+
+	float lineHeight = (this->height / distance_player_plane);
+	int initial_position_y =  -lineHeight/2 + height/2;
+	float pixel_length = lineHeight/64;
+	int x_initial_pos = x_lenght_ray*first_x_pixel;
+	int height_ray = (int)ceil((pixel_length)*64);
+	
+	generic_show(this->sprites[texture],first_number_line_texture, last_number_line_texture - first_number_line_texture,0,64,\
+		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 }
 
 Texture::~Texture() {

@@ -37,12 +37,13 @@ void Cuchillo::disparar(Player* jugador, angulos_enemigos_t& enemigos){
 bool colisionaConObjeto(Mapa& mapa, const Coordinates& inicio, 
     const Coordinates& fin){
 	if (inicio == fin) return false;
-	Coordinates direccion(fin.x - inicio.x, fin.y - inicio.y);
+	Coordinates direccion(std::floor(fin.x) + 0.5 - inicio.x,
+                              std::floor(fin.y) + 0.5 - inicio.y);
 	Coordinates actual(inicio.x, inicio.y);
 	direccion.normalice_direction();
 	actual.increment_on_direction(direccion, PASO);
     
-	while (actual != fin && actual.calculate_distance(fin) > 0.3){
+	while (actual != fin){
 		if (mapa.hayObstaculoEn(actual) && actual != inicio)
 			return true;
 		actual.increment_on_direction(direccion, PASO);
@@ -70,7 +71,7 @@ bool dispararBala(Player* jugador, float precision, int angulo, Player* enemigo)
 		return true;
 
 	if (colisionaConObjeto(jugador->getMapa(), jugador->get_coordinates(),
-	    enemigo->get_coordinates()))	// Hay un objeto en el medio         
+	    enemigo->get_coordinates()))	// Hay un objeto en el medio       
 	    return false;
 
     atacar(jugador, enemigo, precision, angulo);	

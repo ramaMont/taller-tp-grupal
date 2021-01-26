@@ -7,7 +7,6 @@ class Player;
 #include "Player.h"
 class ThGameModelServer;
 class Mapa;
-#include <atomic>
 #include <map>
 
 class Objeto: public Posicionable {
@@ -27,11 +26,14 @@ class ParedFalsa: public Objeto {
 class Puerta: public Objeto {
 	private:
 	bool abierta = false;
+	bool has_event;
+	std::atomic<bool> reopen;
 	
 	public:
 	Puerta(Coordinates coordenadas);
 	virtual bool abrir(Player *jugador);
 	bool abrirPuerta(Player *jugador);
+	std::atomic<bool>& getReopen();
 	void cerrar();
 };
 

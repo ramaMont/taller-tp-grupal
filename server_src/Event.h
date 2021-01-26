@@ -43,10 +43,12 @@ class FinishGameEvent: public Event{
 class DoorEvent: public Event{
     private:
     Puerta* door;
+    std::atomic<bool>& reopen;
 
     public:
     DoorEvent(Puerta *puerta);
     virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
+    void resetTime();
     ~DoorEvent();
 };
 
