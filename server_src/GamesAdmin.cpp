@@ -52,7 +52,7 @@ void GamesAdmin::joinGame(ThUserServer& th_user_server, int game_id){
     cleanZombies();
     auto th_game = games.at(game_id);
     if (th_game->wasLaunched())
-        throw -1;
+        throw -1; //La partida ya fue lanzada
     
     int map_id_checksum = th_game->getMapIdChecksum();
     int user_id = th_user_server.getId();
