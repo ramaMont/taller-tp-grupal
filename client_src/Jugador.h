@@ -50,7 +50,7 @@ public:
     // Actualizo el frame del arma
     void update_shots();
 
-    void resurrect();
+    void resurrect() override;
 
     // Llamo a la funcion correspondiente para que dibuje el arma
     void draw();
