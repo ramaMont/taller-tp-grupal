@@ -24,6 +24,15 @@ void Jugador::complete(Coordinates initial_position,Coordinates initial_directio
    this->id = player_id;
 }
 
+void Jugador::resurrect(){
+  //TODO: Resetear vida y demas atributos
+    posicion = initial_position;
+    direction = initial_direction;
+    lives--;
+    health = 100;
+    mapa.agregarPosicionable(this, this->initial_position);
+}
+
 void Jugador::new_gun_type(int new_gun_type){
    	if(gun_type!=nullptr)
         delete gun_type;

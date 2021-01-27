@@ -18,6 +18,7 @@ protected:
     Cl_Mapa &mapa;
     int id;
     Coordinates initial_position;
+    Coordinates initial_direction;
 public:
     explicit Movable(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
     void mover_en_una_direccion(Direccion* direccion);

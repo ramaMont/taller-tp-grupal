@@ -31,7 +31,6 @@ private:
     int lives;
     int health;
     int ammo;
-    Coordinates initial_direction;
 
 public:
     explicit Jugador(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
@@ -50,6 +49,8 @@ public:
 
     // Actualizo el frame del arma
     void update_shots();
+
+    void resurrect();
 
     // Llamo a la funcion correspondiente para que dibuje el arma
     void draw();

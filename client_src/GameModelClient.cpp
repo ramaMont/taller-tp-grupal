@@ -281,7 +281,6 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
             enemies.push_back(enemy);
             map.agregarPosicionable(enemy,initial_position);    
             movables.insert(std::pair<int, Movable*>(player_id, enemy));
-            enemy->setInitialPosition(initial_position);
         } catch(...){
         }        
     }
