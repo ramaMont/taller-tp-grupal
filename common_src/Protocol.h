@@ -6,8 +6,8 @@
 
 struct __attribute__((packed)) Protocol {
 public:
-    enum action : std::uint16_t { MOVE, SHOOT, LOAD, PICKUP, OPEN,
-            SHOOTED, ADDKILL, ADDPOINTS, ENDGAME, SET_ID,
+    enum action : std::uint16_t { MOVE, SHOOT, LOAD, PICKUP, OPEN, OPENING,
+            CLOSING, CLOSE, SHOOTED, ADDKILL, ADDPOINTS, ENDGAME, SET_ID,
             JOIN_GAME, CREATE_GAME, OK, ERROR, ADD_PLAYER, LAUNCH_GAME, BEGIN,
             END, NONE, REMOVE, RESURRECT, DIE, CONFIG };
 

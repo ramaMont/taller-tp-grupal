@@ -30,7 +30,7 @@ void ThBots::run(){
         for (auto it = bots.begin(); it != bots.end() && is_running; ++it){
             try{
                 Player* player = players[it->first];
-player->cambiarArma(N_CUCHILLO);  // Eliminar linea
+                player->cambiarArma(N_CUCHILLO);  // Eliminar linea
                 Bot::Event event = it->second->getEvent(player, players);
                 makeEvent(it->first, event);
             } catch(...) { }
@@ -58,39 +58,39 @@ void ThBots::addBots(){
 
 void ThBots::makeEvent(int player_id, Bot::Event event){
     switch (event){
-    case Bot::Event::MoverAdelante:{
-        Protocol p(player_id);
-        p.setAction(Protocol::action::MOVE);
-        p.moveInDirection(Protocol::direction::FORWARD);
-        _game_model_queue.push(p);
-        break;
-    }
-    case Bot::Event::MoverIzquierda:{
-        Protocol p(player_id);
-        p.setAction(Protocol::action::MOVE);
-        p.moveInDirection(Protocol::direction::ROTATE_LEFT);
-        _game_model_queue.push(p);
-        break;
-    }
-    case Bot::Event::MoverDerecha:{
-        Protocol p(player_id);
-        p.setAction(Protocol::action::MOVE);
-        p.moveInDirection(Protocol::direction::ROTATE_RIGHT);
-        _game_model_queue.push(p);
-        break;
-    }
-    case Bot::Event::Disparar:{
-        Protocol p(player_id);
-        p.setAction(Protocol::action::SHOOT);
-        _game_model_queue.push(p);
-        break;
-    }
-    case Bot::Event::CambiarArmaCuchillo:{
-        break;
-    }
-    case Bot::Event::AbrirPuerta:{
-        break;
-    }
+        case Bot::Event::MoverAdelante:{
+            Protocol p(player_id);
+            p.setAction(Protocol::action::MOVE);
+            p.moveInDirection(Protocol::direction::FORWARD);
+            _game_model_queue.push(p);
+            break;
+        }
+        case Bot::Event::MoverIzquierda:{
+            Protocol p(player_id);
+            p.setAction(Protocol::action::MOVE);
+            p.moveInDirection(Protocol::direction::ROTATE_LEFT);
+            _game_model_queue.push(p);
+            break;
+        }
+        case Bot::Event::MoverDerecha:{
+            Protocol p(player_id);
+            p.setAction(Protocol::action::MOVE);
+            p.moveInDirection(Protocol::direction::ROTATE_RIGHT);
+            _game_model_queue.push(p);
+            break;
+        }
+        case Bot::Event::Disparar:{
+            Protocol p(player_id);
+            p.setAction(Protocol::action::SHOOT);
+            _game_model_queue.push(p);
+            break;
+        }
+        case Bot::Event::CambiarArmaCuchillo:{
+            break;
+        }
+        case Bot::Event::AbrirPuerta:{
+            break;
+        }
     }
 }
 

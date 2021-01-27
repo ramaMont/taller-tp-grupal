@@ -17,45 +17,6 @@
 // Codigo de errores en int (despues cambiar a excepciones)
 // -1 lugar no encontrado
 // -2 lugar ocupado
-// Pongo esta funcion global horrible aca, para inicializar los mapas de 
-// manera momentanea.
-// void initMap(Mapa& map){
-//     std::vector<std::vector<int>> a_map{
-//         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-//         {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-//         {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-//     };
-//     for (int i=0; i<24; i++){
-//         for (int j=0; j<24; j++){
-//             if (a_map[i][j]!=0){
-//                 Coordinates position((float)i,(float)j);
-//                 Posicionable* posicionable = new Posicionable(position);
-//                 map.agregarPosicionable(posicionable,position);
-//             }
-//         }
-//     }
-// }
 
 void Mapa::initMap(Mapa& map, YAML::Node map_node){
     std::string position="pos_";
@@ -186,8 +147,8 @@ void Mapa::agregarPlayer(Player* jugador){
 
 void Mapa::agregarPosicionable(Posicionable* posicionable, 
         Coordinates posicion){
-	if (floor(posicion.x) < 0 || floor(posicion.x) >= ancho ||
-	    floor(posicion.y) < 0 || floor(posicion.y) >= alto) return;
+	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
+	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return;
 	if(mapaJuego[floor(posicion.x)][floor(posicion.y)].empty()){
 		mapaJuego[floor(posicion.x)][floor(posicion.y)].push_back(posicionable);
 	}else{
@@ -202,8 +163,8 @@ void Mapa::agregarPosicionable(Posicionable* posicionable,
 }
 
 void Mapa::agregarItem(Item* item, Coordinates posicion){
-	if (floor(posicion.x) < 0 || floor(posicion.x) >= ancho ||
-	    floor(posicion.y) < 0 || floor(posicion.y) >= alto) return;
+	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
+	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return;
 	items[floor(posicion.x)][floor(posicion.y)].push_back(item);
 }
 
@@ -243,8 +204,8 @@ void Mapa::sacarItem(Coordinates posicion, const std::type_info& type_id){
 }
 
 Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
-	if (floor(posicion.x) < 0 || floor(posicion.x) >= ancho ||
-	    floor(posicion.y) < 0 || floor(posicion.y) >= alto) return nullptr;
+	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
+	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return nullptr;
 	if (mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
 		return nullptr;
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)].back();
@@ -309,8 +270,8 @@ bool Mapa::hayObstaculoEn(const Coordinates& posicion) const{
 }
 
 bool Mapa::hayObstaculoEn(float x, float y) const{
-	if (floor(x) < 0 || floor(x) >= ancho ||
-	    floor(y) < 0 || floor(y) >= alto) return true;
+	if (floor(x) < 0 || floor(x) >= alto ||
+	    floor(y) < 0 || floor(y) >= ancho) return true;
 	if (mapaJuego[floor(x)][floor(y)].empty())
 		return false;
 	if (mapaJuego[floor(x)][floor(y)].back()->atravesable() ||
@@ -320,15 +281,15 @@ bool Mapa::hayObstaculoEn(float x, float y) const{
 }
 
 bool Mapa::hayPuertaEn(float x, float y) const{
-	if (floor(x) < 0 || floor(x) >= ancho ||
-	    floor(y) < 0 || floor(y) >= alto ||
+	if (floor(x) < 0 || floor(x) >= alto ||
+	    floor(y) < 0 || floor(y) >= ancho ||
 	    mapaJuego[floor(x)][floor(y)].empty()) return false;
 	return typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Puerta);
 }
 
 bool Mapa::hayJugadorEn(float x, float y) const{
-	if (floor(x) < 0 || floor(x) >= ancho ||
-	    floor(y) < 0 || floor(y) >= alto ||
+	if (floor(x) < 0 || floor(x) >= alto ||
+	    floor(y) < 0 || floor(y) >= ancho ||
 	    mapaJuego[floor(x)][floor(y)].empty()) return false;
 	return typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Player);
 }

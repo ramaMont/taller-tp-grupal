@@ -102,7 +102,6 @@ public:
     GameModelClient& operator=(GameModelClient&& other);
     virtual ~GameModelClient();
 
-
 };
 
 #endif

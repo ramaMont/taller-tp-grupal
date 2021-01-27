@@ -40,6 +40,7 @@ public:
     bool wasLaunched();
     int getMapIdChecksum();
     int getBotsCty();
+    void showPlayersInfo();
     ~ThGameModelServer();
 };
 

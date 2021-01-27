@@ -5,6 +5,8 @@
 #include <utility>
 #include "ExceptionServer.h"
 
+#include <iostream>
+
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
         std::string map_filename, int game_id, int map_id_checksum, int bots_cty):
         GameModel(map_filename, game_id), launched(false),
@@ -40,6 +42,7 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::OPEN:
             processOpen(protocol);
+            showPlayersInfo();
             break;
         default:
             break;
@@ -100,22 +103,12 @@ void ThGameModelServer::processDie(Protocol protocol){
     if (someoneWon(players)){}
         //finish game
 }
-/*
-void ThGameModelServer::processOpen(Protocol& protocol){
-    // TODO: Calcular que puerta abrir y eso.
-    // Modificar al protocolo para que al momento de enviarselo nuevamente.
-    // al cliente le diga la posicion de la puerta a abrir.
-    // Por ahora:
-    echoProtocol(protocol);
-}
-*/
 
 void ThGameModelServer::processOpen(Protocol& protocol){
     Player* player = players.at(protocol.getId());
     OpenEvent event(player, map, th_game_events);
     event.process(*this);
 }
-
 
 void ThGameModelServer::run(){
     launched = true;
@@ -171,6 +164,16 @@ int ThGameModelServer::getMapIdChecksum(){
 
 int ThGameModelServer::getBotsCty(){
     return _bots_cty;
+}
+
+void ThGameModelServer::showPlayersInfo(){
+    for(auto& it : players){
+        auto player = it.second;
+        std::cout << "Jugador:   " << player->getId() << std::endl;
+        std::cout << "Posicion:  X: " << player->get_position().x << " Y: " << player->get_position().y  << std::endl;
+        std::cout << "Direccion: X: " << player->get_direction().x << " Y: " << player->get_direction().y << std::endl;
+        std::cout << "\n-------------------------------------------------------------------\n";
+    }
 }
 
 ThGameModelServer::~ThGameModelServer(){
