@@ -44,6 +44,13 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
             processOpen(protocol);
             showPlayersInfo();
             break;
+        case Protocol::action::OPENING:
+            processOpening(protocol);
+            break;
+        case Protocol::action::CLOSE:
+            processClose(protocol);
+            echoProtocol(protocol);
+            break;
         default:
             break;
     }
@@ -110,6 +117,19 @@ void ThGameModelServer::processOpen(Protocol& protocol){
     Player* player = players.at(protocol.getId());
     OpenEvent event(player, map, th_game_events);
     event.process(*this);
+}
+
+void ThGameModelServer::processOpening(Protocol& protocol){
+    Event* doorE = new DoorEvent(map.getDoor());
+    th_game_events.add(doorE);
+    // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
+    Protocol p;
+    p.setAction(Protocol::action::OPEN);
+    echoProtocol(p);
+}
+
+void ThGameModelServer::processClose(Protocol& protocol){
+    map.getDoor()->close();
 }
 
 void ThGameModelServer::run(){

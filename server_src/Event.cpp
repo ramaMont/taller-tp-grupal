@@ -3,6 +3,7 @@
 #include <chrono>
 #include <cmath>
 #include <iostream>
+#include <sys/time.h>
 #include "ThGameEvents.h"
 #include "ThGameModelServer.h"
 #include <Protocol.h>
@@ -36,11 +37,11 @@ void OpenEvent::process(ThGameModelServer& game_model){
     if (p && typeid(*p) == typeid(Puerta)){
         Puerta* puerta = static_cast<Puerta*>(p);
         if (puerta->abrir(player)){
-            Event* doorE = new DoorEvent(puerta);
+            Event* doorE = new DoorOpeningEvent(puerta);
             th_game_events.add(doorE);
             // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
             Protocol protocol;
-            protocol.setAction(Protocol::action::OPEN);
+            protocol.setAction(Protocol::action::OPENING);
             game_model.echoProtocol(protocol);
         }
     }
@@ -76,10 +77,38 @@ void FinishGameEvent::process(BlockingQueue<Protocol>& game_model_queue){
 FinishGameEvent::~FinishGameEvent(){
 }
 
+// Opening Door
+DoorOpeningEvent::DoorOpeningEvent(Puerta *puerta):
+    Event(), door(puerta){
+    struct timeval time_now{};
+    gettimeofday(&time_now, nullptr);
+    _time = (time_now.tv_usec / 1000);
+}
+
+void DoorOpeningEvent::process(BlockingQueue<Protocol>& game_model_queue){
+    struct timeval time_now{};
+    gettimeofday(&time_now, nullptr);
+    time_t new_time = (time_now.tv_usec / 1000);
+    time_t diff = new_time - _time;
+    if (diff < 0)
+        diff += 1000;
+    if (diff > 600){
+        // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
+        Protocol protocol;
+        protocol.setAction(Protocol::action::OPENING);
+        game_model_queue.push(protocol);
+        _finished = true;
+    }
+}
+
+DoorOpeningEvent::~DoorOpeningEvent(){
+}
+
 
 // Door 
 DoorEvent::DoorEvent(Puerta* puerta): 
     Event(), door(puerta), reopen(puerta->getReopen()){
+    door->letPass();
 }
 
 void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){ 
@@ -91,7 +120,10 @@ void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){
     time_t time_now = time(0);
     double seconds = difftime(time_now, _time);
     if (seconds > configs[CONFIG::segundos_cerrar_puerta]){
-        // protocol cerrar puerta
+        // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
+        Protocol protocol;
+        protocol.setAction(Protocol::action::CLOSE);
+        game_model_queue.push(protocol);
         _finished = true;
     }
 }

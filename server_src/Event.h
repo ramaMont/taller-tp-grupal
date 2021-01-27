@@ -39,6 +39,15 @@ class FinishGameEvent: public Event{
     ~FinishGameEvent();
 };
 
+class DoorOpeningEvent: public Event{
+    private:
+    Puerta* door;
+
+    public:
+    DoorOpeningEvent(Puerta *puerta);
+    virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
+    ~DoorOpeningEvent();
+};
 
 class DoorEvent: public Event{
     private:

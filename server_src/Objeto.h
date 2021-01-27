@@ -34,7 +34,8 @@ class Puerta: public Objeto {
 	virtual bool abrir(Player *jugador);
 	bool abrirPuerta(Player *jugador);
 	std::atomic<bool>& getReopen();
-	void cerrar();
+	void letPass();
+	void close();
 };
 
 

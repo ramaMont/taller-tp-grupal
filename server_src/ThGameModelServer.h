@@ -26,6 +26,8 @@ private:
     void processDie(Protocol protocol);
     void processResurrect(Protocol protocol);
     void processOpen(Protocol& protocol);
+    void processOpening(Protocol& protocol);
+    void processClose(Protocol& protocol);
 
 public:
     explicit ThGameModelServer(ThUserServer& th_user_server, std::string map_filename,

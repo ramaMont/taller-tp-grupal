@@ -4,6 +4,7 @@
 class Mapa;
 #include "Mapa.h"
 #include "ThGameModelServer.h"
+#include <iostream>
 
 #define ROCKET_STEP 0.15
 #define STEP 1
@@ -31,6 +32,8 @@ Puerta::Puerta(Coordinates coordenadas): Objeto(coordenadas), reopen(false){
     has_event = false;
 }
 
+
+
 bool Puerta::abrir(Player *jugador){
     return abrirPuerta(jugador);
 }
@@ -40,18 +43,20 @@ bool Puerta::abrirPuerta(Player *jugador){
         jugador->get_direction(), posicion);
     if (angle > 1)
         return false;
-    if (has_event){
-        reopen = true;
-        return false;
-    }
+    bool had_event = has_event;
     has_event = true;
-    atravesable(true);
-    return true;
+    reopen = true;
+    return !had_event;
 }
 
-void Puerta::cerrar(){
+void Puerta::close(){
 	atravesable(false);
 	has_event = false;
+}
+
+void Puerta::letPass(){
+    atravesable(true);
+    reopen = true;
 }
 
 std::atomic<bool>& Puerta::getReopen(){

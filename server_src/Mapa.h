@@ -50,7 +50,8 @@ public:
     bool hayObstaculoEn(float x, float y) const;
     bool hayPuertaEn(float x, float y) const;
     int getAlto() const;
-    int getAncho() const;    
+    int getAncho() const;
+    Puerta* getDoor();
     ~Mapa();
 };
 

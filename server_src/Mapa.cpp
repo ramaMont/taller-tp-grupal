@@ -295,6 +295,10 @@ int Mapa::getAncho() const{
 	return this->ancho;
 }
 
+Puerta* Mapa::getDoor(){
+    return doors.front();
+}
+
 // Se encarga de limpiar los vectores con usuarios y jugadores.
 Mapa::~Mapa(){
     for (int i = 0; i < alto; ++i){

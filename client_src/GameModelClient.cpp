@@ -384,6 +384,12 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::OPEN:
             openDoor(protocol);
             break;
+        case Protocol::action::OPENING:
+            //openDoor(protocol);
+            break;
+        case Protocol::action::CLOSE:
+           // openDoor(protocol);
+            break;
         default:
             break;
     }
