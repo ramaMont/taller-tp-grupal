@@ -30,7 +30,7 @@ public:
     int getId();
 
     void die();
-    void resurrect();
+    virtual void resurrect();
 
     ~Movable();  
 };
