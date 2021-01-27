@@ -33,8 +33,6 @@ int Bot::luaObtenerObjetoMapa(lua_State *L){
 		lua_pushnumber(L, Posicion::Vacio);
 	} else if (bot->mapa.hayPuertaEn(x, y)){
 		lua_pushnumber(L, Posicion::Puerta);
-	} else if (bot->mapa.hayJugadorEn(x, y)){
-		lua_pushnumber(L, Posicion::Vacio);
 	} else {
 		lua_pushnumber(L, Posicion::Ocupado);
 	}	
@@ -77,8 +75,8 @@ Bot::Event Bot::getEvent(const Player* jugador,const std::map<int, Player*>& ene
 
 
 int Bot::pushInfoJugador(const Player* jugador){
-	const Coordinates& posicion = jugador->get_coordinates();
-	const Coordinates& direccion = jugador->get_direction();
+	const Coordinates posicion = jugador->get_coordinates();
+	const Coordinates direccion = jugador->get_direction();
 	lua_pushnumber(this->script, jugador->numeroArmaActual());
 	lua_pushnumber(this->script, posicion.x);
 	lua_pushnumber(this->script, posicion.y);
@@ -93,7 +91,7 @@ int Bot::pushInfoEnemigos(const Player* j,const std::map<int, Player*>& enemigos
     for (auto it = enemigos.begin(); it != enemigos.end(); ++it){
         auto* enemigo = it->second;
 		if (enemigo != j){
-			const Coordinates& coordenadas = enemigo->get_coordinates();
+			const Coordinates coordenadas = enemigo->get_coordinates();
             lua_pushnumber(this->script, coordenadas.x);
 			lua_pushnumber(this->script, coordenadas.y);
 			argc += 2;

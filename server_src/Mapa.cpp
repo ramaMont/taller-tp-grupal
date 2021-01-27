@@ -287,13 +287,6 @@ bool Mapa::hayPuertaEn(float x, float y) const{
 	return typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Puerta);
 }
 
-bool Mapa::hayJugadorEn(float x, float y) const{
-	if (floor(x) < 0 || floor(x) >= alto ||
-	    floor(y) < 0 || floor(y) >= ancho ||
-	    mapaJuego[floor(x)][floor(y)].empty()) return false;
-	return typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Player);
-}
-
 int Mapa::getAlto() const{
 	return this->alto;
 }

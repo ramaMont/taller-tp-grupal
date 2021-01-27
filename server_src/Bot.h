@@ -29,7 +29,8 @@ class Bot{
 		MoverDerecha,
 		Disparar,
 		CambiarArmaCuchillo,
-		AbrirPuerta
+		AbrirPuerta,
+		Nada
         };
 	
     Bot(const Mapa& mapa);

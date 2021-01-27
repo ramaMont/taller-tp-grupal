@@ -49,7 +49,6 @@ public:
     bool hayObstaculoEn(const Coordinates& posicion) const;
     bool hayObstaculoEn(float x, float y) const;
     bool hayPuertaEn(float x, float y) const;
-    bool hayJugadorEn(float x, float y) const;
     int getAlto() const;
     int getAncho() const;    
     ~Mapa();

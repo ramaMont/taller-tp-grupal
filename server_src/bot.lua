@@ -15,6 +15,7 @@ local DERECHA = 2
 local DISPARAR = 3
 local CAMBIAR_ARMA_CUCHILLO = 4
 local ABRIR_PUERTA = 5
+local NADA = 6
 
 
 -- Mapa
@@ -251,7 +252,7 @@ function bot.generarEvento(n_arma, pos_x, pos_y, dir_x, dir_y, ...)
 
     if not bot.enemigo_actual then 
         if not bot.encontrarEnemigo(pos_x, pos_y) then 
-            return ADELANTE
+            return NADA
         end
     end   
 

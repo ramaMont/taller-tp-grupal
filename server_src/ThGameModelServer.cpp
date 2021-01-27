@@ -76,6 +76,8 @@ void ThGameModelServer::processShoot(Protocol protocol){
 }
 
 void ThGameModelServer::processShooted(Protocol protocol){
+    if (users_sender.count(protocol.getId()) == 0)
+        return;
     auto th_user_sender = users_sender.at(protocol.getId());
     th_user_sender->push(protocol);
 }
