@@ -45,32 +45,14 @@ void ThBots::stop(){
 void ThBots::addBots(){
     if (number_of_bots <= 0)
         return;
-    int bots_added = 0;
-    for (int player_id = 0; player_id < 100; ++player_id){
-        if (players.count(player_id) > 0)
-            continue;
+    uint16_t current_bot_id = -1;
+    for (int bots_added = 0; bots_added < number_of_bots; ++bots_added){
 
-        th_game_model->addPlayer(player_id);
+        th_game_model->addPlayer(current_bot_id);
         Bot* bot = new Bot(map);
-        bots[player_id] = bot;   
+        bots[current_bot_id] = bot;   
 
-        // Copiado de GamesAdmin::joinGame
-        // Le envio a todos los jugadores que se ha unido uno nuevo.
-        // int map_id_checksum = th_game_model->getMapIdChecksum();
-        // Coordinates player_direction = th_game_model->getPlayer(player_id).
-        //         get_direction();
-        // Coordinates player_position = th_game_model->getPlayer(player_id).
-        //         get_coordinates();
-        // Protocol::direction prot_direction = player_direction.
-        //         cast_to_direction();
-        // Protocol protocol_response(Protocol::action::ADD_PLAYER,
-        //                            player_id, prot_direction, map_id_checksum,
-        //                            player_position.x, player_position.y);
-        // th_game_model->echoProtocol(protocol_response);
- 
-        bots_added++;
-        if (bots_added == number_of_bots)
-            return;
+        --current_bot_id;
     }
 }
 
