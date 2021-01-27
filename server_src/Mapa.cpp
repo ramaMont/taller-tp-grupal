@@ -40,10 +40,10 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
                 Puerta* posicionable = new Puerta(position);
                 map.addDoor(posicionable);
             } else if (parsed_element == "playe"){
-                std::string aux = elemento.substr(7, elemento.size() - 5);
+                std::string dir_str = elemento.substr(7, elemento.size() - 5);
                 Coordinates position((float)i,(float)j);
                 std::tuple<Coordinates, std::string> player_data = 
-                    std::make_tuple(position, aux);
+                    std::make_tuple(position, dir_str);
                 player_positions.push_back(player_data);
             } else if (elemento == "empty"){
                 // No hace falta hacer nada.
@@ -123,11 +123,12 @@ Mapa::Mapa(std::string map_filename): players_added(0){
     initMap(*this, map_node["elementos"]);
 }
 
-Mapa::Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
-        std::vector<std::vector<Posicionable*>>(alto)),
-        items(ancho, std::vector<std::vector<Item*>>(alto)),players_added(0){
-    /*for (int i=0; i<ancho; i++){
-        for (int j=0; j<alto; j++){
+Mapa::Mapa(int alto, int ancho):
+        alto(alto), ancho(ancho),
+        mapaJuego(alto, std::vector<std::vector<Posicionable*>>(ancho)),
+        items(alto, std::vector<std::vector<Item*>>(ancho)),players_added(0){
+    /*for (int i=0; i<alto; i++){
+        for (int j=0; j<ancho; j++){
             mapaJuego[i][j]=nullptr;
         }
     }*/
@@ -143,6 +144,12 @@ void Mapa::agregarPlayer(Player* jugador){
     jugador->set_direction(player_dir);
 	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(jugador);
     ++players_added;
+}
+
+void Mapa::respawnPlayer(Player* jugador){
+    Coordinates player_position = jugador->get_position(); 
+    sacarPosicionable(player_position);
+	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(jugador);
 }
 
 void Mapa::agregarPosicionable(Posicionable* posicionable, 

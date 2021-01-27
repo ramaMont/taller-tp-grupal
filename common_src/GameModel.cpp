@@ -47,16 +47,9 @@ void GameModel::push(Protocol protocol){
 
 void GameModel::addPlayer(int player_id){
     try{
-        static int pos_x = 2;
-        static int pos_y = 2;
-        Coordinates initial_position(pos_x, pos_y);
-        Coordinates initial_direction(0, 1);
-        Player* player = new Player(initial_position, initial_direction,
-            map, player_id, operations);
+        Player* player = new Player(map, player_id, operations);
         players.insert(std::pair<int, Player*>(player_id, player));
         id_insertion_order.push_back(player_id);
-        ++pos_x;
-        ++pos_y;
     } catch(...){
     }
 }

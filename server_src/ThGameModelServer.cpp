@@ -9,10 +9,10 @@
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
         std::string map_filename, int game_id, int map_id_checksum, int bots_cty):
-        GameModel(map_filename, game_id), launched(false),
-        th_game_events(operations),
-        th_bots(this, operations, players, map, bots_cty),
-        map_id_checksum(map_id_checksum), _bots_cty(bots_cty){
+            GameModel(map_filename, game_id), launched(false),
+            th_game_events(operations),
+            th_bots(this, operations, players, map, bots_cty),
+            map_id_checksum(map_id_checksum), _bots_cty(bots_cty){
     addThSender(th_user_server.getSender());
     th_user_server.setGameModel(this);
     addPlayer(th_user_server.getId());

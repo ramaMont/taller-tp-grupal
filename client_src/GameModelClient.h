@@ -95,6 +95,7 @@ public:
 
     Cl_Mapa& getMap();
     int getId();
+    std::map<int,Movable*> getMovables();
 
     GameModelClient(const GameModelClient&) = delete;
     GameModelClient(GameModelClient&& other) = delete;

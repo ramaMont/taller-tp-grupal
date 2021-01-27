@@ -431,5 +431,9 @@ void GameModelClient::openDoor(const Protocol& protocol){
     door->opening();
 }
 
+std::map<int,Movable*> GameModelClient::getMovables(){
+    return movables;
+}
+
 GameModelClient::~GameModelClient(){
 }

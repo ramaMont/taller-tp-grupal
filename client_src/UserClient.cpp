@@ -52,7 +52,7 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
         protocol.setAction(
             Protocol::action::OPEN);
         th_sender.push(protocol);
-        showPlayerInfo(jugador);
+        showPlayersInfo(jugador);
     }
 
     while (SDL_PollEvent(&event)) { 
@@ -112,13 +112,15 @@ void UserClient::gameLoop(){
     std::cout<<"El tiempo promedio fue:"<<total_time/counter<<std::endl;
 }
 
-void UserClient::showPlayerInfo(Jugador& player){
-
-    std::cout << "Jugador:   " << player.getId() << std::endl;
-    std::cout << "Posicion:  X: " << player.get_position().x << " Y: " << player.get_position().y  << std::endl;
-    std::cout << "Direccion: X: " << player.get_direction().x << " Y: " << player.get_direction().y << std::endl;
-    std::cout << "\n-------------------------------------------------------------------\n";
-
+void UserClient::showPlayersInfo(Jugador& player){
+    auto players = _game_model.getMovables();
+    for(auto& it : players){
+        auto player = it.second;
+        std::cout << "Jugador:   " << player->getId() << std::endl;
+        std::cout << "Posicion:  X: " << player->get_position().x << " Y: " << player->get_position().y  << std::endl;
+        std::cout << "Direccion: X: " << player->get_direction().x << " Y: " << player->get_direction().y << std::endl;
+        std::cout << "\n-------------------------------------------------------------------\n";
+    }
 }
 
 UserClient::~UserClient(){

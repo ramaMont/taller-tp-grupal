@@ -37,6 +37,9 @@ private:
     Coordinates initial_direction;
     
 public:
+
+    explicit Player(Mapa& mapa, int id, 
+        BlockingQueue<Protocol>& game_model_queue);
     explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa,
         BlockingQueue<Protocol>& game_model_queue);
     explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa,

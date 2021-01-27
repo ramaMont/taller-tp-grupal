@@ -32,6 +32,7 @@ public:
     explicit Mapa(std::string map_filename);
     explicit Mapa(int alto, int ancho);
     void agregarPlayer(Player* jugador);
+    void respawnPlayer(Player* jugador);
     void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);
     void agregarItem(Item* item, Coordinates posicion);
     void addDoor(Puerta* door);

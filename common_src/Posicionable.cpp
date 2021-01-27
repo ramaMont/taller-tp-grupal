@@ -1,5 +1,9 @@
 #include "Posicionable.h"
 
+Posicionable::Posicionable():
+	texture_drawer(nullptr), texture(-1), esObstaculo(true){
+}
+
 Posicionable::Posicionable(Coordinates posicion):
     posicion(posicion){
 	this->esObstaculo = true;

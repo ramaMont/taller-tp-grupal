@@ -5,11 +5,26 @@
 #include <algorithm>
 
 
+Player::Player(Mapa& mapa, int id, BlockingQueue<Protocol>& game_model_queue):
+		mapa(mapa), player_id(id), 
+		soldado(EstadoSoldado(this, this->balas_restantes)),
+		_game_model_queue(game_model_queue){
+    mapa.agregarPlayer(this);
+    this->vida = (int)configs[CONFIG::vida_maxima];
+    this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
+    this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
+    this->puntuacion = 0;
+    this->balas_disparadas = 0;
+    this->enemigos_matados = 0;
+    this->llave = false;  
+    this->is_alive = true;
+}
+
 Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, 
-		BlockingQueue<Protocol>& game_model_queue):
-    Posicionable(position),direction(direction), mapa(mapa), player_id(0),
-    soldado(EstadoSoldado(this, this->balas_restantes)), posicion_inicial(posicion),
-	_game_model_queue(game_model_queue){
+	BlockingQueue<Protocol>& game_model_queue):
+		Posicionable(position),direction(direction), mapa(mapa), player_id(0),
+		soldado(EstadoSoldado(this, this->balas_restantes)), 
+		posicion_inicial(posicion),	_game_model_queue(game_model_queue){
     mapa.agregarPlayer(this);
     this->vida = (int)configs[CONFIG::vida_maxima];
     this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
@@ -22,10 +37,11 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa,
 }
 
 Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id,
-		BlockingQueue<Protocol>& game_model_queue):
-    Posicionable(position),direction(direction), mapa(mapa), player_id(id),
-    soldado(EstadoSoldado(this, this->balas_restantes)), posicion_inicial(posicion),
-	_game_model_queue(game_model_queue){
+	BlockingQueue<Protocol>& game_model_queue):
+		Posicionable(position),direction(direction), mapa(mapa), player_id(id),
+		soldado(EstadoSoldado(this, this->balas_restantes)),
+		posicion_inicial(posicion),
+		_game_model_queue(game_model_queue){
     mapa.agregarPlayer(this);
     this->vida = (int)configs[CONFIG::vida_maxima];
     this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
@@ -75,7 +91,6 @@ void Player::set_direction(Coordinates direction){
 }
 
 void Player::set_direction(std::string direction){
-    // cambiar esto por la funcion ya creada de coordinates.
 	Coordinates player_direction(direction);
     this->direction = player_direction;
     this->initial_direction = player_direction;
@@ -197,7 +212,8 @@ void Player::morir(){
 
 bool Player::revivir(){
     this->posicion = posicion_inicial;
-    mapa.agregarPlayer(this);
+	this->direction = initial_direction;
+    mapa.respawnPlayer(this);
     this->vida = (int)configs[CONFIG::vida_maxima];
     this->vidasRestantes --;
     this->balas_restantes = (int)configs[CONFIG::balas_iniciales];

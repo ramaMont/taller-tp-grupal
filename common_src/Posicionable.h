@@ -15,6 +15,7 @@ protected:
     bool esObstaculo;
     
 public:
+    Posicionable();
     explicit Posicionable(Coordinates posicion);
 
     void set_texture(Texture *a_texture_drawer);

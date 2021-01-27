@@ -23,7 +23,7 @@ private:
 public:
     explicit UserClient(ThSender& th_sender, GameModelClient& game_model);
     void play();
-    void showPlayerInfo(Jugador& player);
+    void showPlayersInfo(Jugador& player);
     ~UserClient();
 };
 
