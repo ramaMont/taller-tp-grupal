@@ -19,9 +19,12 @@ class Sprite_holder : public Posicionable, public Sprite_drawer{
 protected:
 	std::vector<int> sprites_textures;
     Movable* movable;
+    bool colidable;
 
 public:
     explicit Sprite_holder(Coordinates posicion, int texture, Jugador &player);
+
+    void is_colidable();
 
     void add_sprite(int num_texture);
 

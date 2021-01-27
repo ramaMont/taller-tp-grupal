@@ -168,11 +168,13 @@ void GameModelClient::initMap(std::string map_filename){
             if (elemento == "barrel"){
                Sprite_holder *posicionable = new Sprite_holder(position,0,player);
                posicionable->set_texture(&texture);
+               posicionable->is_colidable();
                sprites.push_back(posicionable);
                map.agregarPosicionable(posicionable,position);
             }else if (elemento == "pillar"){
                Sprite_holder *posicionable = new Sprite_holder(position,1,player);
                posicionable->set_texture(&texture);
+               posicionable->is_colidable();
                sprites.push_back(posicionable);
                map.agregarPosicionable(posicionable,position);
             }else if (elemento == "greenlight"){
@@ -226,6 +228,7 @@ void GameModelClient::initMap(std::string map_filename){
             }else if (elemento == "table"){
                Sprite_holder *posicionable = new Sprite_holder(position,11,player);
                posicionable->set_texture(&texture);
+               posicionable->is_colidable();
                sprites.push_back(posicionable);
                map.agregarPosicionable(posicionable,position);
             }

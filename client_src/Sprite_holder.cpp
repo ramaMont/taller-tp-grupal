@@ -3,8 +3,12 @@
 #include "Enemy.h"
 
 Sprite_holder::Sprite_holder(Coordinates posicion, int texture, Jugador &player): 
-Posicionable(posicion),Sprite_drawer(this,player) ,movable(nullptr){
+Posicionable(posicion),Sprite_drawer(this,player) ,movable(nullptr), colidable(false){
   	sprites_textures.push_back(texture);
+}
+
+void Sprite_holder::is_colidable(){
+	this->colidable=true;
 }
 
 void Sprite_holder::add_sprite(int num_texture){
@@ -25,7 +29,7 @@ void Sprite_holder::spotted(){
 }   
 
 void Sprite_holder::add(Movable* new_movable){
-	if(movable!=nullptr){
+	if(movable!=nullptr or colidable){
 		throw -2;
 	}else{
 		movable=new_movable;
