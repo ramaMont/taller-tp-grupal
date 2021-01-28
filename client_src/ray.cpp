@@ -204,6 +204,9 @@ void Ray::y_door_colided(Coordinates coordinates_map,bool first_triangle,Door *o
 }
 
 void Ray::door_colided(Coordinates coordinates_map,bool first_triangle,Door *object){
+
+	object->spotted_enemy();
+
 	if(first_triangle)
 		y_door_colided(coordinates_map,first_triangle,object);
 	else

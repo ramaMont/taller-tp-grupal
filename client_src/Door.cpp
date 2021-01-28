@@ -2,6 +2,8 @@
 #include "../client_src/texture.h"
 #include "ray.h"
 
+#include "Enemy.h"
+
 Door::Door(Coordinates posicion): 
     Posicionable(posicion), current_frame(0), state("closed"), character(nullptr){}
 
@@ -14,6 +16,13 @@ void Door::add(Character* new_character){
 		throw -2;
 	}else{
 		character=new_character;
+	}
+}
+
+void Door::spotted_enemy(){
+	if(character!=nullptr){
+		Enemy* enemy = dynamic_cast<Enemy*>(character);
+		enemy->spotted_sprite();
 	}
 }
 

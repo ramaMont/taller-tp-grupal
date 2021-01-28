@@ -19,6 +19,8 @@ public:
 
     void remove() override;
 
+    void spotted_enemy();
+
 	void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
 	void set_state(std::string new_state);
