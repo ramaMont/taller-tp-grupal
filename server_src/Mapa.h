@@ -41,6 +41,7 @@ public:
     void sacarItem(Coordinates posicion, const std::type_info& type_id);
     Posicionable* obtenerPosicionableEn(Coordinates posicion) const;
     Objeto* getNearestDoor(Coordinates& position);
+    Puerta* getDoor(Coordinates& position);    
     void moveme(Player* jugador, const Coordinates& posicion);
 //    Mapa(const Mapa&) = delete;
     Mapa(Mapa&& other);
@@ -49,6 +50,7 @@ public:
     
     bool hayObstaculoEn(const Coordinates& posicion) const;
     bool hayObstaculoEn(float x, float y) const;
+    bool playerIn(const Coordinates& posicion) const;
     bool hayPuertaEn(float x, float y) const;
     int getAlto() const;
     int getAncho() const;
