@@ -21,7 +21,7 @@ public:
 
 	void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
-	bool is_opening();
+	void set_state(std::string new_state);
 
 	void update_frame(); 
 

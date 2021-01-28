@@ -385,10 +385,10 @@ void GameModelClient::processProtocol(Protocol& protocol){
             openDoor(protocol);
             break;
         case Protocol::action::OPENING:
-            //openDoor(protocol);
+            openingDoor(protocol);
             break;
         case Protocol::action::CLOSE:
-           // openDoor(protocol);
+            closeDoor(protocol);
             break;
         default:
             break;
@@ -428,7 +428,25 @@ void GameModelClient::openDoor(const Protocol& protocol){
     // std::get<0>(position) += 1; // Accedo a la posicion X
     // std::get<1>(position) += 1; // Accedo a la posicion Y
     // pero por ahora:
-    door->opening();
+    door->set_state("open");
+}
+
+void GameModelClient::openingDoor(const Protocol& protocol){
+    // TODO: con la posicion decirle a la puerta que se abra:
+    // std::tuple<int, int> position = protocol.getPosition();
+    // std::get<0>(position) += 1; // Accedo a la posicion X
+    // std::get<1>(position) += 1; // Accedo a la posicion Y
+    // pero por ahora:
+    door->set_state("opening");
+}
+
+void GameModelClient::closeDoor(const Protocol& protocol){
+    // TODO: con la posicion decirle a la puerta que se abra:
+    // std::tuple<int, int> position = protocol.getPosition();
+    // std::get<0>(position) += 1; // Accedo a la posicion X
+    // std::get<1>(position) += 1; // Accedo a la posicion Y
+    // pero por ahora:
+    door->set_state("closed");
 }
 
 std::map<int,Movable*> GameModelClient::getMovables(){
