@@ -320,13 +320,15 @@ Character& GameModelClient::getEnemy(int user_id){
 }
 
 void  GameModelClient::updateFrameAnimations(){
-  for(unsigned int i=0; i<enemies.size(); i++){
-    enemies[i]->update_frame();
-  }
-  player.update_shots();
-  if(door!=nullptr)
-  	door->update_frame();
-  //Y despues acá meter las puertas tambien
+    for(unsigned int i=0; i<enemies.size(); i++){
+        enemies[i]->update_frame();
+    }
+    player.update_shots();
+    // TODO: agregar vector de puertas
+    // for(auto& door : doors){
+    //     door.update_frame();
+    // }
+    //Y despues acá meter las puertas tambien
 }
 
 void GameModelClient::showWindow(){

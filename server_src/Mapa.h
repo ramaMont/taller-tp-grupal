@@ -52,7 +52,6 @@ public:
     bool hayPuertaEn(float x, float y) const;
     int getAlto() const;
     int getAncho() const;
-    Puerta* getDoor();
     ~Mapa();
 };
 
