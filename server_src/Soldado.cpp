@@ -14,13 +14,13 @@
 
 EstadoSoldado::EstadoSoldado(Player *jugador, int &balas): jugador(jugador),
     perro(Perro(balas)), guardia(Guardia(balas)), ss(SS(balas)),
-    oficial(Oficial(balas)), mutante(Mutante(balas)){
+    oficial(Oficial(balas)), mutante(Mutante(balas)), arma_actual(1){
 	this->soldado = &guardia;
 	this->soldado_anterior = nullptr;
 }
 
 int EstadoSoldado::armaActual() const{
-	return this->soldado->numeroArma();
+	return this->arma_actual;
 }
 
 bool EstadoSoldado::agregarArma(Arma* arma){
@@ -40,24 +40,25 @@ void EstadoSoldado::cambiarArma(int numero_arma){
 	switch (numero_arma){
 		case N_CUCHILLO:
 			this->soldado = &this->perro;
-			return;
+			break;
 		case N_PISTOLA:
 			if (this->guardia.estaListo())
 				this->soldado = &this->guardia;
-			return;
+			break;
 		case N_AMETRALLADORA:
 			if (this->ss.estaListo())
 				this->soldado = &this->ss;
-			return;
+			break;
 		case N_CANION:
 			if (this->oficial.estaListo())
 				this->soldado = &this->oficial;
-			return;
+			break;
 		case N_LANZACOHETES:
 			if (this->mutante.estaListo())
 				this->soldado = &this->mutante;
-			return;
+			break;
 	}
+	this->arma_actual = this->soldado->numeroArma();
 }
 
 
@@ -71,6 +72,7 @@ void EstadoSoldado::disparar(std::map<int, Player*>& enemigos){
 		this->soldado_anterior = this->soldado;
 		this->soldado = &this->perro;
 	}
+	this->arma_actual = this->soldado->numeroArma();
 }
 
 void EstadoSoldado::recargarBalas(){
@@ -78,6 +80,7 @@ void EstadoSoldado::recargarBalas(){
 		this->soldado = soldado_anterior;
 		this->soldado_anterior = nullptr;
 	}
+	this->arma_actual = this->soldado->numeroArma();
 }
 
 // Perro

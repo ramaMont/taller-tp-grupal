@@ -53,6 +53,12 @@ void ClThReceiver::processReception(Protocol& protocol){
         case Protocol::action::OPEN:
             _gameModel->push(protocol);
             break;
+        case Protocol::action::OPENING:
+            _gameModel->push(protocol);
+            break;
+        case Protocol::action::CLOSE:
+            _gameModel->push(protocol);
+            break;
         default:
             break;
     }

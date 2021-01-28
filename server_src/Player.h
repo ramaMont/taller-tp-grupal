@@ -4,8 +4,8 @@
 #include "Protocol.h"
 #include "Posicionable.h"
 #include "coordinates.h"
+#include "AtomicCoordinates.h"
 #include <BlockingQueue.h>
-#include <atomic>
 
 #include "Mapa.h"
 class Mapa;
@@ -15,7 +15,6 @@ class EstadoSoldado;
 #include "Soldado.h"
 #include "Item.h"
 #include <map>
-
 
 
 class Player final : public Posicionable{
@@ -33,8 +32,10 @@ private:
     size_t balas_disparadas;
     size_t enemigos_matados;
     BlockingQueue<Protocol>& _game_model_queue;
-    std::atomic<bool> is_alive;
+    bool is_alive;
     Coordinates initial_direction;
+    AtomicCoordinates atomic_dir;
+    AtomicCoordinates atomic_pos;
     
 public:
 
@@ -76,6 +77,8 @@ public:
     size_t getEnemigosMatados();
     size_t getPuntuacion();    
     void setPosition(Coordinates position);
+    AtomicCoordinates& getAtomicDirection();
+    AtomicCoordinates& getAtomicPosition();
 
     ~Player();    
       

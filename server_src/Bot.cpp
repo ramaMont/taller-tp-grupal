@@ -3,6 +3,7 @@
 #include "Objeto.h"
 #include "Mapa.h"
 #include "Player.h"
+#include "AtomicCoordinates.h"
 #include <string>
 #include <iostream>
 
@@ -59,7 +60,7 @@ void Bot::cargarMapa(){
 }
 
 
-Bot::Event Bot::getEvent(const Player* jugador,const std::map<int, Player*>& enemigos){
+Bot::Event Bot::getEvent(Player* jugador, std::map<int, Player*>& enemigos){
 	lua_getfield(this->script, -1, "generarEvento");
 	if (!lua_isfunction(this->script, -1))
 		throw std::runtime_error("Lua no pudo generar un evento\n");
@@ -74,9 +75,9 @@ Bot::Event Bot::getEvent(const Player* jugador,const std::map<int, Player*>& ene
 }
 
 
-int Bot::pushInfoJugador(const Player* jugador){
-	const Coordinates posicion = jugador->get_coordinates();
-	const Coordinates direccion = jugador->get_direction();
+int Bot::pushInfoJugador(Player* jugador){
+	AtomicCoordinates& posicion = jugador->getAtomicPosition();
+	AtomicCoordinates& direccion = jugador->getAtomicDirection();
 	lua_pushnumber(this->script, jugador->numeroArmaActual());
 	lua_pushnumber(this->script, posicion.x);
 	lua_pushnumber(this->script, posicion.y);
@@ -86,18 +87,18 @@ int Bot::pushInfoJugador(const Player* jugador){
 }
 
 
-int Bot::pushInfoEnemigos(const Player* j,const std::map<int, Player*>& enemigos){
+int Bot::pushInfoEnemigos(Player* j, std::map<int, Player*>& enemigos){
     int argc = 0;
     for (auto it = enemigos.begin(); it != enemigos.end(); ++it){
         auto* enemigo = it->second;
-		if (enemigo != j){
-			const Coordinates coordenadas = enemigo->get_coordinates();
-            lua_pushnumber(this->script, coordenadas.x);
-			lua_pushnumber(this->script, coordenadas.y);
-			argc += 2;
-		}
-	}
-	return argc;
+        if (enemigo != j){
+            AtomicCoordinates& position = enemigo->getAtomicPosition();
+            lua_pushnumber(this->script, position.x);
+            lua_pushnumber(this->script, position.y);
+            argc += 2;
+        }
+    }
+    return argc;
 }
 
 

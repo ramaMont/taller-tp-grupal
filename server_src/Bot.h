@@ -35,10 +35,10 @@ class Bot{
 	
     Bot(const Mapa& mapa);
     void cargarMapa();
-    Bot::Event getEvent(const Player* jugador, const std::map<int, Player*>& enemigos);
+    Bot::Event getEvent(Player* jugador, std::map<int, Player*>& enemigos);
     static int luaObtenerObjetoMapa(lua_State *L);
-    int pushInfoJugador(const Player* jugador);
-    int pushInfoEnemigos(const Player* j, const std::map<int, Player*>& enemigos);
+    int pushInfoJugador(Player* jugador);
+    int pushInfoEnemigos(Player* j, std::map<int, Player*>& enemigos);
     ~Bot();
 };
 

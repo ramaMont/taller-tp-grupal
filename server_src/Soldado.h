@@ -10,6 +10,7 @@ class Lanzacohetes;
 #include "Arma.h"
 #include <set>
 #include <vector>
+#include <atomic>
 
 class Soldado {
 	protected:
@@ -109,6 +110,7 @@ class EstadoSoldado {
 	Oficial oficial;
 	Mutante mutante;
 	Soldado *soldado_anterior;
+	std::atomic<int> arma_actual;
 	
 	public:
 	explicit EstadoSoldado(Player *jugador, int& balas);

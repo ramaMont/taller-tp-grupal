@@ -7,7 +7,7 @@
 
 Player::Player(Mapa& mapa, int id, BlockingQueue<Protocol>& game_model_queue):
 		mapa(mapa), player_id(id), 
-		soldado(EstadoSoldado(this, this->balas_restantes)),
+		soldado(this, this->balas_restantes),
 		_game_model_queue(game_model_queue){
     mapa.agregarPlayer(this);
     this->vida = (int)configs[CONFIG::vida_maxima];
@@ -23,7 +23,7 @@ Player::Player(Mapa& mapa, int id, BlockingQueue<Protocol>& game_model_queue):
 Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, 
 	BlockingQueue<Protocol>& game_model_queue):
 		Posicionable(position),direction(direction), mapa(mapa), player_id(0),
-		soldado(EstadoSoldado(this, this->balas_restantes)), 
+		soldado(this, this->balas_restantes), 
 		posicion_inicial(posicion),	_game_model_queue(game_model_queue){
     mapa.agregarPlayer(this);
     this->vida = (int)configs[CONFIG::vida_maxima];
@@ -34,12 +34,14 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa,
     this->enemigos_matados = 0;
     this->llave = false;  
     this->is_alive = true;
+    atomic_dir(direction);
+    atomic_pos(posicion);
 }
 
 Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id,
 	BlockingQueue<Protocol>& game_model_queue):
 		Posicionable(position),direction(direction), mapa(mapa), player_id(id),
-		soldado(EstadoSoldado(this, this->balas_restantes)),
+		soldado(this, this->balas_restantes),
 		posicion_inicial(posicion),
 		_game_model_queue(game_model_queue){
     mapa.agregarPlayer(this);
@@ -51,6 +53,8 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id,
     this->enemigos_matados = 0;
     this->llave = false;  
     this->is_alive = true;
+    atomic_dir(direction);
+    atomic_pos(posicion);
 }
 
 void Player::mover(Direccion* direccion){
@@ -76,6 +80,7 @@ void Player::mover(Direccion* direccion){
         } catch(...){
         }
     }
+    atomic_pos(posicion);
 }
 
 Coordinates Player::get_coordinates() const{
@@ -88,12 +93,14 @@ Coordinates Player::get_direction() const{
 
 void Player::set_direction(Coordinates direction){
     this->direction = direction;
+    atomic_dir(this->direction);
 }
 
 void Player::set_direction(std::string direction){
 	Coordinates player_direction(direction);
     this->direction = player_direction;
     this->initial_direction = player_direction;
+    atomic_dir(this->direction);
 }
 
 int Player::getId(){
@@ -212,12 +219,14 @@ void Player::morir(){
 
 bool Player::revivir(){
     this->posicion = posicion_inicial;
-	this->direction = initial_direction;
+    this->direction = initial_direction;
     mapa.respawnPlayer(this);
     this->vida = (int)configs[CONFIG::vida_maxima];
     this->vidasRestantes --;
     this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
     this->soldado.cambiarArma(N_PISTOLA);
+    atomic_dir(this->direction);
+    atomic_pos(this->posicion);
     return true;
 }
 
@@ -256,6 +265,15 @@ int Player::getBalas(){
 void Player::setPosition(Coordinates position){
 	this->posicion = position;
 	this->posicion_inicial = position;
+	atomic_pos(this->posicion);
+}
+
+AtomicCoordinates& Player::getAtomicDirection(){
+    return atomic_dir;
+}
+
+AtomicCoordinates& Player::getAtomicPosition(){
+    return atomic_pos;
 }
 
 Player::~Player(){
