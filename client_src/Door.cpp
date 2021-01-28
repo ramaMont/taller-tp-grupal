@@ -10,7 +10,7 @@ void Door::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
 }
 
 void Door::add(Movable* new_movable){
-	if(movable!=nullptr or (state!="open" and state!="closing")){
+	if(movable!=nullptr or state!="open"){
 		throw -2;
 	}else{
 		movable=new_movable;
@@ -21,25 +21,16 @@ void Door::remove(){
 	movable = nullptr;
 }
 
-void Door::opening(){
-	if(state=="closed"){
-		state="opening";
-	}
+void Door::set_state(std::string new_state){
+	state = new_state;
+	//Tirar excepciones si no es ninguno de los estados admisibles? nah, cambiar x enum
 }
 
 void Door::update_frame(){ //Me tardo 20 frames en abrirla
 	if(state=="opening" or state =="open"){
-		current_frame++;
-		if(current_frame>20){
-			state="open";
-		}
-	}
-	if(current_frame==100){
-		state="closing";
-	}
-	if(state=="closing" or state=="closed"){
-		if(current_frame==20)
-			state="closed";
+		if(current_frame<20)
+			current_frame++;
+	}else if(state=="closed"){
 		if(current_frame>0)
 			current_frame--;
 	}
