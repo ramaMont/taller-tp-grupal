@@ -17,7 +17,7 @@ private:
     ThSender& th_sender;
     GameModelClient& _game_model;
 
-    void get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Jugador& jugador, Door* door);
+    void get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Jugador& jugador);
 
     void gameLoop();
 public:

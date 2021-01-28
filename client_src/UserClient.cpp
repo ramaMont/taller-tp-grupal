@@ -16,7 +16,7 @@ void UserClient::play(){
     gameLoop();
 }
 
-void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Jugador& jugador, Door *door){
+void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Jugador& jugador){
     if(keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
@@ -82,14 +82,12 @@ void UserClient::gameLoop(){
 
     Jugador& jugador = _game_model.getPlayer();
 
-    Door *door = _game_model.getDoor();
-
     const Uint8 *keys = SDL_GetKeyboardState(NULL);    
     while (!done) {
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        get_keys(keys, event, protocol, done, jugador,door);
+        get_keys(keys, event, protocol, done, jugador);
 
         _game_model.run();//Proceso los protocolos
         _game_model.updateFrameAnimations();

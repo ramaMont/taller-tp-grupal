@@ -47,8 +47,7 @@ private:
     Screen screen;
     int protagonist_id;
 
-    Door* door;
-
+    std::vector<Door*> doors;
     std::vector<Sprite_drawer*> sprites;
     std::vector<Enemy*> enemies;
 
@@ -88,7 +87,6 @@ public:
 
     void addPlayer(Protocol& protocol);
     Jugador& getPlayer();
-    Door* getDoor();
     Window& getWindow();
     Screen& getScreen();
     Character& getEnemy(int user_id);

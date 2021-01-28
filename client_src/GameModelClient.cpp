@@ -9,7 +9,7 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,
         added_player(false),player(map),
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
-        protagonist_id(protagonist_id),door(nullptr),is_running(true) {
+        protagonist_id(protagonist_id),is_running(true) {
     player.set_texture(&texture);
     player.new_gun_type(1);
     initDirections();
@@ -159,7 +159,7 @@ void GameModelClient::initMap(std::string map_filename){
             }else if (elemento == "door"){
                 Door *posicionable = new Door(position);
                 posicionable->set_texture(&texture);
-                door = posicionable;
+                doors.push_back(posicionable);
                 map.agregarPosicionable(posicionable,position);   
             }else{
               position.x+=0.5;
@@ -303,10 +303,6 @@ Jugador& GameModelClient::getPlayer(){
     return player;
 }
 
-Door* GameModelClient::getDoor(){
-  return door;
-}
-
 Window& GameModelClient::getWindow(){
   return window;
 }
@@ -325,10 +321,9 @@ void  GameModelClient::updateFrameAnimations(){
     }
     player.update_shots();
     // TODO: agregar vector de puertas
-    // for(auto& door : doors){
-    //     door.update_frame();
-    // }
-    //Y despues acá meter las puertas tambien
+    for(auto& door : doors){
+        door->update_frame();
+    }
 }
 
 void GameModelClient::showWindow(){

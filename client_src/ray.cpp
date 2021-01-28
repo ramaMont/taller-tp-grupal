@@ -129,9 +129,6 @@ void Ray::x_door_colided(Coordinates coordinates_map,bool first_triangle,Door *o
 		coordinates_map.x+= ray_direction.x*n;
 		coordinates_map.y+= ray_direction.y*n;
 
-		double distance_player_plane = get_distance_to_player_plane(coordinates_map,first_triangle);
-		distances.push_back(distance_player_plane);
-
 		float coordinates_colided_side = coordinates_map.x;
 		
 		/*if(first_triangle)
@@ -139,9 +136,21 @@ void Ray::x_door_colided(Coordinates coordinates_map,bool first_triangle,Door *o
 		else
 			coordinates_colided_side = coordinates_map.x;*/
 
-		float position = floor ((coordinates_colided_side - floor(coordinates_colided_side))*64);
 
-		object->draw(num_ray + n_rays, distance_player_plane,position, first_triangle );
+		float position = floor ((coordinates_colided_side - floor(coordinates_colided_side))*64);
+		float limit_wall = object->get_limit_wall();
+		/* Sino... le pido la cantidad de pixeles que YA no puede mostrar, empieza con 0 y despues termina con 64.
+		Y a poisiton le resto ese numero, si el resultado es negativo, ya no puedo dibujar nada ahi y 
+		sigo dibujando lo que siga... creo
+		*/
+		if(position<limit_wall){
+			double distance_player_plane = get_distance_to_player_plane(coordinates_map,first_triangle);
+			distances.push_back(distance_player_plane);
+			//object->draw(num_ray + n_rays, distance_player_plane,position, first_triangle );
+			object->draw(num_ray + n_rays, distance_player_plane,limit_wall - position, first_triangle );
+		}else{
+			search_object(coordinates_map);
+		}
 	}
 }
 
