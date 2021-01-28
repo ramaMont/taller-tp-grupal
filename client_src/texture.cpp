@@ -350,6 +350,8 @@ void Texture::show_sprite(int first_x_pixel,int first_number_line_texture,int la
 	float pixel_length = lineHeight/64;
 	int x_initial_pos = x_lenght_ray*first_x_pixel;
 	int height_ray = (int)ceil((pixel_length)*64);
+
+	printf("first_number_line_texture %i,  last_number_line_texture %i \n first_x_pixel %i, last_x_pixel %i\n\n",first_number_line_texture, last_number_line_texture, first_x_pixel, last_x_pixel);
 	
 	generic_show(this->sprites[texture],first_number_line_texture, last_number_line_texture - first_number_line_texture,0,64,\
 		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);

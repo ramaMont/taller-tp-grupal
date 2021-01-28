@@ -49,11 +49,15 @@ void Sprite_holder::draw(const std::vector<float> &distances, int n_rays){
 	int first_num_pixel = 0;
 	int last_sigted_ray = 0;
 	int last_num_pixel = 0;
+
+	int cant_spotted_rays = 0;
 	for(int i=0 ; i<cant_rays ; i++){
 		int num_pixel = i*64/cant_rays;
 		int current_ray = first_ray + i+ n_rays;
 		if((current_ray)>0 and (current_ray)<2*n_rays){
 			if(distances[current_ray]>player_distance){
+				cant_spotted_rays++;
+
 				if(first_ray_already_sigted){
 					last_sigted_ray = first_ray + i + n_rays;
 					last_num_pixel = num_pixel;
@@ -66,6 +70,11 @@ void Sprite_holder::draw(const std::vector<float> &distances, int n_rays){
 				first_ray_already_sigted = true;
 			}
 		}
+	}
+
+	if(cant_spotted_rays==1){
+		last_sigted_ray = first_sigted_ray;
+		last_num_pixel = first_num_pixel;
 	}
 
 	for(unsigned int j=0; j<sprites_textures.size(); j++){
