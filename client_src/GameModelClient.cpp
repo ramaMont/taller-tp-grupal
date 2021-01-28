@@ -245,11 +245,11 @@ void GameModelClient::cleanDirections(){
 }
 
 void GameModelClient::processMove(Protocol& protocol){
-    Movable* movable = movables.at(protocol.getId());
+    Character* character = characters.at(protocol.getId());
     Direccion* dir = directions.at(protocol.getDirection());
-    movable->mover(dir);
+    character->mover(dir);
     if(protocol.getId()!=protagonist_id){
-      Enemy* enemy = dynamic_cast<Enemy*>(movable);
+      Enemy* enemy = dynamic_cast<Enemy*>(character);
       enemy->moving();
     }
 }
@@ -266,7 +266,7 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
             added_player = true;
             Coordinates initial_position = player_position;
             player.complete(initial_position, initial_direction,player_id);
-            movables.insert(std::pair<int, Jugador*>(player_id, &player));
+            characters.insert(std::pair<int, Jugador*>(player_id, &player));
             map.agregarPosicionable(&player,initial_position);  
             player.setInitialPosition(initial_position);
         } catch(...){
@@ -280,7 +280,7 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
             sprites.push_back(enemy);
             enemies.push_back(enemy);
             map.agregarPosicionable(enemy,initial_position);    
-            movables.insert(std::pair<int, Movable*>(player_id, enemy));
+            characters.insert(std::pair<int, Character*>(player_id, enemy));
         } catch(...){
         }        
     }
@@ -288,9 +288,9 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
 
 
 void GameModelClient::removePlayer(int id){
-    Movable* removableEnemy = movables[id];
+    Character* removableEnemy = characters[id];
     map.sacarPosicionable(removableEnemy->get_position());
-    movables.erase(id);
+    characters.erase(id);
     //Y me falta eliminarlos tambien del vector sprites y del vector enemies
 
 }
@@ -315,8 +315,8 @@ Screen& GameModelClient::getScreen(){
   return screen;
 }
 
-Movable& GameModelClient::getEnemy(int user_id){
-    return *movables.at(user_id);
+Character& GameModelClient::getEnemy(int user_id){
+    return *characters.at(user_id);
 }
 
 void  GameModelClient::updateFrameAnimations(){
@@ -369,13 +369,13 @@ void GameModelClient::processProtocol(Protocol& protocol){
             processShooted(protocol);
             break;
         case Protocol::action::DIE:{
-            auto movable = movables.at(protocol.getId());
-            movable->die();
+            auto character = characters.at(protocol.getId());
+            character->die();
             break;
         }
         case Protocol::action::RESURRECT:{
-            auto movable = movables.at(protocol.getId());
-            movable->resurrect();
+            auto character = characters.at(protocol.getId());
+            character->resurrect();
             break;
         }
         case Protocol::action::REMOVE:
@@ -407,8 +407,8 @@ void GameModelClient::processShoot(Protocol protocol){
     if (protagonist_id == protocol.getId()){
         player.shoot();
     }else{
-      Movable* movable= movables[protocol.getId()];
-      Enemy* enemy = dynamic_cast<Enemy*>(movable);
+      Character* character= characters[protocol.getId()];
+      Enemy* enemy = dynamic_cast<Enemy*>(character);
       enemy->shoot();
     }
 }
@@ -449,8 +449,8 @@ void GameModelClient::closeDoor(const Protocol& protocol){
     door->set_state("closed");
 }
 
-std::map<int,Movable*> GameModelClient::getMovables(){
-    return movables;
+std::map<int,Character*> GameModelClient::getCharacters(){
+    return characters;
 }
 
 GameModelClient::~GameModelClient(){

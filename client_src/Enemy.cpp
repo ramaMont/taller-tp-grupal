@@ -41,7 +41,7 @@ static int get_num_texture(Coordinates enemy_position, Coordinates enemy_directi
 
 
 Enemy::Enemy(Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador &player ,int id):
-    Movable(posicion,direction,mapa,id),Sprite_drawer(this,player),
+    Character(posicion,direction,mapa,id),Sprite_drawer(this,player),
    	player(player), is_moving(false),
     moved_frames_continued(0), enemy_type(nullptr){
 	   this->initial_position = posicion;

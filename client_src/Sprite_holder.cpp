@@ -3,7 +3,7 @@
 #include "Enemy.h"
 
 Sprite_holder::Sprite_holder(Coordinates posicion, int texture, Jugador &player): 
-Posicionable(posicion),Sprite_drawer(this,player) ,movable(nullptr), colidable(false){
+Posicionable(posicion),Sprite_drawer(this,player) ,character(nullptr), colidable(false){
   	sprites_textures.push_back(texture);
 }
 
@@ -22,23 +22,23 @@ void Sprite_holder::colisioned(Ray* ray,Coordinates coordinates_map,bool first_t
 
 void Sprite_holder::spotted(){
     spotted_sprite();
-    if(movable!=nullptr and player.get_position()!=posicion){
-		Enemy* enemy = dynamic_cast<Enemy*>(movable);
+    if(character!=nullptr and player.get_position()!=posicion){
+		Enemy* enemy = dynamic_cast<Enemy*>(character);
 		enemy->spotted_sprite();
     }
 }   
 
-void Sprite_holder::add(Movable* new_movable){
-	if(movable!=nullptr or colidable){
+void Sprite_holder::add(Character* new_character){
+	if(character!=nullptr or colidable){
 		throw -2;
 	}else{
-		movable=new_movable;
+		character=new_character;
 	}
 
 }
 
 void Sprite_holder::remove(){
-	movable = nullptr;
+	character = nullptr;
 }
 
 
@@ -72,8 +72,8 @@ void Sprite_holder::draw(const std::vector<float> &distances, int n_rays){
 		texture_drawer->show_sprite(first_sigted_ray,first_num_pixel,last_sigted_ray,last_num_pixel,player_distance ,sprites_textures[j]);
 	}
 
-	if(movable!=nullptr and player.get_position()!=posicion){
-		Enemy* enemy = dynamic_cast<Enemy*>(movable);
+	if(character!=nullptr and player.get_position()!=posicion){
+		Enemy* enemy = dynamic_cast<Enemy*>(character);
 		enemy->draw(distances,n_rays);
 	}
 }

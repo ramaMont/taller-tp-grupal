@@ -5,7 +5,7 @@
 
 class Texture;
 class Ray;
-class Movable;
+class Character;
 
 class Posicionable{
 protected:
@@ -27,7 +27,7 @@ public:
     virtual Coordinates get_position();
 
     // En ningun otro objeto ademas de SpriteHolder puedo tener otro Posicionable adentro
-    virtual void add(Movable* movable){
+    virtual void add(Character* character){
         throw -2;
     }
 

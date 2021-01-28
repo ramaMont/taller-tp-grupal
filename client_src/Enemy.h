@@ -9,15 +9,15 @@ class Cl_Mapa;
 class Direccion;
 #include "Cl_Direccion.h"
 
-class Movable;
-#include <Movable.h>
+class Character;
+#include <Character.h>
 
 #include "Sprite_drawer.h"
 
 #include "Enemy_type.h"
 
 // Es tanto un Movible como un sprite, dado que su metodo para dibujar es el mismo que el de los sprites
-class Enemy : public Movable, public Sprite_drawer{
+class Enemy : public Character, public Sprite_drawer{
 private:
 	Jugador &player;	
 	bool is_moving;
