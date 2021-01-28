@@ -3,22 +3,22 @@
 #include "ray.h"
 
 Door::Door(Coordinates posicion): 
-    Posicionable(posicion), current_frame(0), state("closed"), movable(nullptr){}
+    Posicionable(posicion), current_frame(0), state("closed"), character(nullptr){}
 
 void Door::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
 	ray->door_colided(coordinates_map,first_triangle,this);
 }
 
-void Door::add(Movable* new_movable){
-	if(movable!=nullptr or state!="open"){
+void Door::add(Character* new_character){
+	if(character!=nullptr or state!="open"){
 		throw -2;
 	}else{
-		movable=new_movable;
+		character=new_character;
 	}
 }
 
 void Door::remove(){
-	movable = nullptr;
+	character = nullptr;
 }
 
 void Door::set_state(std::string new_state){

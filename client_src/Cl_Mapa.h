@@ -5,7 +5,7 @@
 #include <utility>
 class Posicionable;
 //#include "Posicionable.h"
-class Movable;
+class Character;
 class Jugador;
 //#include "Jugador.h"
 class Enemy;
@@ -17,16 +17,16 @@ private:
     int alto;
     int ancho;
     std::vector<std::vector<Posicionable*>> mapaJuego;
-    Movable* player;
+    Character* player;
 public:
     Cl_Mapa();
     explicit Cl_Mapa(int alto, int ancho);
-    void agregarJugador(Movable* jugador);
+    void agregarJugador(Character* jugador);
     void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);
-    void relocate(Movable* jugador, Coordinates posicion);
+    void relocate(Character* jugador, Coordinates posicion);
     void sacarPosicionable(Coordinates posicion);
     Posicionable* obtenerPosicionableEn(Coordinates posicion);
-    void moveme(Movable* jugador, const Coordinates& posicion);
+    void moveme(Character* jugador, const Coordinates& posicion);
     void resize(int ancho, int alto);
 
     ~Cl_Mapa();

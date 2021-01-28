@@ -6,7 +6,7 @@ static double inc = 0.15;
 DirAdelante::DirAdelante(){
 }
 
-Coordinates DirAdelante::mover(Movable* jugador, Coordinates direction){
+Coordinates DirAdelante::mover(Character* jugador, Coordinates direction){
     Coordinates posActual = jugador->get_position();
     posActual.increment_on_direction(direction,step_size);
     return posActual;
@@ -18,7 +18,7 @@ DirAdelante::~DirAdelante(){
 DirAtras::DirAtras(){
 }
 
-Coordinates DirAtras::mover(Movable* jugador, Coordinates direction){
+Coordinates DirAtras::mover(Character* jugador, Coordinates direction){
     Coordinates posActual = jugador->get_position();
     posActual.increment_on_direction(direction,-step_size);
     return posActual;
@@ -30,7 +30,7 @@ DirAtras::~DirAtras(){
 DirIzquierda::DirIzquierda(){
 }
 
-Coordinates DirIzquierda::mover(Movable* jugador, Coordinates direction){
+Coordinates DirIzquierda::mover(Character* jugador, Coordinates direction){
     Coordinates posActual = jugador->get_position();
     Coordinates new_direction = direction.get_perpendicular_direction();
     if (direction.y_positive()){
@@ -47,7 +47,7 @@ DirIzquierda::~DirIzquierda(){
 DirDerecha::DirDerecha(){
 }
 
-Coordinates DirDerecha::mover(Movable* jugador, Coordinates direction){
+Coordinates DirDerecha::mover(Character* jugador, Coordinates direction){
     Coordinates posActual = jugador->get_position();
     Coordinates new_direction = direction.get_perpendicular_direction();
     if (direction.y_positive()){
@@ -66,7 +66,7 @@ DirDerecha::~DirDerecha(){
 DirRotDerecha::DirRotDerecha(){
 }
 
-Coordinates DirRotDerecha::mover(Movable* jugador, Coordinates direction){
+Coordinates DirRotDerecha::mover(Character* jugador, Coordinates direction){
     Coordinates dirActual = jugador->get_direction();
     dirActual.rotate(-inc);
     jugador->set_direction(dirActual);
@@ -81,7 +81,7 @@ DirRotDerecha::~DirRotDerecha(){
 DirRotIzquierda::DirRotIzquierda(){
 }
 
-Coordinates DirRotIzquierda::mover(Movable* jugador, Coordinates direction){
+Coordinates DirRotIzquierda::mover(Character* jugador, Coordinates direction){
     Coordinates dirActual = jugador->get_direction();
     dirActual.rotate(inc);
     jugador->set_direction(dirActual);

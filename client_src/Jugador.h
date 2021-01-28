@@ -14,13 +14,13 @@ class Cl_Mapa;
 class Direccion;
 #include "Cl_Direccion.h"
 
-class Movable;
-#include <Movable.h>
+class Character;
+#include <Character.h>
 
 class Gun_type;
 #include "Gun_type.h"
 
-class Jugador final : public Movable{
+class Jugador final : public Character{
 private:
 	int shot_frame;
 	Gun_type* gun_type;

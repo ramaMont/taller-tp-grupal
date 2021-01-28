@@ -1,5 +1,5 @@
 #include "Cl_Mapa.h"
-#include "Movable.h"
+#include "Character.h"
 #include "Jugador.h"
 #include "Enemy.h"
 #include <iostream>
@@ -23,7 +23,7 @@ Cl_Mapa::Cl_Mapa(int alto, int ancho):alto(alto), ancho(ancho),mapaJuego(ancho,
     }
 }
 
-void Cl_Mapa::agregarJugador(Movable* jugador){
+void Cl_Mapa::agregarJugador(Character* jugador){
     player = jugador;
 	//mapaJuego[floor(jugador->getPosicion().x)]
     //    [floor(jugador->getPosicion().y)]=jugador;
@@ -38,7 +38,7 @@ void Cl_Mapa::agregarPosicionable(Posicionable* posicionable,
     }
 }
 
-void Cl_Mapa::relocate(Movable* jugador, Coordinates posicion){
+void Cl_Mapa::relocate(Character* jugador, Coordinates posicion){
         if(mapaJuego[floor(posicion.x)][floor(posicion.y)]==nullptr){
             mapaJuego[floor(posicion.x)][floor(posicion.y)]=jugador;
         }else{
@@ -62,7 +62,7 @@ Posicionable* Cl_Mapa::obtenerPosicionableEn(Coordinates posicion){
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)];
 }
 
-void Cl_Mapa::moveme(Movable* jugador, const Coordinates& posicion){
+void Cl_Mapa::moveme(Character* jugador, const Coordinates& posicion){
 	
     if (posicion.x > alto || posicion.y > ancho)
         throw -1;

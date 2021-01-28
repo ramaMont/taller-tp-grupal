@@ -24,7 +24,7 @@
 
 #include <Cl_Mapa.h>
 #include <coordinates.h>
-#include <Movable.h>
+#include <Character.h>
 #include <Jugador.h>
 #include <Cl_Direccion.h>
 #include <Wall.h>
@@ -41,7 +41,7 @@ private:
 	bool added_player;
     Jugador player;	
 	std::queue<Protocol> operations;
-    std::map<int,Movable*> movables;
+    std::map<int,Character*> characters;
     std::map<Protocol::direction, Direccion* > directions;
     int game_id;
     Screen screen;
@@ -91,13 +91,13 @@ public:
     Door* getDoor();
     Window& getWindow();
     Screen& getScreen();
-    Movable& getEnemy(int user_id);
+    Character& getEnemy(int user_id);
     void updateFrameAnimations();
 
 
     Cl_Mapa& getMap();
     int getId();
-    std::map<int,Movable*> getMovables();
+    std::map<int,Character*> getCharacters();
 
     GameModelClient(const GameModelClient&) = delete;
     GameModelClient(GameModelClient&& other) = delete;

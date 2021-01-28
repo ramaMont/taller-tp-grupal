@@ -8,7 +8,7 @@ class Raycasting;
 #include "ray_casting.h"
 
 #include <Jugador.h>
-#include <Movable.h>
+#include <Character.h>
 
 #include <Posicionable.h>
 
@@ -18,7 +18,7 @@ class Raycasting;
 class Sprite_holder : public Posicionable, public Sprite_drawer{
 protected:
 	std::vector<int> sprites_textures;
-    Movable* movable;
+    Character* character;
     bool colidable;
 
 public:
@@ -32,7 +32,7 @@ public:
 
 	void spotted();
 
-    void add(Movable* movable) override;
+    void add(Character* character) override;
 
     void remove() override;
 

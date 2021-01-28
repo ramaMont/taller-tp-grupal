@@ -113,7 +113,7 @@ void UserClient::gameLoop(){
 }
 
 void UserClient::showPlayersInfo(Jugador& player){
-    auto players = _game_model.getMovables();
+    auto players = _game_model.getCharacters();
     for(auto& it : players){
         auto player = it.second;
         std::cout << "Jugador:   " << player->getId() << std::endl;

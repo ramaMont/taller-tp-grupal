@@ -1,11 +1,11 @@
-#include "Movable.h"
+#include "Character.h"
 #include <stdio.h>
 
-Movable::Movable(Coordinates position,Coordinates direction ,Cl_Mapa& mapa, int id):
+Character::Character(Coordinates position,Coordinates direction ,Cl_Mapa& mapa, int id):
         Posicionable(position),direction(direction), mapa(mapa), id(id){
 }
 
-void Movable::mover_en_una_direccion(Direccion* direccion){
+void Character::mover_en_una_direccion(Direccion* direccion){
     Coordinates nuevaPos = direccion->mover(this,direction);
 
     Coordinates movimiento_unidireccional;
@@ -29,7 +29,7 @@ void Movable::mover_en_una_direccion(Direccion* direccion){
 
 }
 
-void Movable::mover(Direccion* direccion){
+void Character::mover(Direccion* direccion){
     Coordinates nuevaPos = direccion->mover(this,direction);
     try{
         mapa.moveme(this, nuevaPos);
@@ -39,33 +39,33 @@ void Movable::mover(Direccion* direccion){
     }
 }
 
-Coordinates Movable::get_direction() const{
+Coordinates Character::get_direction() const{
     return direction;
 }
 
-int Movable::getId(){
+int Character::getId(){
     return id;
 }
 
-void Movable::set_direction(Coordinates direction){
+void Character::set_direction(Coordinates direction){
     this->direction = direction;
 }
 
-void Movable::setInitialPosition(Coordinates initial_position){
+void Character::setInitialPosition(Coordinates initial_position){
     this->initial_position = initial_position;
 }
 
-void Movable::die(){
+void Character::die(){
 	//TODO: Animaciones de muerte =O.
 	mapa.sacarPosicionable(this->posicion);
 }
 
-void Movable::resurrect(){
+void Character::resurrect(){
 	//TODO: Resetear vida y demas atributos
     posicion = initial_position;
     direction = initial_direction;
 	mapa.agregarPosicionable(this, this->initial_position);
 }
 
-Movable::~Movable(){
+Character::~Character(){
 }
