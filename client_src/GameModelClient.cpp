@@ -423,29 +423,20 @@ void GameModelClient::push(Protocol protocol){
 }
 
 void GameModelClient::openDoor(const Protocol& protocol){
-    // TODO: con la posicion decirle a la puerta que se abra:
-    // std::tuple<int, int> position = protocol.getPosition();
-    // std::get<0>(position) += 1; // Accedo a la posicion X
-    // std::get<1>(position) += 1; // Accedo a la posicion Y
-    // pero por ahora:
+    Coordinates door_pos(protocol.getPosition());
+    Door* door = static_cast<Door*>(map.obtenerPosicionableEn(door_pos));
     door->set_state("open");
 }
 
 void GameModelClient::openingDoor(const Protocol& protocol){
-    // TODO: con la posicion decirle a la puerta que se abra:
-    // std::tuple<int, int> position = protocol.getPosition();
-    // std::get<0>(position) += 1; // Accedo a la posicion X
-    // std::get<1>(position) += 1; // Accedo a la posicion Y
-    // pero por ahora:
+    Coordinates door_pos(protocol.getPosition());
+    Door* door = static_cast<Door*>(map.obtenerPosicionableEn(door_pos));
     door->set_state("opening");
 }
 
 void GameModelClient::closeDoor(const Protocol& protocol){
-    // TODO: con la posicion decirle a la puerta que se abra:
-    // std::tuple<int, int> position = protocol.getPosition();
-    // std::get<0>(position) += 1; // Accedo a la posicion X
-    // std::get<1>(position) += 1; // Accedo a la posicion Y
-    // pero por ahora:
+    Coordinates door_pos(protocol.getPosition());
+    Door* door = static_cast<Door*>(map.obtenerPosicionableEn(door_pos));
     door->set_state("closed");
 }
 

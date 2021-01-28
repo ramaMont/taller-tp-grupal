@@ -39,9 +39,10 @@ void OpenEvent::process(ThGameModelServer& game_model){
         if (puerta->abrir(player)){
             Event* doorE = new DoorOpeningEvent(puerta);
             th_game_events.add(doorE);
-            // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
-            Protocol protocol;
-            protocol.setAction(Protocol::action::OPENING);
+
+            Coordinates door_pos = puerta->get_position();
+            Protocol protocol(Protocol::action::OPENING, player->getId(),
+                Protocol::direction::STAY, 0, door_pos.x, door_pos.y);
             game_model.echoProtocol(protocol);
         }
     }
@@ -94,8 +95,11 @@ void DoorOpeningEvent::process(BlockingQueue<Protocol>& game_model_queue){
         diff += 1000;
     if (diff > 600){
         // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
-        Protocol protocol;
-        protocol.setAction(Protocol::action::OPENING);
+
+        Coordinates door_pos = door->get_position();
+        Protocol protocol(Protocol::action::OPENING, 0,
+            Protocol::direction::STAY, 0, door_pos.x, door_pos.y);    
+
         game_model_queue.push(protocol);
         _finished = true;
     }
@@ -121,8 +125,9 @@ void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){
     double seconds = difftime(time_now, _time);
     if (seconds > configs[CONFIG::segundos_cerrar_puerta]){
         // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
-        Protocol protocol;
-        protocol.setAction(Protocol::action::CLOSE);
+        Coordinates door_pos = door->get_position();
+        Protocol protocol(Protocol::action::CLOSE, 0,
+            Protocol::direction::STAY, 0, door_pos.x, door_pos.y);   
         game_model_queue.push(protocol);
         _finished = true;
     }

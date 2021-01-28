@@ -3,8 +3,9 @@
 
 #include <vector>
 #include <math.h>
-
+#include <string>
 #include <Protocol.h>
+#include <tuple>
 
 //Coordenadas, representan tanto posiciones como direcciones de un vector
 /*Nota: como todos sus atributos son 
@@ -23,6 +24,8 @@ public:
     explicit Coordinates(std::string direction);
 
     explicit Coordinates(double a_x, double a_y);
+    
+    explicit Coordinates(std::tuple<int, int> position);
 
     void increment_on_direction(Coordinates movement_direction, double inc);
 

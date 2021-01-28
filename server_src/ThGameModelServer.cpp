@@ -122,14 +122,16 @@ void ThGameModelServer::processOpen(Protocol& protocol){
 void ThGameModelServer::processOpening(Protocol& protocol){
     Event* doorE = new DoorEvent(map.getDoor());
     th_game_events.add(doorE);
-    // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
-    Protocol p;
-    p.setAction(Protocol::action::OPEN);
-    echoProtocol(p);
+    // Cambio la accion del protocolo ya que el mismo contiene toda
+    // la informacion necesaria para que el cliente abra la puerta.
+    protocol.setAction(Protocol::action::OPEN);
+    echoProtocol(protocol);
 }
 
 void ThGameModelServer::processClose(Protocol& protocol){
-    map.getDoor()->close();
+    Coordinates pos(protocol.getPosition());
+    Puerta* door = static_cast<Puerta*>(map.getNearestDoor(pos));
+    door->close();
 }
 
 void ThGameModelServer::run(){
