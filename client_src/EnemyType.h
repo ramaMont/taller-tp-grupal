@@ -10,8 +10,17 @@ protected:
 	int frames_shooting;
 public:
 	EnemyType(Texture *texture_drawer);
+
+    //Pre:-
+    // aumento en 1 el frame de disparo	
 	void shoot();
+
+    //Pre:-
+    // Actualiza el frame de disparo, si es 0 no estoy disparando, si es 10 terminé de disparar
 	void updateShooting();
+
+    //Pre:-
+    // Llamo a su respectivo metodo encargadao de dibujar	
     virtual void callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame) = 0;
     virtual ~EnemyType(){};
 };

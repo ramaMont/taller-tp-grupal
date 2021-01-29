@@ -17,7 +17,7 @@ class Enemy;
 #include <ClMap.h>
 
 
-// Administra la visualizacion de todos los objetos visibles: sprites, enemigos, paredes y armas
+// Administra la visualizacion de todos los objetos visibles: sprites, enemigos, paredes, armas y raycasting
 class Screen{
 
 	private:

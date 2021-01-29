@@ -9,8 +9,12 @@ class Wall : public Posicionable{
 public:
     explicit Wall(Coordinates posicion);
 
+    //Pre:-
+    // Le indica al rayo que colisionó con una pared
 	void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
+    //Pre:-
+    // Llama a su respectivo dibujador de texturas
 	virtual void draw(int ray, float distance, int number_line_texture,bool wall_side_y) = 0;
 
 };

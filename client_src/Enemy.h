@@ -27,22 +27,33 @@ private:
 public:
 	explicit Enemy(Coordinates posicion, Coordinates direction ,ClMap& map, Player &player ,int id);
 
-	// En caso de colisionar con un enemigo durante el raycasting, le mando que aún no encontró una pared
+    //Pre:-
+    // Le indico al rayo que colisionó con un enemigo y setea al 
+    // enemigo como 'avistado' para que luego sea dibujado
     void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
+    //Pre:-
     // Cambio el tipo actual del enemigo
     void newEnemyType(int new_enemy_type);
 
-    // Actualizo el frame del enemigo en caso de que se esté modviendo
+    // Pre:-
+    // Seteo que el jugador se está moviendo
 	void moving();
 
+    // Pre:-
+    // Le indico al arma actual que fue disparada
 	void shoot();
 
+    //Pre:-
+    // Actualiza el actual frame del enemigo
 	void updateFrame();
 
-	// Dibujo al enemigo
+    //Pre:-
+    // Llamo a su dibujador de texturas
 	void draw(const std::vector<float> &distances, int n_rays);
 
+    //Pre:-
+    // Libero la memoria del tipo de enemigo
 	~Enemy();
 
 };

@@ -15,7 +15,13 @@ protected:
 	time_t fire_rate;
 public:
 	GunType(Texture *texture_drawer,time_t fire_rate);
+
+    //Pre:-
+    // Llamo a su respectivo metodo encargadao de dibujar	
     virtual void callDrawer(int frame) = 0;
+
+    //Pre:-
+    // Devuelve la frecuencia de disparo del arma
     time_t getFireRate();
     virtual ~GunType(){};
 };

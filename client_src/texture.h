@@ -53,6 +53,7 @@ private:
     //configura los parametros y llama al generic_show para graficar toda el arma
     void showWeapon(int frame_gun, int current_gun, int left_start_texture, int right_end_texture);
 
+    // Muestra el texto de la barra de estado
     void showText(std::string text, int letter_width, int letter_height, int x_pos);
 
     //configura los parametros y llama al generic_show para graficar una unica linea de pixeles de la pared

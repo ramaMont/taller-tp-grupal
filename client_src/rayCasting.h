@@ -28,8 +28,6 @@ private:
 	ClMap &map;
 	int n_rays;
 
-
-
 public:
     Raycasting(Player &a_player, ClMap &map, int n_rays);
 

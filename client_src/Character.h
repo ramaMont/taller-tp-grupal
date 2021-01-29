@@ -12,6 +12,7 @@ class Direction;
 class Ray;
 #include "ray.h"
 
+//Jugadores o enemigos
 class Character : public Posicionable{
 protected:
 	Coordinates direction;
@@ -21,16 +22,34 @@ protected:
     Coordinates initial_direction;
 public:
     explicit Character(Coordinates posicion,Coordinates direction ,ClMap& map, int id);
+
+    //Pre: el personaje intentó moverse directamente y chocó contra un objeto
+    // separa la direccion de movimiento en sus ejes X e Y e intenta moverse individualmente por cada uno
     void moveInOneDirection(Direction* direccion);
+
+    //Pre:-
+    // mueve al personaje
     void move(Direction* direccion);
+
+    //Pre:-
+    // modifica la direccion del personaje
     void setDirection(Coordinates direction);
+
+    //Pre:- 
+    // setea la posicion inicial  del personaje, donde va a revivir.
     void setInitialPosition(Coordinates initial_position);
+
+    //Pre:-
+    // Se remueve a sí mismo del mapa
+    void die();
+
+    //Pre:-
+    // Se agrega a si mismo al mapa y vuelve a setear su posicion y direccion a las iniciales
+    virtual void resurrect();
+
     Coordinates getDirection() const;
 
     int getId();
-
-    void die();
-    virtual void resurrect();
 
     ~Character();  
 };
