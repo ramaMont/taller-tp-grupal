@@ -13,7 +13,7 @@ class Sprite_drawer;
 #include <Sprite_drawer.h>
 class Enemy;
 #include <Enemy.h>
-#include <Jugador.h>
+#include <Player.h>
 #include <ClMap.h>
 
 
@@ -25,7 +25,7 @@ class Screen{
 		int n_rays;
 		std::vector<Enemy*> &enemies;
 		std::vector<Sprite_drawer*> &sprites;
-		Jugador &player;
+		Player &player;
 		ClMap &map;
 		Texture &texture;
 		Window &window;
@@ -42,7 +42,7 @@ class Screen{
 		// Realiza los calculos necesarios para la correcta visualizacion de los sprites: distancia al jugador, etc
 		void initialice_spotted_sprites(std::vector<Sprite_drawer*> &spotted_sprites,Camera &camera);
 	public:
-		Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, ClMap &map,Texture &texture, Window &window);
+		Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window);
 
 		// Llama a los metodos correspondientes para la correcta visualizacion
 		void show();

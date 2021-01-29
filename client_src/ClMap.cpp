@@ -1,6 +1,6 @@
 #include "ClMap.h"
 #include "Character.h"
-#include "Jugador.h"
+#include "Player.h"
 #include "Enemy.h"
 #include <iostream>
 #include <utility>

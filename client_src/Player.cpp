@@ -1,22 +1,22 @@
-#include "Jugador.h"
+#include "Player.h"
 
 #include "texture.h"
 
-Jugador::Jugador(Coordinates posicion,Coordinates direction ,ClMap& map, int id):
+Player::Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id):
       Character(posicion,direction,map,id), 
       shot_frame(0), gun_type(nullptr),
       shooting(false),score(10), lives(5), health(100), ammo(20){
-//   	map.agregarJugador(this);
+//   	map.agregarPlayer(this);
 }
 
-Jugador::Jugador(ClMap& map):
+Player::Player(ClMap& map):
       Character(Coordinates(4,4),Coordinates(1,0),map,0), 
       shot_frame(0), gun_type(nullptr),shooting(false),
       score(1000), lives(5), health(98), ammo(20){
-//    map.agregarJugador(this);
+//    map.agregarPlayer(this);
 }
 
-void Jugador::complete(Coordinates initial_position,Coordinates initial_direction,int player_id){
+void Player::complete(Coordinates initial_position,Coordinates initial_direction,int player_id){
    this->initial_position = initial_position;
    this->initial_direction = initial_direction;
    this->posicion = initial_position;
@@ -24,7 +24,7 @@ void Jugador::complete(Coordinates initial_position,Coordinates initial_directio
    this->id = player_id;
 }
 
-void Jugador::resurrect(){
+void Player::resurrect(){
   //TODO: Resetear vida y demas atributos
     posicion = initial_position;
     direction = initial_direction;
@@ -33,7 +33,7 @@ void Jugador::resurrect(){
     map.addPositionable(this, this->initial_position);
 }
 
-void Jugador::new_gun_type(int new_gun_type){
+void Player::new_gun_type(int new_gun_type){
    	if(gun_type!=nullptr)
         delete gun_type;
    	if(new_gun_type==0)
@@ -47,19 +47,19 @@ void Jugador::new_gun_type(int new_gun_type){
     fire_rate = gun_type->get_fire_rate();
 }
 
-void Jugador::shoot(){
+void Player::shoot(){
   shooting = true;
   struct timeval time_now{};
   gettimeofday(&time_now, nullptr);
   time_shot_start = (time_now.tv_usec / 1000);    
 }
 
-bool Jugador::can_shoot(){
+bool Player::can_shoot(){
   return !shooting; //Solo puede disparar si no estaba disparando antes
 
 }
 
-void Jugador::update_shots(){
+void Player::update_shots(){
   if(shooting){
     struct timeval time_now{};
     gettimeofday(&time_now, nullptr);
@@ -82,16 +82,16 @@ void Jugador::update_shots(){
   }
 }
 
-void Jugador::draw(){
+void Player::draw(){
    texture_drawer->show_life_bar(score, lives, health, ammo);
 	gun_type->call_drawer(shot_frame);
 }
 
-void Jugador::updateHealth(int amount){
+void Player::updateHealth(int amount){
 	health += amount;
 }
 
-Jugador::~Jugador(){
+Player::~Player(){
 	if(gun_type!=nullptr)
 		delete gun_type;
 }

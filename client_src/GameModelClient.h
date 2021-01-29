@@ -9,7 +9,7 @@
 
 #include "ClMap.h"
 #include "Protocol.h"
-#include "Jugador.h"
+#include "Player.h"
 #include "BlockingQueue.h"
 
 #include <atomic>
@@ -25,7 +25,7 @@
 #include <ClMap.h>
 #include <coordinates.h>
 #include <Character.h>
-#include <Jugador.h>
+#include <Player.h>
 #include <Cl_Direccion.h>
 #include <Wall.h>
 #include <Door.h>
@@ -39,7 +39,7 @@ private:
     Texture texture;
     ClMap map; 	
 	bool added_player;
-    Jugador player;	
+    Player player;	
 	std::queue<Protocol> operations;
     std::map<int,Character*> characters;
     std::map<Protocol::direction, Direccion* > directions;
@@ -86,7 +86,7 @@ public:
     void hideWindow();
 
     void addPlayer(Protocol& protocol);
-    Jugador& getPlayer();
+    Player& getPlayer();
     Window& getWindow();
     Screen& getScreen();
     Character& getEnemy(int user_id);

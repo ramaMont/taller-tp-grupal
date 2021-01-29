@@ -254,7 +254,7 @@ void GameModelClient::processMove(Protocol& protocol){
     }
 }
 
-void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
+void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
     auto protocol_position = protocol.getPosition();
     Coordinates player_position((double)std::get<0>(protocol_position), (double)std::get<1>(protocol_position));
     Protocol::direction player_direction = protocol.getDirection();
@@ -266,7 +266,7 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
             added_player = true;
             Coordinates initial_position = player_position;
             player.complete(initial_position, initial_direction,player_id);
-            characters.insert(std::pair<int, Jugador*>(player_id, &player));
+            characters.insert(std::pair<int, Player*>(player_id, &player));
             map.addPositionable(&player,initial_position);  
             player.setInitialPosition(initial_position);
         } catch(...){
@@ -299,7 +299,7 @@ void GameModelClient::player_shoot(){
   player.shoot();
 }
 
-Jugador& GameModelClient::getPlayer(){
+Player& GameModelClient::getPlayer(){
     return player;
 }
 

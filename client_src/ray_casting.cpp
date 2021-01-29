@@ -7,7 +7,7 @@
 #include "ray_casting.h"
 #include "ray.h"
 
-Raycasting::Raycasting(Jugador &a_player,ClMap &a_map, int n_rays)
+Raycasting::Raycasting(Player &a_player,ClMap &a_map, int n_rays)
     : player(a_player), map(a_map),n_rays(n_rays){}
 
 

@@ -2,7 +2,7 @@
 
 #include "Enemy.h"
 
-Sprite_holder::Sprite_holder(Coordinates posicion, int texture, Jugador &player): 
+Sprite_holder::Sprite_holder(Coordinates posicion, int texture, Player &player): 
 Posicionable(posicion),Sprite_drawer(this,player) ,character(nullptr), colidable(false){
   	sprites_textures.push_back(texture);
 }

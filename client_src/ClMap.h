@@ -6,8 +6,8 @@
 class Posicionable;
 //#include "Posicionable.h"
 class Character;
-class Jugador;
-//#include "Jugador.h"
+class Player;
+//#include "Player.h"
 class Enemy;
 #include "coordinates.h"
 
