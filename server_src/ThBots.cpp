@@ -89,8 +89,8 @@ void ThBots::makeEvent(int player_id, Bot::Event event){
             break;
         }
         case Bot::Event::AbrirPuerta:{
-	    Protocol p(player_id);
-	    p.setAction(Protocol::action::OPEN);
+	        Protocol p(player_id);
+	        p.setAction(Protocol::action::OPEN);
             _game_model_queue.push(p);
             break;
         }

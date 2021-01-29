@@ -50,7 +50,6 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::CLOSE:
             processClose(protocol);
-            echoProtocol(protocol);
             break;
         default:
             break;
@@ -122,7 +121,7 @@ void ThGameModelServer::processOpen(Protocol& protocol){
 
 void ThGameModelServer::processOpening(Protocol& protocol){
     Coordinates pos(protocol.getPosition());
-    Puerta* door = static_cast<Puerta*>(map.obtenerPosicionableEn(pos));
+    Puerta* door = map.getDoor(pos);
     Event* doorE = new DoorEvent(door);
     th_game_events.add(doorE);
     // Cambio la accion del protocolo ya que el mismo contiene toda
@@ -133,8 +132,15 @@ void ThGameModelServer::processOpening(Protocol& protocol){
 
 void ThGameModelServer::processClose(Protocol& protocol){
     Coordinates pos(protocol.getPosition());
-    Puerta* door = static_cast<Puerta*>(map.obtenerPosicionableEn(pos));
-    door->close();
+    if (!map.playerIn(pos)){
+        Puerta* door = static_cast<Puerta*>(map.obtenerPosicionableEn(pos));
+        door->close();
+        echoProtocol(protocol);
+    } else {
+        Puerta* door = map.getDoor(pos);
+        Event* doorE = new DoorEvent(door);
+        th_game_events.add(doorE);
+    }
 }
 
 void ThGameModelServer::run(){

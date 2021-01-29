@@ -5,7 +5,8 @@ local bot = {
     grafo = {},
     enemigos = {},
     enemigo_actual = false,
-    abriPuerta = false
+    abriPuerta = 0,
+    aux = {}
 }
 
 -- Eventos
@@ -108,17 +109,18 @@ end
 
 
 -- Decide si tiene que abrir una puerta
-function bot.abrePuerta(pos_x, pos_y, dir_x, dir_y)
-    if bot.mapa[pos_x+dir_x][pos_y+dir_y] == PUERTA and not bot.abriPuerta then
-        bot.abriPuerta = true
-	    return true
-	end
-	return false
+function bot.abrePuerta(next_pos_x, next_pos_y)
+    if bot.mapa[next_pos_x][next_pos_y] == PUERTA and bot.abriPuerta == 0 then
+        bot.abriPuerta = 5
+        return true
+    end
+    bot.abriPuerta = math.max(bot.abriPuerta - 1, 0)
+    return false
 end
 
 
-function bot.tengoEnemigoAdelante(pos_x, pos_y, dir_x, dir_y)
-    return bot.mapa[pos_x+dir_x][pos_y+dir_y] == ENEMIGO 
+function bot.tengoEnemigoAdelante(next_pos_x, next_pos_y)
+    return bot.mapa[next_pos_x][next_pos_y] == ENEMIGO 
 end
 
 
@@ -193,6 +195,10 @@ function bot.agregarEnemigosAlMapa(...)
     for i = 1, #arg/2 do
         bot.enemigos[i] = {x = math.floor(arg[i+i-1]) + 1,
 		           y = math.floor(arg[i*2]) + 1}
+        if bot.mapa[bot.enemigos[i].x][bot.enemigos[i].y] == PUERTA then    
+            -- Para guardar el valor anterior
+            table.insert(bot.aux, 1, {bot.enemigos[i].x, bot.enemigos[i].y, PUERTA})
+        end
         bot.mapa[bot.enemigos[i].x][bot.enemigos[i].y] = ENEMIGO
     end 
 end
@@ -202,7 +208,12 @@ function bot.borrarEnemigosAnterioresDelMapa()
     for i = 1, #bot.enemigos do
         bot.mapa[bot.enemigos[i].x][bot.enemigos[i].y] = VACIO
     end
+    for i = 1, #bot.aux do
+        elemento = bot.aux[i]
+        bot.mapa[elemento[1]][elemento[2]] = elemento[3]
+    end
     bot.enemigos = {}
+    bot.aux = {}
 end
 
 
@@ -225,23 +236,21 @@ function bot.generarEvento(n_arma, pos_x, pos_y, dir_x, dir_y, ...)
 	    return CAMBIAR_ARMA_CUCHILLO
 	end
 	
+    next_pos_x = math.floor(pos_x + dir_x) + 1
+    next_pos_y = math.floor(pos_y + dir_y) + 1
     pos_x = math.floor(pos_x) + 1
     pos_y = math.floor(pos_y) + 1
     dir_x = math.ceil(dir_x - 0.5)
     dir_y = math.ceil(dir_y - 0.5)
     
-    if bot.mapa[pos_x][pos_y] == PUERTA then
-        bot.abriPuerta = false
-        return ADELANTE
-    end
-    if bot.abrePuerta(pos_x, pos_y, dir_x, dir_y) then
+    if bot.abrePuerta(next_pos_x, next_pos_y) then
         return ABRIR_PUERTA
     end
    
     bot.borrarEnemigosAnterioresDelMapa();
     bot.agregarEnemigosAlMapa(...)
 
-    if bot.tengoEnemigoAdelante(pos_x, pos_y, dir_x, dir_y) then
+    if bot.tengoEnemigoAdelante(next_pos_x, next_pos_y) then
         return DISPARAR
     end
     

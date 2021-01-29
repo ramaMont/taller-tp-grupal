@@ -231,6 +231,15 @@ Objeto* Mapa::getNearestDoor(Coordinates& position){
     return nearest;
 }
 
+Puerta* Mapa::getDoor(Coordinates& position){
+    for (Objeto* door: doors){
+        if (door->getPosicion() == position){
+            return static_cast<Puerta*>(door);
+        }
+    }
+    return nullptr;
+} 
+
 void usarItems(std::vector<Item*>& items, Player *player){
     for (auto it = items.begin(); it < items.end(); it++){
         (*it)->usar(player);
@@ -285,6 +294,12 @@ bool Mapa::hayObstaculoEn(float x, float y) const{
         typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Player))
 		return false;
 	return true;
+}
+
+bool Mapa::playerIn(const Coordinates& posicion) const{
+	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
+	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return true;
+	return (typeid(*mapaJuego[floor(posicion.x)][floor(posicion.y)].back()) == typeid(Player));
 }
 
 bool Mapa::hayPuertaEn(float x, float y) const{
