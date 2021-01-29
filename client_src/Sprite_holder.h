@@ -32,6 +32,10 @@ public:
 
 	void spotted();
 
+    bool has_character();
+
+    Character* get_character();
+
     void add(Character* character) override;
 
     void remove() override;

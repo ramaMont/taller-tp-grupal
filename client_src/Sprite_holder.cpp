@@ -42,6 +42,14 @@ void Sprite_holder::remove(){
 }
 
 
+bool Sprite_holder::has_character(){
+	return (character!=nullptr);
+}
+
+Character* Sprite_holder::get_character(){
+	return character;
+}
+
 void Sprite_holder::draw(const std::vector<float> &distances, int n_rays){
 	int first_ray = center_ray - cant_rays/2;
 	bool first_ray_already_sigted = false;

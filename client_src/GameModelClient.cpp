@@ -183,7 +183,7 @@ void GameModelClient::initMap(std::string map_filename){
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position); 
             }else if (elemento == "trophie"){
-              std::cout<<"elemento:"<<elemento<<std::endl;
+               printf("El trofeo está en: (%f,%f)\n",position.x,position.y );
                Sprite_holder *posicionable = new Sprite_holder(position,3,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
@@ -447,7 +447,16 @@ void GameModelClient::processShooted(Protocol protocol){
 
 void GameModelClient::processPickup(Protocol& protocol){
     Coordinates position(protocol.getPosition());
-    // Eliminar sprite del mapa
+    /*printf("El sprite a eliminar está en: (%f,%f)\n",position.x,position.y );
+    Sprite_holder* sprite = static_cast<Sprite_holder*>(map.getPositionableIn(position));
+    sprite->has_character();
+    if(sprite->has_character()){
+      Character* character = sprite->get_character();
+      map.removeSpriteWithCharacter(position,character);
+    }else{
+      map.removePositionable(position);
+    }*/
+    //delete sprite;
 }
 
 

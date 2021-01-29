@@ -25,6 +25,7 @@ public:
     void addPositionable(Posicionable* positionable, Coordinates position);
     void relocate(Character* jugador, Coordinates posicion);
     void removePositionable(Coordinates position);
+    void removeSpriteWithCharacter(Coordinates position, Character* character);
     Posicionable* getPositionableIn(Coordinates position);
     void moveme(Character* character, const Coordinates& position);
     void resize(int ancho, int alto);
