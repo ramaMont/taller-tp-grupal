@@ -258,19 +258,17 @@ void ThGameModelServer::sendTopFiveToPlayers(
         Protocol protocol(kils.second, kils.first, Protocol::action::END_GAME_KILLS);
         echoProtocol(protocol);
     }
-    Protocol protocol_end;
-    protocol_end.setAction(Protocol::action::END);
-    echoProtocol(protocol_end);
+
     for (auto& points : ordered_players_points){
         Protocol protocol(points.second, points.first, Protocol::action::END_GAME_POINTS);
         echoProtocol(protocol);
     }
-    echoProtocol(protocol_end);
+
     for (auto& bullets : ordered_players_bullets){
         Protocol protocol(bullets.second, bullets.first, Protocol::action::END_GAME_BULLETS);
         echoProtocol(protocol);
     }
-    echoProtocol(protocol_end);
+
 }
 
 ThGameModelServer::~ThGameModelServer(){

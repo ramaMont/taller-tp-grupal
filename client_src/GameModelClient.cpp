@@ -387,6 +387,22 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::CLOSE:
             closeDoor(protocol);
             break;
+        case Protocol::action::END_GAME_KILLS:
+            
+            _ordered_players_kills.push_back(
+                std::pair<int, int>(protocol.getDamage(), 
+                protocol.getId()));
+            break;
+        case Protocol::action::END_GAME_POINTS:
+            _ordered_players_points.push_back(
+                std::pair<int, int>(protocol.getDamage(), 
+                protocol.getId()));
+            break;
+        case Protocol::action::END_GAME_BULLETS:
+            _ordered_players_bullets.push_back(
+                std::pair<int, int>(protocol.getDamage(), 
+                protocol.getId()));
+            break;
         default:
             break;
     }

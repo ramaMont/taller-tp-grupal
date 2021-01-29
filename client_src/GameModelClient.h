@@ -15,6 +15,7 @@
 #include <atomic>
 #include <map>
 #include <vector>
+#include <utility>
 
 #include <Posicionable.h>
 
@@ -50,6 +51,10 @@ private:
     std::vector<Door*> doors;
     std::vector<Sprite_drawer*> sprites;
     std::vector<Enemy*> enemies;
+
+    std::vector<std::pair<int,int>> _ordered_players_kills;
+    std::vector<std::pair<int,int>> _ordered_players_points;
+    std::vector<std::pair<int,int>> _ordered_players_bullets;
 
 	bool is_running;
 
