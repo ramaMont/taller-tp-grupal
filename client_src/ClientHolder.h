@@ -22,6 +22,8 @@ private:
     bool ready_to_play;
     int _game_id;
     int _map_id_checksum;
+    UserClient* _user_client;
+    
     void setId(Protocol& protocol);
     void processReception(Protocol& protocol);
     void createGameModel(std::string map_filename, int id_user_protocol, int game_id);
@@ -38,6 +40,7 @@ public:
     // Se cierra todo lo correspondiente a qt y se setea en true el booleano ready to play
     void startGame();
     void launchGame();
+    void connectionLost();
     ~ClientHolder();
 };
 

@@ -17,7 +17,7 @@ std::map<int, float> configs;
 ClientHolder::ClientHolder(): 
     user_id(-1), socket(nullptr), _game_model(nullptr), 
     _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false),
-    _game_id(-1), _map_id_checksum(-1){
+    _game_id(-1), _map_id_checksum(-1), _user_client(nullptr){
 }
 
 void ClientHolder::crearPartida(const std::string& map_filename,
@@ -75,8 +75,8 @@ void ClientHolder::run(){
     if (!ready_to_play) 
         return;
     // Comienzo el juego luego del setup inicial   
-    UserClient user_client(*_th_sender, *_game_model);
-    user_client.play();   
+    _user_client = new UserClient(*_th_sender, *_game_model);
+    _user_client->play();   
     std::cout << "Finalizada\n";
 }
 
@@ -106,8 +106,6 @@ void ClientHolder::processReception(Protocol& protocol){
             break;
         }
         case Protocol::action::CREATE_GAME:{
-            // TODO: agregar en el createGameModel la cantidad de Bots
-            // 
             createGameModel(_map_filename, user_id, _game_id);
             std::cout << "Partida creada\nId de Partida: " << 
                 _game_id << std::endl;
@@ -177,6 +175,11 @@ void ClientHolder::receiveConfiguration(){
     }
 }
 
+void ClientHolder::connectionLost(){
+    _user_client->stop();
+    std::cout << "Connection Lost\n";
+}
+
 ClientHolder::~ClientHolder(){
     if (socket != nullptr)
         delete socket;
@@ -191,5 +194,9 @@ ClientHolder::~ClientHolder(){
         _th_sender->stop();
         _th_sender->join();
         delete _th_sender;
+    }
+    if (_user_client != nullptr){
+        _user_client->stop();
+        delete _user_client;
     }
 }

@@ -8,7 +8,8 @@
 #include <sys/time.h>
 
 UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model):
-    th_sender(th_sender), _game_model(game_model){
+        th_sender(th_sender), _game_model(game_model){
+    done = SDL_FALSE;
 }
 
 // Hacer todo para empezar a jugar la partida.
@@ -65,7 +66,7 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
 }
 
 void UserClient::gameLoop(){
-    SDL_bool done = SDL_FALSE;
+//    SDL_bool done = SDL_FALSE;
     _game_model.showWindow();
     Screen screen(_game_model.getScreen());
     int id = th_sender.getId();
@@ -119,6 +120,10 @@ void UserClient::showPlayersInfo(Jugador& player){
         std::cout << "Direccion: X: " << player->get_direction().x << " Y: " << player->get_direction().y << std::endl;
         std::cout << "\n-------------------------------------------------------------------\n";
     }
+}
+
+void UserClient::stop(){
+    done = SDL_TRUE;
 }
 
 UserClient::~UserClient(){

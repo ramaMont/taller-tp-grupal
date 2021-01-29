@@ -17,6 +17,7 @@ void ClThReceiver::run(){
         }
     } catch(...){
         is_running = false;
+        _client_holder.connectionLost();
     }
 }
 
