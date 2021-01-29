@@ -6,6 +6,7 @@
 #include "ExceptionServer.h"
 
 #include <iostream>
+#include <algorithm>
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
         std::string map_filename, int game_id, int map_id_checksum, int bots_cty):
@@ -200,6 +201,70 @@ void ThGameModelServer::showPlayersInfo(){
         std::cout << "Direccion: X: " << player->get_direction().x << " Y: " << player->get_direction().y << std::endl;
         std::cout << "\n-------------------------------------------------------------------\n";
     }
+}
+
+void ThGameModelServer::processEnd(){
+    std::vector<std::pair<int,int>> ordered_players_kills;
+    std::vector<std::pair<int,int>> ordered_players_points;
+    std::vector<std::pair<int,int>> ordered_players_bullets;
+    for(auto& player: players){
+        int player_id = player.second->getId();
+        int player_kills = player.second->getEnemigosMatados();
+        int player_points = player.second->getPuntuacion();
+        int player_bullets = player.second->getBalasDisparadas();
+        ordered_players_kills.push_back(std::pair<int, int>(player_kills, 
+            player_id));
+        ordered_players_points.push_back(std::pair<int, int>(player_points, 
+            player_id));
+        ordered_players_bullets.push_back(std::pair<int, int>(player_bullets, 
+            player_id));
+    }
+    // Ordeno los vectores de menor a mayor
+    std::sort(ordered_players_kills.begin(), ordered_players_kills.end());
+    std::sort(ordered_players_points.begin(), ordered_players_points.end());
+    std::sort(ordered_players_bullets.begin(), ordered_players_bullets.end());
+    // Reordeno y me quedo con el top 5
+    convertToTopFive(ordered_players_kills);
+    convertToTopFive(ordered_players_points);
+    convertToTopFive(ordered_players_bullets);
+    sendTopFiveToPlayers(ordered_players_kills, ordered_players_points, 
+        ordered_players_bullets);
+}
+
+void ThGameModelServer::convertToTopFive(std::vector<std::pair<int,int>>& perks_vector){
+    int vector_size = 0;
+    std::vector<std::pair<int,int>> aux_vect;
+    for (auto it = perks_vector.end() - 1; it != perks_vector.begin() - 1; --it){
+        if (vector_size >= 5)
+            break;
+        aux_vect.push_back(*it);
+        ++vector_size;
+    }
+    perks_vector.swap(aux_vect);
+}
+
+void ThGameModelServer::sendTopFiveToPlayers(
+        const std::vector<std::pair<int,int>>& ordered_players_kills,
+        const std::vector<std::pair<int,int>>& ordered_players_points,
+        const std::vector<std::pair<int,int>>& ordered_players_bullets){
+    //explicit Protocol(int user_id, int danio, Protocol::action action);
+    for (auto& kils : ordered_players_kills){
+        Protocol protocol(kils.second, kils.first, Protocol::action::END_GAME_KILLS);
+        echoProtocol(protocol);
+    }
+    Protocol protocol_end;
+    protocol_end.setAction(Protocol::action::END);
+    echoProtocol(protocol_end);
+    for (auto& points : ordered_players_points){
+        Protocol protocol(points.second, points.first, Protocol::action::END_GAME_POINTS);
+        echoProtocol(protocol);
+    }
+    echoProtocol(protocol_end);
+    for (auto& bullets : ordered_players_bullets){
+        Protocol protocol(bullets.second, bullets.first, Protocol::action::END_GAME_BULLETS);
+        echoProtocol(protocol);
+    }
+    echoProtocol(protocol_end);
 }
 
 ThGameModelServer::~ThGameModelServer(){
