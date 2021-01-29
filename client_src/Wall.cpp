@@ -5,69 +5,69 @@ Wall::Wall(Coordinates posicion):
     Posicionable(posicion){}
 
 void Wall::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
-	ray->wall_colided(coordinates_map,first_triangle,this);
+	ray->wallColided(coordinates_map,first_triangle,this);
 }
 //--------------------------------------------------------------------------------------------------------
 
-Wall_greystone::Wall_greystone(Coordinates posicion): 
+WallGreystone::WallGreystone(Coordinates posicion): 
 Wall(posicion) {}
 
-void Wall_greystone::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
-	texture_drawer->show_wall_greystone(ray,distance,number_line_texture,wall_side_y);
+void WallGreystone::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
+	texture_drawer->showWallGreystone(ray,distance,number_line_texture,wall_side_y);
 }
 //--------------------------------------------------------------------------------------------------------
 
-Wall_bluestone::Wall_bluestone(Coordinates posicion): 
+WallBluestone::WallBluestone(Coordinates posicion): 
 Wall(posicion) {}
 
-void Wall_bluestone::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
-	texture_drawer->show_wall_bluestone(ray,distance,number_line_texture,wall_side_y);
+void WallBluestone::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
+	texture_drawer->showWallBluestone(ray,distance,number_line_texture,wall_side_y);
 }
 //--------------------------------------------------------------------------------------------------------
 
-Wall_purplestone::Wall_purplestone(Coordinates posicion): 
+WallPurplestone::WallPurplestone(Coordinates posicion): 
 Wall(posicion) {}
 
-void Wall_purplestone::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
-	texture_drawer->show_wall_purplestone(ray,distance,number_line_texture,wall_side_y);
+void WallPurplestone::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
+	texture_drawer->showWallPurplestone(ray,distance,number_line_texture,wall_side_y);
 }
 //--------------------------------------------------------------------------------------------------------
 
-Wall_colorstone::Wall_colorstone(Coordinates posicion): 
+WallColorstone::WallColorstone(Coordinates posicion): 
 Wall(posicion) {}
 
-void Wall_colorstone::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
-	texture_drawer->show_wall_colorstone(ray,distance,number_line_texture,wall_side_y);
+void WallColorstone::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
+	texture_drawer->showWallColorstone(ray,distance,number_line_texture,wall_side_y);
 }
 //--------------------------------------------------------------------------------------------------------
 
-Wall_eagle::Wall_eagle(Coordinates posicion): 
+WallEagle::WallEagle(Coordinates posicion): 
 Wall(posicion) {}
 
-void Wall_eagle::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
-	texture_drawer->show_wall_eagle(ray,distance,number_line_texture,wall_side_y);
+void WallEagle::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
+	texture_drawer->showWallEagle(ray,distance,number_line_texture,wall_side_y);
 }
 //--------------------------------------------------------------------------------------------------------
 
-Wall_mossy::Wall_mossy(Coordinates posicion): 
+WallMossy::WallMossy(Coordinates posicion): 
 Wall(posicion) {}
 
-void Wall_mossy::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
-	texture_drawer->show_wall_mossy(ray,distance,number_line_texture,wall_side_y);
+void WallMossy::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
+	texture_drawer->showWallMossy(ray,distance,number_line_texture,wall_side_y);
 }
 //--------------------------------------------------------------------------------------------------------
 
-Wall_redbrick::Wall_redbrick(Coordinates posicion): 
+WallRedbrick::WallRedbrick(Coordinates posicion): 
 Wall(posicion) {}
 
-void Wall_redbrick::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
-	texture_drawer->show_wall_redbrick(ray,distance,number_line_texture,wall_side_y);
+void WallRedbrick::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
+	texture_drawer->showWallRedbrick(ray,distance,number_line_texture,wall_side_y);
 }
 //--------------------------------------------------------------------------------------------------------
 
-Wall_wood::Wall_wood(Coordinates posicion): 
+WallWood::WallWood(Coordinates posicion): 
 Wall(posicion) {}
 
-void Wall_wood::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
-	texture_drawer->show_wall_wood(ray,distance,number_line_texture,wall_side_y);
+void WallWood::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
+	texture_drawer->showWallWood(ray,distance,number_line_texture,wall_side_y);
 }

@@ -8,7 +8,7 @@ Door::Door(Coordinates posicion):
     Posicionable(posicion), current_frame(0), state("closed"), character(nullptr){}
 
 void Door::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
-	ray->door_colided(coordinates_map,first_triangle,this);
+	ray->doorColided(coordinates_map,first_triangle,this);
 }
 
 void Door::add(Character* new_character){
@@ -19,10 +19,10 @@ void Door::add(Character* new_character){
 	}
 }
 
-void Door::spotted_enemy(){
+void Door::spottedEnemy(){
 	if(character!=nullptr){
 		Enemy* enemy = dynamic_cast<Enemy*>(character);
-		enemy->spotted_sprite();
+		enemy->spottedSprite();
 	}
 }
 
@@ -30,12 +30,12 @@ void Door::remove(){
 	character = nullptr;
 }
 
-void Door::set_state(std::string new_state){
+void Door::setState(std::string new_state){
 	state = new_state;
 	//Tirar excepciones si no es ninguno de los estados admisibles? nah, cambiar x enum
 }
 
-void Door::update_frame(){ //Me tardo 20 frames en abrirla
+void Door::updateFrame(){ //Me tardo 20 frames en abrirla
 	if(state=="opening" or state =="open"){
 		if(current_frame<20)
 			current_frame++;
@@ -45,7 +45,7 @@ void Door::update_frame(){ //Me tardo 20 frames en abrirla
 	}
 }
 
-int Door::get_limit_wall(){
+int Door::getLimitWall(){
 	if(current_frame>20){
 		return 0;
 	}else{
@@ -54,5 +54,5 @@ int Door::get_limit_wall(){
 }
 
 void Door::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
-	texture_drawer->show_door(ray,distance,number_line_texture,wall_side_y);
+	texture_drawer->showDoor(ray,distance,number_line_texture,wall_side_y);
 }

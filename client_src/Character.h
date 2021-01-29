@@ -6,8 +6,8 @@
 #include "coordinates.h"
 class ClMap;
 #include "ClMap.h"
-class Direccion;
-#include "Cl_Direccion.h"
+class Direction;
+#include "Cl_Direction.h"
 
 class Ray;
 #include "ray.h"
@@ -21,11 +21,11 @@ protected:
     Coordinates initial_direction;
 public:
     explicit Character(Coordinates posicion,Coordinates direction ,ClMap& map, int id);
-    void move_in_one_direction(Direccion* direccion);
-    void mover(Direccion* direccion);
-    void set_direction(Coordinates direction);
+    void moveInOneDirection(Direction* direccion);
+    void move(Direction* direccion);
+    void setDirection(Coordinates direction);
     void setInitialPosition(Coordinates initial_position);
-    Coordinates get_direction() const;
+    Coordinates getDirection() const;
 
     int getId();
 

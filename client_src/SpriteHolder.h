@@ -5,36 +5,36 @@
 #include <vector>
 
 class Raycasting;
-#include "ray_casting.h"
+#include "rayCasting.h"
 
 #include <Player.h>
 #include <Character.h>
 
 #include <Posicionable.h>
 
-#include <Sprite_drawer.h>
+#include <SpriteDrawer.h>
 
 //Puede tener más de un sprite y además un enemigo
-class Sprite_holder : public Posicionable, public Sprite_drawer{
+class SpriteHolder : public Posicionable, public SpriteDrawer{
 protected:
 	std::vector<int> sprites_textures;
     Character* character;
     bool colidable;
 
 public:
-    explicit Sprite_holder(Coordinates posicion, int texture, Player &player);
+    explicit SpriteHolder(Coordinates posicion, int texture, Player &player);
 
-    void is_colidable();
+    void isColidable();
 
-    void add_sprite(int num_texture);
+    void addSprite(int num_texture);
 
     void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
 	void spotted();
 
-    bool has_character();
+    bool hasCharacter();
 
-    Character* get_character();
+    Character* getCharacter();
 
     void add(Character* character) override;
 

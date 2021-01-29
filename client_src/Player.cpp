@@ -33,7 +33,7 @@ void Player::resurrect(){
     map.addPositionable(this, this->initial_position);
 }
 
-void Player::new_gun_type(int new_gun_type){
+void Player::newGunType(int new_gun_type){
    	if(gun_type!=nullptr)
         delete gun_type;
    	if(new_gun_type==0)
@@ -41,10 +41,10 @@ void Player::new_gun_type(int new_gun_type){
    	else if(new_gun_type==1)
         gun_type = new Gun(texture_drawer);
    	else if(new_gun_type==2)
-        gun_type = new Machine_gun(texture_drawer);
+        gun_type = new MachineGun(texture_drawer);
    	else if(new_gun_type==3)
-        gun_type = new Chain_gun(texture_drawer);
-    fire_rate = gun_type->get_fire_rate();
+        gun_type = new ChainGun(texture_drawer);
+    fire_rate = gun_type->getFireRate();
 }
 
 void Player::shoot(){
@@ -54,12 +54,12 @@ void Player::shoot(){
   time_shot_start = (time_now.tv_usec / 1000);    
 }
 
-bool Player::can_shoot(){
+bool Player::canShoot(){
   return !shooting; //Solo puede disparar si no estaba disparando antes
 
 }
 
-void Player::update_shots(){
+void Player::updateShots(){
   if(shooting){
     struct timeval time_now{};
     gettimeofday(&time_now, nullptr);
@@ -83,8 +83,8 @@ void Player::update_shots(){
 }
 
 void Player::draw(){
-   texture_drawer->show_life_bar(score, lives, health, ammo);
-	gun_type->call_drawer(shot_frame);
+   texture_drawer->showLifeBar(score, lives, health, ammo);
+	gun_type->callDrawer(shot_frame);
 }
 
 void Player::updateHealth(int amount){

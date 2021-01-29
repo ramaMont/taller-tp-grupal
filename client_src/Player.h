@@ -11,19 +11,19 @@
 #include "coordinates.h"
 class ClMap;
 #include "ClMap.h"
-class Direccion;
-#include "Cl_Direccion.h"
+class Direction;
+#include "Cl_Direction.h"
 
 class Character;
 #include <Character.h>
 
-class Gun_type;
-#include "Gun_type.h"
+class GunType;
+#include "GunType.h"
 
 class Player final : public Character{
 private:
 	int shot_frame;
-	Gun_type* gun_type;
+	GunType* gun_type;
 	bool shooting;	
     unsigned int score;
     time_t fire_rate;
@@ -40,15 +40,15 @@ public:
     void complete(Coordinates initial_position,Coordinates initial_direction,int player_id);
 
     // Cambio el arma actual del jugador
-    void new_gun_type(int new_gun_type);
+    void newGunType(int new_gun_type);
 
     // Inicializo la animacion de disparo o la actualizo en caso de que siga disparando
     void shoot();
 
-    bool can_shoot();
+    bool canShoot();
 
     // Actualizo el frame del arma
-    void update_shots();
+    void updateShots();
 
     void resurrect() override;
 

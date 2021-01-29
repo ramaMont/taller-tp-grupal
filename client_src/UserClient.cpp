@@ -16,7 +16,7 @@ void UserClient::play(){
     gameLoop();
 }
 
-void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Player& player){
+void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Player& player){
     if(keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
@@ -39,7 +39,7 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
     }
 
     if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
-        if(player.can_shoot()){
+        if(player.canShoot()){
             protocol.setAction(
                 Protocol::action::SHOOT);
             th_sender.push(protocol);
@@ -117,7 +117,7 @@ void UserClient::gameLoop(){
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        get_keys(keys, event, protocol, done, player);
+        getKeys(keys, event, protocol, done, player);
 
         _game_model.run();//Proceso los protocolos
         _game_model.updateFrameAnimations();
@@ -146,7 +146,7 @@ void UserClient::showPlayersInfo(Player& player){
         auto player = it.second;
         std::cout << "Player:   " << player->getId() << std::endl;
         std::cout << "Posicion:  X: " << player->get_position().x << " Y: " << player->get_position().y  << std::endl;
-        std::cout << "Direccion: X: " << player->get_direction().x << " Y: " << player->get_direction().y << std::endl;
+        std::cout << "Direccion: X: " << player->getDirection().x << " Y: " << player->getDirection().y << std::endl;
         std::cout << "\n-------------------------------------------------------------------\n";
     }
 }

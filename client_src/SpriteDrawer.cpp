@@ -1,11 +1,11 @@
-#include "Sprite_drawer.h"
+#include "SpriteDrawer.h"
 
-Sprite_drawer::Sprite_drawer(Posicionable *posicionable, Player &player): 
+SpriteDrawer::SpriteDrawer(Posicionable *posicionable, Player &player): 
 posicionable(posicionable), player(player) {}   
 
-void Sprite_drawer::set_relative_angle_to_player(){
+void SpriteDrawer::setRelativeAngleToPlayer(){
     Coordinates player_position = player.get_position();
-    Coordinates player_direction = player.get_direction();
+    Coordinates player_direction = player.getDirection();
 
     Coordinates sprite_position = posicionable->get_position();
 
@@ -19,7 +19,7 @@ void Sprite_drawer::set_relative_angle_to_player(){
 	relative_angle_to_player = atan2(det, dist);
 }
 
-void Sprite_drawer::update_distance_to_closest_ray(int i,int n_rays){
+void SpriteDrawer::updateDistanceToClosestRay(int i,int n_rays){
 	double ray_angle = atan(((double)i/(double)n_rays));
 	double distance = std::abs(relative_angle_to_player + ray_angle);
 	if(distance<lowest_ray_distance){
@@ -29,7 +29,7 @@ void Sprite_drawer::update_distance_to_closest_ray(int i,int n_rays){
 }
 
 
-void Sprite_drawer::set_distance(int half_pixels,Coordinates camera_plane){
+void SpriteDrawer::setDistance(int half_pixels,Coordinates camera_plane){
 	player_distance = (posicionable->get_position()).calculate_distance_to_vector(camera_plane,player.get_position());
 	if(player_distance<0.5)
 		player_distance=0.5;
@@ -37,20 +37,20 @@ void Sprite_drawer::set_distance(int half_pixels,Coordinates camera_plane){
 	cant_rays = half_pixels/player_distance; //La cantidad de rayos es irrelevante al tema de la "vibracion" de los sprites
 }
 
-void Sprite_drawer::spotted_sprite(){
+void SpriteDrawer::spottedSprite(){
 	located = true;
 } 	
 
-bool Sprite_drawer::is_spotted(){
+bool SpriteDrawer::isSpotted(){
 	return located;
 }
 
-void Sprite_drawer::disable_spotted(){
+void SpriteDrawer::disableSpotted(){
 	located = false;
 	player_distance = 90;
 	lowest_ray_distance = 90;
 }
 
-float Sprite_drawer::get_distance_player_plane() const {
+float SpriteDrawer::getDistancePlayerPlane() const {
 	return player_distance;
 }		    

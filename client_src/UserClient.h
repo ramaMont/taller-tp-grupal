@@ -18,7 +18,7 @@ private:
     GameModelClient& _game_model;
     SDL_bool done;
 
-    void get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Player& player);
+    void getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Player& player);
 
     void gameLoop();
 public:

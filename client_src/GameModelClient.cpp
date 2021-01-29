@@ -11,7 +11,7 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,
         screen(enemies,sprites,player,map,texture,window),
         protagonist_id(protagonist_id),is_running(true) {
     player.set_texture(&texture);
-    player.new_gun_type(1);
+    player.newGunType(1);
     initDirections();
     initMap(map_filename);
 }
@@ -21,12 +21,12 @@ Inicializo el diccionario directions para acceder a cada direccion
 en tiempo O(1)
  */
 void GameModelClient::initDirections(){
-    DirAdelante* forward = new DirAdelante();
-    DirAtras* backward = new DirAtras();
-    DirIzquierda* left = new DirIzquierda();
-    DirDerecha* right = new DirDerecha();
-    DirRotIzquierda* rotLeft = new DirRotIzquierda();
-    DirRotDerecha* rotRight = new DirRotDerecha();
+    DirAhead* forward = new DirAhead();
+    DirBehind* backward = new DirBehind();
+    DirLeft* left = new DirLeft();
+    DirRight* right = new DirRight();
+    DirRotLeft* rotLeft = new DirRotLeft();
+    DirRotRight* rotRight = new DirRotRight();
     directions[Protocol::direction::FORWARD] = forward;
     directions[Protocol::direction::BACKWARD] = backward;
     directions[Protocol::direction::LEFT] = left;
@@ -100,7 +100,7 @@ void GameModelClient::initDirections(){
 //               }
 //             }else if(pos_value<10){
 //               Coordinates position((float)i+0.5,(float)j+0.5);
-//               Sprite_holder *posicionable = new Sprite_holder(position,a_map[i][j]-8,player);
+//               SpriteHolder *posicionable = new SpriteHolder(position,a_map[i][j]-8,player);
 //               posicionable->set_texture(&texture);
 //               posicionable->add_sprite(2);
 //               sprites.push_back(posicionable);
@@ -116,7 +116,7 @@ void GameModelClient::initDirections(){
 //               Coordinates position((float)i+0.5,(float)j+0.5);
 //               Coordinates enemy_direction(0,1);
 //               Enemy *posicionable = new Enemy(texture,position,a_map[i][j]-10,enemy_direction,map,player,"Andy");//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
-//               posicionable->new_enemy_type(1);//Tipo de enemmigo por defecto
+//               posicionable->newEnemyType(1);//Tipo de enemmigo por defecto
 //               sprites.push_back(posicionable);
 //               enemies.push_back(posicionable);
 //               map.addPositionable(posicionable,position);             
@@ -141,19 +141,19 @@ void GameModelClient::initMap(std::string map_filename){
             std::string elemento = map_elements[actual_position].as<std::string>();
             Coordinates position((float)i,(float)j);
             if (elemento == "wall_greystone"){
-                  Posicionable *posicionable = new Wall_greystone(position);
+                  Posicionable *posicionable = new WallGreystone(position);
                   posicionable->set_texture(&texture);
                   map.addPositionable(posicionable,position);   
             }else if (elemento == "wall_bluestone"){
-                  Posicionable *posicionable = new Wall_bluestone(position);
+                  Posicionable *posicionable = new WallBluestone(position);
                   posicionable->set_texture(&texture);
                   map.addPositionable(posicionable,position);   
             }else if (elemento == "wall_colorstone"){
-                  Posicionable *posicionable = new Wall_colorstone(position);
+                  Posicionable *posicionable = new WallColorstone(position);
                   posicionable->set_texture(&texture);
                   map.addPositionable(posicionable,position);   
             }else if (elemento == "passage"){
-                Posicionable *posicionable = new Wall_eagle(position);
+                Posicionable *posicionable = new WallEagle(position);
                 posicionable->set_texture(&texture);
                 map.addPositionable(posicionable,position);  
             }else if (elemento == "door"){
@@ -166,69 +166,69 @@ void GameModelClient::initMap(std::string map_filename){
               position.y+=0.5;
             }
             if (elemento == "barrel"){
-               Sprite_holder *posicionable = new Sprite_holder(position,0,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,0,player);
                posicionable->set_texture(&texture);
-               posicionable->is_colidable();
+               posicionable->isColidable();
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "pillar"){
-               Sprite_holder *posicionable = new Sprite_holder(position,1,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,1,player);
                posicionable->set_texture(&texture);
-               posicionable->is_colidable();
+               posicionable->isColidable();
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "greenlight"){
-               Sprite_holder *posicionable = new Sprite_holder(position,2,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,2,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position); 
             }else if (elemento == "trophie"){
                printf("El trofeo está en: (%f,%f)\n",position.x,position.y );
-               Sprite_holder *posicionable = new Sprite_holder(position,3,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,3,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "rocket_launcher"){
               std::cout<<"elemento:"<<elemento<<std::endl;
-               Sprite_holder *posicionable = new Sprite_holder(position,4,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,4,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "medicine"){
               std::cout<<"elemento:"<<elemento<<std::endl;
-               Sprite_holder *posicionable = new Sprite_holder(position,5,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,5,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "machine_gun"){
-               Sprite_holder *posicionable = new Sprite_holder(position,6,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,6,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "key"){
-               Sprite_holder *posicionable = new Sprite_holder(position,7,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,7,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "food"){
-               Sprite_holder *posicionable = new Sprite_holder(position,8,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,8,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "fire_canon"){
-               Sprite_holder *posicionable = new Sprite_holder(position,9,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,9,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "bullets"){
-               Sprite_holder *posicionable = new Sprite_holder(position,10,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,10,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "table"){
-               Sprite_holder *posicionable = new Sprite_holder(position,11,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,11,player);
                posicionable->set_texture(&texture);
-               posicionable->is_colidable();
+               posicionable->isColidable();
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }
@@ -246,8 +246,8 @@ void GameModelClient::cleanDirections(){
 
 void GameModelClient::processMove(Protocol& protocol){
     Character* character = characters.at(protocol.getId());
-    Direccion* dir = directions.at(protocol.getDirection());
-    character->mover(dir);
+    Direction* dir = directions.at(protocol.getDirection());
+    character->move(dir);
     if(protocol.getId()!=protagonist_id){
       Enemy* enemy = dynamic_cast<Enemy*>(character);
       enemy->moving();
@@ -276,7 +276,7 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
             Coordinates initial_position = player_position;
             Enemy* enemy = new Enemy(initial_position, initial_direction, map, player,player_id);
             enemy->set_texture(&texture);
-            enemy->new_enemy_type(1);
+            enemy->newEnemyType(1);
             sprites.push_back(enemy);
             enemies.push_back(enemy);
             map.addPositionable(enemy,initial_position);    
@@ -317,12 +317,12 @@ Character& GameModelClient::getEnemy(int user_id){
 
 void  GameModelClient::updateFrameAnimations(){
     for(unsigned int i=0; i<enemies.size(); i++){
-        enemies[i]->update_frame();
+        enemies[i]->updateFrame();
     }
-    player.update_shots();
+    player.updateShots();
     // TODO: agregar vector de puertas
     for(auto& door : doors){
-        door->update_frame();
+        door->updateFrame();
     }
 }
 
@@ -400,7 +400,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
             processPickup(protocol);
             break;
         case Protocol::action::SWITCH_GUN:
-            player.new_gun_type(protocol.getDamage());
+            player.newGunType(protocol.getDamage());
             break;
         case Protocol::action::END_GAME_KILLS:
             
@@ -448,7 +448,7 @@ void GameModelClient::processShooted(Protocol protocol){
 void GameModelClient::processPickup(Protocol& protocol){
     Coordinates position(protocol.getPosition());
     /*printf("El sprite a eliminar está en: (%f,%f)\n",position.x,position.y );
-    Sprite_holder* sprite = static_cast<Sprite_holder*>(map.getPositionableIn(position));
+    SpriteHolder* sprite = static_cast<SpriteHolder*>(map.getPositionableIn(position));
     sprite->has_character();
     if(sprite->has_character()){
       Character* character = sprite->get_character();
@@ -467,19 +467,19 @@ void GameModelClient::push(Protocol protocol){
 void GameModelClient::openDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
-    door->set_state("open");
+    door->setState("open");
 }
 
 void GameModelClient::openingDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
-    door->set_state("opening");
+    door->setState("opening");
 }
 
 void GameModelClient::closeDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
-    door->set_state("closed");
+    door->setState("closed");
 }
 
 std::map<int,Character*> GameModelClient::getCharacters(){

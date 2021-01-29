@@ -41,7 +41,7 @@ static int get_num_texture(Coordinates enemy_position, Coordinates enemy_directi
 
 
 Enemy::Enemy(Coordinates posicion, Coordinates direction ,ClMap& map, Player &player ,int id):
-    Character(posicion,direction,map,id),Sprite_drawer(this,player),
+    Character(posicion,direction,map,id),SpriteDrawer(this,player),
    	player(player), is_moving(false),
     moved_frames_continued(0), enemy_type(nullptr){
 	   this->initial_position = posicion;
@@ -50,11 +50,11 @@ Enemy::Enemy(Coordinates posicion, Coordinates direction ,ClMap& map, Player &pl
 
 
 void Enemy::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
-    spotted_sprite();
-    ray->sprite_colided(coordinates_map);
+    spottedSprite();
+    ray->spriteColided(coordinates_map);
 } 
 
-void Enemy::new_enemy_type(int new_enemy_type){
+void Enemy::newEnemyType(int new_enemy_type){
   	if(enemy_type!=nullptr)
    		delete enemy_type;
    	if(new_enemy_type==0)
@@ -77,8 +77,8 @@ void Enemy::shoot(){
 	enemy_type->shoot();
 }
 
-void Enemy::update_frame(){
-	enemy_type->update_shooting();
+void Enemy::updateFrame(){
+	enemy_type->updateShooting();
 	if(is_moving){
 		moved_frames_continued++;
 		moved_frames_continued = moved_frames_continued%40;		
@@ -97,7 +97,7 @@ void Enemy::draw(const std::vector<float> &distances, int n_rays){
 		int current_ray = first_ray + i+ n_rays;
 		if((current_ray)>0 and (current_ray)<2*n_rays){
 			if(distances[current_ray]>player_distance){
-				enemy_type->call_drawer(first_ray + i + n_rays,player_distance ,num_pixel,side_texture,moved_frames_continued/2);
+				enemy_type->callDrawer(first_ray + i + n_rays,player_distance ,num_pixel,side_texture,moved_frames_continued/2);
 			}
 		}
 	}

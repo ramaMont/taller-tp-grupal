@@ -27,11 +27,11 @@
 #include <coordinates.h>
 #include <Character.h>
 #include <Player.h>
-#include <Cl_Direccion.h>
+#include <Cl_Direction.h>
 #include <Wall.h>
 #include <Door.h>
-#include <Sprite_holder.h>
-#include <Sprite_drawer.h>
+#include <SpriteHolder.h>
+#include <SpriteDrawer.h>
 #include <Enemy.h>
 
 class GameModelClient {
@@ -43,13 +43,13 @@ private:
     Player player;	
 	std::queue<Protocol> operations;
     std::map<int,Character*> characters;
-    std::map<Protocol::direction, Direccion* > directions;
+    std::map<Protocol::direction, Direction* > directions;
     int game_id;
     Screen screen;
     int protagonist_id;
 
     std::vector<Door*> doors;
-    std::vector<Sprite_drawer*> sprites;
+    std::vector<SpriteDrawer*> sprites;
     std::vector<Enemy*> enemies;
 
     std::vector<std::pair<int,int>> _ordered_players_kills;

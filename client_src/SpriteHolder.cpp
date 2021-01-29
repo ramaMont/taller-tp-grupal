@@ -1,34 +1,34 @@
-#include "Sprite_holder.h"
+#include "SpriteHolder.h"
 
 #include "Enemy.h"
 
-Sprite_holder::Sprite_holder(Coordinates posicion, int texture, Player &player): 
-Posicionable(posicion),Sprite_drawer(this,player) ,character(nullptr), colidable(false){
+SpriteHolder::SpriteHolder(Coordinates posicion, int texture, Player &player): 
+Posicionable(posicion),SpriteDrawer(this,player) ,character(nullptr), colidable(false){
   	sprites_textures.push_back(texture);
 }
 
-void Sprite_holder::is_colidable(){
+void SpriteHolder::isColidable(){
 	this->colidable=true;
 }
 
-void Sprite_holder::add_sprite(int num_texture){
+void SpriteHolder::addSprite(int num_texture){
   	sprites_textures.push_back(num_texture);
 }
 
-void Sprite_holder::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
+void SpriteHolder::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
     spotted();
-    ray->sprite_colided(coordinates_map);
+    ray->spriteColided(coordinates_map);
 }    
 
-void Sprite_holder::spotted(){
-    spotted_sprite();
+void SpriteHolder::spotted(){
+    spottedSprite();
     if(character!=nullptr and player.get_position()!=posicion){
 		Enemy* enemy = dynamic_cast<Enemy*>(character);
-		enemy->spotted_sprite();
+		enemy->spottedSprite();
     }
 }   
 
-void Sprite_holder::add(Character* new_character){
+void SpriteHolder::add(Character* new_character){
 	if(character!=nullptr or colidable){
 		throw -2;
 	}else{
@@ -37,20 +37,20 @@ void Sprite_holder::add(Character* new_character){
 
 }
 
-void Sprite_holder::remove(){
+void SpriteHolder::remove(){
 	character = nullptr;
 }
 
 
-bool Sprite_holder::has_character(){
+bool SpriteHolder::hasCharacter(){
 	return (character!=nullptr);
 }
 
-Character* Sprite_holder::get_character(){
+Character* SpriteHolder::getCharacter(){
 	return character;
 }
 
-void Sprite_holder::draw(const std::vector<float> &distances, int n_rays){
+void SpriteHolder::draw(const std::vector<float> &distances, int n_rays){
 	int first_ray = center_ray - cant_rays/2;
 	bool first_ray_already_sigted = false;
 	int first_sigted_ray = 0;
@@ -86,7 +86,7 @@ void Sprite_holder::draw(const std::vector<float> &distances, int n_rays){
 	}
 
 	for(unsigned int j=0; j<sprites_textures.size(); j++){
-		texture_drawer->show_sprite(first_sigted_ray,first_num_pixel,last_sigted_ray,last_num_pixel,player_distance ,sprites_textures[j]);
+		texture_drawer->showSprite(first_sigted_ray,first_num_pixel,last_sigted_ray,last_num_pixel,player_distance ,sprites_textures[j]);
 	}
 
 	if(character!=nullptr and player.get_position()!=posicion){

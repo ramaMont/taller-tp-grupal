@@ -19,17 +19,17 @@ public:
 
     void remove() override;
 
-    void spotted_enemy();
+    void spottedEnemy();
 
 	void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
-	void set_state(std::string new_state);
+	void setState(std::string new_state);
 
-	void update_frame(); 
+	void updateFrame(); 
 
 	void opening();
 
-	int get_limit_wall();
+	int getLimitWall();
 
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y);
 

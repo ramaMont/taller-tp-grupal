@@ -24,21 +24,21 @@ void Window::hideWindow(){
     SDL_HideWindow(this->window);
 }
 
-void Window::set_color(int r, int g, int b, int alpha) {
+void Window::setColor(int r, int g, int b, int alpha) {
     SDL_SetRenderDrawColor(this->renderer,
                            r, g, b, alpha);
     SDL_RenderClear(this->renderer);
 }
 
-void Window::set_no_color() {
-    this->set_color(0x33,0x33,0x33,0xFF);
+void Window::setNoColor() {
+    this->setColor(0x33,0x33,0x33,0xFF);
 }
 
-int Window::get_width()const {
+int Window::getWidth()const {
     return width;
 }
 
-int Window::get_height() const{
+int Window::getHeight() const{
     return height;
 }
 

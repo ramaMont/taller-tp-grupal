@@ -35,7 +35,7 @@ public:
 
 
     //Llama a Ray por cada rayo nuevo, y una vez obtenido, lo dibuja
-    void calculate_raycasting(Camera &camera,std::vector<float> &distances);
+    void calculateRayCasting(Camera &camera,std::vector<float> &distances);
 };
 
 #endif

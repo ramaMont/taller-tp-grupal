@@ -7,7 +7,7 @@
 #include <math.h>
 
 class Raycasting;
-#include "ray_casting.h"
+#include "rayCasting.h"
 
 class Posicionable;
 #include <Posicionable.h>
@@ -15,7 +15,7 @@ class Posicionable;
 #include <coordinates.h>
 
 // Obtiene la informacion necesaria para dibujar sprites, tanto sprites comunes como enemigos
-class Sprite_drawer{
+class SpriteDrawer{
 protected:
 	Posicionable* posicionable;
 	Player &player;
@@ -28,29 +28,29 @@ protected:
 
 
 public:
-    explicit Sprite_drawer(Posicionable *posicionable, Player &player);
+    explicit SpriteDrawer(Posicionable *posicionable, Player &player);
 
     virtual void draw(const std::vector<float> &distances, int n_rays)  = 0;
 
     // Calcula su angulo relativo respecto a la direccion del jugador
-    void set_relative_angle_to_player();
+    void setRelativeAngleToPlayer();
 
     // Obtiene el rayo de raycasting mas cercano a su posicion
-	void update_distance_to_closest_ray(int i,int n_rays);
+	void updateDistanceToClosestRay(int i,int n_rays);
 
 	// Calcula la distancia al plano del jugador
-	void set_distance(int half_pixels,Coordinates camera_plane);
+	void setDistance(int half_pixels,Coordinates camera_plane);
 
 	// En caso de haber colisionado con un rayo, seteo el sprite como 'avistado'
-	void spotted_sprite();
+	void spottedSprite();
 
 	// True si el sprite fue visto, false en caso contrario
-	bool is_spotted();
+	bool isSpotted();
 
 	// Desactiva el 'avistado' del frame anterior
-	void disable_spotted();
+	void disableSpotted();
 
-	float get_distance_player_plane() const;
+	float getDistancePlayerPlane() const;
 
 };
 

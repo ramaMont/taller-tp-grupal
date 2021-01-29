@@ -18,7 +18,7 @@ Ray::Ray(const double &ray_angle,const Coordinates &ray_direction,\
 	num_ray(num_ray),
 	n_rays(_n_rays) {}
 
-void Ray::increment_coordinates(Coordinates &whole_coordinates, int inc_x, int inc_y){
+void Ray::incrementCoordinates(Coordinates &whole_coordinates, int inc_x, int inc_y){
 	if(whole_coordinates.x_whole() and whole_coordinates.y_whole()){
 		whole_coordinates.inc_x(inc_x);
 		whole_coordinates.inc_y(inc_y);
@@ -29,12 +29,12 @@ void Ray::increment_coordinates(Coordinates &whole_coordinates, int inc_x, int i
 	}
 }
 
-Posicionable* Ray::get_element(Coordinates &map_coordinates){
+Posicionable* Ray::getElement(Coordinates &map_coordinates){
 	int inc_x = ray_direction.get_increase_x();
 	int inc_y = ray_direction.get_increase_y();
 
 
-	increment_coordinates(map_coordinates,inc_x,inc_y);
+	incrementCoordinates(map_coordinates,inc_x,inc_y);
 
 	map_coordinates.x = (int)map_coordinates.x;
 	map_coordinates.y = (int)map_coordinates.y;
@@ -42,7 +42,7 @@ Posicionable* Ray::get_element(Coordinates &map_coordinates){
 	return (map.getPositionableIn(map_coordinates));
 }
 
-double Ray::get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle){
+double Ray::getDistanceToPlayerPlane(const Coordinates &object_coordinates,const bool &first_triangle){
 	double distance;
 	double hip = object_coordinates.calculate_distance(player_position);
 	if(first_triangle){
@@ -53,7 +53,7 @@ double Ray::get_distance_to_player_plane(const Coordinates &object_coordinates,c
 	return(distance);
 }
 
-double Ray::get_x_distance_to_side(const Coordinates &ray_position){
+double Ray::getXDistanceToSide(const Coordinates &ray_position){
 	if(ray_direction.x_positive()){ //La direccion de mi rayo influye en qué pared tengo que mirar, ya que siempre estoy entre 2
 		return ray_position.get_distance_to_lower_side_x();
 	}else{
@@ -61,7 +61,7 @@ double Ray::get_x_distance_to_side(const Coordinates &ray_position){
 	}
 }
 
-double Ray::get_y_distance_to_side(const Coordinates &ray_position){
+double Ray::getYDistanceToSide(const Coordinates &ray_position){
 	if(ray_direction.y_positive()){ //La direccion de mi rayo influye en qué pared tengo que mirar, ya que siempre estoy entre 2
 		return ray_position.get_distance_to_lower_side_y();
 	}else{
@@ -69,12 +69,12 @@ double Ray::get_y_distance_to_side(const Coordinates &ray_position){
 	}
 }
 
-Coordinates Ray::get_coordinates_to_next_block(const Coordinates &ray_position, bool &first_triangle){
+Coordinates Ray::getCoordinatesToNextBlock(const Coordinates &ray_position, bool &first_triangle){
 
-	double x_distance = get_x_distance_to_side(ray_position);
+	double x_distance = getXDistanceToSide(ray_position);
 	double y_height = x_distance * (ray_direction.y/ray_direction.x);
 
-	double y_distance  = get_y_distance_to_side(ray_position);
+	double y_distance  = getYDistanceToSide(ray_position);
 	double x_height = y_distance * tan(M_PI/2 - atan((ray_direction.y/ray_direction.x)));
 
 	Coordinates coordinates_map;
@@ -90,8 +90,8 @@ Coordinates Ray::get_coordinates_to_next_block(const Coordinates &ray_position, 
 	return coordinates_map;
 }
 
-void Ray::wall_colided(Coordinates coordinates_map,bool first_triangle,Wall *object){
-	double distance_player_plane = get_distance_to_player_plane(coordinates_map,first_triangle);
+void Ray::wallColided(Coordinates coordinates_map,bool first_triangle,Wall *object){
+	double distance_player_plane = getDistanceToPlayerPlane(coordinates_map,first_triangle);
 	distances.push_back(distance_player_plane);	
 
 	float coordinates_colided_side = 0;
@@ -106,9 +106,9 @@ void Ray::wall_colided(Coordinates coordinates_map,bool first_triangle,Wall *obj
 
 }
 
-void Ray::x_door_colided(Coordinates coordinates_map,bool first_triangle,Door *object){
+void Ray::xDoorColided(Coordinates coordinates_map,bool first_triangle,Door *object){
 	bool second_triangle = false;
-	Coordinates next_coordinates = get_coordinates_to_next_block(coordinates_map, second_triangle);
+	Coordinates next_coordinates = getCoordinatesToNextBlock(coordinates_map, second_triangle);
 	Coordinates coordinates_elements = next_coordinates;
 
 	double door_position = 0;
@@ -122,7 +122,7 @@ void Ray::x_door_colided(Coordinates coordinates_map,bool first_triangle,Door *o
 	}
 
 	if(door_edges_colided){//Choco contra los bordes de la puerta antes de la puerta misma
-		Posicionable* object = get_element(coordinates_elements);
+		Posicionable* object = getElement(coordinates_elements);
 		object->colisioned(this,next_coordinates, second_triangle);
 	}else{
 		double n = std::abs(0.5/ray_direction.y);
@@ -138,25 +138,25 @@ void Ray::x_door_colided(Coordinates coordinates_map,bool first_triangle,Door *o
 
 
 		float position = floor ((coordinates_colided_side - floor(coordinates_colided_side))*64);
-		float limit_wall = object->get_limit_wall();
+		float limit_wall = object->getLimitWall();
 		/* Sino... le pido la cantidad de pixeles que YA no puede mostrar, empieza con 0 y despues termina con 64.
 		Y a poisiton le resto ese numero, si el resultado es negativo, ya no puedo dibujar nada ahi y 
 		sigo dibujando lo que siga... creo
 		*/
 		if(position<limit_wall){
-			double distance_player_plane = get_distance_to_player_plane(coordinates_map,first_triangle);
+			double distance_player_plane = getDistanceToPlayerPlane(coordinates_map,first_triangle);
 			distances.push_back(distance_player_plane);
 			//object->draw(num_ray + n_rays, distance_player_plane,position, first_triangle );
 			object->draw(num_ray + n_rays, distance_player_plane,limit_wall - position, first_triangle );
 		}else{
-			search_object(coordinates_map);
+			searchObject(coordinates_map);
 		}
 	}
 }
 
-void Ray::y_door_colided(Coordinates coordinates_map,bool first_triangle,Door *object){
+void Ray::yDoorColided(Coordinates coordinates_map,bool first_triangle,Door *object){
 	bool second_triangle = false;
-	Coordinates next_coordinates = get_coordinates_to_next_block(coordinates_map, second_triangle);
+	Coordinates next_coordinates = getCoordinatesToNextBlock(coordinates_map, second_triangle);
 	Coordinates coordinates_elements = next_coordinates;
 
 	double door_position = 0;
@@ -170,7 +170,7 @@ void Ray::y_door_colided(Coordinates coordinates_map,bool first_triangle,Door *o
 	}
 
 	if(door_edges_colided){//Choco contra los bordes de la puerta antes de la puerta misma
-		Posicionable* object = get_element(coordinates_elements);
+		Posicionable* object = getElement(coordinates_elements);
 		object->colisioned(this,next_coordinates, second_triangle);
 	}else{
 		double n = std::abs(0.5/ray_direction.x);
@@ -186,50 +186,50 @@ void Ray::y_door_colided(Coordinates coordinates_map,bool first_triangle,Door *o
 			coordinates_colided_side = coordinates_map.x;*/
 
 		float position = floor ((coordinates_colided_side - floor(coordinates_colided_side))*64);
-		float limit_wall = object->get_limit_wall();
+		float limit_wall = object->getLimitWall();
 		/* Sino... le pido la cantidad de pixeles que YA no puede mostrar, empieza con 0 y despues termina con 64.
 		Y a poisiton le resto ese numero, si el resultado es negativo, ya no puedo dibujar nada ahi y 
 		sigo dibujando lo que siga... creo
 		*/
 		if(position<limit_wall){
-			double distance_player_plane = get_distance_to_player_plane(coordinates_map,first_triangle);
+			double distance_player_plane = getDistanceToPlayerPlane(coordinates_map,first_triangle);
 			distances.push_back(distance_player_plane);
 			//object->draw(num_ray + n_rays, distance_player_plane,position, first_triangle );
 			object->draw(num_ray + n_rays, distance_player_plane,limit_wall - position, first_triangle );
 		}else{
-			search_object(coordinates_map);
+			searchObject(coordinates_map);
 		}
 
 	}
 }
 
-void Ray::door_colided(Coordinates coordinates_map,bool first_triangle,Door *object){
+void Ray::doorColided(Coordinates coordinates_map,bool first_triangle,Door *object){
 
-	object->spotted_enemy();
+	object->spottedEnemy();
 
 	if(first_triangle)
-		y_door_colided(coordinates_map,first_triangle,object);
+		yDoorColided(coordinates_map,first_triangle,object);
 	else
-		x_door_colided(coordinates_map,first_triangle,object);
+		xDoorColided(coordinates_map,first_triangle,object);
 }
 
-void Ray::sprite_colided(Coordinates coordinates_map){
-	search_object(coordinates_map);
+void Ray::spriteColided(Coordinates coordinates_map){
+	searchObject(coordinates_map);
 }
 
-void Ray::search_object(Coordinates ray_position){
+void Ray::searchObject(Coordinates ray_position){
 	bool first_triangle = false; //qué triangulo use despues me afecta en calcular la distancia y el ángulo
-	Coordinates coordinates_map = get_coordinates_to_next_block(ray_position, first_triangle);
+	Coordinates coordinates_map = getCoordinatesToNextBlock(ray_position, first_triangle);
 	Coordinates coordinates_elements = coordinates_map;
 	Posicionable* object;
 	
-	if((object = get_element(coordinates_elements))!=nullptr){
+	if((object = getElement(coordinates_elements))!=nullptr){
 		object->colisioned(this,coordinates_map, first_triangle);
 	}else{
-		search_object(coordinates_map);	
+		searchObject(coordinates_map);	
 	}
 }
 
-void Ray::draw_ray(){
-	search_object(player_position);
+void Ray::drawRay(){
+	searchObject(player_position);
 }

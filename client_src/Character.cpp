@@ -5,8 +5,8 @@ Character::Character(Coordinates position,Coordinates direction ,ClMap& map, int
         Posicionable(position),direction(direction), map(map), id(id){
 }
 
-void Character::move_in_one_direction(Direccion* direccion){
-    Coordinates nuevaPos = direccion->mover(this,direction);
+void Character::moveInOneDirection(Direction* direccion){
+    Coordinates nuevaPos = direccion->move(this,direction);
 
     Coordinates movimiento_unidireccional;
     movimiento_unidireccional.x = nuevaPos.x;
@@ -29,17 +29,17 @@ void Character::move_in_one_direction(Direccion* direccion){
 
 }
 
-void Character::mover(Direccion* direccion){
-    Coordinates nuevaPos = direccion->mover(this,direction);
+void Character::move(Direction* direccion){
+    Coordinates nuevaPos = direccion->move(this,direction);
     try{
         map.moveme(this, nuevaPos);
         this->posicion = nuevaPos;
     } catch(...){
-        move_in_one_direction(direccion);
+        moveInOneDirection(direccion);
     }
 }
 
-Coordinates Character::get_direction() const{
+Coordinates Character::getDirection() const{
     return direction;
 }
 
@@ -47,7 +47,7 @@ int Character::getId(){
     return id;
 }
 
-void Character::set_direction(Coordinates direction){
+void Character::setDirection(Coordinates direction){
     this->direction = direction;
 }
 

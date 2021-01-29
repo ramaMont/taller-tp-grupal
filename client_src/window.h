@@ -16,11 +16,11 @@ private:
 
 public:
     Window(int width, int height, int resolution_width, int resolution_high);
-    void set_no_color();
-    void set_color(int r, int g, int b, int alpha);
-    int get_width() const;
-    int get_height() const;
-    int get_resolution_width() const{
+    void setNoColor();
+    void setColor(int r, int g, int b, int alpha);
+    int getWidth() const;
+    int getHeight() const;
+    int getResolutionWidth() const{
         return resolution_width;
     }
     void showWindow();

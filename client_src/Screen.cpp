@@ -1,16 +1,16 @@
 #include "Screen.h"
 
-static void sort_vector(std::vector<Sprite_drawer*> &spotted_sprites){
+static void sortVector(std::vector<SpriteDrawer*> &spotted_sprites){
 	std::sort(spotted_sprites.begin(),
 	          spotted_sprites.end(),
-	          [](const Sprite_drawer* sprite, const Sprite_drawer* another_sprite)
+	          [](const SpriteDrawer* sprite, const SpriteDrawer* another_sprite)
 	{
-	    return sprite->get_distance_player_plane() > another_sprite->get_distance_player_plane();
+	    return sprite->getDistancePlayerPlane() > another_sprite->getDistancePlayerPlane();
 	});	
 }
 
-Screen::Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window):
-	n_rays(window.get_resolution_width()/2),enemies(enemies) ,sprites(sprites), player(player),
+Screen::Screen(std::vector<Enemy*> &enemies,std::vector<SpriteDrawer*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window):
+	n_rays(window.getResolutionWidth()/2),enemies(enemies) ,sprites(sprites), player(player),
 	map(map),
 	texture(texture),
 	window(window),
@@ -18,44 +18,44 @@ Screen::Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites
 	raycasting(player, map, n_rays){}
 
 
-void Screen::unsee_sprites(){
+void Screen::unseeSprites(){
 	for(unsigned int i=0; i<sprites.size(); i++){
-		sprites[i]->disable_spotted();
+		sprites[i]->disableSpotted();
 	}
 }
 
-void Screen::get_spotted_sprites(std::vector<Sprite_drawer*> &spotted_sprites){
+void Screen::getSpottedSprites(std::vector<SpriteDrawer*> &spotted_sprites){
 	for(unsigned int i=0; i<sprites.size(); i++){
-		if(sprites[i]->is_spotted()){
+		if(sprites[i]->isSpotted()){
 			spotted_sprites.push_back(sprites[i]);
 		}
 	}
 }	
 
-void Screen::initialice_spotted_sprites(std::vector<Sprite_drawer*> &spotted_sprites,Camera &camera){
+void Screen::initialiceSpottedSprites(std::vector<SpriteDrawer*> &spotted_sprites,Camera &camera){
 	for(unsigned int j=0; j<spotted_sprites.size(); j++){
-		spotted_sprites[j]->set_relative_angle_to_player();
+		spotted_sprites[j]->setRelativeAngleToPlayer();
 		for(int i=-2*n_rays; i<=2*n_rays; i++){
-			spotted_sprites[j]->update_distance_to_closest_ray(i,n_rays);
+			spotted_sprites[j]->updateDistanceToClosestRay(i,n_rays);
 		}
-		spotted_sprites[j]->set_distance(n_rays,camera.get_camera_plane());
+		spotted_sprites[j]->setDistance(n_rays,camera.getCameraPlane());
 	}
-	sort_vector(spotted_sprites);
+	sortVector(spotted_sprites);
 }
 
 
 void Screen::show(){
 
-	window.set_no_color();
+	window.setNoColor();
 
-	unsee_sprites();
+	unseeSprites();
 	background.show();
-	Camera camera(player.get_position(),player.get_direction());
+	Camera camera(player.get_position(),player.getDirection());
 	std::vector<float> distances;
-	raycasting.calculate_raycasting(camera,distances);
-	std::vector<Sprite_drawer*> spotted_sprites;
-	get_spotted_sprites(spotted_sprites);
-	initialice_spotted_sprites(spotted_sprites,camera);
+	raycasting.calculateRayCasting(camera,distances);
+	std::vector<SpriteDrawer*> spotted_sprites;
+	getSpottedSprites(spotted_sprites);
+	initialiceSpottedSprites(spotted_sprites,camera);
 	for(unsigned int j=0; j<spotted_sprites.size(); j++){
 		spotted_sprites[j]->draw(distances,n_rays);
 	}

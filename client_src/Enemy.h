@@ -7,22 +7,22 @@
 class ClMap;
 #include "ClMap.h"
 class Direccion;
-#include "Cl_Direccion.h"
+#include "Cl_Direction.h"
 
 class Character;
 #include <Character.h>
 
-#include "Sprite_drawer.h"
+#include "SpriteDrawer.h"
 
-#include "Enemy_type.h"
+#include "EnemyType.h"
 
 // Es tanto un Movible como un sprite, dado que su metodo para dibujar es el mismo que el de los sprites
-class Enemy : public Character, public Sprite_drawer{
+class Enemy : public Character, public SpriteDrawer{
 private:
 	Player &player;	
 	bool is_moving;
 	int moved_frames_continued;
-	Enemy_type* enemy_type;
+	EnemyType* enemy_type;
 
 public:
 	explicit Enemy(Coordinates posicion, Coordinates direction ,ClMap& map, Player &player ,int id);
@@ -31,14 +31,14 @@ public:
     void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
     // Cambio el tipo actual del enemigo
-    void new_enemy_type(int new_enemy_type);
+    void newEnemyType(int new_enemy_type);
 
     // Actualizo el frame del enemigo en caso de que se esté modviendo
 	void moving();
 
 	void shoot();
 
-	void update_frame();
+	void updateFrame();
 
 	// Dibujo al enemigo
 	void draw(const std::vector<float> &distances, int n_rays);
