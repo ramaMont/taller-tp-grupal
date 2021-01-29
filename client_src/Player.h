@@ -1,5 +1,5 @@
-#ifndef __JUGADOR__
-#define __JUGADOR__
+#ifndef __PLAYER__
+#define __PLAYER__
 
 #include <thread>
 #include <chrono>
@@ -9,8 +9,8 @@
 #include <Posicionable.h>
 
 #include "coordinates.h"
-class Cl_Mapa;
-#include "Cl_Mapa.h"
+class ClMap;
+#include "ClMap.h"
 class Direccion;
 #include "Cl_Direccion.h"
 
@@ -20,7 +20,7 @@ class Character;
 class Gun_type;
 #include "Gun_type.h"
 
-class Jugador final : public Character{
+class Player final : public Character{
 private:
 	int shot_frame;
 	Gun_type* gun_type;
@@ -33,9 +33,9 @@ private:
     int ammo;
 
 public:
-    explicit Jugador(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
+    explicit Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id);
 
-    explicit Jugador(Cl_Mapa& mapa);
+    explicit Player(ClMap& map);
 
     void complete(Coordinates initial_position,Coordinates initial_direction,int player_id);
 
@@ -57,7 +57,7 @@ public:
 
     void updateHealth(int amount);
 
-    ~Jugador();  
+    ~Player();  
 };
 
 #endif

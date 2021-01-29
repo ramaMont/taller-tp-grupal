@@ -4,8 +4,8 @@
 #include "Posicionable.h"
 
 #include "coordinates.h"
-class Cl_Mapa;
-#include "Cl_Mapa.h"
+class ClMap;
+#include "ClMap.h"
 class Direccion;
 #include "Cl_Direccion.h"
 
@@ -19,13 +19,13 @@ class Character;
 // Es tanto un Movible como un sprite, dado que su metodo para dibujar es el mismo que el de los sprites
 class Enemy : public Character, public Sprite_drawer{
 private:
-	Jugador &player;	
+	Player &player;	
 	bool is_moving;
 	int moved_frames_continued;
 	Enemy_type* enemy_type;
 
 public:
-	explicit Enemy(Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador &player ,int id);
+	explicit Enemy(Coordinates posicion, Coordinates direction ,ClMap& map, Player &player ,int id);
 
 	// En caso de colisionar con un enemigo durante el raycasting, le mando que aún no encontró una pared
     void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);

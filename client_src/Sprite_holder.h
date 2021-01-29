@@ -7,7 +7,7 @@
 class Raycasting;
 #include "ray_casting.h"
 
-#include <Jugador.h>
+#include <Player.h>
 #include <Character.h>
 
 #include <Posicionable.h>
@@ -22,7 +22,7 @@ protected:
     bool colidable;
 
 public:
-    explicit Sprite_holder(Coordinates posicion, int texture, Jugador &player);
+    explicit Sprite_holder(Coordinates posicion, int texture, Player &player);
 
     void is_colidable();
 

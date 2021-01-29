@@ -7,9 +7,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "Cl_Mapa.h"
+#include "ClMap.h"
 #include "Protocol.h"
-#include "Jugador.h"
+#include "Player.h"
 #include "BlockingQueue.h"
 
 #include <atomic>
@@ -22,10 +22,10 @@
 #include "Screen.h"
 #include "texture.h"
 
-#include <Cl_Mapa.h>
+#include <ClMap.h>
 #include <coordinates.h>
 #include <Character.h>
-#include <Jugador.h>
+#include <Player.h>
 #include <Cl_Direccion.h>
 #include <Wall.h>
 #include <Door.h>
@@ -37,9 +37,9 @@ class GameModelClient {
 private:
     Window window;	
     Texture texture;
-    Cl_Mapa map; 	
+    ClMap map; 	
 	bool added_player;
-    Jugador player;	
+    Player player;	
 	std::queue<Protocol> operations;
     std::map<int,Character*> characters;
     std::map<Protocol::direction, Direccion* > directions;
@@ -86,14 +86,14 @@ public:
     void hideWindow();
 
     void addPlayer(Protocol& protocol);
-    Jugador& getPlayer();
+    Player& getPlayer();
     Window& getWindow();
     Screen& getScreen();
     Character& getEnemy(int user_id);
     void updateFrameAnimations();
 
 
-    Cl_Mapa& getMap();
+    ClMap& getMap();
     int getId();
     std::map<int,Character*> getCharacters();
 

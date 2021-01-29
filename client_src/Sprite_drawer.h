@@ -18,7 +18,7 @@ class Posicionable;
 class Sprite_drawer{
 protected:
 	Posicionable* posicionable;
-	Jugador &player;
+	Player &player;
 	bool located;
 	float player_distance;
 	double relative_angle_to_player;
@@ -28,7 +28,7 @@ protected:
 
 
 public:
-    explicit Sprite_drawer(Posicionable *posicionable, Jugador &player);
+    explicit Sprite_drawer(Posicionable *posicionable, Player &player);
 
     virtual void draw(const std::vector<float> &distances, int n_rays)  = 0;
 

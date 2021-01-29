@@ -13,8 +13,8 @@ class Sprite_drawer;
 #include <Sprite_drawer.h>
 class Enemy;
 #include <Enemy.h>
-#include <Jugador.h>
-#include <Cl_Mapa.h>
+#include <Player.h>
+#include <ClMap.h>
 
 
 // Administra la visualizacion de todos los objetos visibles: sprites, enemigos, paredes y armas
@@ -25,8 +25,8 @@ class Screen{
 		int n_rays;
 		std::vector<Enemy*> &enemies;
 		std::vector<Sprite_drawer*> &sprites;
-		Jugador &player;
-		Cl_Mapa &map;
+		Player &player;
+		ClMap &map;
 		Texture &texture;
 		Window &window;
 		Background background;
@@ -42,7 +42,7 @@ class Screen{
 		// Realiza los calculos necesarios para la correcta visualizacion de los sprites: distancia al jugador, etc
 		void initialice_spotted_sprites(std::vector<Sprite_drawer*> &spotted_sprites,Camera &camera);
 	public:
-		Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, Cl_Mapa &map,Texture &texture, Window &window);
+		Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window);
 
 		// Llama a los metodos correspondientes para la correcta visualizacion
 		void show();

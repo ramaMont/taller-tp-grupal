@@ -10,7 +10,7 @@ class GameModelClient;
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "Jugador.h"
+#include "Player.h"
 
 class UserClient{
 private:
@@ -18,14 +18,14 @@ private:
     GameModelClient& _game_model;
     SDL_bool done;
 
-    void get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Jugador& jugador);
+    void get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Player& player);
 
     void gameLoop();
 public:
     explicit UserClient(ThSender& th_sender, GameModelClient& game_model);
     void play();
-    void showPlayersInfo(Jugador& player);
     void stop();
+    void showPlayersInfo(Player& player);
     ~UserClient();
 };
 

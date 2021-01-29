@@ -1,11 +1,11 @@
 #include "Character.h"
 #include <stdio.h>
 
-Character::Character(Coordinates position,Coordinates direction ,Cl_Mapa& mapa, int id):
-        Posicionable(position),direction(direction), mapa(mapa), id(id){
+Character::Character(Coordinates position,Coordinates direction ,ClMap& map, int id):
+        Posicionable(position),direction(direction), map(map), id(id){
 }
 
-void Character::mover_en_una_direccion(Direccion* direccion){
+void Character::move_in_one_direction(Direccion* direccion){
     Coordinates nuevaPos = direccion->mover(this,direction);
 
     Coordinates movimiento_unidireccional;
@@ -13,7 +13,7 @@ void Character::mover_en_una_direccion(Direccion* direccion){
     movimiento_unidireccional.y = this->posicion.y;
 
     try{
-        mapa.moveme(this, movimiento_unidireccional);
+        map.moveme(this, movimiento_unidireccional);
         this->posicion = movimiento_unidireccional;
     } catch(...){
     }
@@ -22,7 +22,7 @@ void Character::mover_en_una_direccion(Direccion* direccion){
     movimiento_unidireccional.y = nuevaPos.y;
 
     try{
-        mapa.moveme(this, movimiento_unidireccional);
+        map.moveme(this, movimiento_unidireccional);
         this->posicion = movimiento_unidireccional;
     } catch(...){
     }
@@ -32,10 +32,10 @@ void Character::mover_en_una_direccion(Direccion* direccion){
 void Character::mover(Direccion* direccion){
     Coordinates nuevaPos = direccion->mover(this,direction);
     try{
-        mapa.moveme(this, nuevaPos);
+        map.moveme(this, nuevaPos);
         this->posicion = nuevaPos;
     } catch(...){
-        mover_en_una_direccion(direccion);
+        move_in_one_direction(direccion);
     }
 }
 
@@ -57,14 +57,14 @@ void Character::setInitialPosition(Coordinates initial_position){
 
 void Character::die(){
 	//TODO: Animaciones de muerte =O.
-	mapa.sacarPosicionable(this->posicion);
+	map.removePositionable(this->posicion);
 }
 
 void Character::resurrect(){
 	//TODO: Resetear vida y demas atributos
     posicion = initial_position;
     direction = initial_direction;
-	mapa.agregarPosicionable(this, this->initial_position);
+	map.addPositionable(this, this->initial_position);
 }
 
 Character::~Character(){

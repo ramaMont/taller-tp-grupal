@@ -72,31 +72,31 @@ void GameModelClient::initDirections(){
 //               if(pos_value==1){
 //                   Posicionable *posicionable = new Wall_greystone(position);
 //                   posicionable->set_texture(&texture);
-//                   map.agregarPosicionable(posicionable,position);                
+//                   map.addPositionable(posicionable,position);                
 //               }else if(pos_value==2){
 //                   Posicionable *posicionable = new Wall_bluestone(position);
 //                   posicionable->set_texture(&texture);
-//                   map.agregarPosicionable(posicionable,position);
+//                   map.addPositionable(posicionable,position);
 //               }else if(pos_value==3){
 //                   Posicionable *posicionable = new Wall_purplestone(position);
 //                   posicionable->set_texture(&texture);
-//                   map.agregarPosicionable(posicionable,position);
+//                   map.addPositionable(posicionable,position);
 //               }else if(pos_value==4){
 //                   Posicionable *posicionable = new Wall_colorstone(position);
 //                   posicionable->set_texture(&texture);
-//                   map.agregarPosicionable(posicionable,position);
+//                   map.addPositionable(posicionable,position);
 //               }else if(pos_value==5){
 //                   Posicionable *posicionable = new Wall_eagle(position);
 //                   posicionable->set_texture(&texture);
-//                   map.agregarPosicionable(posicionable,position);
+//                   map.addPositionable(posicionable,position);
 //               }else if(pos_value==6){
 //                   Posicionable *posicionable = new Wall_mossy(position);
 //                   posicionable->set_texture(&texture);
-//                   map.agregarPosicionable(posicionable,position);
+//                   map.addPositionable(posicionable,position);
 //               }else if(pos_value==7){
 //                   Posicionable *posicionable = new Wall_redbrick(position);
 //                   posicionable->set_texture(&texture);
-//                   map.agregarPosicionable(posicionable,position);
+//                   map.addPositionable(posicionable,position);
 //               }
 //             }else if(pos_value<10){
 //               Coordinates position((float)i+0.5,(float)j+0.5);
@@ -104,13 +104,13 @@ void GameModelClient::initDirections(){
 //               posicionable->set_texture(&texture);
 //               posicionable->add_sprite(2);
 //               sprites.push_back(posicionable);
-//               map.agregarPosicionable(posicionable,position);
+//               map.addPositionable(posicionable,position);
 //             }else{//DOOR==10
 //               Coordinates position((float)i,(float)j);
 //               Door *posicionable = new Door(position);
 //               posicionable->set_texture(&texture);
 //               door = posicionable;
-//               map.agregarPosicionable(posicionable,position);   
+//               map.addPositionable(posicionable,position);   
 //             }
 //             /*else{ DEJO DE AGREGAR ENEMIGOS ASI
 //               Coordinates position((float)i+0.5,(float)j+0.5);
@@ -119,7 +119,7 @@ void GameModelClient::initDirections(){
 //               posicionable->new_enemy_type(1);//Tipo de enemmigo por defecto
 //               sprites.push_back(posicionable);
 //               enemies.push_back(posicionable);
-//               map.agregarPosicionable(posicionable,position);             
+//               map.addPositionable(posicionable,position);             
 //             }*/
 //         }
 //       }
@@ -143,24 +143,24 @@ void GameModelClient::initMap(std::string map_filename){
             if (elemento == "wall_greystone"){
                   Posicionable *posicionable = new Wall_greystone(position);
                   posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);   
+                  map.addPositionable(posicionable,position);   
             }else if (elemento == "wall_bluestone"){
                   Posicionable *posicionable = new Wall_bluestone(position);
                   posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);   
+                  map.addPositionable(posicionable,position);   
             }else if (elemento == "wall_colorstone"){
                   Posicionable *posicionable = new Wall_colorstone(position);
                   posicionable->set_texture(&texture);
-                  map.agregarPosicionable(posicionable,position);   
+                  map.addPositionable(posicionable,position);   
             }else if (elemento == "passage"){
                 Posicionable *posicionable = new Wall_eagle(position);
                 posicionable->set_texture(&texture);
-                map.agregarPosicionable(posicionable,position);  
+                map.addPositionable(posicionable,position);  
             }else if (elemento == "door"){
                 Door *posicionable = new Door(position);
                 posicionable->set_texture(&texture);
                 doors.push_back(posicionable);
-                map.agregarPosicionable(posicionable,position);   
+                map.addPositionable(posicionable,position);   
             }else{
               position.x+=0.5;
               position.y+=0.5;
@@ -170,71 +170,71 @@ void GameModelClient::initMap(std::string map_filename){
                posicionable->set_texture(&texture);
                posicionable->is_colidable();
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "pillar"){
                Sprite_holder *posicionable = new Sprite_holder(position,1,player);
                posicionable->set_texture(&texture);
                posicionable->is_colidable();
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "greenlight"){
                Sprite_holder *posicionable = new Sprite_holder(position,2,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position); 
+               map.addPositionable(posicionable,position); 
             }else if (elemento == "trophie"){
               std::cout<<"elemento:"<<elemento<<std::endl;
                Sprite_holder *posicionable = new Sprite_holder(position,3,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "rocket_launcher"){
               std::cout<<"elemento:"<<elemento<<std::endl;
                Sprite_holder *posicionable = new Sprite_holder(position,4,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "medicine"){
               std::cout<<"elemento:"<<elemento<<std::endl;
                Sprite_holder *posicionable = new Sprite_holder(position,5,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "machine_gun"){
                Sprite_holder *posicionable = new Sprite_holder(position,6,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "key"){
                Sprite_holder *posicionable = new Sprite_holder(position,7,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "food"){
                Sprite_holder *posicionable = new Sprite_holder(position,8,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "fire_canon"){
                Sprite_holder *posicionable = new Sprite_holder(position,9,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "bullets"){
                Sprite_holder *posicionable = new Sprite_holder(position,10,player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }else if (elemento == "table"){
                Sprite_holder *posicionable = new Sprite_holder(position,11,player);
                posicionable->set_texture(&texture);
                posicionable->is_colidable();
                sprites.push_back(posicionable);
-               map.agregarPosicionable(posicionable,position);
+               map.addPositionable(posicionable,position);
             }
         }
     }
-    map.agregarJugador(&player);
+    map.addPlayer(&player);
 }
 
 void GameModelClient::cleanDirections(){
@@ -254,7 +254,7 @@ void GameModelClient::processMove(Protocol& protocol){
     }
 }
 
-void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
+void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
     auto protocol_position = protocol.getPosition();
     Coordinates player_position((double)std::get<0>(protocol_position), (double)std::get<1>(protocol_position));
     Protocol::direction player_direction = protocol.getDirection();
@@ -266,8 +266,8 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
             added_player = true;
             Coordinates initial_position = player_position;
             player.complete(initial_position, initial_direction,player_id);
-            characters.insert(std::pair<int, Jugador*>(player_id, &player));
-            map.agregarPosicionable(&player,initial_position);  
+            characters.insert(std::pair<int, Player*>(player_id, &player));
+            map.addPositionable(&player,initial_position);  
             player.setInitialPosition(initial_position);
         } catch(...){
         }
@@ -279,7 +279,7 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
             enemy->new_enemy_type(1);
             sprites.push_back(enemy);
             enemies.push_back(enemy);
-            map.agregarPosicionable(enemy,initial_position);    
+            map.addPositionable(enemy,initial_position);    
             characters.insert(std::pair<int, Character*>(player_id, enemy));
         } catch(...){
         }        
@@ -289,7 +289,7 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Jugadores O enemigos
 
 void GameModelClient::removePlayer(int id){
     Character* removableEnemy = characters[id];
-    map.sacarPosicionable(removableEnemy->get_position());
+    map.removePositionable(removableEnemy->get_position());
     characters.erase(id);
     //Y me falta eliminarlos tambien del vector sprites y del vector enemies
 
@@ -299,7 +299,7 @@ void GameModelClient::player_shoot(){
   player.shoot();
 }
 
-Jugador& GameModelClient::getPlayer(){
+Player& GameModelClient::getPlayer(){
     return player;
 }
 
@@ -334,7 +334,7 @@ void GameModelClient::hideWindow(){
     window.hideWindow();
 }
 
-Cl_Mapa& GameModelClient::getMap(){
+ClMap& GameModelClient::getMap(){
     return map;
 }
 
@@ -421,19 +421,19 @@ void GameModelClient::push(Protocol protocol){
 
 void GameModelClient::openDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
-    Door* door = static_cast<Door*>(map.obtenerPosicionableEn(door_pos));
+    Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
     door->set_state("open");
 }
 
 void GameModelClient::openingDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
-    Door* door = static_cast<Door*>(map.obtenerPosicionableEn(door_pos));
+    Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
     door->set_state("opening");
 }
 
 void GameModelClient::closeDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
-    Door* door = static_cast<Door*>(map.obtenerPosicionableEn(door_pos));
+    Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
     door->set_state("closed");
 }
 

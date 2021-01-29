@@ -1,6 +1,5 @@
 #include "UserClient.h"
 
-#include "Cl_Mapa.h"
 #include "GameModelClient.h"
 
 #include <chrono>
@@ -17,7 +16,7 @@ void UserClient::play(){
     gameLoop();
 }
 
-void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Jugador& jugador){
+void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Player& player){
     if(keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
@@ -40,7 +39,7 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
     }
 
     if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
-        if(jugador.can_shoot()){
+        if(player.can_shoot()){
             protocol.setAction(
                 Protocol::action::SHOOT);
             th_sender.push(protocol);
@@ -53,7 +52,7 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
         protocol.setAction(
             Protocol::action::OPEN);
         th_sender.push(protocol);
-        showPlayersInfo(jugador);
+        showPlayersInfo(player);
     }
 
     while (SDL_PollEvent(&event)) { 
@@ -81,14 +80,14 @@ void UserClient::gameLoop(){
     time_t counter = 0;
     time_t max_time = 0;
 
-    Jugador& jugador = _game_model.getPlayer();
+    Player& player = _game_model.getPlayer();
 
     const Uint8 *keys = SDL_GetKeyboardState(NULL);    
     while (!done) {
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        get_keys(keys, event, protocol, done, jugador);
+        get_keys(keys, event, protocol, done, player);
 
         _game_model.run();//Proceso los protocolos
         _game_model.updateFrameAnimations();
@@ -111,11 +110,11 @@ void UserClient::gameLoop(){
     std::cout<<"El tiempo promedio fue:"<<total_time/counter<<std::endl;
 }
 
-void UserClient::showPlayersInfo(Jugador& player){
+void UserClient::showPlayersInfo(Player& player){
     auto players = _game_model.getCharacters();
     for(auto& it : players){
         auto player = it.second;
-        std::cout << "Jugador:   " << player->getId() << std::endl;
+        std::cout << "Player:   " << player->getId() << std::endl;
         std::cout << "Posicion:  X: " << player->get_position().x << " Y: " << player->get_position().y  << std::endl;
         std::cout << "Direccion: X: " << player->get_direction().x << " Y: " << player->get_direction().y << std::endl;
         std::cout << "\n-------------------------------------------------------------------\n";
