@@ -2,18 +2,18 @@
 
 #include "texture.h"
 
-Jugador::Jugador(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id):
-      Character(posicion,direction,mapa,id), 
+Jugador::Jugador(Coordinates posicion,Coordinates direction ,ClMap& map, int id):
+      Character(posicion,direction,map,id), 
       shot_frame(0), gun_type(nullptr),
       shooting(false),score(10), lives(5), health(100), ammo(20){
-//   	mapa.agregarJugador(this);
+//   	map.agregarJugador(this);
 }
 
-Jugador::Jugador(Cl_Mapa& mapa):
-      Character(Coordinates(4,4),Coordinates(1,0),mapa,0), 
+Jugador::Jugador(ClMap& map):
+      Character(Coordinates(4,4),Coordinates(1,0),map,0), 
       shot_frame(0), gun_type(nullptr),shooting(false),
       score(1000), lives(5), health(98), ammo(20){
-//    mapa.agregarJugador(this);
+//    map.agregarJugador(this);
 }
 
 void Jugador::complete(Coordinates initial_position,Coordinates initial_direction,int player_id){
@@ -30,7 +30,7 @@ void Jugador::resurrect(){
     direction = initial_direction;
     lives--;
     health = 100;
-    mapa.agregarPosicionable(this, this->initial_position);
+    map.addPositionable(this, this->initial_position);
 }
 
 void Jugador::new_gun_type(int new_gun_type){

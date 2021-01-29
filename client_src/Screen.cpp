@@ -9,7 +9,7 @@ static void sort_vector(std::vector<Sprite_drawer*> &spotted_sprites){
 	});	
 }
 
-Screen::Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, Cl_Mapa &map,Texture &texture, Window &window):
+Screen::Screen(std::vector<Enemy*> &enemies,std::vector<Sprite_drawer*> &sprites, Jugador &player, ClMap &map,Texture &texture, Window &window):
 	n_rays(window.get_resolution_width()/2),enemies(enemies) ,sprites(sprites), player(player),
 	map(map),
 	texture(texture),

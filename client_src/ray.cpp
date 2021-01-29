@@ -8,7 +8,7 @@ static const int Y_SIDE = 2;
 
 Ray::Ray(const double &ray_angle,const Coordinates &ray_direction,\
 	std::vector<float> &distances,const Coordinates &player_position,const Coordinates &player_direction,\
-	Cl_Mapa &map, int num_ray, int _n_rays):
+	ClMap &map, int num_ray, int _n_rays):
 	player_direction(player_direction),
 	player_position(player_position), 
 	ray_direction(ray_direction), 
@@ -39,7 +39,7 @@ Posicionable* Ray::get_element(Coordinates &map_coordinates){
 	map_coordinates.x = (int)map_coordinates.x;
 	map_coordinates.y = (int)map_coordinates.y;
 
-	return (map.obtenerPosicionableEn(map_coordinates));
+	return (map.getPositionableIn(map_coordinates));
 }
 
 double Ray::get_distance_to_player_plane(const Coordinates &object_coordinates,const bool &first_triangle){

@@ -4,8 +4,8 @@
 #include "Posicionable.h"
 
 #include "coordinates.h"
-class Cl_Mapa;
-#include "Cl_Mapa.h"
+class ClMap;
+#include "ClMap.h"
 class Direccion;
 #include "Cl_Direccion.h"
 
@@ -25,7 +25,7 @@ private:
 	Enemy_type* enemy_type;
 
 public:
-	explicit Enemy(Coordinates posicion, Coordinates direction ,Cl_Mapa& mapa, Jugador &player ,int id);
+	explicit Enemy(Coordinates posicion, Coordinates direction ,ClMap& map, Jugador &player ,int id);
 
 	// En caso de colisionar con un enemigo durante el raycasting, le mando que aún no encontró una pared
     void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);

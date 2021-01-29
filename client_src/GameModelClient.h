@@ -7,7 +7,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "Cl_Mapa.h"
+#include "ClMap.h"
 #include "Protocol.h"
 #include "Jugador.h"
 #include "BlockingQueue.h"
@@ -22,7 +22,7 @@
 #include "Screen.h"
 #include "texture.h"
 
-#include <Cl_Mapa.h>
+#include <ClMap.h>
 #include <coordinates.h>
 #include <Character.h>
 #include <Jugador.h>
@@ -37,7 +37,7 @@ class GameModelClient {
 private:
     Window window;	
     Texture texture;
-    Cl_Mapa map; 	
+    ClMap map; 	
 	bool added_player;
     Jugador player;	
 	std::queue<Protocol> operations;
@@ -93,7 +93,7 @@ public:
     void updateFrameAnimations();
 
 
-    Cl_Mapa& getMap();
+    ClMap& getMap();
     int getId();
     std::map<int,Character*> getCharacters();
 

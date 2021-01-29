@@ -9,8 +9,8 @@
 #include <Posicionable.h>
 
 #include "coordinates.h"
-class Cl_Mapa;
-#include "Cl_Mapa.h"
+class ClMap;
+#include "ClMap.h"
 class Direccion;
 #include "Cl_Direccion.h"
 
@@ -33,9 +33,9 @@ private:
     int ammo;
 
 public:
-    explicit Jugador(Coordinates posicion,Coordinates direction ,Cl_Mapa& mapa, int id);
+    explicit Jugador(Coordinates posicion,Coordinates direction ,ClMap& map, int id);
 
-    explicit Jugador(Cl_Mapa& mapa);
+    explicit Jugador(ClMap& map);
 
     void complete(Coordinates initial_position,Coordinates initial_direction,int player_id);
 
