@@ -54,6 +54,36 @@ void UserClient::get_keys(const Uint8 *keys, SDL_Event &event, Protocol &protoco
         th_sender.push(protocol);
         showPlayersInfo(player);
     }
+    if(keys[SDL_SCANCODE_0]){
+        protocol.setAction(
+            Protocol::action::SWITCH_GUN);
+        protocol.setDamage(0);
+        th_sender.push(protocol);
+    }
+    if(keys[SDL_SCANCODE_1]){
+        protocol.setAction(
+            Protocol::action::SWITCH_GUN);
+        protocol.setDamage(1);
+        th_sender.push(protocol);
+    }
+    if(keys[SDL_SCANCODE_2]){
+        protocol.setAction(
+            Protocol::action::SWITCH_GUN);
+        protocol.setDamage(2);
+        th_sender.push(protocol);
+    }
+    if(keys[SDL_SCANCODE_3]){
+        protocol.setAction(
+            Protocol::action::SWITCH_GUN);
+        protocol.setDamage(3);
+        th_sender.push(protocol);
+    }
+    if(keys[SDL_SCANCODE_4]){
+        protocol.setAction(
+            Protocol::action::SWITCH_GUN);
+        protocol.setDamage(4);
+        th_sender.push(protocol);
+    }
 
     while (SDL_PollEvent(&event)) { 
         switch(event.type) {

@@ -242,7 +242,10 @@ Puerta* Mapa::getDoor(Coordinates& position){
 
 void usarItems(std::vector<Item*>& items, Player *player){
     for (auto it = items.begin(); it < items.end(); it++){
-        (*it)->usar(player);
+        if ((player)->usar(*it)){
+            delete(*it);
+            items.erase(it);
+        }
     }
 }
 

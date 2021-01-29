@@ -112,5 +112,9 @@ void Protocol::setAction(Protocol::action action){
     _action = action;
 }
 
+void Protocol::setDamage(int danio){
+    damage = danio;
+}
+
 Protocol::~Protocol(){
 }

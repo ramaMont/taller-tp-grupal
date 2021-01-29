@@ -83,6 +83,9 @@ void ThReceiver::processReception(Protocol& protocol){
         case Protocol::action::CLOSE:
             _gameModel->push(protocol);
             break;
+        case Protocol::action::SWITCH_GUN:
+            _gameModel->push(protocol);
+            break;
         default:
             break;
     }

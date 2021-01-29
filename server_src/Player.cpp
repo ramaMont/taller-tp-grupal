@@ -125,7 +125,7 @@ double Player::calcularDistancia(const Coordinates& posicion){
 
 bool Player::recibirDanio(int danio){
 	this->vida = std::max(this->vida - danio, 0);
-	Protocol protocol(player_id, danio, Protocol::action::SHOOTED);
+	Protocol protocol(player_id, vida, Protocol::action::SHOOTED);
 	_game_model_queue.push(protocol);
 	if (this->vida <= 0){
 		Protocol protocol(player_id);
@@ -137,14 +137,17 @@ bool Player::recibirDanio(int danio){
 }
 
 void Player::disparar(std::map<int, Player*>& jugadores){
-	this->soldado.disparar(jugadores);
+	this->balas_disparadas += this->soldado.disparar(jugadores);
+	Protocol protocol(player_id, balas_restantes, Protocol::action::UPDATE_BULLETS);
+	_game_model_queue.push(protocol);
 }
 
 bool Player::usar(Item* item){
     bool b = item->usar(this);
     if (b){
-       mapa.sacarItem(posicion, typeid(*item));
-       // Protocol sacar item del mapa
+        Protocol protocol(Protocol::action::PICKUP, player_id,
+            Protocol::direction::STAY, 0, posicion.x, posicion.y);    
+        _game_model_queue.push(protocol);
     }
     return b;
 }
@@ -161,11 +164,15 @@ bool Player::agregarVida(int cantidad){
 	if (this->vida == (int)configs[CONFIG::vida_maxima])
 		return false;
 	this->vida = std::min(this->vida + cantidad, (int)configs[CONFIG::vida_maxima]);
+	Protocol protocol(player_id, vida, Protocol::action::UPDATE_HEALTH);
+	_game_model_queue.push(protocol);
 	return true;
 }
 	
 void Player::agregarPuntos(int cantidad){
 	this->puntuacion += cantidad;
+	Protocol protocol(player_id, cantidad, Protocol::action::ADDPOINTS);
+	_game_model_queue.push(protocol);
 }
 
 bool Player::agregarBalas(int cant){
@@ -174,6 +181,8 @@ bool Player::agregarBalas(int cant){
 	this->balas_restantes = std::min(this->balas_restantes+cant, 
 	    (int)configs[CONFIG::balas_maximas]);
 	this->soldado.recargarBalas();
+	Protocol protocol(player_id, balas_restantes, Protocol::action::UPDATE_BULLETS);
+	_game_model_queue.push(protocol);
 	return true;
 }
 

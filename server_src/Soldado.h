@@ -18,7 +18,7 @@ class Soldado {
 
     public:
     Soldado(int &balas): balas(balas) { }
-	virtual void disparar(Player *jugador, std::map<int, Player*>&) = 0;
+	virtual int disparar(Player *jugador, std::map<int, Player*>&) = 0;
 	virtual void soltarArma(Player *jugador) = 0;
 	virtual bool estaListo() = 0;
 	virtual int numeroArma() const = 0;
@@ -34,7 +34,7 @@ class Perro: public Soldado {
 	
 	public:
 	Perro(int& n);
-	void disparar(Player *jugador, std::map<int, Player*>&) override;
+	int disparar(Player *jugador, std::map<int, Player*>&) override;
 	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
@@ -47,7 +47,7 @@ class Guardia: public Soldado {
 	
 	public:
 	Guardia(int& balas);
-	void disparar(Player *jugador, std::map<int, Player*>&) override;
+	int disparar(Player *jugador, std::map<int, Player*>&) override;
 	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
@@ -62,7 +62,7 @@ class SS: public Soldado {
 	public:
 	SS(int &balas);
 	bool agregarArma(Ametralladora *ametralladora);
-	void disparar(Player *jugador, std::map<int, Player*>&) override;	
+	int disparar(Player *jugador, std::map<int, Player*>&) override;	
 	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
@@ -77,7 +77,7 @@ class Oficial: public Soldado {
 	public:
 	Oficial(int &balas);
 	bool agregarArma(CanionDeCadena *canion);
-	void disparar(Player *jugador, std::map<int, Player*>&) override;
+	int disparar(Player *jugador, std::map<int, Player*>&) override;
 	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
@@ -92,7 +92,7 @@ class Mutante: public Soldado {
 	public:
 	Mutante(int &balas);
 	bool agregarArma(Lanzacohetes *lanzacohetes);
-	void disparar(Player *jugador, std::map<int, Player*>&) override;	
+	int disparar(Player *jugador, std::map<int, Player*>&) override;	
 	void soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
@@ -118,7 +118,7 @@ class EstadoSoldado {
 	bool agregarArma(Arma* arma);
 	void cambiarArma(int numero_arma);
 	void soltarArma();
-	void disparar(std::map<int, Player*>& enemigos);
+	int disparar(std::map<int, Player*>& enemigos);
 	void recargarBalas();
 };
 

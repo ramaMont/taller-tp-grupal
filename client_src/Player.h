@@ -57,6 +57,10 @@ public:
 
     void updateHealth(int amount);
 
+    void updateAmmo(int amount);
+
+    void addPoints(int amount);
+
     ~Player();  
 };
 

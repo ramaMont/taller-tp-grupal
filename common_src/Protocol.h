@@ -10,7 +10,8 @@ public:
             CLOSING, CLOSE, SHOOTED, ADDKILL, ADDPOINTS, ENDGAME, SET_ID,
             JOIN_GAME, CREATE_GAME, OK, ERROR, ADD_PLAYER, LAUNCH_GAME, BEGIN,
             END, NONE, REMOVE, RESURRECT, DIE, CONFIG, END_GAME_KILLS,
-            END_GAME_POINTS, END_GAME_BULLETS };
+            END_GAME_POINTS, END_GAME_BULLETS, UPDATE_HEALTH, UPDATE_BULLETS,
+            SWITCH_GUN };
 
     enum direction : std::uint16_t { FORWARD, BACKWARD, LEFT, RIGHT,
             ROTATE_LEFT, ROTATE_RIGHT, STAY};
@@ -38,6 +39,7 @@ public:
     float getConfiguration();
     std::tuple<int, int> getPosition() const;
     void setAction(Protocol::action action);
+    void setDamage(int danio);
     ~Protocol();
 private:
     Protocol::action _action;

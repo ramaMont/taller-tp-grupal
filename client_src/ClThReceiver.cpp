@@ -60,6 +60,21 @@ void ClThReceiver::processReception(Protocol& protocol){
         case Protocol::action::CLOSE:
             _gameModel->push(protocol);
             break;
+        case Protocol::action::ADDPOINTS:
+            _gameModel->push(protocol);
+            break;
+        case Protocol::action::UPDATE_HEALTH:
+            _gameModel->push(protocol);
+            break;
+        case Protocol::action::UPDATE_BULLETS:
+            _gameModel->push(protocol);
+            break;
+        case Protocol::action::PICKUP:
+            _gameModel->push(protocol);
+            break;
+        case Protocol::action::SWITCH_GUN:
+            _gameModel->push(protocol);
+            break;
         case Protocol::action::END_GAME_BULLETS:
             _gameModel->push(protocol);
             break;

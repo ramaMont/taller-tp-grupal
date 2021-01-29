@@ -66,13 +66,14 @@ void EstadoSoldado::soltarArma(){
 	this->soldado->soltarArma(this->jugador);
 }
 
-void EstadoSoldado::disparar(std::map<int, Player*>& enemigos){
-	this->soldado->disparar(this->jugador, enemigos);
+int EstadoSoldado::disparar(std::map<int, Player*>& enemigos){
+	int balas_disparadas = this->soldado->disparar(this->jugador, enemigos);
 	if (!this->soldado->estaListo()){
 		this->soldado_anterior = this->soldado;
 		this->soldado = &this->perro;
 	}
 	this->arma_actual = this->soldado->numeroArma();
+	return balas_disparadas;
 }
 
 void EstadoSoldado::recargarBalas(){
@@ -88,10 +89,11 @@ void EstadoSoldado::recargarBalas(){
 Perro::Perro(int& n): Soldado(n){
 }
 
-void Perro::disparar(Player *jugador, std::map<int, Player*>& enemigos){
+int Perro::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	std::set<std::pair<int, Player*>> set_jugadores;
 	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
 	this->cuchillo.disparar(jugador, set_jugadores);
+	return 0;
 }
 
 void Perro::soltarArma(Player *jugador){
@@ -131,11 +133,12 @@ void Soldado::obtenerEnemigosCercanos(std::map<int, Player*>& enemigos,
 Guardia::Guardia(int& balas): Soldado(balas){
 }
 
-void Guardia::disparar(Player *jugador, std::map<int, Player*>& enemigos){
+int Guardia::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	std::set<std::pair<int, Player*>> set_jugadores;
 	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
 	this->pistola.disparar(jugador, set_jugadores);
 	this->balas --;
+	return 1;
 }
 
 void Guardia::soltarArma(Player *jugador){
@@ -163,15 +166,18 @@ bool SS::agregarArma(Ametralladora *ametr){
 	return true;
 }
 
-void SS::disparar(Player *jugador, std::map<int, Player*>& enemigos){
+int SS::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	std::set<std::pair<int, Player*>> set_jugadores;
 	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
-
+	
+	int balas_disparadas = 0;
 	for (int i = 0; (i < configs[CONFIG::balas_rafaga_ametralladora]) 
 	    && (this->balas > 0); i++){
 	    this->ametralladora.disparar(jugador, set_jugadores);
 	    this->balas --;
+	    balas_disparadas ++;
 	}
+	return balas_disparadas;
 }
 
 void SS::soltarArma(Player *jugador){
@@ -203,11 +209,12 @@ bool Oficial::agregarArma(CanionDeCadena *canion){
     return true;
 }
 	
-void Oficial::disparar(Player *jugador, std::map<int, Player*>& enemigos){
+int Oficial::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	std::set<std::pair<int, Player*>> set_jugadores;
 	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
 	this->canion.disparar(jugador, set_jugadores);
 	this->balas --;	
+	return 1;
 }
 
 void Oficial::soltarArma(Player *jugador){
@@ -239,9 +246,10 @@ bool Mutante::agregarArma(Lanzacohetes *lanzacohetes){
 	return true;	
 }
 
-void Mutante::disparar(Player *jugador, std::map<int, Player*>& enemigos){
+int Mutante::disparar(Player *jugador, std::map<int, Player*>& enemigos){
 	this->lanzacohetes.disparar(jugador, enemigos);
 	this->balas -= (int)configs[CONFIG::balas_gastadas_lanzacohetes];
+	return (int)configs[CONFIG::balas_gastadas_lanzacohetes];
 }
 
 void Mutante::soltarArma(Player *jugador){

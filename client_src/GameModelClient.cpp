@@ -387,6 +387,21 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::CLOSE:
             closeDoor(protocol);
             break;
+        case Protocol::action::ADDPOINTS:
+            player.addPoints(protocol.getDamage());
+            break;
+        case Protocol::action::UPDATE_HEALTH:
+            player.updateHealth(protocol.getDamage());
+            break;
+        case Protocol::action::UPDATE_BULLETS:
+            player.updateAmmo(protocol.getDamage());
+            break;
+        case Protocol::action::PICKUP:
+            processPickup(protocol);
+            break;
+        case Protocol::action::SWITCH_GUN:
+            player.new_gun_type(protocol.getDamage());
+            break;
         case Protocol::action::END_GAME_KILLS:
             
             _ordered_players_kills.push_back(
@@ -427,7 +442,12 @@ void GameModelClient::processShoot(Protocol protocol){
 }
 
 void GameModelClient::processShooted(Protocol protocol){
-    player.updateHealth(-protocol.getDamage());
+    player.updateHealth(protocol.getDamage());
+}
+
+void GameModelClient::processPickup(Protocol& protocol){
+    Coordinates position(protocol.getPosition());
+    // Eliminar sprite del mapa
 }
 
 

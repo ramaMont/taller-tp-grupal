@@ -51,6 +51,21 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
         case Protocol::action::CLOSE:
             processClose(protocol);
             break;
+        case Protocol::action::ADDPOINTS:
+            sendPlayerProtocol(protocol);
+            break;
+        case Protocol::action::UPDATE_HEALTH:
+            sendPlayerProtocol(protocol);
+            break;
+        case Protocol::action::UPDATE_BULLETS:
+            sendPlayerProtocol(protocol);
+            break;
+        case Protocol::action::PICKUP:
+            echoProtocol(protocol);
+            break;
+        case Protocol::action::SWITCH_GUN:
+            processGunSwitch(protocol);
+            break;
         default:
             break;
     }
@@ -68,6 +83,13 @@ void ThGameModelServer::echoProtocol(Protocol protocol){
         user_sender->push(protocol);
         ++it;
     }
+}
+
+void ThGameModelServer::sendPlayerProtocol(Protocol& protocol){
+    if (users_sender.count(protocol.getId()) == 0)
+        return;
+    ThSender* th_user_sender = users_sender.at(protocol.getId());
+    th_user_sender->push(protocol);
 }
 
 void ThGameModelServer::processShoot(Protocol protocol){
@@ -141,6 +163,15 @@ void ThGameModelServer::processClose(Protocol& protocol){
         Event* doorE = new DoorEvent(door);
         th_game_events.add(doorE);
     }
+}
+
+void ThGameModelServer::processGunSwitch(Protocol& protocol){
+    Player* player = players.at(protocol.getId());
+    int old_gun = player->numeroArmaActual();
+    player->cambiarArma(protocol.getDamage());
+    int new_gun = player->numeroArmaActual();
+    if (new_gun != old_gun)
+        sendPlayerProtocol(protocol);
 }
 
 void ThGameModelServer::run(){

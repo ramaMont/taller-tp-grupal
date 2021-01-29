@@ -88,7 +88,15 @@ void Player::draw(){
 }
 
 void Player::updateHealth(int amount){
-	health += amount;
+	health = amount;
+}
+
+void Player::updateAmmo(int amount){
+    ammo = amount;
+}
+
+void Player::addPoints(int amount){
+    score += amount;
 }
 
 Player::~Player(){

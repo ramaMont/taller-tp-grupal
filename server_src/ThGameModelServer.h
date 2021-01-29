@@ -28,7 +28,9 @@ private:
     void processOpen(Protocol& protocol);
     void processOpening(Protocol& protocol);
     void processClose(Protocol& protocol);
+    void processGunSwitch(Protocol& protocol);
     void processEnd();
+    void sendPlayerProtocol(Protocol& protocol);
     void convertToTopFive(std::vector<std::pair<int,int>>& points_vector);
     void sendTopFiveToPlayers(
         const std::vector<std::pair<int,int>>& ordered_players_kills,
