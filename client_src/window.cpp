@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_mixer.h>
 #include "exception.h"
 #include "window.h"
 #include <iostream>
@@ -12,8 +13,14 @@ Window::Window(int width, int height, int resolution_width, int resolution_high)
         width, height, SDL_RENDERER_ACCELERATED | SDL_WINDOW_HIDDEN,
         &this->window, &this->renderer);
     if (state) {
-        throw Exception("Error al crear ventana");
-    }   
+        throw Exception("Error al crear ventana\n");
+    }
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
+        throw Exception("Error al inicializar audio\n");
+    }
+
+    // Cantidad de sonidos sonando a la vez: por ahora 16
+    Mix_AllocateChannels(16);
 }
 
 void Window::showWindow(){

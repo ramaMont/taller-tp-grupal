@@ -33,6 +33,7 @@
 #include <SpriteHolder.h>
 #include <SpriteDrawer.h>
 #include <Enemy.h>
+#include "SoundPlayer.h"
 
 class GameModelClient {
 private:
@@ -57,6 +58,8 @@ private:
     std::vector<std::pair<int,int>> _ordered_players_bullets;
 
 	bool is_running;
+
+    SoundPlayer _sound_player;
 
     void updateEvent();
     void move(int player_id);

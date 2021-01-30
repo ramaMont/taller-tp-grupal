@@ -11,6 +11,7 @@ Trabajo practico final Taller Fiuba
     libsdl2-ttf-dev
     liblua5.3-dev
     libyaml-cpp-dev
+    libsdl2-mixer-dev
 
 # Para compilar
     mkdir build

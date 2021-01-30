@@ -9,7 +9,8 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,
         added_player(false),player(map),
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
-        protagonist_id(protagonist_id),is_running(true) {
+        protagonist_id(protagonist_id),is_running(true),
+        _sound_player() {
     player.set_texture(&texture);
     player.newGunType(1);
     initDirections();
@@ -361,6 +362,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::SHOOT:
             processShoot(protocol);
+            _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT);
             break;
         case Protocol::action::SHOOTED:
             processShooted(protocol);
