@@ -6,6 +6,14 @@ Item::Item(Coordinates p): Posicionable(p) {
 	atravesable(true);
 }
 
+Coordinates& Item::getPosition(){
+	return posicion;
+}
+
+void Item::setPosition(Coordinates& position){
+	posicion = position;
+}
+
 bool Comida::usar(Player* jugador){
 	return jugador->agregarVida((int)configs[CONFIG::puntos_comida]);
 }

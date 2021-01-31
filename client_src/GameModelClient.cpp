@@ -404,6 +404,9 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::PICKUP:
             processPickup(protocol);
             break;
+        case Protocol::action::THROW:
+            processThrow(protocol);
+            break;
         case Protocol::action::SWITCH_GUN:
             player.newGunType(protocol.getDamage());
             break;
@@ -458,16 +461,23 @@ void GameModelClient::processShooted(Protocol protocol){
 
 void GameModelClient::processPickup(Protocol& protocol){
     Coordinates position(protocol.getPosition());
-    /*printf("El sprite a eliminar está en: (%f,%f)\n",position.x,position.y );
+    //printf("El sprite a eliminar está en: (%f,%f)\n",position.x,position.y );
     SpriteHolder* sprite = static_cast<SpriteHolder*>(map.getPositionableIn(position));
-    sprite->has_character();
-    if(sprite->has_character()){
-      Character* character = sprite->get_character();
+    if(sprite->hasCharacter()){
+      Character* character = sprite->getCharacter();
       map.removeSpriteWithCharacter(position,character);
     }else{
       map.removePositionable(position);
-    }*/
-    //delete sprite;
+    }
+}
+
+void GameModelClient::processThrow(Protocol& protocol){
+    Coordinates position(protocol.getPosition());
+    int texture_num = protocol.getDamage();
+    SpriteHolder *posicionable = new SpriteHolder(position,texture_num,player);
+    posicionable->set_texture(&texture);
+    sprites.push_back(posicionable);
+    map.addPositionable(posicionable,position);
 }
 
 

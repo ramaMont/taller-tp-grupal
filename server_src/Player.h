@@ -36,6 +36,10 @@ private:
     Coordinates initial_direction;
     AtomicCoordinates atomic_dir;
     AtomicCoordinates atomic_pos;
+
+    void throwGun();
+    void throwBullets();
+    void throwKey();
     
 public:
 

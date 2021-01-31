@@ -175,6 +175,23 @@ void Mapa::agregarItem(Item* item, Coordinates posicion){
 	items[floor(posicion.x)][floor(posicion.y)].push_back(item);
 }
 
+// Por si solo guardamos un item por posicion
+Coordinates Mapa::throwItem(Item* item, Coordinates posicion){
+    int pos_x = floor(posicion.x);
+    int pos_y = floor(posicion.y);
+    for (int i = 1; i < 5; ++i){
+        for (int x = pos_x - i; x < pos_x + i; ++x){
+            for (int y = pos_y - i; y < pos_y + i; ++y){
+                 if (x < 0 || x >= alto || y < 0 || y >= ancho ||
+                     !items[x][y].empty() || !mapaJuego[x][y].empty()) continue;
+                 items[x][y].push_back(item);
+                 return Coordinates(x, y);
+            }
+        }
+    }
+    return Coordinates(0, 0);
+}
+
 void Mapa::addDoor(Puerta* door){
     doors.push_back(door);
     agregarPosicionable(door, door->getCoordinates());

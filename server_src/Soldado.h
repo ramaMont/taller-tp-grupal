@@ -19,7 +19,7 @@ class Soldado {
     public:
     Soldado(int &balas): balas(balas) { }
 	virtual int disparar(Player *jugador, std::map<int, Player*>&) = 0;
-	virtual void soltarArma(Player *jugador) = 0;
+	virtual int soltarArma(Player *jugador) = 0;
 	virtual bool estaListo() = 0;
 	virtual int numeroArma() const = 0;
     void obtenerEnemigosCercanos(std::map<int, Player*>& enemigos,
@@ -35,7 +35,7 @@ class Perro: public Soldado {
 	public:
 	Perro(int& n);
 	int disparar(Player *jugador, std::map<int, Player*>&) override;
-	void soltarArma(Player *jugador) override;
+	int soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -48,7 +48,7 @@ class Guardia: public Soldado {
 	public:
 	Guardia(int& balas);
 	int disparar(Player *jugador, std::map<int, Player*>&) override;
-	void soltarArma(Player *jugador) override;
+	int soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -63,7 +63,7 @@ class SS: public Soldado {
 	SS(int &balas);
 	bool agregarArma(Ametralladora *ametralladora);
 	int disparar(Player *jugador, std::map<int, Player*>&) override;	
-	void soltarArma(Player *jugador) override;
+	int soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -78,7 +78,7 @@ class Oficial: public Soldado {
 	Oficial(int &balas);
 	bool agregarArma(CanionDeCadena *canion);
 	int disparar(Player *jugador, std::map<int, Player*>&) override;
-	void soltarArma(Player *jugador) override;
+	int soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -93,7 +93,7 @@ class Mutante: public Soldado {
 	Mutante(int &balas);
 	bool agregarArma(Lanzacohetes *lanzacohetes);
 	int disparar(Player *jugador, std::map<int, Player*>&) override;	
-	void soltarArma(Player *jugador) override;
+	int soltarArma(Player *jugador) override;
 	bool estaListo() override;
 	int numeroArma() const;
 };
@@ -110,14 +110,14 @@ class EstadoSoldado {
 	Oficial oficial;
 	Mutante mutante;
 	Soldado *soldado_anterior;
-	std::atomic<int> arma_actual;
+	std::atomic<int> arma_actual{1};
 	
 	public:
 	explicit EstadoSoldado(Player *jugador, int& balas);
 	int armaActual() const;
 	bool agregarArma(Arma* arma);
 	void cambiarArma(int numero_arma);
-	void soltarArma();
+	int soltarArma();
 	int disparar(std::map<int, Player*>& enemigos);
 	void recargarBalas();
 };

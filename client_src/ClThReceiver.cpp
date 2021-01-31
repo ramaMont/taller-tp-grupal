@@ -72,6 +72,9 @@ void ClThReceiver::processReception(Protocol& protocol){
         case Protocol::action::PICKUP:
             _gameModel->push(protocol);
             break;
+        case Protocol::action::THROW:
+            _gameModel->push(protocol);
+            break;
         case Protocol::action::SWITCH_GUN:
             _gameModel->push(protocol);
             break;

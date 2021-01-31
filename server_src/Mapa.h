@@ -35,6 +35,7 @@ public:
     void respawnPlayer(Player* jugador);
     void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);
     void agregarItem(Item* item, Coordinates posicion);
+    Coordinates throwItem(Item* item, Coordinates posicion);
     void addDoor(Puerta* door);
     void sacarPosicionable(Coordinates posicion);
     void sacarPosicionable(Coordinates posicion, const std::type_info& type_id);

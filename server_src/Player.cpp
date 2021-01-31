@@ -145,8 +145,9 @@ void Player::disparar(std::map<int, Player*>& jugadores){
 bool Player::usar(Item* item){
     bool b = item->usar(this);
     if (b){
+        Coordinates& position = item->getPosition();
         Protocol protocol(Protocol::action::PICKUP, player_id,
-            Protocol::direction::STAY, 0, posicion.x, posicion.y);    
+            Protocol::direction::STAY, 0, position.x, position.y);    
         _game_model_queue.push(protocol);
     }
     return b;
@@ -208,15 +209,11 @@ bool Player::estaPorMorir(){
 }
 
 void Player::morir(){
-	this->soldado.soltarArma();
 	mapa.sacarPosicionable(this->posicion);	
-	Balas* balas = new Balas(this->posicion, 10);
-	this->mapa.agregarItem(balas, this->posicion);
-	if (this->llave){
-		Llave* llaves = new Llave(this->posicion);
-		this->mapa.agregarItem(llaves, this->posicion);
-		this->llave = false;
-	}
+	throwGun();
+	throwBullets();
+	if (this->llave)
+		throwKey();
 	if (this->vidasRestantes > 0){
 		Protocol protocol(player_id);
 		protocol.setAction(Protocol::action::RESURRECT);
@@ -238,7 +235,6 @@ bool Player::revivir(){
     atomic_pos(this->posicion);
     return true;
 }
-
 bool Player::estaVivo(){
 	return this->is_alive;
 }
@@ -276,6 +272,35 @@ void Player::setPosition(Coordinates position){
 	this->posicion_inicial = position;
 	atomic_pos(this->posicion);
 }
+
+void Player::throwGun(){
+    int i = this->soldado.soltarArma();
+    if (i <= 0)
+        return;
+    Protocol protocol(Protocol::action::THROW, i,
+        Protocol::direction::STAY, 0, posicion.x, posicion.y);    
+    _game_model_queue.push(protocol);
+}
+
+void Player::throwBullets(){
+    Balas* bullets = new Balas(this->posicion, 10);
+    Coordinates pos = this->mapa.throwItem(bullets, this->posicion);
+    bullets->setPosition(pos);
+    Protocol protocol(Protocol::action::THROW, 10,
+        Protocol::direction::STAY, 0, pos.x, pos.y);    
+    _game_model_queue.push(protocol);
+}
+
+void Player::throwKey(){
+    Llave* key = new Llave(this->posicion);
+    Coordinates pos = this->mapa.throwItem(key, this->posicion);
+    key->setPosition(pos);
+    this->llave = false;
+    Protocol protocol(Protocol::action::THROW, 7,
+        Protocol::direction::STAY, 0, pos.x, pos.y);    
+    _game_model_queue.push(protocol);
+}
+
 
 AtomicCoordinates& Player::getAtomicDirection(){
     return atomic_dir;

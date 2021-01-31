@@ -72,6 +72,7 @@ private:
     void processShoot(Protocol protocol);
     void processShooted(Protocol protocol);
     void processPickup(Protocol& protocol);
+    void processThrow(Protocol& protocol);
     void openDoor(const Protocol& protocol);
     void openingDoor(const Protocol& protocol);
     void closeDoor(const Protocol& protocol);

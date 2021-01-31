@@ -63,6 +63,9 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
         case Protocol::action::PICKUP:
             echoProtocol(protocol);
             break;
+        case Protocol::action::THROW:
+            echoProtocol(protocol);
+            break;
         case Protocol::action::SWITCH_GUN:
             processGunSwitch(protocol);
             break;

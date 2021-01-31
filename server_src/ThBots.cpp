@@ -30,7 +30,6 @@ void ThBots::run(){
         for (auto it = bots.begin(); it != bots.end() && is_running; ++it){
             try{
                 Player* player = players[it->first];
-                player->cambiarArma(N_CUCHILLO);  // Eliminar linea
                 Bot::Event event = it->second->getEvent(player, players);
                 makeEvent(it->first, event);
             } catch(...) { }
@@ -86,6 +85,10 @@ void ThBots::makeEvent(int player_id, Bot::Event event){
             break;
         }
         case Bot::Event::CambiarArmaCuchillo:{
+            Protocol p(player_id);
+            p.setAction(Protocol::action::SWITCH_GUN);
+            p.setDamage(0);
+            _game_model_queue.push(p);
             break;
         }
         case Bot::Event::AbrirPuerta:{
