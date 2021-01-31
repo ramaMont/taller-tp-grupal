@@ -13,6 +13,9 @@ Trabajo practico final Taller Fiuba
     libyaml-cpp-dev
     libsdl2-mixer-dev
 
+Instalar con el siguiente comando en una terminal:
+sh dependencies.sh
+
 # Para compilar
     mkdir build
     cd build 
