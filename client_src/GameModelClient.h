@@ -75,7 +75,7 @@ private:
     void openDoor(const Protocol& protocol);
     void openingDoor(const Protocol& protocol);
     void closeDoor(const Protocol& protocol);
-    float calculateDistanceBetween(Player player, Enemy* enemy);
+    float calculateDistanceBetween(Posicionable* positionable);
 
 public:
     explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id);

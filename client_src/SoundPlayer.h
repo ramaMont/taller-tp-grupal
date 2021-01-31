@@ -7,7 +7,7 @@
 class SoundPlayer{
 public:
     enum sound_type{
-        PISTOL_SHOOT, DOG_BITE
+        PISTOL_SHOOT, DOG_BITE, DOOR_OPENING, DOOR_CLOSING, DYING
     };
     SoundPlayer();
     void playSound(SoundPlayer::sound_type sound_type, int volume);

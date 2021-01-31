@@ -370,6 +370,9 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::DIE:{
             auto character = characters.at(protocol.getId());
             character->die();
+            float distance = calculateDistanceBetween(character);
+            int volume = _sound_player.calculateVolume(distance);
+            _sound_player.playSound(SoundPlayer::sound_type::DYING, volume);
             break;
         }
         case Protocol::action::RESURRECT:{
@@ -435,13 +438,15 @@ void GameModelClient::run(){
 
 void GameModelClient::processShoot(Protocol protocol){
     if (protagonist_id == protocol.getId()){
+        static int vol = 100;
         player.shoot();
-        _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, 100);
+        _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, vol);
+        vol-=10;
     }else{
         Character* character= characters[protocol.getId()];
         Enemy* enemy = dynamic_cast<Enemy*>(character);
         enemy->shoot();
-        float distance = calculateDistanceBetween(player, enemy);
+        float distance = calculateDistanceBetween(character);
         int volume = _sound_player.calculateVolume(distance);
         _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, volume);
     }
@@ -480,22 +485,28 @@ void GameModelClient::openingDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
     door->setState("opening");
+    float distance = calculateDistanceBetween(map.getPositionableIn(door_pos));
+    int volume = _sound_player.calculateVolume(distance);
+    _sound_player.playSound(SoundPlayer::sound_type::DOOR_OPENING, volume);
 }
 
 void GameModelClient::closeDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
     door->setState("closed");
+    float distance = calculateDistanceBetween(map.getPositionableIn(door_pos));
+    int volume = _sound_player.calculateVolume(distance);
+    _sound_player.playSound(SoundPlayer::sound_type::DOOR_CLOSING, volume);
 }
 
 std::map<int,Character*> GameModelClient::getCharacters(){
     return characters;
 }
 
-float GameModelClient::calculateDistanceBetween(Player player, Enemy* enemy){
-    Coordinates player_position = player.get_position();
-    Coordinates enemy_position = enemy->get_position();
-    return std::sqrt(std::pow(player_position.x + enemy_position.x, 2) + std::pow(player_position.y + enemy_position.y, 2));
+float GameModelClient::calculateDistanceBetween(Posicionable* positionable){
+    Coordinates player_position = this->player.get_position();
+    Coordinates positionable_position = positionable->get_position();
+    return std::sqrt(std::pow(player_position.x - positionable_position.x, 2) + std::pow(player_position.y - positionable_position.y, 2));
 }
 
 GameModelClient::~GameModelClient(){
