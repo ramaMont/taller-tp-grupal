@@ -1,6 +1,7 @@
 #include "GameModelClient.h"
 #include <tuple>
 #include <yaml-cpp/yaml.h>
+#include <cmath>
 
 GameModelClient::GameModelClient(int user_id, std::string map_filename,
             int game_id, int protagonist_id) : 
@@ -297,7 +298,7 @@ void GameModelClient::removePlayer(int id){
 }
 
 void GameModelClient::player_shoot(){
-  player.shoot();
+    player.shoot();
 }
 
 Player& GameModelClient::getPlayer(){
@@ -362,7 +363,6 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::SHOOT:
             processShoot(protocol);
-            _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT);
             break;
         case Protocol::action::SHOOTED:
             processShooted(protocol);
@@ -436,10 +436,14 @@ void GameModelClient::run(){
 void GameModelClient::processShoot(Protocol protocol){
     if (protagonist_id == protocol.getId()){
         player.shoot();
+        _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, 100);
     }else{
-      Character* character= characters[protocol.getId()];
-      Enemy* enemy = dynamic_cast<Enemy*>(character);
-      enemy->shoot();
+        Character* character= characters[protocol.getId()];
+        Enemy* enemy = dynamic_cast<Enemy*>(character);
+        enemy->shoot();
+        float distance = calculateDistanceBetween(player, enemy);
+        int volume = _sound_player.calculateVolume(distance);
+        _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, volume);
     }
 }
 
@@ -486,6 +490,12 @@ void GameModelClient::closeDoor(const Protocol& protocol){
 
 std::map<int,Character*> GameModelClient::getCharacters(){
     return characters;
+}
+
+float GameModelClient::calculateDistanceBetween(Player player, Enemy* enemy){
+    Coordinates player_position = player.get_position();
+    Coordinates enemy_position = enemy->get_position();
+    return std::sqrt(std::pow(player_position.x + enemy_position.x, 2) + std::pow(player_position.y + enemy_position.y, 2));
 }
 
 GameModelClient::~GameModelClient(){

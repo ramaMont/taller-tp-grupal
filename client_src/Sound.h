@@ -11,7 +11,7 @@ private:
     std::unique_ptr<Mix_Chunk, void (*)(Mix_Chunk *)> mix_chunk;
 public:
     explicit Sound(const std::string& file_path, int volume);
-    void play();
+    void play(int volume);
     void setVolume(int volume);
     ~Sound();
 };
