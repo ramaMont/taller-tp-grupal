@@ -15,6 +15,7 @@ private:
     std::vector<SDL_Texture*> sprites;
     std::vector<SDL_Texture*> enemies;
     std::vector<SDL_Texture*> shooting_effect;
+    std::vector<SDL_Texture*> bar_guns;
     SDL_Texture* face_health;
     SDL_Texture* guns;
     SDL_Texture* door;
@@ -49,6 +50,8 @@ private:
 
     // Carga las caras de la vida
     void addFaceHealth();
+
+    void addBarGuns(std::string new_texture);
 
     //Grafica los pixeles solicitados de la textura recibida en la posicion recibida
     void genericShow(SDL_Texture* texture, int first_x_pixel, int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\
