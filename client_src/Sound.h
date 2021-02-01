@@ -10,9 +10,8 @@ class Sound{
 private:
     std::unique_ptr<Mix_Chunk, void (*)(Mix_Chunk *)> mix_chunk;
 public:
-    explicit Sound(const std::string& file_path, int volume);
+    explicit Sound(const std::string& file_path);
     void play(int volume);
-    void setVolume(int volume);
     ~Sound();
 };
 
