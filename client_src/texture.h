@@ -15,6 +15,7 @@ private:
     std::vector<SDL_Texture*> sprites;
     std::vector<SDL_Texture*> enemies;
     std::vector<SDL_Texture*> shooting_effect;
+    SDL_Texture* face_health;
     SDL_Texture* guns;
     SDL_Texture* door;
     SDL_Texture* life_bar;
@@ -46,6 +47,9 @@ private:
     // Carga todas las texturas de la barra de vidas
     void addLifeBarTexture(std::string new_texture);
 
+    // Carga las caras de la vida
+    void addFaceHealth();
+
     //Grafica los pixeles solicitados de la textura recibida en la posicion recibida
     void genericShow(SDL_Texture* texture, int first_x_pixel, int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\
         int windows_x_pos, int length_x, int windows_y_pos, int lenght_y);
@@ -61,6 +65,8 @@ private:
 
     //configura los parametros y llama al generic_show para graficar la parte visible del enemigo
     void showEnemy(SDL_Texture* texture, int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture);
+
+    void showFaceHealth(int health);
 
 public:
 

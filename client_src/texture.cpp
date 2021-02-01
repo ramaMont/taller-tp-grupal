@@ -65,6 +65,15 @@ void Texture::addLifeBarTexture(std::string new_texture){
 	SDL_FreeSurface(loadedSurface);		
 }
 
+void Texture::addFaceHealth(){
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/face_health.png"));
+    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 255, 255, 255);
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
+	face_health = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+	SDL_FreeSurface(loadedSurface);		
+
+}
+
 Texture::Texture(const Window& window):
 	renderer(window.getRenderer()),height(window.getHeight()-112),
 	width(window.getWidth()){
@@ -102,6 +111,7 @@ Texture::Texture(const Window& window):
 	addGunTexture("guns");
 	addDoorTextures();
 	addLifeBarTexture("life_bar");
+	addFaceHealth();
 
 	this->x_lenght_ray = ceil((float)this->width/(window.getResolutionWidth()));//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
 
@@ -119,7 +129,45 @@ Texture::Texture(const Window& window):
 }
 
 
+void Texture::showFaceHealth(int health){ //Se asume MAX_VIDA=100
 
+	int first_x_pixel = 0;//Desde qué pixel en X quiero
+	int cant_x_pixels = 145;
+	int first_y_pixel = 0;
+	int cant_y_pixels = 190;
+
+	int windows_x_pos = width/2 - 55;//Posicion inicial de X donde voy a mostrar el pixel
+	int windows_y_pos = height + 5;//		
+	int length_x = 63;
+	int lenght_y = 100;
+
+	if(health<=12){
+		first_x_pixel = 433;
+		first_y_pixel = 190;
+	}else if(health<=25){
+		first_x_pixel = 289;
+		first_y_pixel = 190;
+	}else if(health<=38){
+		first_x_pixel = 144;
+		first_y_pixel = 190;
+	}else if(health<=50){
+		first_x_pixel = 0;
+		first_y_pixel = 190;
+	}else if(health<=63){
+		first_x_pixel = 433;
+		first_y_pixel = 0;
+	}else if(health<=75){
+		first_x_pixel = 289;
+		first_y_pixel = 0;
+	}else if(health<=88){
+		first_x_pixel = 144;
+		first_y_pixel = 0;
+	}else{
+		first_x_pixel = 0;
+		first_y_pixel = 0;
+	}
+	genericShow(face_health,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
+}
 
 void Texture::showLifeBar(unsigned int score, int lives, int health, int ammo){
 		imgPartRect.x = 0; //Desde qué pixel en X quiero
@@ -145,6 +193,8 @@ void Texture::showLifeBar(unsigned int score, int lives, int health, int ammo){
 	    	showText(text_health,20,80,390);	    	    	
 	    }
 	    showText(std::to_string(ammo).c_str(),20,80,480);	    
+
+	    showFaceHealth(health);
 }
 
 void Texture::showText(std::string text, int letter_width, int letter_height, int x_pos){
