@@ -79,7 +79,7 @@ private:
     float calculateDistanceBetween(Posicionable* positionable);
 
 public:
-    explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id);
+    explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id, int max_health);
 
     virtual void processProtocol(Protocol& protocol);
     void run();

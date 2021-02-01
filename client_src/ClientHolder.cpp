@@ -137,7 +137,8 @@ void ClientHolder::processReception(Protocol& protocol){
 }
 
 void ClientHolder::createGameModel(std::string map_filename, int id_user_protocol, int game_id){
-    _game_model = new GameModelClient(id_user_protocol, map_filename, game_id, user_id);
+    int max_health = configs[1];
+    _game_model = new GameModelClient(id_user_protocol, map_filename, game_id, user_id, max_health);
 }
 
 void ClientHolder::startGame(){

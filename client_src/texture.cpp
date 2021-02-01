@@ -129,7 +129,7 @@ Texture::Texture(const Window& window):
 }
 
 
-void Texture::showFaceHealth(int health){ //Se asume MAX_VIDA=100
+void Texture::showFaceHealth(int portion_health){
 
 	int first_x_pixel = 0;//Desde qué pixel en X quiero
 	int cant_x_pixels = 145;
@@ -141,25 +141,25 @@ void Texture::showFaceHealth(int health){ //Se asume MAX_VIDA=100
 	int length_x = 63;
 	int lenght_y = 100;
 
-	if(health<=12){
+	if(portion_health==1){
 		first_x_pixel = 433;
 		first_y_pixel = 190;
-	}else if(health<=25){
+	}else if(portion_health==2){
 		first_x_pixel = 289;
 		first_y_pixel = 190;
-	}else if(health<=38){
+	}else if(portion_health==3){
 		first_x_pixel = 144;
 		first_y_pixel = 190;
-	}else if(health<=50){
+	}else if(portion_health==4){
 		first_x_pixel = 0;
 		first_y_pixel = 190;
-	}else if(health<=63){
+	}else if(portion_health==5){
 		first_x_pixel = 433;
 		first_y_pixel = 0;
-	}else if(health<=75){
+	}else if(portion_health==6){
 		first_x_pixel = 289;
 		first_y_pixel = 0;
-	}else if(health<=88){
+	}else if(portion_health==7){
 		first_x_pixel = 144;
 		first_y_pixel = 0;
 	}else{
@@ -169,7 +169,7 @@ void Texture::showFaceHealth(int health){ //Se asume MAX_VIDA=100
 	genericShow(face_health,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 
-void Texture::showLifeBar(unsigned int score, int lives, int health, int ammo){
+void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_health, int ammo){
 		imgPartRect.x = 0; //Desde qué pixel en X quiero
 		imgPartRect.y = 0;	//Desde qué pixel en Y quiero
 		imgPartRect.w = 1097; //Cantidad de pixeles en X que tomo
@@ -194,7 +194,7 @@ void Texture::showLifeBar(unsigned int score, int lives, int health, int ammo){
 	    }
 	    showText(std::to_string(ammo).c_str(),20,80,480);	    
 
-	    showFaceHealth(health);
+	    showFaceHealth(portion_health);
 }
 
 void Texture::showText(std::string text, int letter_width, int letter_height, int x_pos){

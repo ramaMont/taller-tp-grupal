@@ -2,17 +2,21 @@
 
 #include "texture.h"
 
-Player::Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id):
+#include <math.h>
+
+Player::Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id, int max_health):
       Character(posicion,direction,map,id), 
+      max_health(max_health),
       shot_frame(0), gun_type(nullptr),
       shooting(false),score(10), lives(5), health(100), ammo(20){
 //   	map.agregarPlayer(this);
 }
 
-Player::Player(ClMap& map):
+Player::Player(ClMap& map, int max_health):
       Character(Coordinates(4,4),Coordinates(1,0),map,0), 
+      max_health(max_health),
       shot_frame(0), gun_type(nullptr),shooting(false),
-      score(1000), lives(5), health(98), ammo(20){
+      score(1000), lives(5), health(max_health), ammo(20){
 //    map.agregarPlayer(this);
 }
 
@@ -29,7 +33,7 @@ void Player::resurrect(){
     posicion = initial_position;
     direction = initial_direction;
     lives--;
-    health = 100;
+    health = max_health;
     map.addPositionable(this, this->initial_position);
 }
 
@@ -82,7 +86,8 @@ void Player::updateShots(){
 }
 
 void Player::draw(){
-    texture_drawer->showLifeBar(score, lives, health, ammo);
+    float portion_health =  ((float)health*8.0)/(float)max_health ;
+    texture_drawer->showLifeBar(score, lives,health, ceil(portion_health), ammo);
     gun_type->callDrawer(shot_frame);
 }
 

@@ -22,6 +22,7 @@ class GunType;
 
 class Player final : public Character{
 private:
+    const int max_health;
 	int shot_frame;
 	GunType* gun_type;
 	bool shooting;	
@@ -33,9 +34,9 @@ private:
     int ammo;
 
 public:
-    explicit Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id);
+    explicit Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id, int max_health);
 
-    explicit Player(ClMap& map);
+    explicit Player(ClMap& map, int max_health);
 
     //Pre:-
     // Completo los datos iniciales del jugador
