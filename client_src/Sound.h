@@ -12,6 +12,7 @@ private:
 public:
     explicit Sound(const std::string& file_path);
     void play(int volume);
+    void play(int channel, int volume);
     ~Sound();
 };
 

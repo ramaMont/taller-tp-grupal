@@ -7,7 +7,7 @@
 #include <sys/time.h>
 
 UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model):
-        th_sender(th_sender), _game_model(game_model){
+        th_sender(th_sender), _game_model(game_model), _background_music(){
     done = SDL_FALSE;
 }
 
@@ -36,6 +36,9 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol
         protocol.moveInDirection(
             Protocol::direction::BACKWARD);
         th_sender.push(protocol);
+    }
+    if(keys[SDL_SCANCODE_M]){
+        _background_music.togglePause();
     }
 
     if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
@@ -121,6 +124,7 @@ void UserClient::gameLoop(){
         _game_model.run();//Proceso los protocolos
         _game_model.updateFrameAnimations();
         screen.show();
+        _background_music.playMusic();
         gettimeofday(&time_now, nullptr);
         time_t new_time = (time_now.tv_usec / 1000);
         time_t rest;

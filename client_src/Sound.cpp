@@ -12,5 +12,10 @@ void Sound::play(int volume) {
     Mix_PlayChannel(-1, mix_chunk.get(), 0);
 }
 
+void Sound::play(int channel, int volume) {
+    Mix_VolumeChunk(mix_chunk.get(), volume);
+    Mix_PlayChannel(channel, mix_chunk.get(), 0);
+}
+
 Sound::~Sound(){
 }

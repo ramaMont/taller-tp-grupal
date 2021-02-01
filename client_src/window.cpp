@@ -15,12 +15,13 @@ Window::Window(int width, int height, int resolution_width, int resolution_high)
     if (state) {
         throw Exception("Error al crear ventana\n");
     }
+    // Inicializacion de audio
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
         throw Exception("Error al inicializar audio\n");
     }
 
-    // Cantidad de sonidos sonando a la vez: por ahora 16
-    Mix_AllocateChannels(16);
+    // Cantidad de sonidos sonando a la vez: por ahora 32
+    Mix_AllocateChannels(32);
 }
 
 void Window::showWindow(){
