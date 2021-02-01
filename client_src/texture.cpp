@@ -16,7 +16,6 @@ void Texture::addWallTexture(std::string new_texture){
     loadedSurface = IMG_Load(("../data/textures/" + new_texture+"_shaded.png").c_str());
     wall_textures.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
 	SDL_FreeSurface(loadedSurface);
-
 }
 
 void Texture::addSpriteTexture(std::string new_texture){
@@ -60,16 +59,23 @@ void Texture::addDoorTextures(){
 }
 
 void Texture::addLifeBarTexture(std::string new_texture){
-    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/bar_textures/" + new_texture+".png").c_str());
 	life_bar = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);		
 }
 
 void Texture::addFaceHealth(){
-    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/face_health.png"));
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/bar_textures/face_health.png"));
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 255, 255, 255);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
 	face_health = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+	SDL_FreeSurface(loadedSurface);		
+
+}
+
+void Texture::addBarGuns(std::string new_texture){
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/bar_textures/" + new_texture+".png").c_str());
+    bar_guns.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
 	SDL_FreeSurface(loadedSurface);		
 
 }
@@ -109,8 +115,16 @@ Texture::Texture(const Window& window):
 	addShootingEffectTexture("guard_shooting");
 
 	addGunTexture("guns");
+
 	addDoorTextures();
+
 	addLifeBarTexture("life_bar");
+
+	addBarGuns("knife");
+	addBarGuns("gun");
+	addBarGuns("machine_gun");
+	addBarGuns("chain_gun");
+
 	addFaceHealth();
 
 	this->x_lenght_ray = ceil((float)this->width/(window.getResolutionWidth()));//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
@@ -241,15 +255,59 @@ void Texture::showWeapon(int frame_gun, int current_gun, int left_start_texture,
 
 void Texture::showKnife(int frame_gun){
 		showWeapon(frame_gun,0,27,53);
+
+		int first_x_pixel = 0;//Desde qué pixel en X quiero
+		int cant_x_pixels = 450;
+		int first_y_pixel = 0;
+		int cant_y_pixels = 150;
+
+		int windows_x_pos = width - 470;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height + 5;//		
+		int length_x = 63;
+		int lenght_y = 100;
+		genericShow(this->bar_guns[0],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showGun(int frame_gun){
 		showWeapon(frame_gun,1,20,47);
+
+		int first_x_pixel = 0;//Desde qué pixel en X quiero
+		int cant_x_pixels = 400;
+		int first_y_pixel = 0;
+		int cant_y_pixels = 190;
+
+		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height + 15;//		
+		int length_x = 120;
+		int lenght_y = 80;
+		genericShow(this->bar_guns[1],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showMachineGun(int frame_gun){
 		showWeapon(frame_gun,2,13,52);
+
+		int first_x_pixel = 0;//Desde qué pixel en X quiero
+		int cant_x_pixels = 460;
+		int first_y_pixel = 0;
+		int cant_y_pixels = 170;
+
+		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height + 15;//		
+		int length_x = 120;
+		int lenght_y = 80;
+		genericShow(this->bar_guns[2],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showChainGun(int frame_gun){
 		showWeapon(frame_gun,3,7,59);
+
+		int first_x_pixel = 0;//Desde qué pixel en X quiero
+		int cant_x_pixels = 490;
+		int first_y_pixel = 0;
+		int cant_y_pixels = 220;
+
+		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height + 15;//		
+		int length_x = 120;
+		int lenght_y = 80;
+		genericShow(this->bar_guns[3],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 
 
