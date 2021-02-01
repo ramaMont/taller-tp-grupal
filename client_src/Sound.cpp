@@ -7,12 +7,7 @@ Sound::Sound(const std::string& file_path) :
     }
 }
 
-void Sound::play(int volume) {
-    Mix_VolumeChunk(mix_chunk.get(), volume);
-    Mix_PlayChannel(-1, mix_chunk.get(), 0);
-}
-
-void Sound::play(int channel, int volume) {
+void Sound::play(int volume, int channel) {
     Mix_VolumeChunk(mix_chunk.get(), volume);
     Mix_PlayChannel(channel, mix_chunk.get(), 0);
 }
