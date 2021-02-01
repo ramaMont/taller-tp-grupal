@@ -59,13 +59,13 @@ void Texture::addDoorTextures(){
 }
 
 void Texture::addLifeBarTexture(std::string new_texture){
-    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/bar_textures/" + new_texture+".png").c_str());
 	life_bar = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);		
 }
 
 void Texture::addFaceHealth(){
-    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/face_health.png"));
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/bar_textures/face_health.png"));
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 255, 255, 255);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
 	face_health = SDL_CreateTextureFromSurface(renderer, loadedSurface);
