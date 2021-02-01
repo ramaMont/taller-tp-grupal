@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <tuple>
 
-struct __attribute__((packed)) Protocol {
+class Protocol {
 public:
     enum action : std::uint16_t { MOVE, SHOOT, LOAD, PICKUP, OPEN, OPENING,
             CLOSING, CLOSE, SHOOTED, ADDKILL, ADDPOINTS, ENDGAME, SET_ID,
@@ -15,6 +15,15 @@ public:
 
     enum direction : std::uint16_t { FORWARD, BACKWARD, LEFT, RIGHT,
             ROTATE_LEFT, ROTATE_RIGHT, STAY};
+
+    struct __attribute__((packed)) NetworkProtocol {
+        Protocol::action _action;
+        std::uint16_t id;
+        Protocol::direction _direction;
+        std::uint16_t damage;
+        std::uint16_t _game_id;
+        float _float_aux;
+    };
     
     Protocol();
     explicit Protocol(int id);
@@ -27,8 +36,8 @@ public:
     Protocol::action getAction();
     Protocol::direction getDirection();
     void moveInDirection(Protocol::direction direction);
-    void serialize();
-    void unSerialize();
+    Protocol::NetworkProtocol serialize() const;
+    void unSerialize(const Protocol::NetworkProtocol& received_protocol);
     int getId();
     int getMapId();
     int getUserId();

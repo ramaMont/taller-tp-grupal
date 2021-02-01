@@ -8,7 +8,7 @@ void ThSender::run(){
     try{
         while (is_running){
             Protocol protocol = operations.pop();
-            socket->send(protocol, sizeof(Protocol));
+            socket->send(protocol);
         }
     } catch(...){
         is_running = false;

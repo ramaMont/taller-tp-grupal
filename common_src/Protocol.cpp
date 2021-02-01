@@ -91,21 +91,24 @@ void Protocol::moveInDirection(Protocol::direction direction){
     _direction = direction;
 }
 
-void Protocol::serialize(){
-    _action = (Protocol::action)htons(_action);
-    id = htons(id);
-    _direction = (Protocol::direction)htons(_direction);
-    damage = htons(damage);
-    _game_id = htons(_game_id);
-    _float_aux = htonl(_float_aux);
+Protocol::NetworkProtocol Protocol::serialize() const{
+    Protocol::NetworkProtocol sending_protocol;
+    sending_protocol._action = (Protocol::action)htons(_action);
+    sending_protocol.id = htons(id);
+    sending_protocol._direction = (Protocol::direction)htons(_direction);
+    sending_protocol.damage = htons(damage);
+    sending_protocol._game_id = htons(_game_id);
+    sending_protocol._float_aux = htonl(_float_aux);
+    return sending_protocol;
 }
-void Protocol::unSerialize(){
-    _action = (Protocol::action)ntohs(_action);
-    id = ntohs(id);
-    _direction = (Protocol::direction)ntohs(_direction);
-    damage = ntohs(damage);
-    _game_id = ntohs(_game_id);
-    _float_aux = ntohl(_float_aux);
+
+void Protocol::unSerialize(const Protocol::NetworkProtocol& received_protocol){
+    _action = (Protocol::action)ntohs(received_protocol._action);
+    id = ntohs(received_protocol.id);
+    _direction = (Protocol::direction)ntohs(received_protocol._direction);
+    damage = ntohs(received_protocol.damage);
+    _game_id = ntohs(received_protocol._game_id);
+    _float_aux = ntohl(received_protocol._float_aux);
 }
 
 void Protocol::setAction(Protocol::action action){

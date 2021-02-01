@@ -28,11 +28,11 @@ void ClientHolder::crearPartida(const std::string& map_filename,
     Protocol protocol_send(bots_cty, map_id_checksum);
     Protocol protocol_response;
     protocol_send.setAction(Protocol::action::CREATE_GAME);
-    socket->send(protocol_send, sizeof(protocol_send));
-    socket->recive(protocol_response, sizeof(protocol_response));
+    socket->send(protocol_send);
+    socket->recive(protocol_response);
     processReception(protocol_response);
     game_id = _game_id;
-    socket->recive(protocol_response, sizeof(protocol_response));
+    socket->recive(protocol_response);
     processReception(protocol_response);
     _cl_th_receiver = new ClThReceiver(socket, *this, _game_model);
     _cl_th_receiver->start();
@@ -42,7 +42,7 @@ void ClientHolder::unirseAPartida(std::string& id_partida) {
     int game_id = std::stoi(id_partida);
     Protocol protocol_send(game_id);
     protocol_send.setAction(Protocol::action::JOIN_GAME);
-    socket->send(protocol_send, sizeof(protocol_send));
+    socket->send(protocol_send);
     addLoggedUsers();
 }
 
@@ -52,7 +52,7 @@ void ClientHolder::logged(std::string& nombre, std::string& puerto, std::string&
     _host_dns = servidor;
     Protocol protocol;
     socket = new SocketClient(_host_dns, _port);
-    socket->recive(protocol, sizeof(Protocol));
+    socket->recive(protocol);
     setId(protocol);
     std::cout << "Id del jugador: " << std::to_string(user_id);
     receiveConfiguration();
@@ -89,7 +89,7 @@ void ClientHolder::setId(Protocol& protocol){
 void ClientHolder::launchGame() {
     Protocol protocol(_game_model->getId());
     protocol.setAction(Protocol::action::LAUNCH_GAME);
-    socket->send(protocol, sizeof(protocol));
+    socket->send(protocol);
     _th_sender = new ThSender(user_id, socket);
     _th_sender->start();
 }
@@ -149,12 +149,12 @@ void ClientHolder::addLoggedUsers(){
     Protocol protocol_response;
     bool ready = false;
     while (!ready){
-        socket->recive(protocol_response, sizeof(protocol_response));
+        socket->recive(protocol_response);
         processReception(protocol_response);
         if (protocol_response.getAction() == Protocol::action::END)
             ready = true;
     }
-    socket->recive(protocol_response, sizeof(protocol_response));
+    socket->recive(protocol_response);
     processReception(protocol_response);
     _cl_th_receiver = new ClThReceiver(socket, *this, _game_model);
     _cl_th_receiver->start();
@@ -166,7 +166,7 @@ void ClientHolder::receiveConfiguration(){
     bool ready = false;
     Protocol protocol_config;
     while (!ready){
-        socket->recive(protocol_config, sizeof(protocol_config));
+        socket->recive(protocol_config);
         if (protocol_config.getAction() == Protocol::action::END)
             ready = true;
         else

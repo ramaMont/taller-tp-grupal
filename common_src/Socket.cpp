@@ -68,12 +68,13 @@ Socket::Socket(){
 Socket::Socket(int socketFd):socketFd(socketFd){
 }
 
-int Socket::send(Protocol& protocol, size_t size){
+int Socket::send(const Protocol& protocol){
     size_t bytes_enviados = 0;
-    protocol.serialize();
+    Protocol::NetworkProtocol sending_protocol = protocol.serialize();
+    size_t size = sizeof(sending_protocol);
     while (bytes_enviados < size) {
         int sent;
-        sent = ::send(socketFd, (char *)&protocol + bytes_enviados,
+        sent = ::send(socketFd, (char *)&sending_protocol + bytes_enviados,
             size - bytes_enviados, MSG_NOSIGNAL);
         if (sent == -1){
             printf("Error: %s\n", strerror(errno));
@@ -88,8 +89,9 @@ int Socket::send(Protocol& protocol, size_t size){
     return 0;
 }
 
-int Socket::recive(Protocol& protocol, size_t size){
-    Protocol recived_protocol;
+int Socket::recive(Protocol& protocol){
+    Protocol::NetworkProtocol recived_protocol;
+    size_t size = sizeof(recived_protocol);
     size_t received = 0;
     while (received < size){
         int rec = 0;
@@ -102,8 +104,7 @@ int Socket::recive(Protocol& protocol, size_t size){
         }
         received += rec;
     }
-    recived_protocol.unSerialize();
-    protocol = recived_protocol;
+    protocol.unSerialize(recived_protocol);
     return received;
 }
 

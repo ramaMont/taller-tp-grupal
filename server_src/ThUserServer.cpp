@@ -19,11 +19,11 @@ ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
 void ThUserServer::sendConfiguration(){
     for(auto &config : configs){
         Protocol protocol_config(config.first, config.second);
-        socket_peer.send(protocol_config, sizeof(protocol_config));
+        socket_peer.send(protocol_config);
     }
     Protocol protocol_end;
     protocol_end.setAction(Protocol::action::END);
-    socket_peer.send(protocol_end, sizeof(protocol_end));
+    socket_peer.send(protocol_end);
 }
 
 void ThUserServer::respondSuccess(){
@@ -47,7 +47,7 @@ void ThUserServer::respondError(){
 void ThUserServer::initCommunication(){
     Protocol protocol(user_id);
     protocol.setAction(Protocol::action::SET_ID);
-    socket_peer.send(protocol, sizeof(Protocol));
+    socket_peer.send(protocol);
     sendConfiguration();
     th_receiver = new ThReceiver(&socket_peer);
     th_receiver->setThUser(this);

@@ -9,7 +9,7 @@ void ThReceiver::run(){
     Protocol protocol;
     try{
         while (is_running){
-            socket->recive(protocol, sizeof(protocol));
+            socket->recive(protocol);
             processReception(protocol);
         }
     } catch(...){

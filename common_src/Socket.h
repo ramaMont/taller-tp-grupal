@@ -15,8 +15,8 @@ public:
     Socket();
     explicit Socket(int socketFd);
 
-    int send(Protocol& protocol, size_t size);
-    int recive(Protocol& protocol, size_t size);
+    int send(const Protocol& protocol);
+    int recive(Protocol& protocol);
     void shutdown();
     void close();
     Socket(const Socket&) = delete;
