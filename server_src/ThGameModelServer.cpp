@@ -309,9 +309,10 @@ ThGameModelServer::~ThGameModelServer(){
     // Todos los jugadores son limpiados en la funcion 
     // removePlayer la cual es llamada cada vez que un jugador
     // se desconecta o se frena la ejecucion de un ThUserServer
-    
-    th_game_events.stop();
-    th_game_events.join();
-    th_bots.stop();
-    th_bots.join();
+    if (launched){
+        th_game_events.stop();
+        th_game_events.join();
+        th_bots.stop();
+        th_bots.join();
+    }
 }

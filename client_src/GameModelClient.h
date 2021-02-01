@@ -77,6 +77,7 @@ private:
     void openingDoor(const Protocol& protocol);
     void closeDoor(const Protocol& protocol);
     float calculateDistanceBetween(Posicionable* positionable);
+    void playSound(SoundPlayer::sound_type sound_type, Posicionable* positionable);
 
 public:
     explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id, int max_health);

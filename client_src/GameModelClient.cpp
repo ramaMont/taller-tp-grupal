@@ -37,97 +37,6 @@ void GameModelClient::initDirections(){
     directions[Protocol::direction::ROTATE_RIGHT] = rotRight;
 }
 
-// void GameModelClient::initMap(){
-//     std::vector<std::vector<int>> a_map{
-//     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,0,0,2,2,10,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-//     {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-//     {1,0,8,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,9,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,1},
-//     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,9,0,0,0,0,1},
-//     {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-// };
-
-//     for(int i=0; i<24; i++){
-//       for(int j=0; j<24; j++){
-//         int pos_value = a_map[i][j];
-//         if(pos_value!=0){
-//             if(pos_value<8){
-//               Coordinates position((float)i,(float)j);
-//               if(pos_value==1){
-//                   Posicionable *posicionable = new Wall_greystone(position);
-//                   posicionable->set_texture(&texture);
-//                   map.addPositionable(posicionable,position);                
-//               }else if(pos_value==2){
-//                   Posicionable *posicionable = new Wall_bluestone(position);
-//                   posicionable->set_texture(&texture);
-//                   map.addPositionable(posicionable,position);
-//               }else if(pos_value==3){
-//                   Posicionable *posicionable = new Wall_purplestone(position);
-//                   posicionable->set_texture(&texture);
-//                   map.addPositionable(posicionable,position);
-//               }else if(pos_value==4){
-//                   Posicionable *posicionable = new Wall_colorstone(position);
-//                   posicionable->set_texture(&texture);
-//                   map.addPositionable(posicionable,position);
-//               }else if(pos_value==5){
-//                   Posicionable *posicionable = new Wall_eagle(position);
-//                   posicionable->set_texture(&texture);
-//                   map.addPositionable(posicionable,position);
-//               }else if(pos_value==6){
-//                   Posicionable *posicionable = new Wall_mossy(position);
-//                   posicionable->set_texture(&texture);
-//                   map.addPositionable(posicionable,position);
-//               }else if(pos_value==7){
-//                   Posicionable *posicionable = new Wall_redbrick(position);
-//                   posicionable->set_texture(&texture);
-//                   map.addPositionable(posicionable,position);
-//               }
-//             }else if(pos_value<10){
-//               Coordinates position((float)i+0.5,(float)j+0.5);
-//               SpriteHolder *posicionable = new SpriteHolder(position,a_map[i][j]-8,player);
-//               posicionable->set_texture(&texture);
-//               posicionable->add_sprite(2);
-//               sprites.push_back(posicionable);
-//               map.addPositionable(posicionable,position);
-//             }else{//DOOR==10
-//               Coordinates position((float)i,(float)j);
-//               Door *posicionable = new Door(position);
-//               posicionable->set_texture(&texture);
-//               door = posicionable;
-//               map.addPositionable(posicionable,position);   
-//             }
-//             /*else{ DEJO DE AGREGAR ENEMIGOS ASI
-//               Coordinates position((float)i+0.5,(float)j+0.5);
-//               Coordinates enemy_direction(0,1);
-//               Enemy *posicionable = new Enemy(texture,position,a_map[i][j]-10,enemy_direction,map,player,"Andy");//Esta textura ahora mismo representa si esta de costado o de frente, deberia representar qué enemigo es
-//               posicionable->newEnemyType(1);//Tipo de enemmigo por defecto
-//               sprites.push_back(posicionable);
-//               enemies.push_back(posicionable);
-//               map.addPositionable(posicionable,position);             
-//             }*/
-//         }
-//       }
-//     }
-// }
-
 void GameModelClient::initMap(std::string map_filename){
 	std::string MAPS_PATH = "../data/maps/";
     YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
@@ -370,9 +279,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::DIE:{
             auto character = characters.at(protocol.getId());
             character->die();
-            float distance = calculateDistanceBetween(character);
-            int volume = _sound_player.calculateVolume(distance);
-            _sound_player.playSound(SoundPlayer::sound_type::DYING, volume);
+            playSound(SoundPlayer::sound_type::DYING, character);
             break;
         }
         case Protocol::action::RESURRECT:{
@@ -441,17 +348,13 @@ void GameModelClient::run(){
 
 void GameModelClient::processShoot(Protocol protocol){
     if (protagonist_id == protocol.getId()){
-        static int vol = 100;
         player.shoot();
-        _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, vol);
-        vol-=10;
+        _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, 100);
     }else{
         Character* character= characters[protocol.getId()];
         Enemy* enemy = dynamic_cast<Enemy*>(character);
         enemy->shoot();
-        float distance = calculateDistanceBetween(character);
-        int volume = _sound_player.calculateVolume(distance);
-        _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, volume);
+        playSound(SoundPlayer::sound_type::PISTOL_SHOOT, character);
     }
 }
 
@@ -495,18 +398,14 @@ void GameModelClient::openingDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
     door->setState("opening");
-    float distance = calculateDistanceBetween(map.getPositionableIn(door_pos));
-    int volume = _sound_player.calculateVolume(distance);
-    _sound_player.playSound(SoundPlayer::sound_type::DOOR_OPENING, volume);
+    playSound(SoundPlayer::sound_type::DOOR_OPENING, map.getPositionableIn(door_pos));
 }
 
 void GameModelClient::closeDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
     door->setState("closed");
-    float distance = calculateDistanceBetween(map.getPositionableIn(door_pos));
-    int volume = _sound_player.calculateVolume(distance);
-    _sound_player.playSound(SoundPlayer::sound_type::DOOR_CLOSING, volume);
+    playSound(SoundPlayer::sound_type::DOOR_CLOSING, map.getPositionableIn(door_pos));
 }
 
 std::map<int,Character*> GameModelClient::getCharacters(){
@@ -517,6 +416,12 @@ float GameModelClient::calculateDistanceBetween(Posicionable* positionable){
     Coordinates player_position = this->player.get_position();
     Coordinates positionable_position = positionable->get_position();
     return std::sqrt(std::pow(player_position.x - positionable_position.x, 2) + std::pow(player_position.y - positionable_position.y, 2));
+}
+
+void GameModelClient::playSound(SoundPlayer::sound_type sound_type, Posicionable* positionable){
+    float distance = calculateDistanceBetween(positionable);
+    int volume = _sound_player.calculateVolume(distance);
+    _sound_player.playSound(sound_type, volume);   
 }
 
 GameModelClient::~GameModelClient(){
