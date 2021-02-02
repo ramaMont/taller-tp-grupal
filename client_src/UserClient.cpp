@@ -57,31 +57,31 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol
         th_sender.push(protocol);
         showPlayersInfo(player);
     }
-    if(keys[SDL_SCANCODE_0]){
+    if(keys[SDL_SCANCODE_0] || keys[SDL_SCANCODE_KP_0]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(0);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_1]){
+    if(keys[SDL_SCANCODE_1] || keys[SDL_SCANCODE_KP_1]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(1);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_2]){
+    if(keys[SDL_SCANCODE_2] || keys[SDL_SCANCODE_KP_2]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(2);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_3]){
+    if(keys[SDL_SCANCODE_3] || keys[SDL_SCANCODE_KP_3]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(3);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_4]){
+    if(keys[SDL_SCANCODE_4] || keys[SDL_SCANCODE_KP_4]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(4);

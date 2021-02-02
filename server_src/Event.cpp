@@ -33,7 +33,7 @@ OpenEvent::OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e):
 
 void OpenEvent::process(ThGameModelServer& game_model){
     Coordinates pos = player->get_coordinates();
-    Objeto* p = map.getNearestDoor(pos);
+    Objeto* p = map.getNearestPassage(pos);
     if (p && typeid(*p) == typeid(Puerta)){
         Puerta* puerta = static_cast<Puerta*>(p);
         if (puerta->abrir(player)){
@@ -49,7 +49,11 @@ void OpenEvent::process(ThGameModelServer& game_model){
     if (p && typeid(*p) == typeid(ParedFalsa)){
         ParedFalsa* wall = static_cast<ParedFalsa*>(p);
         if (wall->abrir(player)){
-            // Protocol sacar pared
+            Coordinates position = wall->getPosicion();
+            Protocol protocol(Protocol::action::OPEN_PASSAGE, player->getId(),
+            Protocol::direction::STAY, 0, position.x, position.y);    
+            game_model.echoProtocol(protocol);
+            map.removePassage(position);
         }
     }
 }

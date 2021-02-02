@@ -38,7 +38,7 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
             } else if (parsed_element == "door"){
                 Coordinates position((float)i,(float)j);
                 Puerta* posicionable = new Puerta(position);
-                map.addDoor(posicionable);
+                map.addPassage(posicionable);
             } else if (parsed_element == "playe"){
                 std::string dir_str = elemento.substr(7, elemento.size() - 5);
                 Coordinates position((float)i,(float)j);
@@ -50,11 +50,11 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
             } else if (elemento == "key_door"){
                 Coordinates position((float)i,(float)j);
                 PuertaCerrada* posicionable = new PuertaCerrada(position);
-                map.addDoor(posicionable);
+                map.addPassage(posicionable);
             } else if (elemento == "passage"){
                 Coordinates position((float)i,(float)j);
                 ParedFalsa* posicionable = new ParedFalsa(position);
-                map.agregarPosicionable(posicionable, position);
+                map.addPassage(posicionable);
             } else if (elemento == "food"){
                 Coordinates position((float)i,(float)j);
                 Comida* posicionable = new Comida(position);
@@ -192,8 +192,8 @@ Coordinates Mapa::throwItem(Item* item, Coordinates posicion){
     return Coordinates(0, 0);
 }
 
-void Mapa::addDoor(Puerta* door){
-    doors.push_back(door);
+void Mapa::addPassage(Objeto* door){
+    passages.push_back(door);
     agregarPosicionable(door, door->getCoordinates());
 }
 
@@ -227,6 +227,17 @@ void Mapa::sacarItem(Coordinates posicion, const std::type_info& type_id){
     }
 }
 
+void Mapa::removePassage(Coordinates& position){
+    sacarPosicionable(position);
+    for (auto it = passages.begin(); it < passages.end(); ++it){
+        if ((*it)->getPosicion() == position){
+            passages.erase(it);
+            return;
+        }
+    }
+}
+
+
 Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return nullptr;
@@ -235,23 +246,24 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)].back();
 }
 
-Objeto* Mapa::getNearestDoor(Coordinates& position){
+Objeto* Mapa::getNearestPassage(Coordinates& position){
     Objeto* nearest = nullptr;
     float min_distance = configs[CONFIG::open_distance];
-    for (Objeto* door: doors){
-        float dist = position.calculate_distance(door->getCoordinates());
+    for (Objeto* passage: passages){
+        float dist = position.calculate_distance(passage->getCoordinates());
         if (dist < min_distance){
             min_distance = dist;
-            nearest = door;
+            nearest = passage;
         }
     }
     return nearest;
 }
 
 Puerta* Mapa::getDoor(Coordinates& position){
-    for (Objeto* door: doors){
-        if (door->getPosicion() == position){
-            return static_cast<Puerta*>(door);
+    for (Objeto* passage: passages){
+        if (passage->getPosicion() == position &&
+            typeid(*passage) == typeid(Puerta)){
+            return static_cast<Puerta*>(passage);
         }
     }
     return nullptr;

@@ -327,7 +327,10 @@ void GameModelClient::processProtocol(Protocol& protocol){
             processThrow(protocol);
             break;
         case Protocol::action::SWITCH_GUN:
-            player.newGunType(protocol.getDamage());
+            processGunSwitch(protocol);
+            break;
+        case Protocol::action::OPEN_PASSAGE:
+            map.removePositionable(Coordinates(protocol.getPosition()));
             break;
         case Protocol::action::END_GAME_KILLS:    
             _ordered_players_kills.push_back(
@@ -393,11 +396,20 @@ void GameModelClient::processPickup(Protocol& protocol){
 
 void GameModelClient::processThrow(Protocol& protocol){
     Coordinates position(protocol.getPosition());
-    int texture_num = protocol.getDamage();
-    SpriteHolder *posicionable = new SpriteHolder(position,texture_num,player);
+    SpriteHolder *posicionable = new SpriteHolder(position,protocol.getId(),player);
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);
     map.addPositionable(posicionable,position);
+}
+
+void GameModelClient::processGunSwitch(Protocol& protocol){
+    if (protagonist_id == protocol.getId()){
+        player.newGunType(protocol.getDamage());
+    }else{
+        Character* character= characters[protocol.getId()];
+        Enemy* enemy = dynamic_cast<Enemy*>(character);
+        enemy->newEnemyType(protocol.getDamage());
+    }
 }
 
 

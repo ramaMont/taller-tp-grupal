@@ -243,7 +243,7 @@ Mapa& Player::getMapa(){
 	return this->mapa;
 }
 
-int Player::numeroArmaActual() const{
+int Player::numeroArmaActual(){
 	return this->soldado.armaActual();
 }
 

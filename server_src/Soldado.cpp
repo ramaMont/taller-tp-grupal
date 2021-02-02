@@ -19,7 +19,7 @@ EstadoSoldado::EstadoSoldado(Player *jugador, int &balas): jugador(jugador),
 	this->soldado_anterior = nullptr;
 }
 
-int EstadoSoldado::armaActual() const{
+int EstadoSoldado::armaActual(){
 	return this->arma_actual;
 }
 
@@ -63,7 +63,9 @@ void EstadoSoldado::cambiarArma(int numero_arma){
 
 
 int EstadoSoldado::soltarArma(){
-	return this->soldado->soltarArma(this->jugador);
+	Soldado *s = this->soldado;
+	this->soldado = &this->guardia;
+	return s->soltarArma(this->jugador);
 }
 
 int EstadoSoldado::disparar(std::map<int, Player*>& enemigos){
