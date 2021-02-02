@@ -4,7 +4,7 @@
 puerto: 8080
 
 # Partida
-minutos_partida: 2
+minutos_partida: 1
 
 # Jugador
 vida_maxima: 100

@@ -435,8 +435,11 @@ void GameModelClient::endGame(){
     if (!_has_ended){
         _has_ended = true;
         waitForAction(Protocol::action::ENDGAME);
-        if (_winner_id != -1)
+        if (_winner_id != -1){
             std::cout << "The winner is Player ID: " << _winner_id << std::endl;
+        } else {
+            std::cout << "TIME IS OVER\n";
+        }
         for (auto& player : _ordered_players_kills){
             std::cout << "Position " << position << " Player_ID: " << player.second << " Kills: " << player.first << std::endl;
             ++position;
