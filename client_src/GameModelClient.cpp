@@ -11,7 +11,7 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
         protagonist_id(protagonist_id),is_running(true),
-        _sound_player() {
+        _sound_player(), _has_ended(false), _winner_id(-1) {
     player.set_texture(&texture);
     player.newGunType(1);
     initDirections();
@@ -265,6 +265,17 @@ GameModelClient& GameModelClient::operator=(GameModelClient&& other){
     return *this;
 }
 
+void GameModelClient::addDeadSprite(Character* character){
+  /*int enemy_type = 0;
+  Coordinates position = character->getPosicion();
+  if(enemy_type==0){
+    SpriteHolder *posicionable = new SpriteHolder(position,12,player);
+    posicionable->set_texture(&texture);
+    sprites.push_back(posicionable);  
+    map.addPositionable(posicionable,position);  
+  }*/
+}
+
 void GameModelClient::processProtocol(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::MOVE:
@@ -279,6 +290,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::DIE:{
             auto character = characters.at(protocol.getId());
             character->die();
+            addDeadSprite(character);
             playSound(SoundPlayer::sound_type::DYING, character);
             break;
         }
@@ -317,8 +329,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::SWITCH_GUN:
             player.newGunType(protocol.getDamage());
             break;
-        case Protocol::action::END_GAME_KILLS:
-            
+        case Protocol::action::END_GAME_KILLS:    
             _ordered_players_kills.push_back(
                 std::pair<int, int>(protocol.getDamage(), 
                 protocol.getId()));
@@ -333,13 +344,19 @@ void GameModelClient::processProtocol(Protocol& protocol){
                 std::pair<int, int>(protocol.getDamage(), 
                 protocol.getId()));
             break;
+        case Protocol::action::WINNER:
+            _winner_id = protocol.getId();
+            break;
+        case Protocol::action::ENDGAME:
+            endGame();
+            break;
         default:
             break;
     }
 }
 
 void GameModelClient::run(){
-    while (!operations.empty()){
+    while (!operations.empty() && !_has_ended){
         Protocol protocol = operations.front();
         operations.pop();
         processProtocol(protocol);
@@ -422,6 +439,48 @@ void GameModelClient::playSound(SoundPlayer::sound_type sound_type, Posicionable
     float distance = calculateDistanceBetween(positionable);
     int volume = _sound_player.calculateVolume(distance);
     _sound_player.playSound(sound_type, volume);   
+}
+
+void GameModelClient::endGame(){
+    // Mostrar pantalla con puntuaciones y ganador
+    int position = 1;
+    if (!_has_ended){
+        _has_ended = true;
+        waitForAction(Protocol::action::ENDGAME);
+        if (_winner_id != -1){
+            std::cout << "The winner is Player ID: " << _winner_id << std::endl;
+        } else {
+            std::cout << "TIME IS OVER\n";
+        }
+        for (auto& player : _ordered_players_kills){
+            std::cout << "Position " << position << " Player_ID: " << player.second << " Kills: " << player.first << std::endl;
+            ++position;
+        }
+        position = 1;
+        for (auto& player : _ordered_players_points){
+            std::cout << "Position " << position << " Player_ID: " << player.second << " Points: " << player.first << std::endl;
+            ++position;
+        }
+        position = 1;
+        for (auto& player : _ordered_players_bullets){
+            std::cout << "Position " << position << " Player_ID: " << player.second << " Bullets: " << player.first << std::endl;
+            ++position;
+        }
+    }
+}
+
+void GameModelClient::waitForAction(Protocol::action desired_action){
+    bool ready = false;
+    while (!ready){
+        if (operations.size() > 0){
+            Protocol protocol = operations.front();
+            operations.pop();
+            if (protocol.getAction() == desired_action)
+                ready = true;
+            else
+                processProtocol(protocol);
+        }
+    }
 }
 
 GameModelClient::~GameModelClient(){

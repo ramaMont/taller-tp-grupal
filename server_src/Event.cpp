@@ -68,7 +68,7 @@ void FinishGameEvent::process(BlockingQueue<Protocol>& game_model_queue){
     double seconds = difftime(time_now, _time);
 
     if (seconds/MINUTE_SECONDS > configs[CONFIG::minutos_partida]){
-        Protocol protocol(0);
+        Protocol protocol;
 		protocol.setAction(Protocol::action::ENDGAME);
 		game_model_queue.push(protocol);
         _finished = true;
@@ -158,5 +158,3 @@ void RocketEvent::process(BlockingQueue<Protocol>& game_model_queue){
 
 RocketEvent::~RocketEvent(){
 }
-
-

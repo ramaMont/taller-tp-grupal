@@ -23,6 +23,7 @@ private:
     void getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Player& player);
 
     void gameLoop();
+    void endGame();
 public:
     explicit UserClient(ThSender& th_sender, GameModelClient& game_model);
     void play();

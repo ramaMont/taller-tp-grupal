@@ -209,6 +209,7 @@ bool Player::estaPorMorir(){
 }
 
 void Player::morir(){
+    this->vidasRestantes --;
 	mapa.sacarPosicionable(this->posicion);	
 	throwGun();
 	throwBullets();
@@ -228,7 +229,6 @@ bool Player::revivir(){
     this->direction = initial_direction;
     mapa.respawnPlayer(this);
     this->vida = (int)configs[CONFIG::vida_maxima];
-    this->vidasRestantes --;
     this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
     this->soldado.cambiarArma(N_PISTOLA);
     atomic_dir(this->direction);

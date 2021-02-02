@@ -29,13 +29,15 @@ private:
     void processOpening(Protocol& protocol);
     void processClose(Protocol& protocol);
     void processGunSwitch(Protocol& protocol);
-    void processEnd();
+    void processTopFiveEnd();
     void sendPlayerProtocol(Protocol& protocol);
     void convertToTopFive(std::vector<std::pair<int,int>>& points_vector);
     void sendTopFiveToPlayers(
         const std::vector<std::pair<int,int>>& ordered_players_kills,
         const std::vector<std::pair<int,int>>& ordered_players_points,
         const std::vector<std::pair<int,int>>& ordered_players_bullets);
+    void endGame(bool isAWinner = false);
+    void processWinnerEnd();
 
 public:
     explicit ThGameModelServer(ThUserServer& th_user_server, std::string map_filename,

@@ -97,9 +97,9 @@ void ThBots::makeEvent(int player_id, Bot::Event event){
             _game_model_queue.push(p);
             break;
         }
-	case Bot::Event::Nada:{
+	    case Bot::Event::Nada:{
             break;
-    }
+        }
     }
 }
 

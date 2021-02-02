@@ -42,6 +42,14 @@ void Texture::addEnemyTexture(std::string new_texture){
 	SDL_FreeSurface(loadedSurface);		
 }
 
+void Texture::addDeadEnemyTexture(std::string new_texture){
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/dead_enemies/" + new_texture+".png").c_str());
+    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
+    dead_enemies.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
+	SDL_FreeSurface(loadedSurface);		
+}
+
 void Texture::addGunTexture(std::string new_texture){
     SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
@@ -105,12 +113,23 @@ Texture::Texture(const Window& window):
 	addSpriteTexture("fire_canon");
 	addSpriteTexture("bullets");	
 	addSpriteTexture("table");	
+	addSpriteTexture("dead_enemies/dead_guard");
+	addSpriteTexture("dead_enemies/dead_officer");
+	addSpriteTexture("dead_enemies/dead_dog");
+	addSpriteTexture("dead_enemies/dead_ss");
+	addSpriteTexture("dead_enemies/dead_mutant");
 
 	addEnemyTexture("guard_pos");
 	addEnemyTexture("officer_pos");
 	addEnemyTexture("dog_pos");
 	addEnemyTexture("ss_pos");
 	addEnemyTexture("mutant_pos");
+
+	addDeadEnemyTexture("dead_guard");
+	addDeadEnemyTexture("dead_officer");
+	addDeadEnemyTexture("dead_dog");
+	addDeadEnemyTexture("dead_ss");
+	addDeadEnemyTexture("dead_mutant");
 
 	addShootingEffectTexture("guard_shooting");
 
