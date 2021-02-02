@@ -4,12 +4,12 @@
 puerto: 8080
 
 # Partida
-minutos_partida: 20
+minutos_partida: 2
 
 # Jugador
 vida_maxima: 100
 vida_minima: 11    # para poder usar sangre
-cantidad_de_vidas: 2
+cantidad_de_vidas: 1
 balas_iniciales: 20
 balas_maximas: 30
 

@@ -58,8 +58,9 @@ private:
     std::vector<std::pair<int,int>> _ordered_players_bullets;
 
 	bool is_running;
-
     SoundPlayer _sound_player;
+    bool _has_ended;
+    int _winner_id;
 
     void updateEvent();
     void move(int player_id);
@@ -78,6 +79,8 @@ private:
     void closeDoor(const Protocol& protocol);
     float calculateDistanceBetween(Posicionable* positionable);
     void playSound(SoundPlayer::sound_type sound_type, Posicionable* positionable);
+    void endGame();
+    void waitForAction(Protocol::action desired_action);
 
 public:
     explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id, int max_health);

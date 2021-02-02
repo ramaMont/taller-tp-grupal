@@ -69,6 +69,9 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
         case Protocol::action::SWITCH_GUN:
             processGunSwitch(protocol);
             break;
+        case Protocol::action::ENDGAME:
+            endGame();
+            break;
         default:
             break;
     }
@@ -134,8 +137,9 @@ bool someoneWon(std::map<int, Player*>& players){
 void ThGameModelServer::processDie(Protocol protocol){
     Player* player = players.at(protocol.getId());
     player->morir();
-    if (someoneWon(players)){}
-        //finish game
+    if (someoneWon(players)){
+        endGame(true);
+    }
 }
 
 void ThGameModelServer::processOpen(Protocol& protocol){
@@ -243,7 +247,7 @@ void ThGameModelServer::showPlayersInfo(){
     }
 }
 
-void ThGameModelServer::processEnd(){
+void ThGameModelServer::processTopFiveEnd(){
     std::vector<std::pair<int,int>> ordered_players_kills;
     std::vector<std::pair<int,int>> ordered_players_points;
     std::vector<std::pair<int,int>> ordered_players_bullets;
@@ -302,7 +306,30 @@ void ThGameModelServer::sendTopFiveToPlayers(
         Protocol protocol(bullets.second, bullets.first, Protocol::action::END_GAME_BULLETS);
         echoProtocol(protocol);
     }
+}
 
+void ThGameModelServer::processWinnerEnd(){
+    int winner_id;
+    for (auto& player :players)
+        if (player.second->estaVivo())
+            winner_id =  player.second->getId();
+    Protocol protocol(winner_id);
+    protocol.setAction(Protocol::action::WINNER);
+    echoProtocol(protocol);
+}
+
+void ThGameModelServer::endGame(bool isAWinner){
+    Protocol protocol;
+    protocol.setAction(Protocol::action::ENDGAME);
+    echoProtocol(protocol);
+    th_bots.stop();
+    if (isAWinner){
+        processWinnerEnd();
+    }
+    processTopFiveEnd();
+    Protocol protocol_end;
+    protocol_end.setAction(Protocol::action::ENDGAME);
+    echoProtocol(protocol_end);
 }
 
 ThGameModelServer::~ThGameModelServer(){
