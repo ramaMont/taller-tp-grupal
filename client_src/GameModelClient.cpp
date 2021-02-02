@@ -265,6 +265,17 @@ GameModelClient& GameModelClient::operator=(GameModelClient&& other){
     return *this;
 }
 
+void GameModelClient::addDeadSprite(Character* character){
+  /*int enemy_type = 0;
+  Coordinates position = character->getPosicion();
+  if(enemy_type==0){
+    SpriteHolder *posicionable = new SpriteHolder(position,12,player);
+    posicionable->set_texture(&texture);
+    sprites.push_back(posicionable);  
+    map.addPositionable(posicionable,position);  
+  }*/
+}
+
 void GameModelClient::processProtocol(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::MOVE:
@@ -279,6 +290,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::DIE:{
             auto character = characters.at(protocol.getId());
             character->die();
+            addDeadSprite(character);
             playSound(SoundPlayer::sound_type::DYING, character);
             break;
         }

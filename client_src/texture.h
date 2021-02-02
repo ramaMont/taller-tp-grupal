@@ -14,6 +14,7 @@ private:
     std::vector<SDL_Texture*> wall_textures;
     std::vector<SDL_Texture*> sprites;
     std::vector<SDL_Texture*> enemies;
+    std::vector<SDL_Texture*> dead_enemies;
     std::vector<SDL_Texture*> shooting_effect;
     std::vector<SDL_Texture*> bar_guns;
     SDL_Texture* face_health;
@@ -38,6 +39,9 @@ private:
 
     // Carga todas las texturas de enemigos
     void addEnemyTexture(std::string new_texture);
+
+    // Carga todas las texturas de enemigos muertos
+    void addDeadEnemyTexture(std::string new_texture);
 
     // Carga todas las texturas de las armas
     void addGunTexture(std::string new_texture);
