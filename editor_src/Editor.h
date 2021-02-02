@@ -1,5 +1,5 @@
-#ifndef GREETER_H
-#define GREETER_H
+#ifndef EDITOR_H
+#define EDITOR_H
 
 #include <string>
 #include <iostream>
@@ -60,4 +60,4 @@ private:
     std::map<std::string, std::string> obtenerMapaRecursos();
 };
 
-#endif // GREETER_H
+#endif // EDITOR_H

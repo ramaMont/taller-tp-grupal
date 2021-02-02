@@ -210,7 +210,14 @@ void Editor::crearMapaNuevo() {
             return;
         }
 
-        mapWidget->crearMapaNuevo(nombre_map, filas, columnas);
+        try {
+            mapWidget->crearMapaNuevo(nombre_map, filas, columnas);
+        } catch (std::exception& exc) {
+            mapWidget->mostrarWarning(QString::fromStdString(exc.what()),
+                        QMessageBox::Warning);
+            //mapWidget->deleteMap();
+            return;
+        }
         scrollMapArea->show();
         this->setWindowTitle(nombre_qstring);
         mapWidget->actualizarLabelFyC();
@@ -229,7 +236,14 @@ bool Editor::desplegarFileDialog() {
 
     if (!map_file.empty()) {
         // Cargo un nuevo mapa.
-        mapWidget->cargarMapaDesdeArchivo(map_file);
+        try {
+            mapWidget->cargarMapaDesdeArchivo(map_file);
+        } catch (std::exception& exc) {
+            mapWidget->mostrarWarning(QString::fromStdString(exc.what()),
+                        QMessageBox::Warning);
+            mapWidget->limpiarGridYMapa();
+            return false;
+        }
         return true;
     }
     return false;
@@ -331,15 +345,17 @@ std::map<std::string, std::string> Editor::obtenerMapaRecursos() {
     mapa.insert(std::pair<std::string, std::string>("barrel",
                                                     "../data/textures/barrel.png"));
 
-    // Paredes y doors
+    // Paredes y puertas
     mapa.insert(std::pair<std::string, std::string>("wall_bluestone",
                                                     "../data/textures/wall_bluestone_editor.png"));
     mapa.insert(std::pair<std::string, std::string>("wall_greystone",
                                                     "../data/textures/wall_greystone_editor.png"));
     mapa.insert(std::pair<std::string, std::string>("wall_colorstone",
                                                     "../data/textures/wall_colorstone_editor.png"));
-    mapa.insert(std::pair<std::string, std::string>("wall_colorstone",
-                                                    "../data/textures/wall_wood.png"));
+    mapa.insert(std::pair<std::string, std::string>("wall_redbrick",
+                                                    "../data/textures/wall_redbrick_editor.png"));
+    mapa.insert(std::pair<std::string, std::string>("wall_purplestone",
+                                                    "../data/textures/wall_purplestone_editor.png"));
     mapa.insert(std::pair<std::string, std::string>("passage",
                                                     "../data/textures/passage.png"));
     mapa.insert(std::pair<std::string, std::string>("door",

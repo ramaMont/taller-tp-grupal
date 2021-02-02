@@ -32,6 +32,8 @@ class MapWidget : public QFrame
     void actualizarNombreVentana();
     void actualizarLabelFyC();
     void pintarParedes(QString object_name);
+    void limpiarGridYMapa();
+    void mostrarWarning(QString message, QMessageBox::Icon icon);
 
  protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -45,7 +47,6 @@ class MapWidget : public QFrame
     std::map<std::string, std::string> mapa_recursos;
     QLabel* highlighted_label;
     bool mapa_creado;
-    void limpiarGridYMapa();
     void pointAndClick(QLabel* label_visual, QLabel* label_elemento);
     void desplegarMenuOpciones(QMouseEvent *event, QLabel* label_visual,
                                QLabel* label_elemento);
@@ -56,9 +57,6 @@ class MapWidget : public QFrame
     void agregarFilaAPartirDe(int fila);
     void eliminarFila(int fila);
     void eliminarColumna(int fila);
-    void mostrarWarning(QString message, QMessageBox::Icon icon);
-    bool validarParedes();
-    bool validarPuertas();
     void intercambiarLabels(const std::string& pos_1,
                             const std::string& pos_2);
     void crearCeldaVacia(const std::string& pos, const int& fila,

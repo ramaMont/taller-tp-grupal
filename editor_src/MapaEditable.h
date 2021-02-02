@@ -1,32 +1,24 @@
+
+#ifndef MAPAEDITABLE_H
+#define MAPAEDITABLE_H
+
 #include <iostream>
 #include <string>
 #include <map>
 #include <fstream>
+#include "map_exceptions.h"
 
 #define MAX_FC 40
 #define MIN_FC 10
 #define CARGAR_DESDE_ARCHIVO 1
 #define NUEVO_MAPA 0
 
-#ifndef MAPAEDITABLE_H
-#define MAPAEDITABLE_H
-
 class MapaEditable {
  public:
     MapaEditable(const int& flag,
                  const std::string& nombre,
                  const std::string& archivo_mapa,
-                 const int& filas, const int& columnas)
-                 : nombre(nombre), filas(filas), columnas(columnas) {
-      if (flag == CARGAR_DESDE_ARCHIVO) {
-         this->archivo_mapa = archivo_mapa;
-         cargarMapaExistente();
-      } else {
-         if (filas > MAX_FC || columnas > MAX_FC ||
-             filas < MIN_FC || columnas < MIN_FC) throw -1;
-         this->archivo_mapa = "../data/maps/" + nombre + ".yaml";
-      }
-    }
+                 const int& filas, const int& columnas);
     ~MapaEditable();
     void iniciarNuevoMapa(const int& rows, const int& columns);
     void cargarMapaExistente();
@@ -41,6 +33,9 @@ class MapaEditable {
     void agregarColumna();
     void eliminarFila();
     void eliminarColumna();
+    void validarMapa();
+    void validarParedes();
+    void validarPuertas();
     int getColumnas();
     int getFilas();
     void limpiar();
