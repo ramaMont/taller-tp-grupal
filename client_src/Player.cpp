@@ -5,17 +5,17 @@
 
 #include <math.h>
 
-Player::Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id, int max_health):
+Player::Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id):
         Character(posicion,direction,map,id), 
-        max_health(max_health),
+        max_health(configs[CONFIG::vida_maxima]), init_bullets(configs[CONFIG::balas_iniciales]), 
         shot_frame(0), gun_type(nullptr),
         shooting(false),score(0), lives(configs[CONFIG::cantidad_de_vidas]), health(max_health),
         ammo(configs[CONFIG::balas_iniciales]){
 }
 
-Player::Player(ClMap& map, int max_health):
+Player::Player(ClMap& map):
         Character(Coordinates(4,4),Coordinates(1,0),map,0), 
-        max_health(max_health),
+        max_health(configs[CONFIG::vida_maxima]), init_bullets(configs[CONFIG::balas_iniciales]), 
         shot_frame(0), gun_type(nullptr),shooting(false),
         score(0), lives(configs[CONFIG::cantidad_de_vidas]), health(max_health), ammo(configs[CONFIG::balas_iniciales]){
 }

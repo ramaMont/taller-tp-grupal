@@ -84,7 +84,7 @@ private:
     void waitForAction(Protocol::action desired_action);
     void addDeadSprite(Character* character);
 public:
-    explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id, int max_health);
+    explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id);
 
     virtual void processProtocol(Protocol& protocol);
     void run();

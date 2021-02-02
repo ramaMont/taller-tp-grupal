@@ -4,10 +4,10 @@
 #include <cmath>
 
 GameModelClient::GameModelClient(int user_id, std::string map_filename,
-            int game_id, int protagonist_id, int max_health) : 
+            int game_id, int protagonist_id) : 
         window(640,480,320,200) ,
         texture(window), map(), 
-        added_player(false),player(map,max_health),
+        added_player(false),player(map),
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
         protagonist_id(protagonist_id),is_running(true),
@@ -266,14 +266,14 @@ GameModelClient& GameModelClient::operator=(GameModelClient&& other){
 }
 
 void GameModelClient::addDeadSprite(Character* character){
-  /*int enemy_type = 0;
+  int enemy_type = 0;
   Coordinates position = character->getPosicion();
   if(enemy_type==0){
     SpriteHolder *posicionable = new SpriteHolder(position,12,player);
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);  
     map.addPositionable(posicionable,position);  
-  }*/
+  }
 }
 
 void GameModelClient::processProtocol(Protocol& protocol){
