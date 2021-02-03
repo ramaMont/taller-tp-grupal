@@ -1,4 +1,4 @@
-nombre: all_elements
+nombre: 2_all_elements
 filas: 15
 columnas: 15
 elementos:
@@ -125,7 +125,7 @@ elementos:
   pos_3_0: wall_greystone
   pos_3_1: empty
   pos_3_10: empty
-  pos_3_11: empty
+  pos_3_11: player_left
   pos_3_12: empty
   pos_3_13: empty
   pos_3_14: wall_greystone
