@@ -73,8 +73,8 @@ void Enemy::moving(){
 	is_moving = true;
 }
 
-void Enemy::shoot(){
-	enemy_type->shoot();
+void Enemy::shoot(SoundPlayer& soundPlayer, float distance){
+	enemy_type->shoot(soundPlayer, distance);
 }
 
 void Enemy::updateFrame(){

@@ -7,10 +7,13 @@
 class SoundPlayer{
 public:
     enum sound_type{
-        PISTOL_SHOOT, DOG_BITE, DOOR_OPENING, DOOR_CLOSING, DYING
+        PISTOL_SHOOT, MACHINEGUN_SHOOT, CHAINGUN_SHOOT, DOG_BITE, 
+        ROCKET_LAUNCHER, DOOR_OPENING, DOOR_CLOSING, DYING
     };
     SoundPlayer();
     void playSound(SoundPlayer::sound_type sound_type, int volume);
+    void playSoundAtDistance(SoundPlayer::sound_type sound_type, 
+        float distance);
     int calculateVolume(float distance);
     ~SoundPlayer();
 private:

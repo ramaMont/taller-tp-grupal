@@ -20,6 +20,8 @@ class Character;
 class GunType;
 #include "GunType.h"
 
+#include "SoundPlayer.h"
+
 class Player final : public Character{
 private:
     const int max_health;
@@ -47,7 +49,7 @@ public:
     void newGunType(int new_gun_type);
 
     // Inicializo la animacion de disparo o la actualizo en caso de que siga disparando
-    void shoot();
+    void shoot(SoundPlayer& soundPlayer, float distance);
 
     //Pre:-
     // Devuelve si el jugador puede disparar    

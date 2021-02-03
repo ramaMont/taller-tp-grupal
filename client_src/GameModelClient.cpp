@@ -206,9 +206,9 @@ void GameModelClient::removePlayer(int id){
 
 }
 
-void GameModelClient::player_shoot(){
-    player.shoot();
-}
+// void GameModelClient::player_shoot(){
+//     player.shoot();
+// }
 
 Player& GameModelClient::getPlayer(){
     return player;
@@ -368,13 +368,14 @@ void GameModelClient::run(){
 
 void GameModelClient::processShoot(Protocol protocol){
     if (protagonist_id == protocol.getId()){
-        player.shoot();
-        _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, 100);
+        player.shoot(_sound_player, 0);
+        // _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, 100);
     }else{
         Character* character= characters[protocol.getId()];
         Enemy* enemy = dynamic_cast<Enemy*>(character);
-        enemy->shoot();
-        playSound(SoundPlayer::sound_type::PISTOL_SHOOT, character);
+        float distance = calculateDistanceBetween(enemy);
+        enemy->shoot(_sound_player, distance);
+        // playSound(SoundPlayer::sound_type::PISTOL_SHOOT, character);
     }
 }
 
@@ -384,8 +385,9 @@ void GameModelClient::processShooted(Protocol protocol){
 
 void GameModelClient::processPickup(Protocol& protocol){
     Coordinates position(protocol.getPosition());
-    //printf("El sprite a eliminar está en: (%f,%f)\n",position.x,position.y );
-    SpriteHolder* sprite = static_cast<SpriteHolder*>(map.getPositionableIn(position));
+    //printf("El sprite a eliminar está en: (%f,%f)\n",position.x,position.y);
+    SpriteHolder* sprite = static_cast<SpriteHolder*>
+        (map.getPositionableIn(position));
     if(sprite->hasCharacter()){
       Character* character = sprite->getCharacter();
       map.removeSpriteWithCharacter(position,character);
@@ -396,7 +398,8 @@ void GameModelClient::processPickup(Protocol& protocol){
 
 void GameModelClient::processThrow(Protocol& protocol){
     Coordinates position(protocol.getPosition());
-    SpriteHolder *posicionable = new SpriteHolder(position,protocol.getId(),player);
+    SpriteHolder *posicionable = new 
+        SpriteHolder(position,protocol.getId(),player);
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);
     map.addPositionable(posicionable,position);
@@ -427,14 +430,16 @@ void GameModelClient::openingDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
     door->setState("opening");
-    playSound(SoundPlayer::sound_type::DOOR_OPENING, map.getPositionableIn(door_pos));
+    playSound(SoundPlayer::sound_type::DOOR_OPENING, 
+        map.getPositionableIn(door_pos));
 }
 
 void GameModelClient::closeDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
     door->setState("closed");
-    playSound(SoundPlayer::sound_type::DOOR_CLOSING, map.getPositionableIn(door_pos));
+    playSound(SoundPlayer::sound_type::DOOR_CLOSING, 
+        map.getPositionableIn(door_pos));
 }
 
 std::map<int,Character*> GameModelClient::getCharacters(){
@@ -444,7 +449,8 @@ std::map<int,Character*> GameModelClient::getCharacters(){
 float GameModelClient::calculateDistanceBetween(Posicionable* positionable){
     Coordinates player_position = this->player.get_position();
     Coordinates positionable_position = positionable->get_position();
-    return std::sqrt(std::pow(player_position.x - positionable_position.x, 2) + std::pow(player_position.y - positionable_position.y, 2));
+    return std::sqrt(std::pow(player_position.x - positionable_position.x, 2)
+        + std::pow(player_position.y - positionable_position.y, 2));
 }
 
 void GameModelClient::playSound(SoundPlayer::sound_type sound_type, Posicionable* positionable){

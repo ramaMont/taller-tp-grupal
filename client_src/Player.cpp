@@ -51,11 +51,12 @@ void Player::newGunType(int new_gun_type){
     fire_rate = gun_type->getFireRate();
 }
 
-void Player::shoot(){
+void Player::shoot(SoundPlayer& soundPlayer, float distance){
     shooting = true;
     struct timeval time_now{};
     gettimeofday(&time_now, nullptr);
-    time_shot_start = (time_now.tv_usec / 1000);    
+    time_shot_start = (time_now.tv_usec / 1000);
+    gun_type->playWeaponSound(soundPlayer, distance);  
 }
 
 bool Player::canShoot(){

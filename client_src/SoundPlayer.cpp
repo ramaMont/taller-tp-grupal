@@ -15,7 +15,12 @@ SoundPlayer::SoundPlayer(){
     _sounds.insert(std::pair<sound_type, Sound*>(sound_type::DOOR_CLOSING, door_closing));
     Sound* dying = new Sound(SOUNDS_PATH+"dying.wav");
     _sounds.insert(std::pair<sound_type, Sound*>(sound_type::DYING, dying));
-
+    Sound* machinegun_shoot = new Sound(SOUNDS_PATH+"mac_gun_shoot.wav");
+    _sounds.insert(std::pair<sound_type, Sound*>(sound_type::MACHINEGUN_SHOOT, machinegun_shoot));
+    Sound* chaingun_shoot = new Sound(SOUNDS_PATH+"chaingun_shoot.mp3");
+    _sounds.insert(std::pair<sound_type, Sound*>(sound_type::CHAINGUN_SHOOT, chaingun_shoot));
+    Sound* rocket_launcher = new Sound(SOUNDS_PATH+"rocket_launcher.mp3");
+    _sounds.insert(std::pair<sound_type, Sound*>(sound_type::CHAINGUN_SHOOT, rocket_launcher));
 }
 
 void SoundPlayer::playSound(SoundPlayer::sound_type sound_type, int volume){
@@ -23,9 +28,15 @@ void SoundPlayer::playSound(SoundPlayer::sound_type sound_type, int volume){
     sound->play(volume);
 }
 
+void SoundPlayer::playSoundAtDistance(SoundPlayer::sound_type sound_type,
+        float distance){
+    auto sound = _sounds.at(sound_type);
+    sound->play(calculateVolume(distance));
+}
+
 int SoundPlayer::calculateVolume(float distance){
-    if (distance < 0)
-        throw -1;
+    if (distance <= 0)
+        return 100;
 // Regresion lineal
 //    return (int)std::floor(101.456 - 1.456 * distance);
 // Regresion logaritmica
