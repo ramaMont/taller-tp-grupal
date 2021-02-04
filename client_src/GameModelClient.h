@@ -53,16 +53,15 @@ private:
     std::vector<SpriteDrawer*> sprites;
     std::vector<Enemy*> enemies;
 
-    std::vector<std::pair<int,int>> _ordered_players_kills;
-    std::vector<std::pair<int,int>> _ordered_players_points;
-    std::vector<std::pair<int,int>> _ordered_players_bullets;
-
 	bool is_running;
     SoundPlayer _sound_player;
     bool _has_ended;
-    int _winner_id;
 
-    bool* game_done;
+    int &_winner_id;
+    bool& game_done;
+    std::vector<std::pair<int,int>> &_ordered_players_kills;
+    std::vector<std::pair<int,int>> &_ordered_players_points;
+    std::vector<std::pair<int,int>> &_ordered_players_bullets;
 
     void updateEvent();
     void move(int player_id);
@@ -87,7 +86,9 @@ private:
     void waitForAction(Protocol::action desired_action);
     void addDeadSprite(Character* character);
 public:
-    explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id);
+    explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
+    std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
+    std::vector<std::pair<int,int>> &_ordered_players_bullets);
 
     virtual void processProtocol(Protocol& protocol);
     void run();
@@ -98,7 +99,6 @@ public:
     //void push(Protocol protocol);
     //virtual void processProtocol(Protocol& protocol) = 0;
 
-    void setEndingLoop(bool* _done);
 
     void player_shoot();
 

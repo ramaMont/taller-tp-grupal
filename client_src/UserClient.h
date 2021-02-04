@@ -17,15 +17,22 @@ class UserClient{
 private:
     ThSender& th_sender;
     GameModelClient& _game_model;
-    bool done;
     BackgroundMusic _background_music;
 
-    void getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, bool &done, Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay);
+    int &_winner_id;
+    bool& game_done;
+    std::vector<std::pair<int,int>> &_ordered_players_kills;
+    std::vector<std::pair<int,int>> &_ordered_players_points;
+    std::vector<std::pair<int,int>> &_ordered_players_bullets;
+
+    void getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay);
 
     void gameLoop();
     void endGame();
 public:
-    explicit UserClient(ThSender& th_sender, GameModelClient& game_model);
+    explicit UserClient(ThSender& th_sender, GameModelClient& game_model,int &_winner_id, bool& game_done,\
+    std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
+    std::vector<std::pair<int,int>> &_ordered_players_bullets);
     void play();
     void stop();
     void showPlayersInfo(Player& player);

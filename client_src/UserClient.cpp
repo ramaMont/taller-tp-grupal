@@ -6,10 +6,13 @@
 #include <iostream>
 #include <sys/time.h>
 
-UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model):
-        th_sender(th_sender), _game_model(game_model), _background_music(){
-    done = false;
-    _game_model.setEndingLoop(&done);   
+UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model,int &_winner_id, bool& game_done,\
+    std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
+    std::vector<std::pair<int,int>> &_ordered_players_bullets):
+        th_sender(th_sender), _game_model(game_model), _background_music(),
+        _winner_id(_winner_id), game_done(game_done),_ordered_players_kills(_ordered_players_kills),
+        _ordered_players_points(_ordered_players_points),_ordered_players_bullets(_ordered_players_bullets){
+    game_done = false;
 }
 
 // Hacer todo para empezar a jugar la partida.
@@ -20,22 +23,44 @@ void UserClient::play(){
 
 void UserClient::endGame(){
     printf("TOY EN EL ENDGAME WACHINNNNN\n");
+
+    int position = 1;
+    if (_winner_id != -1){
+        std::cout << "The winner is Player ID: " << _winner_id << std::endl;
+    } else {
+        std::cout << "TIME IS OVER\n";
+    }
+    for (auto& player : _ordered_players_kills){
+        std::cout << "Position " << position << " Player_ID: " << player.second << " Kills: " << player.first << std::endl;
+        ++position;
+    }
+    position = 1;
+    for (auto& player : _ordered_players_points){
+        std::cout << "Position " << position << " Player_ID: " << player.second << " Points: " << player.first << std::endl;
+        ++position;
+    }
+    position = 1;
+    for (auto& player : _ordered_players_bullets){
+        std::cout << "Position " << position << " Player_ID: " << player.second << " Bullets: " << player.first << std::endl;
+        ++position;
+    }
+
     Screen screen(_game_model.getScreen());
     screen.showEndgame();
     SDL_Event event;
-    done = false;
-    while(!done){
+    game_done = false;
+    while(!game_done){
         while (SDL_PollEvent(&event)) { 
             switch(event.type) {
                 case SDL_QUIT: {
-                    done = SDL_TRUE;
+                    game_done = SDL_TRUE;
                 }
             }
         }
     }
 }
 
-void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, bool &done,Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay){
+void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay){
     if(keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
@@ -117,7 +142,7 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol
     while (SDL_PollEvent(&event)) { 
         switch(event.type) {
             case SDL_QUIT: {
-                done = SDL_TRUE;
+                game_done = SDL_TRUE;
             }
         }
     }
@@ -146,11 +171,11 @@ void UserClient::gameLoop(){
     bool shoot_key_pressed = false;
     int repetition_key_delay = 0;
 
-    while (!done) {
+    while (!game_done) {
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        getKeys(keys, event, protocol, done, player, frames_till_next_shot, shoot_key_pressed, repetition_key_delay);
+        getKeys(keys, event, protocol, player, frames_till_next_shot, shoot_key_pressed, repetition_key_delay);
 
         _game_model.run();//Proceso los protocolos
 
@@ -190,7 +215,7 @@ void UserClient::showPlayersInfo(Player& player){
 }
 
 void UserClient::stop(){
-    done = SDL_TRUE;
+    game_done = SDL_TRUE;
 }
 
 UserClient::~UserClient(){

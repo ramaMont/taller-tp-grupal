@@ -23,6 +23,13 @@ private:
     int _game_id;
     int _map_id_checksum;
     UserClient* _user_client;
+
+    //Informacion del fin de juego
+    int _winner_id;
+    bool game_done;
+    std::vector<std::pair<int,int>> _ordered_players_kills;
+    std::vector<std::pair<int,int>> _ordered_players_points;
+    std::vector<std::pair<int,int>> _ordered_players_bullets;    
     
     void setId(Protocol& protocol);
     void processReception(Protocol& protocol);

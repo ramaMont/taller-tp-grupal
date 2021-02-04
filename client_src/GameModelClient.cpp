@@ -3,15 +3,21 @@
 #include <yaml-cpp/yaml.h>
 #include <cmath>
 
-GameModelClient::GameModelClient(int user_id, std::string map_filename,
-            int game_id, int protagonist_id) : 
+GameModelClient::GameModelClient(int user_id, std::string map_filename,\
+            int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
+    std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
+    std::vector<std::pair<int,int>> &_ordered_players_bullets) : 
         window(640,480,320,200) ,
         texture(window), map(), 
         added_player(false),player(map),
         operations(), game_id(game_id),
         screen(enemies,sprites,player,map,texture,window),
         protagonist_id(protagonist_id),is_running(true),
-        _sound_player(), _has_ended(false), _winner_id(-1) {
+        _sound_player(), _has_ended(false), _winner_id(_winner_id),
+        game_done(game_done),_ordered_players_kills(_ordered_players_kills),
+        _ordered_players_points(_ordered_players_points),_ordered_players_bullets(_ordered_players_bullets)   {
+
+    _winner_id = -1;
     player.set_texture(&texture);
     player.newGunType(1);
     initDirections();
@@ -491,18 +497,15 @@ void GameModelClient::playSound(SoundPlayer::sound_type sound_type, Posicionable
     _sound_player.playSound(sound_type, volume);   
 }
 
-void GameModelClient::setEndingLoop(bool* _done){
-	this->game_done = _done;
-}
 
 void GameModelClient::endGame(){
     // Mostrar pantalla con puntuaciones y ganador
-    int position = 1;
+    //int position = 1;
     if (!_has_ended){
         _has_ended = true;
         waitForAction(Protocol::action::ENDGAME);
-        *game_done = true;
-        if (_winner_id != -1){
+        game_done = true;
+        /*if (_winner_id != -1){
             std::cout << "The winner is Player ID: " << _winner_id << std::endl;
         } else {
             std::cout << "TIME IS OVER\n";
@@ -520,7 +523,7 @@ void GameModelClient::endGame(){
         for (auto& player : _ordered_players_bullets){
             std::cout << "Position " << position << " Player_ID: " << player.second << " Bullets: " << player.first << std::endl;
             ++position;
-        }
+        }*/
     }
 }
 

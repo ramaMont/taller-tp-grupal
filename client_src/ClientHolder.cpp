@@ -75,7 +75,7 @@ void ClientHolder::run(){
     if (!ready_to_play) 
         return;
     // Comienzo el juego luego del setup inicial   
-    _user_client = new UserClient(*_th_sender, *_game_model);
+    _user_client = new UserClient(*_th_sender, *_game_model,_winner_id, game_done, _ordered_players_kills, _ordered_players_points, _ordered_players_bullets);
     _user_client->play();   
     std::cout << "Finalizada\n";
 }
@@ -137,7 +137,7 @@ void ClientHolder::processReception(Protocol& protocol){
 }
 
 void ClientHolder::createGameModel(std::string map_filename, int id_user_protocol, int game_id){
-    _game_model = new GameModelClient(id_user_protocol, map_filename, game_id, user_id);
+    _game_model = new GameModelClient(id_user_protocol, map_filename, game_id, user_id, _winner_id, game_done, _ordered_players_kills, _ordered_players_points, _ordered_players_bullets);
 }
 
 void ClientHolder::startGame(){
