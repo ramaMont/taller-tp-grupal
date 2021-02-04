@@ -1,5 +1,5 @@
-#ifndef EDITOR_H
-#define EDITOR_H
+#ifndef MAP_EXCEPTION_H
+#define MAP_EXCEPTION_H
 
 #include <exception>
 #include <string>
@@ -14,4 +14,4 @@ class MapException: public std::exception {
     }
 };
 
-#endif // EDITOR_H
+#endif // MAP_EXCEPTION_H

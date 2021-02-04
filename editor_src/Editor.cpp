@@ -16,7 +16,7 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     this->setWindowTitle(QString("Editor de Mapas - Wolfenstein 3D"));
     fabricarMenu();
 
-    this->setStyleSheet("QWidget {background-image: url(../data/fondo3.png) }"
+    this->setStyleSheet("QWidget {background-image: url(../data/fondo_editor.jpg) }"
     "QLabel { color : white; }"
     "QMenuBar {color: white;}"
     "QMenu::item {color: white;}"

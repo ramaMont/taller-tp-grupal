@@ -31,6 +31,8 @@ ResourcesWidget::ResourcesWidget(QWidget *parent,
 
 void ResourcesWidget::mousePressEvent(QMouseEvent *event) {
     // Obtengo el elemento clickeado
+    if (!map->hayMapaCreado()) return;
+
     QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
     if (!child)
         return;
