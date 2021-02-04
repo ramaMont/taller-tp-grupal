@@ -3,8 +3,6 @@
 
 #include <thread>
 #include <chrono>
-#include <iostream>
-#include <sys/time.h>
 
 #include <Posicionable.h>
 
@@ -29,9 +27,9 @@ private:
 	int shot_frame;
 	GunType* gun_type;
 	bool shooting;	
+    int frames_per_shot;
+    int current_shoot_frame;
     unsigned int score;
-    time_t fire_rate;
-    time_t time_shot_start;
     int lives;
     int health;
     int ammo;
@@ -47,6 +45,8 @@ public:
 
     // Cambio el arma actual del jugador
     void newGunType(int new_gun_type);
+
+    int getFramesPerShot();
 
     // Inicializo la animacion de disparo o la actualizo en caso de que siga disparando
     void shoot(SoundPlayer& soundPlayer, float distance);

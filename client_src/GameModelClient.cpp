@@ -63,6 +63,18 @@ void GameModelClient::initMap(std::string map_filename){
                   Posicionable *posicionable = new WallColorstone(position);
                   posicionable->set_texture(&texture);
                   map.addPositionable(posicionable,position);   
+            }else if (elemento == "wall_pruplestone"){
+                  Posicionable *posicionable = new WallPurplestone(position);
+                  posicionable->set_texture(&texture);
+                  map.addPositionable(posicionable,position);   
+            }else if (elemento == "wall_redbrick"){
+                  Posicionable *posicionable = new WallRedbrick(position);
+                  posicionable->set_texture(&texture);
+                  map.addPositionable(posicionable,position);   
+            }else if (elemento == "wall_wood"){
+                  Posicionable *posicionable = new WallWood(position);
+                  posicionable->set_texture(&texture);
+                  map.addPositionable(posicionable,position);   
             }else if (elemento == "passage"){
                 Posicionable *posicionable = new WallEagle(position);
                 posicionable->set_texture(&texture);

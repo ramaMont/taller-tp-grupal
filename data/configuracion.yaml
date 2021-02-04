@@ -10,8 +10,8 @@ minutos_partida: 10
 vida_maxima: 100
 vida_minima: 11    # para poder usar sangre
 cantidad_de_vidas: 2
-balas_iniciales: 20
-balas_maximas: 30
+balas_iniciales: 90
+balas_maximas: 90
 
 # Objetos
 segundos_cerrar_puerta: 5

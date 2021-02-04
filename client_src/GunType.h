@@ -13,17 +13,18 @@ class Texture;
 class GunType{
 protected:
 	Texture *texture_drawer;
-	time_t fire_rate;
+	int frames_per_shot;
 public:
-	GunType(Texture *texture_drawer,time_t fire_rate);
+	GunType(Texture *texture_drawer, int frames_per_shot);
 
     //Pre:-
     // Llamo a su respectivo metodo encargadao de dibujar	
     virtual void callDrawer(int frame) = 0;
 
     //Pre:-
-    // Devuelve la frecuencia de disparo del arma
-    time_t getFireRate();
+    // Devuelve la cantidad de frames que dura el disparo del arma
+    int getFramesPerShot();
+
 	virtual void playWeaponSound(SoundPlayer& soundPlayer, float distance) = 0;
     virtual ~GunType(){};
 };

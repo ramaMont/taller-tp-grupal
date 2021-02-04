@@ -46,42 +46,28 @@ void Player::newGunType(int new_gun_type){
         gun_type = new Gun(texture_drawer);
    	else if(new_gun_type==2)
         gun_type = new MachineGun(texture_drawer);
-   	else if(new_gun_type==3)
+   	else// if(new_gun_type==3) despues agregearle el MisileLauncher
         gun_type = new ChainGun(texture_drawer);
-    fire_rate = gun_type->getFireRate();
+    frames_per_shot = gun_type->getFramesPerShot();
+    current_shoot_frame = 0;
 }
 
 void Player::shoot(SoundPlayer& soundPlayer, float distance){
     shooting = true;
-    struct timeval time_now{};
-    gettimeofday(&time_now, nullptr);
-    time_shot_start = (time_now.tv_usec / 1000);
+    current_shoot_frame = 0;
     gun_type->playWeaponSound(soundPlayer, distance);  
 }
 
-bool Player::canShoot(){
-    return !shooting; //Solo puede disparar si no estaba disparando antes
+int Player::getFramesPerShot(){
+    return frames_per_shot;
 }
 
 void Player::updateShots(){
     if(shooting){
-        struct timeval time_now{};
-        gettimeofday(&time_now, nullptr);
-        time_t current_time = (time_now.tv_usec / 1000);      
-        if(current_time<time_shot_start){
-            current_time+=1000;
-        }
-        if(current_time<time_shot_start+ (fire_rate/5))
-            shot_frame = 1;
-        else if(current_time<time_shot_start+ (2*fire_rate/5))
-            shot_frame = 2;
-        else if(current_time<time_shot_start+ (3*fire_rate/5))
-            shot_frame = 3;
-        else if(current_time<time_shot_start+ (4*fire_rate/5))
-            shot_frame = 4;
-        else{
-            shot_frame = 0;
-            shooting = false;
+        current_shoot_frame++;
+        if(current_shoot_frame>frames_per_shot){
+            current_shoot_frame=0;
+            shooting=false;
         }
     }
 }
@@ -89,7 +75,7 @@ void Player::updateShots(){
 void Player::draw(){
     float portion_health =  ((float)health*8.0)/(float)max_health ;
     texture_drawer->showLifeBar(score, lives,health, ceil(portion_health), ammo);
-    gun_type->callDrawer(shot_frame);
+    gun_type->callDrawer(current_shoot_frame);
 }
 
 void Player::updateHealth(int amount){
