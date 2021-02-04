@@ -20,7 +20,7 @@ SoundPlayer::SoundPlayer(){
     Sound* chaingun_shoot = new Sound(SOUNDS_PATH+"chaingun_shoot.mp3");
     _sounds.insert(std::pair<sound_type, Sound*>(sound_type::CHAINGUN_SHOOT, chaingun_shoot));
     Sound* rocket_launcher = new Sound(SOUNDS_PATH+"rocket_launcher.mp3");
-    _sounds.insert(std::pair<sound_type, Sound*>(sound_type::CHAINGUN_SHOOT, rocket_launcher));
+    _sounds.insert(std::pair<sound_type, Sound*>(sound_type::ROCKET_LAUNCHER, rocket_launcher));
 }
 
 void SoundPlayer::playSound(SoundPlayer::sound_type sound_type, int volume){

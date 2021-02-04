@@ -61,6 +61,6 @@ void RocketLauncher::callDrawer(int frame){
 	texture_drawer->showRocketLauncher(frame/7);
 }
 void RocketLauncher::playWeaponSound(SoundPlayer& soundPlayer, float distance){
-	soundPlayer.playSoundAtDistance(SoundPlayer::sound_type::CHAINGUN_SHOOT, distance);	
+	soundPlayer.playSoundAtDistance(SoundPlayer::sound_type::ROCKET_LAUNCHER, distance);	
 }
 RocketLauncher::~RocketLauncher(){}
