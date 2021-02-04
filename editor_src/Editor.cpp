@@ -192,6 +192,7 @@ void Editor::crearMapaNuevo() {
     if (dialog.exec() == QDialog::Accepted) {
         // If the user didn't dismiss the dialog, do something with the fields
         QString nombre_qstring = lineEditNombre->text();
+        nombre_qstring.replace(".", "_");
         QString filas_qstring = lineEditFilas->text();
         QString columnas_qstring = lineEditColumnas->text();
         std::string nombre_map = nombre_qstring.toStdString();
@@ -356,8 +357,16 @@ std::map<std::string, std::string> Editor::obtenerMapaRecursos() {
                                                     "../data/textures/wall_redbrick_editor.png"));
     mapa.insert(std::pair<std::string, std::string>("wall_purplestone",
                                                     "../data/textures/wall_purplestone_editor.png"));
-    mapa.insert(std::pair<std::string, std::string>("passage",
-                                                    "../data/textures/passage.png"));
+    mapa.insert(std::pair<std::string, std::string>("passage_bluestone",
+                                                    "../data/textures/passage_bluestone.png"));
+    mapa.insert(std::pair<std::string, std::string>("passage_colorstone",
+                                                    "../data/textures/passage_colorstone.png"));
+    mapa.insert(std::pair<std::string, std::string>("passage_greystone",
+                                                    "../data/textures/passage_greystone.png"));
+    mapa.insert(std::pair<std::string, std::string>("passage_purplestone",
+                                                    "../data/textures/passage_purplestone.png"));
+    mapa.insert(std::pair<std::string, std::string>("passage_redbrick",
+                                                    "../data/textures/passage_redbrick.png"));
     mapa.insert(std::pair<std::string, std::string>("door",
                                                     "../data/textures/door_editor.png"));
     mapa.insert(std::pair<std::string, std::string>("key_door",
