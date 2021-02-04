@@ -42,7 +42,7 @@ public:
 
     // Pre:-
     // Le indico al arma actual que fue disparada
-	void shoot();
+	void shoot(SoundPlayer& soundPlayer, float distance);
 
     //Pre:-
     // Actualiza el actual frame del enemigo

@@ -78,6 +78,9 @@ void ClThReceiver::processReception(Protocol& protocol){
         case Protocol::action::SWITCH_GUN:
             _gameModel->push(protocol);
             break;
+        case Protocol::action::OPEN_PASSAGE:
+            _gameModel->push(protocol);
+            break;
         case Protocol::action::END_GAME_BULLETS:
             _gameModel->push(protocol);
             break;

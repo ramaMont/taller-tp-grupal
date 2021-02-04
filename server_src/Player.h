@@ -76,7 +76,7 @@ public:
     bool revivir();
     bool estaVivo();
     Mapa& getMapa();
-    int numeroArmaActual() const;
+    int numeroArmaActual();
     size_t getBalasDisparadas();
     size_t getEnemigosMatados();
     size_t getPuntuacion();    

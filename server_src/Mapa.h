@@ -22,7 +22,7 @@ private:
     int ancho;
     std::vector<std::vector<std::vector<Posicionable*>>> mapaJuego;
     std::vector<std::vector<std::vector<Item*>>> items;
-    std::vector<Puerta*> doors;
+    std::vector<Objeto*> passages;
     std::vector<std::tuple<Coordinates, std::string>> player_positions;
     int players_added;
     void initMap(Mapa& map, YAML::Node map_node);
@@ -36,12 +36,13 @@ public:
     void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);
     void agregarItem(Item* item, Coordinates posicion);
     Coordinates throwItem(Item* item, Coordinates posicion);
-    void addDoor(Puerta* door);
+    void addPassage(Objeto* passage);
     void sacarPosicionable(Coordinates posicion);
     void sacarPosicionable(Coordinates posicion, const std::type_info& type_id);
     void sacarItem(Coordinates posicion, const std::type_info& type_id);
+    void removePassage(Coordinates& position);
     Posicionable* obtenerPosicionableEn(Coordinates posicion) const;
-    Objeto* getNearestDoor(Coordinates& position);
+    Objeto* getNearestPassage(Coordinates& position);
     Puerta* getDoor(Coordinates& position);    
     void moveme(Player* jugador, const Coordinates& posicion);
 //    Mapa(const Mapa&) = delete;

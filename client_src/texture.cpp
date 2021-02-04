@@ -46,7 +46,7 @@ void Texture::addDeadEnemyTexture(std::string new_texture){
     SDL_Surface* loadedSurface = IMG_Load(("../data/textures/dead_enemies/" + new_texture+".png").c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
-    dead_enemies.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
+    sprites.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
 	SDL_FreeSurface(loadedSurface);		
 }
 
@@ -113,13 +113,8 @@ Texture::Texture(const Window& window):
 	addSpriteTexture("fire_canon");
 	addSpriteTexture("bullets");	
 	addSpriteTexture("table");	
-	addSpriteTexture("dead_enemies/dead_guard");
-	addSpriteTexture("dead_enemies/dead_officer");
-	addSpriteTexture("dead_enemies/dead_dog");
-	addSpriteTexture("dead_enemies/dead_ss");
-	addSpriteTexture("dead_enemies/dead_mutant");
 
-	addEnemyTexture("guard_pos");
+	addEnemyTexture("guard_pos");//Tambien los guardo con los sprites
 	addEnemyTexture("officer_pos");
 	addEnemyTexture("dog_pos");
 	addEnemyTexture("ss_pos");
@@ -280,10 +275,10 @@ void Texture::showKnife(int frame_gun){
 		int first_y_pixel = 0;
 		int cant_y_pixels = 150;
 
-		int windows_x_pos = width - 470;//Posicion inicial de X donde voy a mostrar el pixel
-		int windows_y_pos = height + 5;//		
-		int length_x = 63;
-		int lenght_y = 100;
+		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height + 15;//		
+		int length_x = 120;
+		int lenght_y = 80;
 		genericShow(this->bar_guns[0],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showGun(int frame_gun){

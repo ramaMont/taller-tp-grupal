@@ -100,6 +100,7 @@ void ThGameModelServer::sendPlayerProtocol(Protocol& protocol){
 
 void ThGameModelServer::processShoot(Protocol protocol){
     Player* player = players.at(protocol.getId());
+    int old_gun = player->numeroArmaActual();
     try {
         player->disparar(players);
     } catch(const RocketException &e) {
@@ -108,6 +109,12 @@ void ThGameModelServer::processShoot(Protocol protocol){
         Event *event = new RocketEvent(rocket);
         th_game_events.add(event);
     } catch(...) {}
+    int new_gun = player->numeroArmaActual();
+    if (new_gun != old_gun){
+        protocol.setAction(Protocol::action::SWITCH_GUN);
+        protocol.setDamage(new_gun);
+        echoProtocol(protocol);
+    }
 }
 
 void ThGameModelServer::processShooted(Protocol protocol){
@@ -139,6 +146,10 @@ void ThGameModelServer::processDie(Protocol protocol){
     player->morir();
     if (someoneWon(players)){
         endGame(true);
+    }
+    if (player->numeroArmaActual() != 1){
+        Protocol protocol(protocol.getId(), 1, Protocol::action::SWITCH_GUN);
+        echoProtocol(protocol);
     }
 }
 
@@ -178,7 +189,7 @@ void ThGameModelServer::processGunSwitch(Protocol& protocol){
     player->cambiarArma(protocol.getDamage());
     int new_gun = player->numeroArmaActual();
     if (new_gun != old_gun)
-        sendPlayerProtocol(protocol);
+        echoProtocol(protocol);
 }
 
 void ThGameModelServer::run(){

@@ -20,9 +20,12 @@ class Character;
 class GunType;
 #include "GunType.h"
 
+#include "SoundPlayer.h"
+
 class Player final : public Character{
 private:
     const int max_health;
+    const int init_bullets;
 	int shot_frame;
 	GunType* gun_type;
 	bool shooting;	
@@ -34,9 +37,9 @@ private:
     int ammo;
 
 public:
-    explicit Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id, int max_health);
+    explicit Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id);
 
-    explicit Player(ClMap& map, int max_health);
+    explicit Player(ClMap& map);
 
     //Pre:-
     // Completo los datos iniciales del jugador
@@ -46,7 +49,7 @@ public:
     void newGunType(int new_gun_type);
 
     // Inicializo la animacion de disparo o la actualizo en caso de que siga disparando
-    void shoot();
+    void shoot(SoundPlayer& soundPlayer, float distance);
 
     //Pre:-
     // Devuelve si el jugador puede disparar    

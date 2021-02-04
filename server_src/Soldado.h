@@ -110,11 +110,11 @@ class EstadoSoldado {
 	Oficial oficial;
 	Mutante mutante;
 	Soldado *soldado_anterior;
-	std::atomic<int> arma_actual{1};
+	std::atomic<int> arma_actual;
 	
 	public:
 	explicit EstadoSoldado(Player *jugador, int& balas);
-	int armaActual() const;
+	int armaActual();
 	bool agregarArma(Arma* arma);
 	void cambiarArma(int numero_arma);
 	int soltarArma();

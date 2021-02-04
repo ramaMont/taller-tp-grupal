@@ -5,6 +5,7 @@
 #include <chrono>
 #include <iostream>
 #include <sys/time.h>
+#include "SoundPlayer.h"
 
 class Texture;
 
@@ -23,6 +24,7 @@ public:
     //Pre:-
     // Devuelve la frecuencia de disparo del arma
     time_t getFireRate();
+	virtual void playWeaponSound(SoundPlayer& soundPlayer, float distance) = 0;
     virtual ~GunType(){};
 };
 
@@ -30,6 +32,8 @@ class Knife : public GunType{
 public:
 	Knife(Texture *texture_drawer);
 	virtual void callDrawer(int frame) override;
+	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
+		float distance) override;
 	~Knife();
 };
 
@@ -37,6 +41,8 @@ class Gun : public GunType{
 public:
 	Gun(Texture *texture_drawer);
 	virtual void callDrawer(int frame) override;
+	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
+		float distance) override;
 	~Gun();
 };
 
@@ -44,6 +50,8 @@ class MachineGun : public GunType{
 public:
 	MachineGun(Texture *texture_drawer);
 	virtual void callDrawer(int frame) override;
+	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
+		float distance) override;
 	~MachineGun();
 };
 
@@ -51,6 +59,8 @@ class ChainGun : public GunType{
 public:
 	ChainGun(Texture *texture_drawer);
 	virtual void callDrawer(int frame) override;
+	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
+		float distance) override;
 	~ChainGun();
 };
 

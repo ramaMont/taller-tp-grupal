@@ -5,17 +5,17 @@
 
 #include <math.h>
 
-Player::Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id, int max_health):
+Player::Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id):
         Character(posicion,direction,map,id), 
-        max_health(max_health),
+        max_health(configs[CONFIG::vida_maxima]), init_bullets(configs[CONFIG::balas_iniciales]), 
         shot_frame(0), gun_type(nullptr),
         shooting(false),score(0), lives(configs[CONFIG::cantidad_de_vidas]), health(max_health),
         ammo(configs[CONFIG::balas_iniciales]){
 }
 
-Player::Player(ClMap& map, int max_health):
+Player::Player(ClMap& map):
         Character(Coordinates(4,4),Coordinates(1,0),map,0), 
-        max_health(max_health),
+        max_health(configs[CONFIG::vida_maxima]), init_bullets(configs[CONFIG::balas_iniciales]), 
         shot_frame(0), gun_type(nullptr),shooting(false),
         score(0), lives(configs[CONFIG::cantidad_de_vidas]), health(max_health), ammo(configs[CONFIG::balas_iniciales]){
 }
@@ -51,11 +51,12 @@ void Player::newGunType(int new_gun_type){
     fire_rate = gun_type->getFireRate();
 }
 
-void Player::shoot(){
+void Player::shoot(SoundPlayer& soundPlayer, float distance){
     shooting = true;
     struct timeval time_now{};
     gettimeofday(&time_now, nullptr);
-    time_shot_start = (time_now.tv_usec / 1000);    
+    time_shot_start = (time_now.tv_usec / 1000);
+    gun_type->playWeaponSound(soundPlayer, distance);  
 }
 
 bool Player::canShoot(){
