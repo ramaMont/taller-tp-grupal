@@ -62,6 +62,8 @@ private:
     bool _has_ended;
     int _winner_id;
 
+    bool* game_done;
+
     void updateEvent();
     void move(int player_id);
     void shoot();
@@ -95,6 +97,8 @@ public:
     void stop();
     //void push(Protocol protocol);
     //virtual void processProtocol(Protocol& protocol) = 0;
+
+    void setEndingLoop(bool* _done);
 
     void player_shoot();
 

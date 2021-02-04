@@ -88,6 +88,15 @@ void Texture::addBarGuns(std::string new_texture){
 
 }
 
+void Texture::addEndingBackground(){
+    SDL_Surface* loadedSurface = IMG_Load(("../data/endig_background.png"));
+    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
+	endig_background = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+	SDL_FreeSurface(loadedSurface);		
+
+}
+
 Texture::Texture(const Window& window):
 	renderer(window.getRenderer()),height(window.getHeight()-112),
 	width(window.getWidth()){
@@ -141,6 +150,8 @@ Texture::Texture(const Window& window):
 	addBarGuns("chain_gun");
 
 	addFaceHealth();
+
+	addEndingBackground();
 
 	this->x_lenght_ray = ceil((float)this->width/(window.getResolutionWidth()));//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
 
@@ -490,6 +501,21 @@ void Texture::showSprite(int first_x_pixel,int first_number_line_texture,int las
 	
 	genericShow(this->sprites[texture],first_number_line_texture, last_number_line_texture - first_number_line_texture,0,64,\
 		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
+}
+
+void Texture::showEndgame(){
+
+	int first_x_pixel = 0;
+	int cant_x_pixels = 662;
+	int first_y_pixel = 0;
+	int cant_y_pixels = 281;
+
+	int windows_x_pos = 0;
+	int windows_y_pos = 0;
+	int length_x = width;
+	int lenght_y = height;
+
+	genericShow(endig_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
 }
 
 Texture::~Texture() {

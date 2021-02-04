@@ -8,15 +8,34 @@
 
 UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model):
         th_sender(th_sender), _game_model(game_model), _background_music(){
-    done = SDL_FALSE;
+    done = false;
+    _game_model.setEndingLoop(&done);   
 }
 
 // Hacer todo para empezar a jugar la partida.
 void UserClient::play(){
     gameLoop();
+    endGame();
 }
 
-void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay){
+void UserClient::endGame(){
+    printf("TOY EN EL ENDGAME WACHINNNNN\n");
+    Screen screen(_game_model.getScreen());
+    screen.showEndgame();
+    SDL_Event event;
+    done = false;
+    while(!done){
+        while (SDL_PollEvent(&event)) { 
+            switch(event.type) {
+                case SDL_QUIT: {
+                    done = SDL_TRUE;
+                }
+            }
+        }
+    }
+}
+
+void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, bool &done,Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay){
     if(keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);

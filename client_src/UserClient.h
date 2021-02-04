@@ -17,10 +17,10 @@ class UserClient{
 private:
     ThSender& th_sender;
     GameModelClient& _game_model;
-    SDL_bool done;
+    bool done;
     BackgroundMusic _background_music;
 
-    void getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay);
+    void getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, bool &done, Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay);
 
     void gameLoop();
     void endGame();

@@ -64,3 +64,10 @@ void Screen::show(){
 
 	window.render();
 }
+
+
+void Screen::showEndgame(){
+	window.setNoColor();
+	texture.showEndgame();
+	window.render();
+}

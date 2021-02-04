@@ -46,5 +46,7 @@ class Screen{
 
 		// Llama a los metodos correspondientes para la correcta visualizacion
 		void show();
+
+		void showEndgame();
 };
 #endif

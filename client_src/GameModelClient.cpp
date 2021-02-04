@@ -491,12 +491,17 @@ void GameModelClient::playSound(SoundPlayer::sound_type sound_type, Posicionable
     _sound_player.playSound(sound_type, volume);   
 }
 
+void GameModelClient::setEndingLoop(bool* _done){
+	this->game_done = _done;
+}
+
 void GameModelClient::endGame(){
     // Mostrar pantalla con puntuaciones y ganador
     int position = 1;
     if (!_has_ended){
         _has_ended = true;
         waitForAction(Protocol::action::ENDGAME);
+        *game_done = true;
         if (_winner_id != -1){
             std::cout << "The winner is Player ID: " << _winner_id << std::endl;
         } else {

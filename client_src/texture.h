@@ -21,6 +21,7 @@ private:
     SDL_Texture* guns;
     SDL_Texture* door;
     SDL_Texture* life_bar;
+    SDL_Texture* endig_background;
     int height;
     int width;
     SDL_Rect imgPartRect;
@@ -56,6 +57,8 @@ private:
     void addFaceHealth();
 
     void addBarGuns(std::string new_texture);
+
+    void addEndingBackground();
 
     //Grafica los pixeles solicitados de la textura recibida en la posicion recibida
     void genericShow(SDL_Texture* texture, int first_x_pixel, int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\
@@ -141,6 +144,8 @@ public:
 
 	//llama al show weapon con la textura del lanza misiles
 	void showRocketLauncher(int frame_gun);
+
+    void showEndgame();
 
     // Destruye las texturas iniciadas
     ~Texture();
