@@ -139,6 +139,9 @@ public:
     //llama al show weapon con la textura del cañon de cadena
 	void showChainGun(int frame_gun);
 
+	//llama al show weapon con la textura del lanza misiles
+	void showRocketLauncher(int frame_gun);
+
     // Destruye las texturas iniciadas
     ~Texture();
 };

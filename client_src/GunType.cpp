@@ -54,3 +54,13 @@ void ChainGun::playWeaponSound(SoundPlayer& soundPlayer, float distance){
 	soundPlayer.playSoundAtDistance(SoundPlayer::sound_type::CHAINGUN_SHOOT, distance);	
 }
 ChainGun::~ChainGun(){}
+//--------------------------------------------------------------------------------------------------------
+
+RocketLauncher::RocketLauncher(Texture *texture_drawer):GunType(texture_drawer, 3, true){} //frecuencia. 1 segundo (30 frames)
+void RocketLauncher::callDrawer(int frame){
+	texture_drawer->showRocketLauncher(frame/7);
+}
+void RocketLauncher::playWeaponSound(SoundPlayer& soundPlayer, float distance){
+	soundPlayer.playSoundAtDistance(SoundPlayer::sound_type::CHAINGUN_SHOOT, distance);	
+}
+RocketLauncher::~RocketLauncher(){}

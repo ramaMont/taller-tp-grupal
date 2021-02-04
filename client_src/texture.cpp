@@ -324,6 +324,20 @@ void Texture::showChainGun(int frame_gun){
 		int lenght_y = 80;
 		genericShow(this->bar_guns[3],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
+void Texture::showRocketLauncher(int frame_gun){
+		showWeapon(frame_gun,4,7,59);
+
+		int first_x_pixel = 0;//Desde qué pixel en X quiero
+		int cant_x_pixels = 490;
+		int first_y_pixel = 0;
+		int cant_y_pixels = 220;
+
+		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height + 15;//		
+		int length_x = 120;
+		int lenght_y = 80;
+		genericShow(this->bar_guns[3],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
+}
 
 
 void Texture::genericShow(SDL_Texture* texture, int first_x_pixel, int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\

@@ -46,8 +46,10 @@ void Player::newGunType(int new_gun_type){
         gun_type = new Gun(texture_drawer);
    	else if(new_gun_type==2)
         gun_type = new MachineGun(texture_drawer);
-   	else// if(new_gun_type==3) despues agregearle el MisileLauncher
+   	else if(new_gun_type==3)
         gun_type = new ChainGun(texture_drawer);
+    else
+    	gun_type = new RocketLauncher(texture_drawer);
     frames_per_shot = gun_type->getFramesPerShot();
     current_shoot_frame = 0;
 }

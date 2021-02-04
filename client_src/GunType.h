@@ -68,4 +68,13 @@ public:
 	~ChainGun();
 };
 
+class RocketLauncher : public GunType{
+public:
+	RocketLauncher(Texture *texture_drawer);
+	virtual void callDrawer(int frame) override;
+	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
+		float distance) override;
+	~RocketLauncher();
+};
+
 #endif
