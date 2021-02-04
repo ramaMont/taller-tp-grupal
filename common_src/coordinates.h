@@ -25,7 +25,9 @@ public:
 
     explicit Coordinates(double a_x, double a_y);
     
-    explicit Coordinates(std::tuple<int, int> position);
+    explicit Coordinates(std::tuple<int, int> position);  
+  
+    explicit Coordinates(std::tuple<float, float> position);
 
     void increment_on_direction(Coordinates movement_direction, double inc);
 

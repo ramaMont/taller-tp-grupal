@@ -113,6 +113,7 @@ Texture::Texture(const Window& window):
 	addSpriteTexture("fire_canon");
 	addSpriteTexture("bullets");	
 	addSpriteTexture("table");	
+	addSpriteTexture("rocket");
 
 	addEnemyTexture("guard_pos");//Tambien los guardo con los sprites
 	addEnemyTexture("officer_pos");

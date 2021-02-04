@@ -65,6 +65,8 @@ class DoorEvent: public Event{
 class RocketEvent: public Event{
     private:
     Rocket* rocket;
+    Coordinates rocket_pos;
+    Coordinates rocket_dir;
 
     public:
     RocketEvent(Rocket* rocket);

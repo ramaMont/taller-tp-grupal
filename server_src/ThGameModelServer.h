@@ -24,11 +24,12 @@ private:
     void processShoot(Protocol protocol);
     void processShooted(Protocol protocol);
     void processDie(Protocol protocol);
-    void processResurrect(Protocol protocol);
+    void processResurrect(Protocol& protocol);
     void processOpen(Protocol& protocol);
     void processOpening(Protocol& protocol);
     void processClose(Protocol& protocol);
     void processGunSwitch(Protocol& protocol);
+    void processRocket(Protocol& protocol);
     void processTopFiveEnd();
     void sendPlayerProtocol(Protocol& protocol);
     void convertToTopFive(std::vector<std::pair<int,int>>& points_vector);

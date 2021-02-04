@@ -10,7 +10,7 @@
 
 #define WALL_TIME_TO_MOVE 1000
 #define WALL_STEP 0.15
-#define ROCKET_TIME_TO_MOVE 1000
+#define ROCKET_TIME_TO_MOVE 100
 #define MINUTE_SECONDS 60
 
 Event::Event(){
@@ -143,7 +143,11 @@ DoorEvent::~DoorEvent(){
 
 // Rocket
 RocketEvent::RocketEvent(Rocket* rocket):
-    Event(), rocket(rocket){
+    Event(), rocket(rocket), rocket_pos(rocket->getPosicion()),
+    rocket_dir(rocket->getDirection()){
+    struct timeval time_now{};
+    gettimeofday(&time_now, nullptr);
+    _time = (time_now.tv_usec / 1000);
 }
 
 void RocketEvent::process(BlockingQueue<Protocol>& game_model_queue){
@@ -152,12 +156,19 @@ void RocketEvent::process(BlockingQueue<Protocol>& game_model_queue){
         _finished = true;
         return;
     }
-    time_t time_now = time(0);
-    double seconds = difftime(time_now, _time);
-    if (seconds * 1000 < ROCKET_TIME_TO_MOVE)
+    struct timeval time_now{};
+    gettimeofday(&time_now, nullptr);
+    time_t new_time = (time_now.tv_usec / 1000);
+    time_t diff = new_time - _time;
+    if (diff < 0)
+        diff += 1000;
+    if (diff < ROCKET_TIME_TO_MOVE)
         return;
-    _time = time_now;
-    // Protocol mover rocket
+    _time = (time_now.tv_usec / 1000);
+    Protocol protocol(Protocol::action::ROCKET, 0,
+        Protocol::direction::STAY, 0, rocket_pos.x, rocket_pos.y);   
+    game_model_queue.push(protocol);
+    rocket_pos.increment_on_direction(rocket_dir, ROCKET_STEP);
 }
 
 RocketEvent::~RocketEvent(){

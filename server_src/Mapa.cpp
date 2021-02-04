@@ -314,10 +314,8 @@ Mapa& Mapa::operator=(Mapa&& other){
 }
 
 bool Mapa::hayObstaculoEn(const Coordinates& posicion) const{
-	return hayObstaculoEn(posicion.x, posicion.y);
-}
-
-bool Mapa::hayObstaculoEn(float x, float y) const{
+	float x = posicion.x;
+	float y = posicion.y;
 	if (floor(x) < 0 || floor(x) >= alto ||
 	    floor(y) < 0 || floor(y) >= ancho) return true;
 	if (mapaJuego[floor(x)][floor(y)].empty())
@@ -331,7 +329,8 @@ bool Mapa::hayObstaculoEn(float x, float y) const{
 bool Mapa::playerIn(const Coordinates& posicion) const{
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return true;
-	return (typeid(*mapaJuego[floor(posicion.x)][floor(posicion.y)].back()) == typeid(Player));
+	return (!mapaJuego[floor(posicion.x)][floor(posicion.y)].empty() && 
+	typeid(*mapaJuego[floor(posicion.x)][floor(posicion.y)].back()) == typeid(Player));
 }
 
 bool Mapa::hayPuertaEn(float x, float y) const{

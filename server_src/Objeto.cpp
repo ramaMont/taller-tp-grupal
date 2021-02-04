@@ -6,7 +6,6 @@ class Mapa;
 #include "ThGameModelServer.h"
 #include <iostream>
 
-#define ROCKET_STEP 0.15
 #define STEP 1
 
 
@@ -74,33 +73,42 @@ bool PuertaCerrada::abrir(Player *jugador){
 Rocket::Rocket(Coordinates position, Coordinates dir,
     Player* player, std::map<int, Player*>& enemies,
     ThGameModelServer& game_model):
-    Objeto(position), position(position), direction(dir),
-    player(player), enemies(enemies), map(player->getMapa()){
+    Objeto(position), direction(dir), player(player), enemies(enemies),
+    map(player->getMapa()){
     exploded = false;
-    map.agregarPosicionable(this, position);
-    //echo protocol
+    posicion.increment_on_direction(direction, 1.1);
+    try {
+        map.agregarPosicionable(this, posicion);
+    } catch (...) {
+        explode();
+        return;
+    }
+    Protocol protocol(Protocol::action::ROCKET, 0, posicion.x, posicion.y);
+    game_model.echoProtocol(protocol);
 }
 
 void Rocket::move(ThGameModelServer& game_model){
-    map.sacarPosicionable(position, typeid(this));
-    // Protocol sacar objeto mapa
-    position.increment_on_direction(direction, ROCKET_STEP);
-    if (map.hayObstaculoEn(position)){
+    map.sacarPosicionable(posicion);
+    Protocol protocol(Protocol::action::MOVE_ROCKET, 0, posicion.x, posicion.y);
+    game_model.echoProtocol(protocol);
+    posicion.increment_on_direction(direction, ROCKET_STEP);
+    if (map.hayObstaculoEn(posicion) || map.playerIn(posicion)){
         return explode();
     }
-    map.agregarPosicionable(this, position);
-    // Protocol agregar objeto mapa
+    map.agregarPosicionable(this, posicion);
+    Protocol p(Protocol::action::ROCKET, 0, posicion.x, posicion.y);
+    game_model.echoProtocol(p);
 }
 
 void Rocket::explode(){
     for (auto it = enemies.begin(); it != enemies.end(); ++it){
         auto* enemy = it->second;
-        double distancia = position.calculate_distance(
+        double distancia = posicion.calculate_distance(
 			enemy->get_coordinates());
 
         if (distancia > (int)configs[CONFIG::distancia_explosion_cohete])
             continue;
-        if (colisionaConObjeto(position, enemy->get_coordinates()))
+        if (colisionaConObjeto(posicion, enemy->get_coordinates()))
             continue;
 			
         float damage = (int)configs[CONFIG::maximo_danio] * 
@@ -130,6 +138,10 @@ bool Rocket::colisionaConObjeto(const Coordinates& inicio,
 		actual.increment_on_direction(direccion, STEP);
 	}
 	return false;
+}
+
+Coordinates Rocket::getDirection(){
+    return direction;
 }
 
 Rocket::~Rocket(){

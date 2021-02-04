@@ -58,6 +58,10 @@ void ClMap::removePositionable(Coordinates position){
     }
 }
 
+void ClMap::removeAllPositionables(Coordinates position){
+    mapGame[floor(position.x)][floor(position.y)]=nullptr;
+}
+
 void ClMap::removeSpriteWithCharacter(Coordinates position, Character* character){
     mapGame[floor(position.x)][floor(position.y)]=character;
 }

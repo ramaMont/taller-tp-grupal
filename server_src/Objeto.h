@@ -8,6 +8,7 @@ class Player;
 class ThGameModelServer;
 class Mapa;
 #include <map>
+#define ROCKET_STEP 0.25
 
 class Objeto: public Posicionable {
 	public:
@@ -51,7 +52,6 @@ class PuertaCerrada: public Puerta {
 
 class Rocket: public Objeto{
     private:
-    Coordinates position;
     Coordinates direction;
     Player* player;
     std::map<int, Player*>& enemies;
@@ -65,6 +65,7 @@ class Rocket: public Objeto{
     void explode();
     bool hasExploded();
     bool colisionaConObjeto(const Coordinates& inicio, const Coordinates& fin);
+    Coordinates getDirection();
     ~Rocket();
 };
 

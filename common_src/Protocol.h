@@ -11,7 +11,7 @@ public:
             JOIN_GAME, CREATE_GAME, OK, ERROR, ADD_PLAYER, LAUNCH_GAME, BEGIN,
             END, NONE, REMOVE, RESURRECT, DIE, CONFIG, END_GAME_KILLS,
             END_GAME_POINTS, END_GAME_BULLETS, UPDATE_HEALTH, UPDATE_BULLETS,
-            SWITCH_GUN, THROW, WINNER, OPEN_PASSAGE };
+            SWITCH_GUN, THROW, WINNER, OPEN_PASSAGE, ROCKET, MOVE_ROCKET };
 
     enum direction : std::uint16_t { FORWARD, BACKWARD, LEFT, RIGHT,
             ROTATE_LEFT, ROTATE_RIGHT, STAY};
@@ -33,6 +33,7 @@ public:
     explicit Protocol(int id, Protocol::direction direction);
     explicit Protocol(int config_number, float config_value);
     explicit Protocol(Protocol::action action, int user_id, Protocol::direction direction, int map_id, int pos_x, int pos_y);
+    explicit Protocol(Protocol::action action, int id, float pos_x, float pos_y);
     Protocol::action getAction();
     Protocol::direction getDirection();
     void moveInDirection(Protocol::direction direction);
@@ -47,6 +48,7 @@ public:
     int getBotsCty();
     float getConfiguration();
     std::tuple<int, int> getPosition() const;
+    std::tuple<float, float> getFloatPosition() const;
     void setAction(Protocol::action action);
     void setDamage(int danio);
     ~Protocol();

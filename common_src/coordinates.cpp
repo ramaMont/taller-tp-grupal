@@ -54,6 +54,10 @@ Coordinates::Coordinates(std::tuple<int, int> position) :
     x(std::get<0>(position)), y(std::get<1>(position)){
 }
 
+Coordinates::Coordinates(std::tuple<float, float> position) : 
+    x(std::get<0>(position)), y(std::get<1>(position)){
+}
+
 void Coordinates::increment_on_direction(Coordinates movement_direction,
 		double inc){
 	x+= movement_direction.x*inc;

@@ -332,6 +332,12 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::OPEN_PASSAGE:
             map.removePositionable(Coordinates(protocol.getPosition()));
             break;
+        case Protocol::action::ROCKET:
+            processRocket(protocol);
+            break;
+        case Protocol::action::MOVE_ROCKET:
+            processRocket(protocol);
+            break;
         case Protocol::action::END_GAME_KILLS:    
             _ordered_players_kills.push_back(
                 std::pair<int, int>(protocol.getDamage(), 
@@ -413,6 +419,20 @@ void GameModelClient::processGunSwitch(Protocol& protocol){
         Enemy* enemy = dynamic_cast<Enemy*>(character);
         enemy->newEnemyType(protocol.getDamage());
     }
+}
+
+void GameModelClient::processRocket(Protocol& protocol){
+    Coordinates position(protocol.getFloatPosition());
+    if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
+        map.removeAllPositionables(position);
+        return;
+    }
+    SpriteHolder *posicionable = new SpriteHolder(position, 12, player);
+    posicionable->set_texture(&texture);
+    sprites.push_back(posicionable);
+    try {
+        map.addPositionable(posicionable, position);
+    } catch(...) {}
 }
 
 

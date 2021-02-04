@@ -30,7 +30,7 @@ int Bot::luaObtenerObjetoMapa(lua_State *L){
 	int x = (int)lua_tonumber(L, 2);
 	int y = (int)lua_tonumber(L, 3);
 	
-	if (!bot->mapa.hayObstaculoEn(x, y)){
+	if (!bot->mapa.hayObstaculoEn(Coordinates(x, y))){
 		lua_pushnumber(L, Posicion::Vacio);
 	} else if (bot->mapa.hayPuertaEn(x, y)){
 		lua_pushnumber(L, Posicion::Puerta);

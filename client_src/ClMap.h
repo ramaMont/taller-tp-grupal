@@ -40,6 +40,10 @@ public:
     void removePositionable(Coordinates position);
 
     //Pre:-
+    // Remueve todos los punteros de su posicion
+    void removeAllPositionables(Coordinates position);
+
+    //Pre:-
     // Remueve un sprite donde actualmente se encuentra un personaje, y deja al personaje en el mismo lugar    
     void removeSpriteWithCharacter(Coordinates position, Character* character);
 

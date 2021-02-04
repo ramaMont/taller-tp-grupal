@@ -1,6 +1,7 @@
 #include "Protocol.h"
 #include<arpa/inet.h>
 #include <tuple>
+#define DECIMALS 100
 
 Protocol::Protocol():
     _action(Protocol::action::NONE), id(0), 
@@ -44,6 +45,12 @@ Protocol::Protocol(Protocol::action action, int user_id, Protocol::direction dir
         _game_id(pos_x), _float_aux((float)pos_y){
 }
 
+Protocol::Protocol(Protocol::action action, int _id, float pos_x, float pos_y):
+        _action(action), id(_id){
+    _game_id = pos_x * DECIMALS;
+    _float_aux = pos_y * DECIMALS;
+}
+
 Protocol::action Protocol::getAction(){
     return _action;
 }
@@ -83,6 +90,12 @@ float Protocol::getConfiguration(){
 std::tuple<int, int> Protocol::getPosition() const{
     int pos_x = _game_id;
     int pos_y = (int)_float_aux;
+    return std::make_tuple(pos_x, pos_y);
+}
+
+std::tuple<float, float> Protocol::getFloatPosition() const{
+    float pos_x = (float)_game_id / DECIMALS;
+    float pos_y = (float)_float_aux / DECIMALS;
     return std::make_tuple(pos_x, pos_y);
 }
 

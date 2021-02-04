@@ -51,7 +51,6 @@ public:
     Mapa& operator=(Mapa&& other);
     
     bool hayObstaculoEn(const Coordinates& posicion) const;
-    bool hayObstaculoEn(float x, float y) const;
     bool playerIn(const Coordinates& posicion) const;
     bool hayPuertaEn(float x, float y) const;
     int getAlto() const;

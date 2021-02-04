@@ -35,7 +35,6 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::RESURRECT:
             processResurrect(protocol);
-            echoProtocol(protocol);
             break;
         case Protocol::action::DIE:
             processDie(protocol);
@@ -68,6 +67,9 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::SWITCH_GUN:
             processGunSwitch(protocol);
+            break;
+        case Protocol::action::ROCKET:
+            processRocket(protocol);
             break;
         case Protocol::action::ENDGAME:
             endGame();
@@ -124,9 +126,13 @@ void ThGameModelServer::processShooted(Protocol protocol){
     th_user_sender->push(protocol);
 }
 
-void ThGameModelServer::processResurrect(Protocol protocol){
+void ThGameModelServer::processResurrect(Protocol& protocol){
     Player* player = players.at(protocol.getId());
     player->revivir();
+    echoProtocol(protocol);
+    protocol.setAction(Protocol::action::SWITCH_GUN);
+    protocol.setDamage(1);
+    echoProtocol(protocol);
 }
 
 bool someoneWon(std::map<int, Player*>& players){
@@ -146,10 +152,6 @@ void ThGameModelServer::processDie(Protocol protocol){
     player->morir();
     if (someoneWon(players)){
         endGame(true);
-    }
-    if (player->numeroArmaActual() != 1){
-        Protocol protocol(protocol.getId(), 1, Protocol::action::SWITCH_GUN);
-        echoProtocol(protocol);
     }
 }
 
@@ -190,6 +192,14 @@ void ThGameModelServer::processGunSwitch(Protocol& protocol){
     int new_gun = player->numeroArmaActual();
     if (new_gun != old_gun)
         echoProtocol(protocol);
+}
+
+void ThGameModelServer::processRocket(Protocol& protocol){
+    Coordinates pos(protocol.getPosition());
+    try {
+        Rocket* rocket = static_cast<Rocket*>(map.obtenerPosicionableEn(pos));
+        rocket->move(*this);
+    } catch (...) {}
 }
 
 void ThGameModelServer::run(){
