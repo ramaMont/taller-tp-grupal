@@ -46,6 +46,8 @@ MachineGun::~MachineGun(){}
 
 ChainGun::ChainGun(Texture *texture_drawer):GunType(texture_drawer, 3, true){} //frecuencia. 0.1 segundos (3 frames)
 void ChainGun::callDrawer(int frame){
+	if(frame!=0)
+		frame++;
 	texture_drawer->showChainGun(frame);
 }
 void ChainGun::playWeaponSound(SoundPlayer& soundPlayer, float distance){

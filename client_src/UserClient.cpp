@@ -16,7 +16,7 @@ void UserClient::play(){
     gameLoop();
 }
 
-void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Player& player, int &frames_till_next_shot, bool &shoot_key_pressed){
+void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay){
     if(keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
@@ -37,8 +37,12 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol
             Protocol::direction::BACKWARD);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_M]){
+    if(keys[SDL_SCANCODE_M] and !repetition_key_delay){
         _background_music.togglePause();
+        repetition_key_delay = 5;
+    }else{
+    	if(repetition_key_delay>0)
+    	repetition_key_delay--;
     }
 
     if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
@@ -121,12 +125,13 @@ void UserClient::gameLoop(){
 
     int frames_till_next_shot = 0;
     bool shoot_key_pressed = false;
+    int repetition_key_delay = 0;
 
     while (!done) {
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        getKeys(keys, event, protocol, done, player, frames_till_next_shot, shoot_key_pressed);
+        getKeys(keys, event, protocol, done, player, frames_till_next_shot, shoot_key_pressed, repetition_key_delay);
 
         _game_model.run();//Proceso los protocolos
 
