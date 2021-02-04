@@ -14,8 +14,9 @@ class GunType{
 protected:
 	Texture *texture_drawer;
 	int frames_per_shot;
+	bool allows_continuous_shooting;
 public:
-	GunType(Texture *texture_drawer, int frames_per_shot);
+	GunType(Texture *texture_drawer, int frames_per_shot, bool allows_continuous_shooting);
 
     //Pre:-
     // Llamo a su respectivo metodo encargadao de dibujar	
@@ -24,6 +25,8 @@ public:
     //Pre:-
     // Devuelve la cantidad de frames que dura el disparo del arma
     int getFramesPerShot();
+
+    bool allowsContinuousShooting();
 
 	virtual void playWeaponSound(SoundPlayer& soundPlayer, float distance) = 0;
     virtual ~GunType(){};

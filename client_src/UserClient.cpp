@@ -16,7 +16,7 @@ void UserClient::play(){
     gameLoop();
 }
 
-void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Player& player, int &frames_till_next_shot){
+void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done,Player& player, int &frames_till_next_shot, bool &shoot_key_pressed){
     if(keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
@@ -43,11 +43,16 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol
 
     if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
         if(frames_till_next_shot==0){
-        	frames_till_next_shot = player.getFramesPerShot();
-            protocol.setAction(
-                Protocol::action::SHOOT);
-            th_sender.push(protocol);
+        	if(!shoot_key_pressed or (shoot_key_pressed and player.gunAllowsContinuousShooting())){
+	        	frames_till_next_shot = player.getFramesPerShot();
+	            protocol.setAction(
+	                Protocol::action::SHOOT);
+	            th_sender.push(protocol);
+	        }
         }
+        shoot_key_pressed = true;
+    }else{
+    	shoot_key_pressed = false;
     }
     if(keys[SDL_SCANCODE_SPACE]){
         protocol.setAction(
@@ -115,12 +120,13 @@ void UserClient::gameLoop(){
     const Uint8 *keys = SDL_GetKeyboardState(NULL);    
 
     int frames_till_next_shot = 0;
+    bool shoot_key_pressed = false;
 
     while (!done) {
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        getKeys(keys, event, protocol, done, player, frames_till_next_shot);
+        getKeys(keys, event, protocol, done, player, frames_till_next_shot, shoot_key_pressed);
 
         _game_model.run();//Proceso los protocolos
 

@@ -62,6 +62,10 @@ int Player::getFramesPerShot(){
     return frames_per_shot;
 }
 
+bool Player::gunAllowsContinuousShooting(){
+    return gun_type->allowsContinuousShooting();
+}
+
 void Player::updateShots(){
     if(shooting){
         current_shoot_frame++;

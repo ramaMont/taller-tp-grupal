@@ -48,6 +48,8 @@ public:
 
     int getFramesPerShot();
 
+    bool gunAllowsContinuousShooting();
+
     // Inicializo la animacion de disparo o la actualizo en caso de que siga disparando
     void shoot(SoundPlayer& soundPlayer, float distance);
 

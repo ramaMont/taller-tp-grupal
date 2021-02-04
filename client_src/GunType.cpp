@@ -3,14 +3,18 @@
 #include "texture.h"
 
 
-GunType::GunType(Texture *texture_drawer, int frames_per_shot): 
-		texture_drawer(texture_drawer), frames_per_shot(frames_per_shot) {}
+GunType::GunType(Texture *texture_drawer, int frames_per_shot, bool allows_continuous_shooting): 
+		texture_drawer(texture_drawer), frames_per_shot(frames_per_shot), allows_continuous_shooting(allows_continuous_shooting) {}
 
 int GunType::getFramesPerShot(){
 	return frames_per_shot;
 }
+
+bool GunType::allowsContinuousShooting(){
+	return allows_continuous_shooting;
+}
 //--------------------------------------------------------------------------------------------------------
-Knife::Knife(Texture *texture_drawer):GunType(texture_drawer, 30) {}	//frecuencia. 1 segundo (30 frames)
+Knife::Knife(Texture *texture_drawer):GunType(texture_drawer, 30, false) {}	//frecuencia. 1 segundo (30 frames)
 void Knife::callDrawer(int frame){
 	texture_drawer->showKnife(frame/7);
 }
@@ -20,7 +24,7 @@ void Knife::playWeaponSound(SoundPlayer& soundPlayer, float distance){
 Knife::~Knife(){}
 //--------------------------------------------------------------------------------------------------------
 
-Gun::Gun(Texture *texture_drawer):GunType(texture_drawer, 30){}		//frecuencia. 1 segundo (30 frames)
+Gun::Gun(Texture *texture_drawer):GunType(texture_drawer, 30, false){}		//frecuencia. 1 segundo (30 frames)
 void Gun::callDrawer(int frame){
 	texture_drawer->showGun(frame/7);
 }
@@ -30,7 +34,7 @@ void Gun::playWeaponSound(SoundPlayer& soundPlayer, float distance){
 Gun::~Gun(){}
 //--------------------------------------------------------------------------------------------------------
 
-MachineGun::MachineGun(Texture *texture_drawer):GunType(texture_drawer, 9){} //frecuencia. 0.3 segundos (9 frames)
+MachineGun::MachineGun(Texture *texture_drawer):GunType(texture_drawer, 9, true){} //frecuencia. 0.3 segundos (9 frames)
 void MachineGun::callDrawer(int frame){
 	texture_drawer->showMachineGun(frame/2);
 }
@@ -40,7 +44,7 @@ void MachineGun::playWeaponSound(SoundPlayer& soundPlayer, float distance){
 MachineGun::~MachineGun(){}
 //--------------------------------------------------------------------------------------------------------
 
-ChainGun::ChainGun(Texture *texture_drawer):GunType(texture_drawer, 3){} //frecuencia. 0.1 segundos (3 frames)
+ChainGun::ChainGun(Texture *texture_drawer):GunType(texture_drawer, 3, true){} //frecuencia. 0.1 segundos (3 frames)
 void ChainGun::callDrawer(int frame){
 	texture_drawer->showChainGun(frame);
 }

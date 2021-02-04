@@ -20,7 +20,7 @@ private:
     SDL_bool done;
     BackgroundMusic _background_music;
 
-    void getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Player& player, int &frames_till_next_shot);
+    void getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, SDL_bool &done, Player& player, int &frames_till_next_shot, bool &shoot_key_pressed);
 
     void gameLoop();
     void endGame();
