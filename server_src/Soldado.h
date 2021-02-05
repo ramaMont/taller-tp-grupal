@@ -1,125 +1,123 @@
 #ifndef __SOLDADO__
 #define __SOLDADO__
 
-class Arma;
-class Cuchillo;
-class Pistola;
-class Ametralladora;
-class CanionDeCadena;
-class Lanzacohetes;
-#include "Arma.h"
 #include <set>
 #include <vector>
 #include <atomic>
 
-class Soldado {
+enum GunNumber{
+    KNIFE = 0,
+    GUN,
+    MACHINE_GUN,
+    CANON_GUN,
+    ROCKET_GUN
+}
+
+
+class Soldier {
 	protected:
-	int &balas;
+	int &bullets;
 
     public:
-    Soldado(int &balas): balas(balas) { }
-	virtual int disparar(Player *jugador, std::map<int, Player*>&) = 0;
-	virtual int soltarArma(Player *jugador) = 0;
-	virtual bool estaListo() = 0;
-	virtual int numeroArma() const = 0;
-    void obtenerEnemigosCercanos(std::map<int, Player*>& enemigos,
-       Player* jugador, std::set<std::pair<int, Player*>>& jugadores);
+    Soldier(int &bullets): bullets(bullets) { }
+	virtual int shoot(Player *player, std::map<int, Player*>&) = 0;
+	virtual int throwGun(Player *player) = 0;
+	virtual bool ready() = 0;
+	virtual int actualGun() const = 0;
+    void getCloserEnemies(std::map<int, Player*>& enemies,
+       Player* player, std::set<std::pair<int, Player*>>& players);
+    void tryShoot(Player* player, std::set<std::pair<int, Player*>>& enemies, float precision);
+    bool crashes(Mapa& map, const Coordinates& start, const Coordinates& end);
+    void atack(Player* player, Player* enemy, float precision, int angle);
+    bool fireBullet(Player* player, float precision, int angle, Player* enemy);
 };
 
 
 
-class Perro: public Soldado {
-	private:
-	Cuchillo cuchillo;
-	
+class Dog: public Soldier {
 	public:
-	Perro(int& n);
-	int disparar(Player *jugador, std::map<int, Player*>&) override;
-	int soltarArma(Player *jugador) override;
-	bool estaListo() override;
-	int numeroArma() const;
+	Dog(int& n);
+	int shoot(Player *player, std::map<int, Player*>&) override;
+	void bite(Player* player, angulos_enemigos_t& enemigos);
+	int throwGun(Player *player) override;
+	bool ready() override;
+	int actualGun() const;
 };
 
 
-class Guardia: public Soldado {
-	private:
-	Pistola pistola;
-	
+class Guard: public Soldier {
 	public:
-	Guardia(int& balas);
-	int disparar(Player *jugador, std::map<int, Player*>&) override;
-	int soltarArma(Player *jugador) override;
-	bool estaListo() override;
-	int numeroArma() const;
+	Guard(int& bullets);
+	int shoot(Player *player, std::map<int, Player*>&) override;
+	int throwGun(Player *player) override;
+	bool ready() override;
+	int actualGun() const;
 };
 
 
-class SS: public Soldado {
+class SS: public Soldier {
 	private:
-	Ametralladora ametralladora;
-	bool tieneArma;
+	bool gun;
 	
 	public:
 	SS(int &balas);
-	bool agregarArma(Ametralladora *ametralladora);
-	int disparar(Player *jugador, std::map<int, Player*>&) override;	
-	int soltarArma(Player *jugador) override;
-	bool estaListo() override;
-	int numeroArma() const;
+	bool addGun();
+	int shoot(Player *player, std::map<int, Player*>&) override;	
+	int throwGun(Player *player) override;
+	bool ready() override;
+	int actualGun() const;
 };
 
 
-class Oficial: public Soldado {
+class Officer: public Soldier {
 	private:
-	CanionDeCadena canion;
-	bool tieneArma;
+	bool gun;
 	
 	public:
-	Oficial(int &balas);
-	bool agregarArma(CanionDeCadena *canion);
-	int disparar(Player *jugador, std::map<int, Player*>&) override;
-	int soltarArma(Player *jugador) override;
-	bool estaListo() override;
-	int numeroArma() const;
+	Officer(int &bullets);
+	bool addGun();
+	int shoot(Player *player, std::map<int, Player*>&) override;
+	int throwGun(Player *player) override;
+	bool ready() override;
+	int actualGun() const;
 };
 
 
-class Mutante: public Soldado {
+class Mutant: public Soldier {
 	private:
-	Lanzacohetes lanzacohetes;
-	bool tieneArma;
+	bool gun;
 	
 	public:
-	Mutante(int &balas);
-	bool agregarArma(Lanzacohetes *lanzacohetes);
-	int disparar(Player *jugador, std::map<int, Player*>&) override;	
-	int soltarArma(Player *jugador) override;
-	bool estaListo() override;
-	int numeroArma() const;
+	Mutant(int &bullets);
+	bool addGun();
+	int shoot(Player *player, std::map<int, Player*>&) override;	
+	int throwGun(Player *player) override;
+	bool ready() override;
+	int actualGun() const;
 };
 
 
 
-class EstadoSoldado {
+class SoldierState {
 	private:
-	Player *jugador;
-	Soldado *soldado;
-	Perro perro;
-	Guardia guardia;
+	Player *player;
+	Soldier *soldier;
+	Dog dog;
+	Guard guard;
 	SS ss;
-	Oficial oficial;
-	Mutante mutante;
-	Soldado *soldado_anterior;
-	std::atomic<int> arma_actual;
+	Officer officer;
+	Mutant mutant;
+	Soldier *last_soldier;
+	std::atomic<int> actual_gun;
 	
 	public:
-	explicit EstadoSoldado(Player *jugador, int& balas);
-	int armaActual();
-	bool agregarArma(Arma* arma);
-	void cambiarArma(int numero_arma);
-	int soltarArma();
-	int disparar(std::map<int, Player*>& enemigos);
-	void recargarBalas();
+	explicit SoldierState(Player *player, int& bullets);
+	int actualGun();
+	bool addGun(int gun_number);
+	void switchGun(int gun_number);
+	int throwGun();
+	int shoot(std::map<int, Player*>& enemies);
+	void rechargeBullets();
 };
 
 

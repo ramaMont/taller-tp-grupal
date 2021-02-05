@@ -8,97 +8,186 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include "ExceptionServer.h"
 #define GRADOS_180 180
 #define PI 3.14159265358979323846
+#define PASO 1
+#define ROTACION_45 0.7071
+#define PORCENTAJE 100
+#define DISTANCIA_CUCHILLO 2
 
+// Soldier State
 
-EstadoSoldado::EstadoSoldado(Player *jugador, int &balas): jugador(jugador),
-    perro(Perro(balas)), guardia(Guardia(balas)), ss(SS(balas)),
-    oficial(Oficial(balas)), mutante(Mutante(balas)), arma_actual(1){
-	this->soldado = &guardia;
-	this->soldado_anterior = nullptr;
+SoldierState::SoldierState(Player *player, int &bullets): player(player),
+    dog(bullets), guard(bullets), ss(bullets),
+    officer(bullets), mutant(bullets), actual_gun(1){
+	soldier = &guard;
+	last_soldier = nullptr;
 }
 
-int EstadoSoldado::armaActual(){
-	return this->arma_actual;
+int SoldierState::actualGun(){
+	return actual_gun;
 }
 
-bool EstadoSoldado::agregarArma(Arma* arma){
-	if (typeid(*arma) == typeid(Ametralladora)){
-		return this->ss.agregarArma(static_cast<Ametralladora*>(arma));
-	}
-	if (typeid(*arma) == typeid(CanionDeCadena)){
-		return this->oficial.agregarArma(static_cast<CanionDeCadena*>(arma));
-	}
-	if (typeid(*arma) == typeid(Lanzacohetes)){
-		return this->mutante.agregarArma(static_cast<Lanzacohetes*>(arma));
+bool SoldierState::addGun(int gun_number){
+    switch (gun_number){
+		case GunNumber::MACHINE_GUN:
+			return ss.addGun();
+		case GunNumber::CANON_GUN:
+			return officer.addGun();
+		case GunNumber::ROCKET_GUN:
+			return mutant.addGun();
 	}
 	return false;
 }
 
-void EstadoSoldado::cambiarArma(int numero_arma){
-	switch (numero_arma){
-		case N_CUCHILLO:
-			this->soldado = &this->perro;
+void SoldierState::switchGun(int gun_number){
+	switch (gun_number){
+		case GunNumber::KNIFE:
+			soldier = &dog;
 			break;
-		case N_PISTOLA:
-			if (this->guardia.estaListo())
-				this->soldado = &this->guardia;
+		case GunNumber::GUN:
+			if (guard.ready())
+				soldier = &guard;
 			break;
-		case N_AMETRALLADORA:
-			if (this->ss.estaListo())
-				this->soldado = &this->ss;
+		case GunNumber::MACHINE_GUN:
+			if (ss.ready())
+				soldier = &ss;
 			break;
-		case N_CANION:
-			if (this->oficial.estaListo())
-				this->soldado = &this->oficial;
+		case GunNumber::CANON_GUN:
+			if (officer.ready())
+				soldier = &officer;
 			break;
-		case N_LANZACOHETES:
-			if (this->mutante.estaListo())
-				this->soldado = &this->mutante;
+		case GunNumber::ROCKET_GUN:
+			if (mutant.ready())
+				soldier = &mutant;
 			break;
 	}
-	this->arma_actual = this->soldado->numeroArma();
+	this->actual_gun = soldier->actualGun();
 }
 
 
-int EstadoSoldado::soltarArma(){
-	Soldado *s = this->soldado;
-	this->soldado = &this->guardia;
-	return s->soltarArma(this->jugador);
+int SoldierState::throwGun(){
+	Soldier *s = soldier;
+	soldier = &guard;
+	return s->throwGun(this->player);
 }
 
-int EstadoSoldado::disparar(std::map<int, Player*>& enemigos){
-	int balas_disparadas = this->soldado->disparar(this->jugador, enemigos);
-	if (!this->soldado->estaListo()){
-		this->soldado_anterior = this->soldado;
-		this->soldado = &this->perro;
+int SoldierState::shoot(std::map<int, Player*>& enemies){
+	int fired_bullets = soldier->shoot(this->player, enemies);
+	if (!soldier->ready()){
+		last_soldier = soldier;
+		soldier = &dog;
 	}
-	this->arma_actual = this->soldado->numeroArma();
-	return balas_disparadas;
+	actual_gun = soldier->actualGun();
+	return fired_bullets;
 }
 
-void EstadoSoldado::recargarBalas(){
-	if (this->soldado_anterior){
-		this->soldado = soldado_anterior;
-		this->soldado_anterior = nullptr;
+void SoldierState::rechargeBullets(){
+	if (last_soldier){
+		soldier = last_soldier;
+		last_soldier = nullptr;
 	}
-	this->arma_actual = this->soldado->numeroArma();
+	actual_gun = soldier->actualGun();
 }
+
+
+// Soldado
+
+int radianesAGrados(double radianes){
+	return radianes * GRADOS_180 / PI;
+}
+
+void Soldado::obtenerEnemigosCercanos(std::map<int, Player*>& enemigos,
+    Player* player, std::set<std::pair<int, Player*>>& players){
+    for (auto it = enemigos.begin(); it != enemigos.end(); ++it){
+        auto enemigo = it->second;
+		if (enemigo == player)
+			continue;
+		float angulo = player->calcularAngulo(enemigo);
+		int grados = radianesAGrados(angulo);
+		if (grados <= configs[CONFIG::rango_de_disparo])
+		    players.insert(std::pair<int,Player*>(grados,enemigo));
+	}
+}
+
+void Soldado::tryShoot(Player* player,  std::set<std::pair<int, Player*>>& enemigos, float precision){
+	for (std::pair<int, Player*> e: enemigos){
+		if (dispararBala(player, precision, e.first, e.second))
+			return;
+	}
+}
+
+bool Soldado::colisionaConObjeto(Mapa& mapa, const Coordinates& inicio, 
+    const Coordinates& fin){
+	if (inicio == fin) return false;
+	Coordinates direction(std::floor(fin.x) + 0.5 - inicio.x,
+                              std::floor(fin.y) + 0.5 - inicio.y);
+	Coordinates actual(inicio.x, inicio.y);
+	direction.normalice_direction();
+	actual.increment_on_direction(direction, PASO);
+
+	while (actual != fin){
+		if (mapa.hayObstaculoEn(actual) && actual != inicio)
+			return true;
+		actual.increment_on_direction(direction, PASO);
+	}
+	return false;
+}
+
+void Soldado::atacar(Player *player, Player* enemigo, float precision, int angulo){
+	double distancia = player->calcularDistancia(enemigo);
+
+    float danio = precision - 
+                  distancia * configs[CONFIG::baja_precision_distancia];
+	danio -= angulo/(int)configs[CONFIG::rango_de_disparo];
+	int n_rand = rand() % (int)configs[CONFIG::maximo_danio] + 1;
+	danio *= n_rand;
+	bool murio = enemigo->recibirDanio(std::ceil(danio));
+	if (murio)
+		player->agregarEnemigoMuerto();
+}
+
+
+bool Soldado::dispararBala(Player *player, float precision, int angulo, Player* enemigo){
+	int n_rand = rand() % PORCENTAJE;
+	if ((n_rand / PORCENTAJE) > precision)	// Falla el tiro
+		return true;
+
+	if (colisionaConObjeto(player->getMapa(), player->get_coordinates(),
+	    enemigo->get_coordinates()))	// Hay un objeto en el medio       
+	    return false;
+
+    atacar(player, enemigo, precision, angulo);
+    return true;
+}
+
 
 // Perro
 
 Perro::Perro(int& n): Soldado(n){
 }
 
-int Perro::disparar(Player *jugador, std::map<int, Player*>& enemigos){
-	std::set<std::pair<int, Player*>> set_jugadores;
-	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
-	this->cuchillo.disparar(jugador, set_jugadores);
+int Perro::disparar(Player *player, std::map<int, Player*>& enemigos){
+	std::set<std::pair<int, Player*>> set_players;
+	obtenerEnemigosCercanos(enemigos, player, set_players);
+	bite(player, set_players);
 	return 0;
 }
 
-int Perro::soltarArma(Player *jugador){
+void Perro::bite(Player *player, angulos_enemigos_t& enemigos){
+	for (std::pair<int, Player*> e: enemigos){
+		if (player->calcularDistancia(e.second) < DISTANCIA_CUCHILLO){
+			int danio = rand() % (int)configs[CONFIG::maximo_danio] + 1;
+			bool murio = e.second->recibirDanio(danio);
+			if (murio)
+				player->agregarEnemigoMuerto();
+			return;
+		}
+	}
+}
+
+int Perro::soltarArma(Player *player){
 	return 0;
 }
 
@@ -111,40 +200,20 @@ int Perro::numeroArma() const{
 }
 
 
-// Soldado
-
-int radianesAGrados(double radianes){
-	return radianes * GRADOS_180 / PI;
-}
-
-void Soldado::obtenerEnemigosCercanos(std::map<int, Player*>& enemigos,
-    Player* jugador, std::set<std::pair<int, Player*>>& jugadores){
-    for (auto it = enemigos.begin(); it != enemigos.end(); ++it){
-        auto enemigo = it->second;
-		if (enemigo == jugador)  
-			continue;
-		float angulo = jugador->calcularAngulo(enemigo);
-		int grados = radianesAGrados(angulo);
-		if (grados <= configs[CONFIG::rango_de_disparo])
-		    jugadores.insert(std::pair<int,Player*>(grados,enemigo));
-	}
-}
-
-
 // Guardia
 
 Guardia::Guardia(int& balas): Soldado(balas){
 }
 
-int Guardia::disparar(Player *jugador, std::map<int, Player*>& enemigos){
-	std::set<std::pair<int, Player*>> set_jugadores;
-	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
-	this->pistola.disparar(jugador, set_jugadores);
+int Guardia::disparar(Player *player, std::map<int, Player*>& enemigos){
+	std::set<std::pair<int, Player*>> set_players;
+	obtenerEnemigosCercanos(enemigos, player, set_players);
+	tryShoot(player, set_players, configs[CONFIG::precision_pistola]);
 	this->balas --;
 	return 1;
 }
 
-int Guardia::soltarArma(Player *jugador){
+int Guardia::soltarArma(Player *player){
 	return 0;
 }
 
@@ -170,24 +239,24 @@ bool SS::agregarArma(Ametralladora *ametr){
 	return true;
 }
 
-int SS::disparar(Player *jugador, std::map<int, Player*>& enemigos){
-	std::set<std::pair<int, Player*>> set_jugadores;
-	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
-	
+int SS::disparar(Player *player, std::map<int, Player*>& enemigos){
+	std::set<std::pair<int, Player*>> set_players;
+	obtenerEnemigosCercanos(enemigos, player, set_players);
+
 	int balas_disparadas = 0;
 	for (int i = 0; (i < configs[CONFIG::balas_rafaga_ametralladora]) 
 	    && (this->balas > 0); i++){
-	    this->ametralladora.disparar(jugador, set_jugadores);
+	    tryShoot(player, set_players, configs[CONFIG::precision_ametralladora]);
 	    this->balas --;
 	    balas_disparadas ++;
 	}
 	return balas_disparadas;
 }
 
-int SS::soltarArma(Player *jugador){
-    Mapa &mapa = jugador->getMapa();
-    Item* arma = new Ametralladora(jugador->get_coordinates());
-    mapa.agregarItem(arma, jugador->get_coordinates());
+int SS::soltarArma(Player *player){
+    Mapa &mapa = player->getMapa();
+    Item* arma = new Ametralladora(player->get_coordinates());
+    mapa.agregarItem(arma, player->get_coordinates());
     this->tieneArma = false;
     return 6;
 }
@@ -214,18 +283,18 @@ bool Oficial::agregarArma(CanionDeCadena *canion){
     return true;
 }
 	
-int Oficial::disparar(Player *jugador, std::map<int, Player*>& enemigos){
-	std::set<std::pair<int, Player*>> set_jugadores;
-	obtenerEnemigosCercanos(enemigos, jugador, set_jugadores);
-	this->canion.disparar(jugador, set_jugadores);
+int Oficial::disparar(Player *player, std::map<int, Player*>& enemigos){
+	std::set<std::pair<int, Player*>> set_players;
+	obtenerEnemigosCercanos(enemigos, player, set_players);
+	tryShoot(player, set_players, configs[CONFIG::precision_canion]);
 	this->balas --;	
 	return 1;
 }
 
-int Oficial::soltarArma(Player *jugador){
-    Mapa &mapa = jugador->getMapa();
-    Item* arma = new CanionDeCadena(jugador->get_coordinates());
-    mapa.agregarItem(arma, jugador->get_coordinates());
+int Oficial::soltarArma(Player *player){
+    Mapa &mapa = player->getMapa();
+    Item* arma = new CanionDeCadena(player->get_coordinates());
+    mapa.agregarItem(arma, player->get_coordinates());
     this->tieneArma = false;
     return 9;
 }
@@ -252,16 +321,16 @@ bool Mutante::agregarArma(Lanzacohetes *lanzacohetes){
 	return true;	
 }
 
-int Mutante::disparar(Player *jugador, std::map<int, Player*>& enemigos){
-	this->lanzacohetes.disparar(jugador, enemigos);
+int Mutante::disparar(Player *player, std::map<int, Player*>& enemigos){
+	throw RocketException();//
 	this->balas -= (int)configs[CONFIG::balas_gastadas_lanzacohetes];
 	return (int)configs[CONFIG::balas_gastadas_lanzacohetes];
 }
 
-int Mutante::soltarArma(Player *jugador){
-    Mapa &mapa = jugador->getMapa();
-    Item* arma = new Lanzacohetes(jugador->get_coordinates());
-    mapa.agregarItem(arma, jugador->get_coordinates());
+int Mutante::soltarArma(Player *player){
+    Mapa &mapa = player->getMapa();
+    Item* arma = new Lanzacohetes(player->get_coordinates());
+    mapa.agregarItem(arma, player->get_coordinates());
     this->tieneArma = false;
     return 4;
 }

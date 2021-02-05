@@ -10,47 +10,45 @@ class Mapa;
 #include <map>
 #define ROCKET_STEP 0.25
 
-class Objeto: public Posicionable {
+class Object: public Posicionable {
 	public:
-	Objeto(Coordinates coordenadas): Posicionable(coordenadas) { }
-    Coordinates& getCoordinates();
+	Object(Coordinates coordinates): Posicionable(coordinates) { }
 };
 
 
-class ParedFalsa: public Objeto {
+class Passage: public Object {
 	public:
-	ParedFalsa(Coordinates coordenadas);
-	bool abrir(Player *jugador);
+	Passage(Coordinates coordinates);
+	bool open(Player *player);
 };
 
 
-class Puerta: public Objeto {
+class Door: public Object {
 	private:
-	bool abierta = false;
 	bool has_event;
 	std::atomic<bool> reopen;
 	
 	public:
-	Puerta(Coordinates coordenadas);
-	virtual bool abrir(Player *jugador);
-	bool abrirPuerta(Player *jugador);
+	Door(Coordinates coordinates);
+	virtual bool open(Player *player);
+	bool openDoor(Player *player);
 	std::atomic<bool>& getReopen();
 	void letPass();
 	void close();
 };
 
 
-class PuertaCerrada: public Puerta {
+class KeyDoor: public Door {
 	private:
-	bool llave = false;
+	bool opened = false;
 	
 	public:
-	PuertaCerrada(Coordinates coordenadas): Puerta(coordenadas) { }
-	bool abrir(Player *jugador) override;
+	KeyDoor(Coordinates coordinates): Door(coordinates) { }
+	bool open(Player *player) override;
 };
 
 
-class Rocket: public Objeto{
+class Rocket: public Object{
     private:
     Coordinates direction;
     Player* player;
@@ -64,7 +62,7 @@ class Rocket: public Objeto{
     void move(ThGameModelServer& game_model);
     void explode();
     bool hasExploded();
-    bool colisionaConObjeto(const Coordinates& inicio, const Coordinates& fin);
+    bool crashes(const Coordinates& start, const Coordinates& end);
     Coordinates getDirection();
     ~Rocket();
 };
