@@ -6,6 +6,9 @@
 #include "Posicionable.h"
 class Ray;
 
+const int CANT_FRAMES_ANIMATION = 20;
+const int TEXTURE_LENGTH = 64;
+
 class Door : public Posicionable{
 private:
 	int current_frame;

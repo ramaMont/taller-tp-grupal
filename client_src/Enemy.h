@@ -36,6 +36,8 @@ public:
     // Cambio el tipo actual del enemigo
     void newEnemyType(int new_enemy_type);
 
+    int getType()override;
+
     // Pre:-
     // Seteo que el jugador se está moviendo
 	void moving();

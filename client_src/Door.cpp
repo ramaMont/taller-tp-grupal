@@ -37,7 +37,7 @@ void Door::setState(std::string new_state){
 
 void Door::updateFrame(){ //Me tardo 20 frames en abrirla
 	if(state=="opening" or state =="open"){
-		if(current_frame<20)
+		if(current_frame<CANT_FRAMES_ANIMATION)
 			current_frame++;
 	}else if(state=="closed"){
 		if(current_frame>0)
@@ -46,11 +46,7 @@ void Door::updateFrame(){ //Me tardo 20 frames en abrirla
 }
 
 int Door::getLimitWall(){
-	if(current_frame>20){
-		return 0;
-	}else{
-		return 64-(current_frame*64/20);
-	}
+	return TEXTURE_LENGTH-(current_frame*TEXTURE_LENGTH/CANT_FRAMES_ANIMATION);
 }
 
 void Door::draw(int ray, float distance, int number_line_texture,bool wall_side_y){

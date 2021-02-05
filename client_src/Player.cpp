@@ -68,6 +68,10 @@ bool Player::gunAllowsContinuousShooting(){
     return gun_type->allowsContinuousShooting();
 }
 
+int Player::getType(){
+    return gun_type->getType();
+}
+
 void Player::updateShots(){
     if(shooting){
         current_shoot_frame++;

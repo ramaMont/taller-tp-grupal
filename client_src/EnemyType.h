@@ -4,17 +4,22 @@
 class Texture;
 #include "SoundPlayer.h"
 
+const int MAX_SHOOTING_FRAMES = 10;
+
 //Los distintos tipos de enemigos
 class EnemyType{
 protected:
 	Texture *texture_drawer;
 	int frames_shooting;
+	int enemy_type;
 public:
-	EnemyType(Texture *texture_drawer);
+	EnemyType(Texture *texture_drawer, int enemy_type);
 
     //Pre:-
     // aumento en 1 el frame de disparo	
 	virtual void shoot(SoundPlayer& soundPlayer, float distance) = 0;
+
+	int getType();
 
     //Pre:-
     // Actualiza el frame de disparo, si es 0 no estoy disparando, si es 10 terminé de disparar

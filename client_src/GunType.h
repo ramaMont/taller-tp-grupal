@@ -15,8 +15,11 @@ protected:
 	Texture *texture_drawer;
 	int frames_per_shot;
 	bool allows_continuous_shooting;
+	int enemy_type;
 public:
-	GunType(Texture *texture_drawer, int frames_per_shot, bool allows_continuous_shooting);
+	GunType(Texture *texture_drawer, int frames_per_shot, bool allows_continuous_shooting, int enemy_type);
+
+	int getType();
 
     //Pre:-
     // Llamo a su respectivo metodo encargadao de dibujar	

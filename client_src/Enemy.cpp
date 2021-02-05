@@ -69,6 +69,10 @@ void Enemy::newEnemyType(int new_enemy_type){
    		enemy_type = new Mutant(texture_drawer);
 }
 
+int Enemy:: getType(){
+	return enemy_type->getType();
+}
+
 void Enemy::moving(){
 	is_moving = true;
 }

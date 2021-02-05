@@ -43,6 +43,8 @@ public:
     // Se remueve a sí mismo del mapa
     void die();
 
+    virtual int getType() = 0;
+
     //Pre:-
     // Se agrega a si mismo al mapa y vuelve a setear su posicion y direccion a las iniciales
     virtual void resurrect();

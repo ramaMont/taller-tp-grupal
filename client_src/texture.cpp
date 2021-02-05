@@ -130,9 +130,9 @@ Texture::Texture(const Window& window):
 	addEnemyTexture("ss_pos");
 	addEnemyTexture("mutant_pos");
 
+	addDeadEnemyTexture("dead_dog");
 	addDeadEnemyTexture("dead_guard");
 	addDeadEnemyTexture("dead_officer");
-	addDeadEnemyTexture("dead_dog");
 	addDeadEnemyTexture("dead_ss");
 	addDeadEnemyTexture("dead_mutant");
 
