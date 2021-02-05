@@ -8,6 +8,8 @@
 #include <iostream>
 #include<string>
 
+#include "SpriteValues.h"
+
 void Texture::addWallTexture(std::string new_texture){
     SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
     wall_textures.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
@@ -22,7 +24,7 @@ void Texture::addSpriteTexture(std::string new_texture){
     SDL_Surface* loadedSurface = IMG_Load(("../data/textures/" + new_texture+".png").c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 0, 0, 0);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
-    sprites.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
+	sprites.insert(std::pair<int,SDL_Texture*>(texture_values.at(new_texture),SDL_CreateTextureFromSurface(renderer, loadedSurface)));
 	SDL_FreeSurface(loadedSurface);	
 }
 
@@ -46,7 +48,7 @@ void Texture::addDeadEnemyTexture(std::string new_texture){
     SDL_Surface* loadedSurface = IMG_Load(("../data/textures/dead_enemies/" + new_texture+".png").c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
-    sprites.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
+    sprites.insert(std::pair<int,SDL_Texture*>(texture_values.at(new_texture),SDL_CreateTextureFromSurface(renderer, loadedSurface)));
 	SDL_FreeSurface(loadedSurface);		
 }
 

@@ -3,6 +3,8 @@
 #include <yaml-cpp/yaml.h>
 #include <cmath>
 
+#include "SpriteValues.h"
+
 GameModelClient::GameModelClient(int user_id, std::string map_filename,\
             int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
     std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
@@ -95,67 +97,67 @@ void GameModelClient::initMap(std::string map_filename){
               position.y+=0.5;
             }
             if (elemento == "barrel"){
-               SpriteHolder *posicionable = new SpriteHolder(position,0,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                posicionable->isColidable();
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "pillar"){
-               SpriteHolder *posicionable = new SpriteHolder(position,1,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                posicionable->isColidable();
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "greenlight"){
-               SpriteHolder *posicionable = new SpriteHolder(position,2,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position); 
             }else if (elemento == "trophie"){
                printf("El trofeo está en: (%f,%f)\n",position.x,position.y );
-               SpriteHolder *posicionable = new SpriteHolder(position,3,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "rocket_launcher"){
               std::cout<<"elemento:"<<elemento<<std::endl;
-               SpriteHolder *posicionable = new SpriteHolder(position,4,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "medicine"){
               std::cout<<"elemento:"<<elemento<<std::endl;
-               SpriteHolder *posicionable = new SpriteHolder(position,5,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "machine_gun"){
-               SpriteHolder *posicionable = new SpriteHolder(position,6,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "key"){
-               SpriteHolder *posicionable = new SpriteHolder(position,7,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "food"){
-               SpriteHolder *posicionable = new SpriteHolder(position,8,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "fire_canon"){
-               SpriteHolder *posicionable = new SpriteHolder(position,9,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "bullets"){
-               SpriteHolder *posicionable = new SpriteHolder(position,10,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "table"){
-               SpriteHolder *posicionable = new SpriteHolder(position,11,player);
+               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                posicionable->isColidable();
                sprites.push_back(posicionable);
@@ -287,12 +289,12 @@ void GameModelClient::addDeadSprite(Coordinates position, int character_type){
   printf("El personaje muerto es: %i \n", character_type);
   printf("su posicion es: (%f,%F)\n",position.x,position.y );
   if(character_type==0){
-    SpriteHolder *posicionable = new SpriteHolder(position,13,player);
+    SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at("dead_dog"),player);
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);  
     map.addPositionable(posicionable,position);  
   }else if(character_type==1){
-    SpriteHolder *posicionable = new SpriteHolder(position,14,player);
+    SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at("dead_guard"),player);
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);  
     map.addPositionable(posicionable,position);  

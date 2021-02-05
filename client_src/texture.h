@@ -4,6 +4,7 @@
 
 #include "window.h"
 #include <vector>
+#include <map>
 
 #include <SDL2/SDL_ttf.h>
 
@@ -12,9 +13,8 @@ class Texture {
 private:
     SDL_Renderer* renderer;
     std::vector<SDL_Texture*> wall_textures;
-    std::vector<SDL_Texture*> sprites;
+    std::map<int,SDL_Texture*> sprites;
     std::vector<SDL_Texture*> enemies;
-    std::vector<SDL_Texture*> dead_enemies;
     std::vector<SDL_Texture*> shooting_effect;
     std::vector<SDL_Texture*> bar_guns;
     SDL_Texture* face_health;
