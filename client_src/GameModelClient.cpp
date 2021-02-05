@@ -285,6 +285,7 @@ GameModelClient& GameModelClient::operator=(GameModelClient&& other){
 
 void GameModelClient::addDeadSprite(Coordinates position, int character_type){
   printf("El personaje muerto es: %i \n", character_type);
+  printf("su posicion es: (%f,%F)\n",position.x,position.y );
   if(character_type==0){
     SpriteHolder *posicionable = new SpriteHolder(position,13,player);
     posicionable->set_texture(&texture);
@@ -295,7 +296,7 @@ void GameModelClient::addDeadSprite(Coordinates position, int character_type){
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);  
     map.addPositionable(posicionable,position);  
-  }else if(character_type==2){
+  }/*else if(character_type==2){
     SpriteHolder *posicionable = new SpriteHolder(position,15,player);
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);  
@@ -310,7 +311,7 @@ void GameModelClient::addDeadSprite(Coordinates position, int character_type){
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);  
     map.addPositionable(posicionable,position);  
-  }
+  }*/
 }
 
 void GameModelClient::processProtocol(Protocol& protocol){
@@ -326,10 +327,10 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::DIE:{
             auto character = characters.at(protocol.getId());
-            //int character_type = 1;//character->getType();
-            //Coordinates position = character->getPosicion();
+            int character_type = character->getType(); //Este anda
+            Coordinates position = character->getPosicion();
             character->die();
-            //addDeadSprite(position,character_type);
+            addDeadSprite(position,character_type);
             playSound(SoundPlayer::sound_type::DYING, character);
             break;
         }
