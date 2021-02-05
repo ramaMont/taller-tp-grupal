@@ -126,11 +126,11 @@ Texture::Texture(const Window& window):
 	addSpriteTexture("table");	
 	addSpriteTexture("rocket");
 
-	addEnemyTexture("guard_pos");//Tambien los guardo con los sprites
+	addEnemyTexture("guard_pos");
 	addEnemyTexture("officer_pos");
-	addEnemyTexture("dog_pos");
 	addEnemyTexture("ss_pos");
 	addEnemyTexture("mutant_pos");
+	addEnemyTexture("dog_pos");
 
 	addDeadEnemyTexture("dead_dog");
 	addDeadEnemyTexture("dead_guard");
@@ -139,6 +139,9 @@ Texture::Texture(const Window& window):
 	addDeadEnemyTexture("dead_mutant");
 
 	addShootingEffectTexture("guard_shooting");
+	addShootingEffectTexture("officer_shooting");
+	addShootingEffectTexture("ss_shooting");
+	addShootingEffectTexture("ss_shooting"); //Acá despues va el de mutant
 
 	addGunTexture("guns");
 
@@ -400,20 +403,25 @@ void Texture::showGuard(int state, int frame,int x_pixel, float distance_player_
 
 void Texture::showOfficer(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
 	showEnemy(this->enemies[1], state, frame, x_pixel, distance_player_plane, number_line_texture);
-}
-
-void Texture::showDog(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
-	showEnemy(this->enemies[2], state, frame, x_pixel, distance_player_plane, number_line_texture);
+	if(is_shooting)
+		showEnemy(this->shooting_effect[1],state,0,x_pixel,distance_player_plane, number_line_texture);
 }
 
 void Texture::showSs(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
-	showEnemy(this->enemies[3], state, frame, x_pixel, distance_player_plane, number_line_texture);
+	showEnemy(this->enemies[2], state, frame, x_pixel, distance_player_plane, number_line_texture);
+	if(is_shooting)
+		showEnemy(this->shooting_effect[2],state,0,x_pixel,distance_player_plane, number_line_texture);
 }
 
 void Texture::showMutant(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
-	showEnemy(this->enemies[4], state, frame, x_pixel, distance_player_plane, number_line_texture);
+	showEnemy(this->enemies[3], state, frame, x_pixel, distance_player_plane, number_line_texture);
+	if(is_shooting)
+		showEnemy(this->shooting_effect[3],state,0,x_pixel,distance_player_plane, number_line_texture);
 }
 
+void Texture::showDog(int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture, bool is_shooting){
+	showEnemy(this->enemies[4], state, frame, x_pixel, distance_player_plane, number_line_texture);
+}
 
 void Texture::showWall(SDL_Texture* texture,int x_pixel,float distance_player_plane, int number_line_texture){
 	float lineHeight = (this->height / distance_player_plane);

@@ -329,7 +329,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::DIE:{
             auto character = characters.at(protocol.getId());
-            CharacterType character_type = character->getType(); //Este anda
+            CharacterType character_type = character->getType();
             Coordinates position = character->getPosicion();
             character->die();
             addDeadSprite(position,character_type);
