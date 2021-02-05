@@ -3,10 +3,10 @@
 #include "texture.h"
 
 
-EnemyType::EnemyType(Texture *texture_drawer, int enemy_type): texture_drawer(texture_drawer),frames_shooting(0) , enemy_type(enemy_type){}
+EnemyType::EnemyType(Texture *texture_drawer, CharacterType enemy_type): texture_drawer(texture_drawer),frames_shooting(0) , enemy_type(enemy_type){}
 
 
-int EnemyType::getType(){
+CharacterType EnemyType::getType(){
 	return enemy_type;
 }
 
@@ -19,7 +19,7 @@ void EnemyType::updateShooting(){
 	}
 }
 //--------------------------------------------------------------------------------------------------------
-Dog::Dog(Texture *texture_drawer):EnemyType(texture_drawer,0) {}
+Dog::Dog(Texture *texture_drawer):EnemyType(texture_drawer,dog) {}
 void Dog::callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame){
 	if(frames_shooting!=0){
 		texture_drawer->showDog(texture,frame%3,pos_x,distance_player_plane ,number_line_texture, true);
@@ -35,7 +35,7 @@ void Dog::shoot(SoundPlayer& soundPlayer, float distance){
 Dog::~Dog(){}
 //--------------------------------------------------------------------------------------------------------
 
-Guard::Guard(Texture *texture_drawer):EnemyType(texture_drawer,1){}
+Guard::Guard(Texture *texture_drawer):EnemyType(texture_drawer,guard){}
 void Guard::callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame){
 	if(frames_shooting!=0){
 		texture_drawer->showGuard(texture,frame%4,pos_x,distance_player_plane ,number_line_texture, true);
@@ -51,7 +51,7 @@ void Guard::shoot(SoundPlayer& soundPlayer, float distance){
 Guard::~Guard(){}
 //--------------------------------------------------------------------------------------------------------
 
-SS::SS(Texture *texture_drawer):EnemyType(texture_drawer,2){}
+SS::SS(Texture *texture_drawer):EnemyType(texture_drawer,ss){}
 void SS::callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame){
 	if(frames_shooting!=0){
 		texture_drawer->showSs(texture,frame%4,pos_x,distance_player_plane ,number_line_texture, true);
@@ -67,7 +67,7 @@ void SS::shoot(SoundPlayer& soundPlayer, float distance){
 SS::~SS(){}
 //--------------------------------------------------------------------------------------------------------
 
-Officer::Officer(Texture *texture_drawer):EnemyType(texture_drawer,3){}
+Officer::Officer(Texture *texture_drawer):EnemyType(texture_drawer,officer){}
 void Officer::callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame){
 	if(frames_shooting!=0){
 		texture_drawer->showOfficer(texture,frame%4,pos_x,distance_player_plane ,number_line_texture, true);
@@ -83,7 +83,7 @@ void Officer::shoot(SoundPlayer& soundPlayer, float distance){
 Officer::~Officer(){}
 //--------------------------------------------------------------------------------------------------------
 
-Mutant::Mutant(Texture *texture_drawer):EnemyType(texture_drawer,4) {}
+Mutant::Mutant(Texture *texture_drawer):EnemyType(texture_drawer,mutant) {}
 void Mutant::callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame){
 	if(frames_shooting!=0){
 		texture_drawer->showMutant(texture,frame%4,pos_x,distance_player_plane ,number_line_texture, true);

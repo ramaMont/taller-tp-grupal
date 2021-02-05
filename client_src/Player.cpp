@@ -68,7 +68,7 @@ bool Player::gunAllowsContinuousShooting(){
     return gun_type->allowsContinuousShooting();
 }
 
-int Player::getType(){
+CharacterType Player::getType(){
     return gun_type->getType();
 }
 

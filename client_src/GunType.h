@@ -8,18 +8,18 @@
 #include "SoundPlayer.h"
 
 class Texture;
-
+#include "CharacterValues.h"
 //Los distintos tipos de armas que puede tener el jugador
 class GunType{
 protected:
 	Texture *texture_drawer;
 	int frames_per_shot;
 	bool allows_continuous_shooting;
-	int enemy_type;
+	CharacterType enemy_type;
 public:
-	GunType(Texture *texture_drawer, int frames_per_shot, bool allows_continuous_shooting, int enemy_type);
+	GunType(Texture *texture_drawer, int frames_per_shot, bool allows_continuous_shooting, CharacterType enemy_type);
 
-	int getType();
+	CharacterType getType();
 
     //Pre:-
     // Llamo a su respectivo metodo encargadao de dibujar	

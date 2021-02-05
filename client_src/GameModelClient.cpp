@@ -285,15 +285,15 @@ GameModelClient& GameModelClient::operator=(GameModelClient&& other){
     return *this;
 }
 
-void GameModelClient::addDeadSprite(Coordinates position, int character_type){
-  printf("El personaje muerto es: %i \n", character_type);
-  printf("su posicion es: (%f,%F)\n",position.x,position.y );
-  if(character_type==0){
+void GameModelClient::addDeadSprite(Coordinates position, CharacterType character_type){
+  //printf("El personaje muerto es: %i \n", a_character_type);
+  printf("su posicion es: (%f,%f)\n",position.x,position.y );
+  if(character_type==dog){
     SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at("dead_dog"),player);
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);  
     map.addPositionable(posicionable,position);  
-  }else if(character_type==1){
+  }else if(character_type==guard){
     SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at("dead_guard"),player);
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);  
@@ -329,7 +329,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::DIE:{
             auto character = characters.at(protocol.getId());
-            int character_type = character->getType(); //Este anda
+            CharacterType character_type = character->getType(); //Este anda
             Coordinates position = character->getPosicion();
             character->die();
             addDeadSprite(position,character_type);

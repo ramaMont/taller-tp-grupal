@@ -67,7 +67,7 @@ public:
     // Llamo a la funcion correspondiente para que dibuje el arma
     void draw();
 
-    int getType() override;
+    CharacterType getType() override;
 
     //Pre:-
     // Actualiza su salud

@@ -69,7 +69,7 @@ void Enemy::newEnemyType(int new_enemy_type){
    		enemy_type = new Mutant(texture_drawer);
 }
 
-int Enemy:: getType(){
+CharacterType Enemy:: getType(){
 	return enemy_type->getType();
 }
 

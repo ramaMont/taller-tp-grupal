@@ -12,6 +12,8 @@ class Direction;
 class Ray;
 #include "ray.h"
 
+#include "CharacterValues.h"
+
 //Jugadores o enemigos
 class Character : public Posicionable{
 protected:
@@ -43,7 +45,7 @@ public:
     // Se remueve a sí mismo del mapa
     void die();
 
-    virtual int getType() = 0;
+    virtual CharacterType getType() = 0;
 
     //Pre:-
     // Se agrega a si mismo al mapa y vuelve a setear su posicion y direccion a las iniciales
