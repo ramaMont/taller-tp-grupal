@@ -333,7 +333,7 @@ void GameModelClient::removeCharacterFromMap(int id){
     	i++;
     }
     i=0;
-    while(i<doors.size() and !done){
+    while(i<doors.size() and !done){ //Falta que ande este
     	Coordinates door_position = doors[i]->getPosicion();
     	if(door_position == removablePosition){
     		done = true;
@@ -373,6 +373,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         }
         case Protocol::action::REMOVE:
+        	printf("EL REMOVE FUE LLAMADO! CORRAAAAN\n" );
             removePlayer(protocol.getUserId());
             break;
         case Protocol::action::OPEN:

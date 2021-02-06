@@ -83,7 +83,7 @@ public:
     Texture(const Window& window);
 
     //Muestra la barra de vida
-    void showLifeBar(unsigned int score, int lives, int health, int portion_health, int ammo);
+    void showLifeBar(unsigned int score, int lives, int health, int portion_health, int ammo, bool has_key_1, bool has_key_2);
 
     //configura los parametros y llama al generic_show para graficar la parte visible del sprite
     void showSprite(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int texture);

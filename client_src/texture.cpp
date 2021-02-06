@@ -153,6 +153,7 @@ Texture::Texture(const Window& window):
 	addBarGuns("gun");
 	addBarGuns("machine_gun");
 	addBarGuns("chain_gun");
+	addBarGuns("rocket_launcher");
 
 	addFaceHealth();
 
@@ -214,7 +215,7 @@ void Texture::showFaceHealth(int portion_health){
 	genericShow(face_health,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 
-void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_health, int ammo){
+void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_health, int ammo, bool has_key_1, bool has_key_2){
 		imgPartRect.x = 0; //Desde qué pixel en X quiero
 		imgPartRect.y = 0;	//Desde qué pixel en Y quiero
 		imgPartRect.w = 1097; //Cantidad de pixeles en X que tomo
@@ -352,7 +353,7 @@ void Texture::showRocketLauncher(int frame_gun){
 		int windows_y_pos = height + 15;//		
 		int length_x = 120;
 		int lenght_y = 80;
-		genericShow(this->bar_guns[3],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
+		genericShow(this->bar_guns[4],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 
 

@@ -10,15 +10,17 @@ Player::Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id):
         max_health(configs[CONFIG::vida_maxima]), init_bullets(configs[CONFIG::balas_iniciales]), 
         shot_frame(0), gun_type(nullptr),
         shooting(false),score(0), lives(configs[CONFIG::cantidad_de_vidas]), health(max_health),
-        ammo(configs[CONFIG::balas_iniciales]){
+        ammo(configs[CONFIG::balas_iniciales]),
+        has_key_1(false), has_key_2(false){
 }
 
 Player::Player(ClMap& map):
         Character(Coordinates(4,4),Coordinates(1,0),map,0), 
         max_health(configs[CONFIG::vida_maxima]), init_bullets(configs[CONFIG::balas_iniciales]), 
         shot_frame(0), gun_type(nullptr),shooting(false),
-        score(0), lives(configs[CONFIG::cantidad_de_vidas]), health(max_health), ammo(configs[CONFIG::balas_iniciales]){
-}
+        score(0), lives(configs[CONFIG::cantidad_de_vidas]),
+        health(max_health), ammo(configs[CONFIG::balas_iniciales]),
+        has_key_1(false), has_key_2(false){}
 
 void Player::complete(Coordinates initial_position,Coordinates initial_direction,int player_id){
     this->initial_position = initial_position;
@@ -34,6 +36,8 @@ void Player::resurrect(){
     direction = initial_direction;
     lives--;
     health = max_health;
+    has_key_1 = false;
+    has_key_2 = false;
     map.addPositionable(this, this->initial_position);
 }
 
@@ -84,7 +88,7 @@ void Player::updateShots(){
 
 void Player::draw(){
     float portion_health =  ((float)health*8.0)/(float)max_health ;
-    texture_drawer->showLifeBar(score, lives,health, ceil(portion_health), ammo);
+    texture_drawer->showLifeBar(score, lives,health, ceil(portion_health), ammo, has_key_1, has_key_2);
     gun_type->callDrawer(current_shoot_frame);
 }
 

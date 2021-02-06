@@ -33,6 +33,8 @@ private:
     int lives;
     int health;
     int ammo;
+    bool has_key_1;
+    bool has_key_2;
 
 public:
     explicit Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id);
