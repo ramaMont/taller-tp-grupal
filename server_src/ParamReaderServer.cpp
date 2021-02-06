@@ -4,19 +4,27 @@
 #include <string>
 #include <iostream>
 #include <ConfigVariable.h>
+#include "ExceptionServer.h"
 
 std::map<int, float> configs;
 
 
 ParamReaderServer::ParamReaderServer(int argc, char** argv): 
     args(argv, argv+argc){
-        if (argc != 3) throw -1;
+        if (argc != 3) 
+			throw ParamReaderException("Cantidad de parametros incorrecta\n");
     getConfiguration();
 }
 
 void ParamReaderServer::getConfiguration(){
-	std::string ruta_config = "../data/";
-	YAML::Node config = YAML::LoadFile(ruta_config.append(args.at(2)));
+	const std::string RUTA_CONFIG = "../data/";
+	YAML::Node config;
+	try{
+		config = YAML::LoadFile(RUTA_CONFIG + args.at(2));
+	} catch (std::exception& e) {
+		std::string error = e.what();
+		throw ParamReaderException(error + "\n");
+	}
 
 	configs[CONFIG::minutos_partida] = 
 	    config["minutos_partida"].as<int>();

@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
+#include "SocketException.hpp"
 
 #define MAX_CLIENTS_HOLD 10
 
@@ -22,9 +23,10 @@ void Socket::iteroAddrinfo(struct addrinfo *result, struct addrinfo *rp){
         ::close(socketFd);
     }
     if (rp == NULL) {
-        fprintf(stderr, "Could not connect\n");
+        std::string error = "Could not connect\n";
+//        fprintf(stderr, "Could not connect\n");
         freeaddrinfo(result);
-        throw -1;
+        throw SocketException(error);
     }
     freeaddrinfo(result);
 }
@@ -35,27 +37,31 @@ void Socket::reUseHost(struct addrinfo *pr){
     sErr = setsockopt(socketFd, SOL_SOCKET, SO_REUSEADDR,
         &val, sizeof(val));
     if (sErr == -1) {
-        std::cout << "Error: " << strerror(errno) << "\n";
+        std::string er_erno = strerror(errno);
+        std::string error = "Error: " + er_erno + "\n";
+//        std::cout << "Error: " << strerror(errno) << "\n";
         ::close(socketFd);
         freeaddrinfo(pr);
-        throw -1;
+        throw SocketException(error);
     }
 }
 
 void Socket::bindHost(struct addrinfo *pr){
     int sErr = bind(socketFd, pr->ai_addr, pr->ai_addrlen);
     if (sErr == -1) {
-        std::cout << "Error: " << strerror(errno) << "\n";
+//        std::cout << "Error: " << strerror(errno) << "\n";
+        std::string er_erno = strerror(errno);
+        std::string error = "Error: " + er_erno + "\n";
         ::close(socketFd);
         freeaddrinfo(pr);
-        throw -1;
+        throw SocketException(error);
     }
 }
 
 void Socket::hostNBind(struct addrinfo *pr){
     socketFd = socket(pr->ai_family, pr->ai_socktype, pr->ai_protocol);
     if (socketFd == -1)
-        throw -1;
+        throw SocketException("Could not create a socket\n");
     reUseHost(pr);
     bindHost(pr);
     freeaddrinfo(pr);
@@ -77,11 +83,15 @@ int Socket::send(const Protocol& protocol){
         sent = ::send(socketFd, (char *)&sending_protocol + bytes_enviados,
             size - bytes_enviados, MSG_NOSIGNAL);
         if (sent == -1){
-            printf("Error: %s\n", strerror(errno));
-            throw -1;
+//            printf("Error: %s\n", strerror(errno));
+            std::string er_erno = strerror(errno);
+            std::string error = "Error: " + er_erno + "\n";
+            throw SocketException(error);
         } else if (sent == 0){
             printf("Error: %s\n", strerror(errno));
-            throw -2;
+            std::string er_erno = strerror(errno);
+            std::string error = "Error: " + er_erno + "\n";
+            throw SocketException(error);
         } else {
             bytes_enviados += sent;
         }
@@ -98,9 +108,9 @@ int Socket::recive(Protocol& protocol){
         rec = ::recv(socketFd, (char *)&recived_protocol + received,
             size-received, 0);
         if (rec == 0) {             // socket cerrado :S
-            throw -1;
+            throw SocketException("El socket ha sido cerrado\n");
         } else if (rec == -1) {     // error
-            throw -2;
+            throw SocketException("Ha ocurrido un error en el socket\n");
         }
         received += rec;
     }
@@ -152,16 +162,17 @@ SocketServer::SocketServer(std::string port):Socket(){
 void SocketServer::hostListening(){
     int s = listen(socketFd, MAX_CLIENTS_HOLD);
     if (s == -1) {
-        std::cout << "Error: " << strerror(errno) << "\n";
+        std::string string_erno = strerror(errno);
+        std::string error = "Error: " + string_erno + "\n";
         ::close(socketFd);
-        throw -1;
+        throw SocketException(error);
     }
 }
 
 Socket SocketServer::acceptClient(){
     int peersktFd = accept(socketFd, NULL, NULL);
     if (peersktFd == -1) {
-        throw -1;
+        throw SocketException("Client could not be accepted\n");
     }
     return Socket(peersktFd);
 }
@@ -184,8 +195,10 @@ void SocketClient::hostOClientConf(struct addrinfo **pr, char *host,
     hints.ai_socktype = SOCK_STREAM; /* TCP  */
     err = getaddrinfo(host, port, &hints, pr);
     if (err != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(err));
-        throw -1;
+        std::string gai_error = gai_strerror(err);
+//        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(err));
+        std::string error = "getaddrinfo: " + gai_error + "\n";
+        throw SocketException(error);
     }
 }
 
@@ -199,8 +212,10 @@ void SocketServer::hostOClientConf(struct addrinfo **pr, char *host,
     hints.ai_flags = AI_PASSIVE;     /* AI_PASSIVE to bind */
     err = getaddrinfo(NULL, port, &hints, pr);
     if (err != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(err));
-        throw -1;
+        std::string gai_error = gai_strerror(err);
+//        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(err));
+        std::string error = "getaddrinfo: " + gai_error + "\n";
+        throw SocketException(error);
     }
 }
 

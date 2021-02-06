@@ -1,6 +1,7 @@
 #include <iostream>
 #include "ServerHolder.h"
 #include <ctime>
+#include <exception>
 
 
 int main(int argc, char** argv){
@@ -8,8 +9,8 @@ int main(int argc, char** argv){
     try {
         ServerHolder serverHolder(argc, argv);
         serverHolder.run();
-    } catch(...) {
-        std::cout << "Hubo un error" << std::endl;
+    } catch(std::exception& e) {
+        std::cout << e.what();
     }
     return 0;
 }
