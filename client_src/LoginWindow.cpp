@@ -10,6 +10,7 @@
 #include <QBoxLayout>
 #include <dirent.h>
 #include "yaml-cpp/yaml.h"
+#include <SocketException.hpp>
 
 
 LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) : QWidget(parent), client_holder(client_holder) {
@@ -162,6 +163,10 @@ bool LoginWindow::validarCampos() {
 
     try {
         client_holder.logged(nombre, puerto, server);
+    } catch (SocketException& sockt_exc) {
+        mostrarWarning(QString(sockt_exc.what()),
+                       QMessageBox::Warning, true);
+        return false;
     } catch (...) {
         mostrarWarning(QString("El servidor no es correcto!"),
                        QMessageBox::Warning, true);
@@ -248,6 +253,11 @@ void LoginWindow::crearPartida(){
 
         try {
             client_holder.crearPartida(archivo_mapa, cantidad_bots, game_id);
+        } catch (SocketException& sockt_exc) {
+            //TODO: Mandar a la pantalla de inicio, para volver a conectarse
+            mostrarWarning(QString(sockt_exc.what()),
+                        QMessageBox::Warning, true);
+            return;
         } catch (...) {
             mostrarWarning(QString("Ha ocurrido un error, intente nuevamente"),
                         QMessageBox::Warning, true);
@@ -266,6 +276,8 @@ void LoginWindow::waitUntilLaunch(int& game_id) {
     mostrarWarning(QString::fromStdString(message),
                    QMessageBox::Information, true);
     std::cout << "LANZANDO!!!";
+    // TODO: Poner un try catch aca y llevar a la pantalla 
+    // inicial si se corto la conexion
     client_holder.launchGame();
     QCoreApplication::quit();
 }
@@ -309,6 +321,10 @@ void LoginWindow::unirseAPartida() {
         //QCoreApplication::exit();
         try {
             client_holder.unirseAPartida(id_partida);
+        } catch (SocketException& e) {
+            mostrarWarning(QString(e.what()),
+                        QMessageBox::Warning, true);
+            return;
         } catch (...) {
             mostrarWarning(QString("Ha ocurrido un error, intente nuevamente"),
                         QMessageBox::Warning, true);

@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "GameModelClient.h"
+#include <SocketException.hpp>
 
 ClThReceiver::ClThReceiver(Socket* socket, ClientHolder& client_holder,
         GameModelClient* game_model_client):
@@ -15,6 +16,10 @@ void ClThReceiver::run(){
             socket->recive(protocol);
             processReception(protocol);
         }
+    } catch(SocketException& exc){
+        std::cout << exc.what();
+        is_running = false;
+        _client_holder.connectionLost();
     } catch(...){
         is_running = false;
         _client_holder.connectionLost();

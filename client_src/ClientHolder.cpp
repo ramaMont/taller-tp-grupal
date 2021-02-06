@@ -177,7 +177,6 @@ void ClientHolder::receiveConfiguration(){
 
 void ClientHolder::connectionLost(){
     _user_client->stop();
-    std::cout << "Connection Lost\n";
 }
 
 ClientHolder::~ClientHolder(){
