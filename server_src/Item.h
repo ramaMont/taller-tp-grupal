@@ -9,8 +9,6 @@ class Item: public Posicionable {
 	public:
 	explicit Item(Coordinates p);
 	virtual bool use(Player* player) = 0;
-	Coordinates& getPosition(); //
-	void setPosition(Coordinates& position);
 };
 
 

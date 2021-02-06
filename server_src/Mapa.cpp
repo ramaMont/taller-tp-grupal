@@ -119,19 +119,28 @@ Mapa::Mapa(std::string map_filename): players_added(0){
     alto = map_node["filas"].as<int>();
     ancho = map_node["columnas"].as<int>();
     mapaJuego.resize(alto, std::vector<std::vector<Posicionable*>>(ancho));
-    items.resize(alto, std::vector<std::vector<Item*>>(ancho));
+    items.resize(alto, std::vector<Item*>(ancho));
+    initItems();
     initMap(*this, map_node["elementos"]);
 }
 
 Mapa::Mapa(int alto, int ancho):
         alto(alto), ancho(ancho),
         mapaJuego(alto, std::vector<std::vector<Posicionable*>>(ancho)),
-        items(alto, std::vector<std::vector<Item*>>(ancho)),players_added(0){
+        items(alto, std::vector<Item*>(ancho)),players_added(0){
     /*for (int i=0; i<alto; i++){
         for (int j=0; j<ancho; j++){
             mapaJuego[i][j]=nullptr;
         }
     }*/
+}
+
+void Mapa::initItems(){
+    for (int x = 0; x < alto; ++x){
+        for (int y = 0; y < ancho; ++y){
+            items[x][y] = nullptr;
+        }
+    }
 }
 
 void Mapa::addPlayer(Player* player){
@@ -172,19 +181,19 @@ void Mapa::addPosicionable(Posicionable* posicionable,
 void Mapa::addItem(Item* item, Coordinates posicion){
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return;
-	items[floor(posicion.x)][floor(posicion.y)].push_back(item);
+	if (items[floor(posicion.x)][floor(posicion.y)] == nullptr)
+        items[floor(posicion.x)][floor(posicion.y)] = item;
 }
 
-// Por si solo guardamos un item por posicion
-Coordinates Mapa::throwItem(Item* item, Coordinates posicion){
+Coordinates Mapa::getEmptyPosition(const Coordinates& posicion){
     int pos_x = floor(posicion.x);
     int pos_y = floor(posicion.y);
     for (int i = 1; i < 5; ++i){
-        for (int x = pos_x - i; x < pos_x + i; ++x){
-            for (int y = pos_y - i; y < pos_y + i; ++y){
-                 if (x < 0 || x >= alto || y < 0 || y >= ancho ||
-                     !items[x][y].empty() || !mapaJuego[x][y].empty()) continue;
-                 items[x][y].push_back(item);
+        for (int x = pos_x - i; x < pos_x+i+1; ++x){
+            if (x < 0 || x >= alto) continue;
+            for (int y = pos_y - i; y < pos_y+i+1; ++y){
+                 if (y < 0 || y >= ancho) continue;
+                 if (items[x][y] || !mapaJuego[x][y].empty()) continue;
                  return Coordinates(x, y);
             }
         }
@@ -197,23 +206,19 @@ void Mapa::addPassage(Object* door){
     addPosicionable(door, door->getPosicion());
 }
 
-void Mapa::removePosicionable(Coordinates posicion){
+void Mapa::removePosicionable(const Coordinates& posicion){
     if (!mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
 	    mapaJuego[floor(posicion.x)][floor(posicion.y)].pop_back();
 }
     
-void Mapa::removeItem(Coordinates posicion, const std::type_info& type_id){
-    std::vector<Item*>& vec = items[floor(posicion.x)][floor(posicion.y)];
-    for (auto it = vec.begin(); it < vec.end(); ++it){
-        if (typeid(*it) == type_id){
-            delete(*it);
-            vec.erase(it);
-            return;
-        }
+void Mapa::removeItem(const Coordinates& posicion){
+    if (items[floor(posicion.x)][floor(posicion.y)]){
+        delete(items[floor(posicion.x)][floor(posicion.y)]);
+        items[floor(posicion.x)][floor(posicion.y)] = nullptr;
     }
 }
 
-void Mapa::removePassage(Coordinates& position){
+void Mapa::removePassage(const Coordinates& position){
     removePosicionable(position);
     for (auto it = passages.begin(); it < passages.end(); ++it){
         if ((*it)->getPosicion() == position){
@@ -255,15 +260,6 @@ Door* Mapa::getDoor(Coordinates& position){
     return nullptr;
 } 
 
-void usarItems(std::vector<Item*>& items, Player *player){
-    for (auto it = items.begin(); it < items.end(); it++){
-        if ((player)->use(*it)){
-            delete(*it);
-            items.erase(it);
-        }
-    }
-}
-
 void Mapa::moveme(Player* player, const Coordinates& posicion){
     if (floor(posicion.x) >= alto || floor(posicion.y) >= ancho)
         throw -1;
@@ -274,8 +270,8 @@ void Mapa::moveme(Player* player, const Coordinates& posicion){
         return;
     }
     try {
-        if (!items[floor(posicion.x)][floor(posicion.y)].empty())
-            usarItems(items[floor(posicion.x)][floor(posicion.y)], player);
+        if (items[floor(posicion.x)][floor(posicion.y)])
+            player->use(items[floor(posicion.x)][floor(posicion.y)]);
         addPosicionable(player, posicion);
         removePosicionable(posPlayer);
     } catch(int e){
@@ -341,9 +337,8 @@ Mapa::~Mapa(){
             for (Posicionable* p: mapaJuego[i][j]){
                 delete(p);
             }
-            for (Item* i: items[i][j]){
-                delete(i);
-            }
+            if (items[i][j])
+                delete(items[i][j]);
         }
     }
 }

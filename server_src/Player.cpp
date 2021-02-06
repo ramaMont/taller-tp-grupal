@@ -145,7 +145,8 @@ void Player::shoot(std::map<int, Player*>& players){
 bool Player::use(Item* item){
     bool b = item->use(this);
     if (b){
-        Coordinates& position = item->getPosition();
+        Coordinates position = item->getPosicion();
+        map.removeItem(position);
         Protocol protocol(Protocol::action::PICKUP, player_id,
             Protocol::direction::STAY, 0, position.x, position.y);    
         _game_model_queue.push(protocol);
@@ -264,27 +265,28 @@ void Player::setPosition(Coordinates position){
 }
 
 void Player::throwGun(){
-    int i = soldier.throwGun();
+    Coordinates pos = map.getEmptyPosition(posicion);
+    int i = soldier.throwGun(pos);
     if (i <= 0)
         return;
     Protocol protocol(Protocol::action::THROW, i,
-        Protocol::direction::STAY, 0, posicion.x, posicion.y);    
+        Protocol::direction::STAY, 0, pos.x, pos.y);    
     _game_model_queue.push(protocol);
 }
 
 void Player::throwBullets(){
-    Bullets* bullets = new Bullets(this->posicion, 10);
-    Coordinates pos = this->map.throwItem(bullets, this->posicion);
-    bullets->setPosition(pos);
+    Coordinates pos = map.getEmptyPosition(posicion);
+    Bullets* bullets = new Bullets(pos, 10);
+    map.addItem(bullets, pos);
     Protocol protocol(Protocol::action::THROW, 10,
         Protocol::direction::STAY, 0, pos.x, pos.y);    
     _game_model_queue.push(protocol);
 }
 
 void Player::throwKey(){
-    Key* new_key = new Key(this->posicion);
-    Coordinates pos = this->map.throwItem(new_key, this->posicion);
-    new_key->setPosition(pos);
+    Coordinates pos = map.getEmptyPosition(posicion);
+    Key* new_key = new Key(pos);
+    map.addItem(new_key, pos);
     key = false;
     Protocol protocol(Protocol::action::THROW, 7,
         Protocol::direction::STAY, 0, pos.x, pos.y);    

@@ -73,10 +73,10 @@ void SoldierState::switchGun(int gun_number){
 }
 
 
-int SoldierState::throwGun(){
+int SoldierState::throwGun(const Coordinates& position){
 	Soldier *s = soldier;
 	soldier = &guard;
-	return s->throwGun(this->player);
+	return s->throwGun(player->getMap(), position);
 }
 
 int SoldierState::shoot(std::map<int, Player*>& enemies){
@@ -196,7 +196,7 @@ void Dog::bite(Player *player, std::set<std::pair<int, Player*>>& enemies){
 	}
 }
 
-int Dog::throwGun(Player *player){
+int Dog::throwGun(Mapa& map, const Coordinates& position){
 	return 0;
 }
 
@@ -222,7 +222,7 @@ int Guard::shoot(Player *player, std::map<int, Player*>& enemies){
 	return 1;
 }
 
-int Guard::throwGun(Player *player){
+int Guard::throwGun(Mapa& map, const Coordinates& position){
 	return 0;
 }
 
@@ -255,10 +255,9 @@ int SS::shoot(Player *player, std::map<int, Player*>& enemies){
 	return fired_bullets;
 }
 
-int SS::throwGun(Player *player){
-    Mapa &map = player->getMap();
-    Item* new_gun = new MachineGun(player->getPosicion());
-    map.addItem(new_gun, player->getPosicion());
+int SS::throwGun(Mapa& map, const Coordinates& position){
+    Item* new_gun = new MachineGun(position);
+    map.addItem(new_gun, position);
     gun = false;
     return TEXTURE_MACHINE_GUN;
 }
@@ -286,10 +285,9 @@ int Officer::shoot(Player *player, std::map<int, Player*>& enemies){
 	return 1;
 }
 
-int Officer::throwGun(Player *player){
-    Mapa &map = player->getMap();
-    Item* new_gun = new FireCanon(player->getPosicion());
-    map.addItem(new_gun, player->getPosicion());
+int Officer::throwGun(Mapa& map, const Coordinates& position){
+    Item* new_gun = new FireCanon(position);
+    map.addItem(new_gun, position);
     gun = false;
     return TEXTURE_CANON_GUN;
 }
@@ -315,10 +313,9 @@ int Mutant::shoot(Player *player, std::map<int, Player*>& enemies){
 	return (int)configs[CONFIG::balas_gastadas_lanzacohetes];
 }
 
-int Mutant::throwGun(Player *player){
-    Mapa &map = player->getMap();
-    Item* new_gun = new RocketLauncher(player->getPosicion());
-    map.addItem(new_gun, player->getPosicion());
+int Mutant::throwGun(Mapa& map, const Coordinates& position){
+    Item* new_gun = new RocketLauncher(position);
+    map.addItem(new_gun, position);
     gun = false;
     return TEXTURE_ROCKET_GUN;
 }

@@ -7,14 +7,6 @@ Item::Item(Coordinates p): Posicionable(p) {
 	atravesable(true);
 }
 
-Coordinates& Item::getPosition(){
-	return posicion;
-}
-
-void Item::setPosition(Coordinates& position){
-	posicion = position;
-}
-
 
 bool Food::use(Player* player){
 	return player->addHealth((int)configs[CONFIG::puntos_comida]);
