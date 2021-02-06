@@ -1,5 +1,5 @@
-#ifndef __OBJETO__
-#define __OBJETO__
+#ifndef __OBJECT__
+#define __OBJECT__
 
 #include "Posicionable.h"
 #include "coordinates.h"

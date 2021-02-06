@@ -3,7 +3,6 @@
 #include <utility>
 #include <cmath>
 #include <typeinfo>
-#include "Objeto.h"
 #include "Event.h"
 #include <ConfigVariable.h>
 

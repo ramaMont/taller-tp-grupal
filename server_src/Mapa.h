@@ -9,7 +9,7 @@ class Player;
 #include "Item.h"
 class Object;
 class Door;
-#include "Objeto.h"
+#include "Object.h"
 
 #include "coordinates.h"
 #include <yaml-cpp/yaml.h>

@@ -1,4 +1,4 @@
-#include "Soldado.h"
+#include "Soldier.h"
 
 #include "Mapa.h"
 #include "Player.h"

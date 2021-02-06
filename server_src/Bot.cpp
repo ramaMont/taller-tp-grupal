@@ -1,6 +1,6 @@
 #include "Bot.h"
 
-#include "Objeto.h"
+#include "Object.h"
 #include "Mapa.h"
 #include "Player.h"
 #include "AtomicCoordinates.h"

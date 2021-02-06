@@ -2,7 +2,7 @@
 #define __EVENT_H__
 
 #include <ctime>
-#include "Objeto.h"
+#include "Object.h"
 class ThGameEvents;
 class ThGameModelServer;
 

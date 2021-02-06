@@ -12,7 +12,7 @@ class Mapa;
 #include "Direccion.h"
 class Direccion;
 class SoldierState;
-#include "Soldado.h"
+#include "Soldier.h"
 #include "Item.h"
 #include <map>
 

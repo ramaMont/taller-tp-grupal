@@ -1,5 +1,5 @@
-#ifndef __SOLDADO__
-#define __SOLDADO__
+#ifndef __SOLDIER__H_
+#define __SOLDIER__H_
 
 #include <set>
 #include <vector>
