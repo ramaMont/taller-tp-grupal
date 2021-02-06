@@ -34,7 +34,7 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
             if (parsed_element == "wall_"){
                 Coordinates position((float)i,(float)j);
                 Posicionable* posicionable = new Posicionable(position);
-                map.agregarPosicionable(posicionable,position);
+                map.addPosicionable(posicionable,position);
             } else if (parsed_element == "door"){
                 Coordinates position((float)i,(float)j);
                 Door* posicionable = new Door(position);
@@ -58,56 +58,56 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
             } else if (elemento == "food"){
                 Coordinates position((float)i,(float)j);
                 Food* posicionable = new Food(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "medicine"){
                 Coordinates position((float)i,(float)j);
                 Medicine* posicionable = new Medicine(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "blood"){
                 Coordinates position((float)i,(float)j);
                 Blood* posicionable = new Blood(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "bullets"){
                 Coordinates position((float)i,(float)j);
                 Bullets* posicionable = new Bullets(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "key"){
                 Coordinates position((float)i,(float)j);
                 Key* posicionable = new Key(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "cross__"){   // cross
                 Coordinates position((float)i,(float)j);
                 Cross* posicionable = new Cross(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "trophie"){
                 Coordinates position((float)i,(float)j);
                 Trophie* posicionable = new Trophie(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "chest__"){    //
                 Coordinates position((float)i,(float)j);
                 Chest* posicionable = new Chest(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "crown__"){    //
                 Coordinates position((float)i,(float)j);
                 Crown* posicionable = new Crown(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "machine_gun"){
                 Coordinates position((float)i,(float)j);
                 MachineGun* posicionable = new MachineGun(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "fire_canon"){
                 Coordinates position((float)i,(float)j);
                 FireCanon* posicionable = new FireCanon(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "rocket_launcher"){
                 Coordinates position((float)i,(float)j);
                 RocketLauncher* posicionable = new RocketLauncher(position);
-                map.agregarItem(posicionable, position);
+                map.addItem(posicionable, position);
             } else if (elemento == "barrel" || elemento == "pillar" ||
                        elemento == "table"){
                 Coordinates position((float)i,(float)j);
                 Posicionable* posicionable = new Posicionable(position);
-                map.agregarPosicionable(posicionable, position);
+                map.addPosicionable(posicionable, position);
             }
         }
     }
@@ -134,7 +134,7 @@ Mapa::Mapa(int alto, int ancho):
     }*/
 }
 
-void Mapa::agregarPlayer(Player* player){
+void Mapa::addPlayer(Player* player){
     if (players_added >= (int)player_positions.size())
         throw -1; // Se quiere agregar un jugador mas a una partida completa
     auto player_data = player_positions.at(players_added);
@@ -148,11 +148,11 @@ void Mapa::agregarPlayer(Player* player){
 
 void Mapa::respawnPlayer(Player* player){
     Coordinates player_position = player->get_position(); 
-    sacarPosicionable(player_position);
+    removePosicionable(player_position);
 	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(player);
 }
 
-void Mapa::agregarPosicionable(Posicionable* posicionable, 
+void Mapa::addPosicionable(Posicionable* posicionable, 
         Coordinates posicion){
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return;
@@ -169,7 +169,7 @@ void Mapa::agregarPosicionable(Posicionable* posicionable,
 	}
 }
 
-void Mapa::agregarItem(Item* item, Coordinates posicion){
+void Mapa::addItem(Item* item, Coordinates posicion){
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return;
 	items[floor(posicion.x)][floor(posicion.y)].push_back(item);
@@ -194,29 +194,15 @@ Coordinates Mapa::throwItem(Item* item, Coordinates posicion){
 
 void Mapa::addPassage(Object* door){
     passages.push_back(door);
-    agregarPosicionable(door, door->getPosition());
+    addPosicionable(door, door->getPosicion());
 }
 
-void Mapa::sacarPosicionable(Coordinates posicion){
+void Mapa::removePosicionable(Coordinates posicion){
     if (!mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
 	    mapaJuego[floor(posicion.x)][floor(posicion.y)].pop_back();
 }
-
-void Mapa::sacarPosicionable(Coordinates posicion, 
-        const std::type_info& type_id){
-    if (mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
-        return;
-    std::vector<Posicionable*>& vec = 
-        mapaJuego[floor(posicion.x)][floor(posicion.y)];
-    for (auto it = vec.begin(); it < vec.end(); ++it){
-        if (typeid(*it) == type_id){
-            vec.erase(it);
-            return;
-        }
-    }           
-}
     
-void Mapa::sacarItem(Coordinates posicion, const std::type_info& type_id){
+void Mapa::removeItem(Coordinates posicion, const std::type_info& type_id){
     std::vector<Item*>& vec = items[floor(posicion.x)][floor(posicion.y)];
     for (auto it = vec.begin(); it < vec.end(); ++it){
         if (typeid(*it) == type_id){
@@ -228,7 +214,7 @@ void Mapa::sacarItem(Coordinates posicion, const std::type_info& type_id){
 }
 
 void Mapa::removePassage(Coordinates& position){
-    sacarPosicionable(position);
+    removePosicionable(position);
     for (auto it = passages.begin(); it < passages.end(); ++it){
         if ((*it)->getPosicion() == position){
             passages.erase(it);
@@ -238,7 +224,7 @@ void Mapa::removePassage(Coordinates& position){
 }
 
 
-Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
+Posicionable* Mapa::getPosicionableIn(Coordinates posicion) const{
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return nullptr;
 	if (mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
@@ -250,7 +236,7 @@ Object* Mapa::getNearestPassage(Coordinates& position){
     Object* nearest = nullptr;
     float min_distance = configs[CONFIG::open_distance];
     for (Object* passage: passages){
-        float dist = position.calculate_distance(passage->getPosition());
+        float dist = position.calculate_distance(passage->getPosicion());
         if (dist < min_distance){
             min_distance = dist;
             nearest = passage;
@@ -290,8 +276,8 @@ void Mapa::moveme(Player* player, const Coordinates& posicion){
     try {
         if (!items[floor(posicion.x)][floor(posicion.y)].empty())
             usarItems(items[floor(posicion.x)][floor(posicion.y)], player);
-        agregarPosicionable(player, posicion);
-        sacarPosicionable(posJugador);
+        addPosicionable(player, posicion);
+        removePosicionable(posPlayer);
     } catch(int e){
         throw;
     }
@@ -313,7 +299,7 @@ Mapa& Mapa::operator=(Mapa&& other){
     return *this;
 }
 
-bool Mapa::hayObstaculoEn(const Coordinates& posicion) const{
+bool Mapa::obstacleIn(const Coordinates& posicion) const{
 	float x = posicion.x;
 	float y = posicion.y;
 	if (floor(x) < 0 || floor(x) >= alto ||
@@ -333,7 +319,7 @@ bool Mapa::playerIn(const Coordinates& posicion) const{
 	typeid(*mapaJuego[floor(posicion.x)][floor(posicion.y)].back()) == typeid(Player));
 }
 
-bool Mapa::hayPuertaEn(float x, float y) const{
+bool Mapa::doorIn(float x, float y) const{
 	if (floor(x) < 0 || floor(x) >= alto ||
 	    floor(y) < 0 || floor(y) >= ancho ||
 	    mapaJuego[floor(x)][floor(y)].empty()) return false;

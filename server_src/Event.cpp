@@ -30,7 +30,7 @@ OpenEvent::OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e):
 }
 
 void OpenEvent::process(ThGameModelServer& game_model){
-    Coordinates pos = player->get_coordinates();
+    Coordinates pos = player->getPosicion();
     Object* p = map.getNearestPassage(pos);
     if (p && typeid(*p) == typeid(Door)){
         Door* puerta = static_cast<Door*>(p);
@@ -113,7 +113,7 @@ DoorOpeningEvent::~DoorOpeningEvent(){
 
 // Door 
 DoorEvent::DoorEvent(Door* door): 
-    Event(), door(door), reopen(puerta->getReopen()){
+    Event(), door(door), reopen(door->getReopen()){
     door->letPass();
 }
 

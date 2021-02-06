@@ -4,6 +4,10 @@
 #include <set>
 #include <vector>
 #include <atomic>
+#include <map>
+#include "coordinates.h"
+class Mapa;
+class Player;
 
 enum GunNumber{
     KNIFE = 0,
@@ -11,19 +15,21 @@ enum GunNumber{
     MACHINE_GUN,
     CANON_GUN,
     ROCKET_GUN
-}
+};
 
 
 class Soldier {
 	protected:
 	int &bullets;
+    bool gun;
 
     public:
-    Soldier(int &bullets): bullets(bullets) { }
+    Soldier(int &bullets): bullets(bullets), gun(true) { }
 	virtual int shoot(Player *player, std::map<int, Player*>&) = 0;
 	virtual int throwGun(Player *player) = 0;
 	virtual bool ready() = 0;
-	virtual int actualGun() const = 0;
+	virtual int gunNumber() const = 0;
+	bool addGun();
     void getCloserEnemies(std::map<int, Player*>& enemies,
        Player* player, std::set<std::pair<int, Player*>>& players);
     void tryShoot(Player* player, std::set<std::pair<int, Player*>>& enemies, float precision);
@@ -38,10 +44,10 @@ class Dog: public Soldier {
 	public:
 	Dog(int& n);
 	int shoot(Player *player, std::map<int, Player*>&) override;
-	void bite(Player* player, angulos_enemigos_t& enemigos);
+	void bite(Player* player, std::set<std::pair<int, Player*>>& enemies);
 	int throwGun(Player *player) override;
 	bool ready() override;
-	int actualGun() const;
+	int gunNumber() const;
 };
 
 
@@ -51,49 +57,37 @@ class Guard: public Soldier {
 	int shoot(Player *player, std::map<int, Player*>&) override;
 	int throwGun(Player *player) override;
 	bool ready() override;
-	int actualGun() const;
+	int gunNumber() const;
 };
 
 
 class SS: public Soldier {
-	private:
-	bool gun;
-	
 	public:
-	SS(int &balas);
-	bool addGun();
+	SS(int &bullets);
 	int shoot(Player *player, std::map<int, Player*>&) override;	
 	int throwGun(Player *player) override;
 	bool ready() override;
-	int actualGun() const;
+	int gunNumber() const;
 };
 
 
 class Officer: public Soldier {
-	private:
-	bool gun;
-	
 	public:
 	Officer(int &bullets);
-	bool addGun();
 	int shoot(Player *player, std::map<int, Player*>&) override;
 	int throwGun(Player *player) override;
 	bool ready() override;
-	int actualGun() const;
+	int gunNumber() const;
 };
 
 
 class Mutant: public Soldier {
-	private:
-	bool gun;
-	
 	public:
 	Mutant(int &bullets);
-	bool addGun();
 	int shoot(Player *player, std::map<int, Player*>&) override;	
 	int throwGun(Player *player) override;
 	bool ready() override;
-	int actualGun() const;
+	int gunNumber() const;
 };
 
 

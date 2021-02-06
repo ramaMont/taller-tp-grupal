@@ -79,22 +79,22 @@ class Treasure: public Item {
 	bool use(Player* player) override;
 };
 
-class Cross: public Tesoro {
+class Cross: public Treasure {
 	public:
 	explicit Cross(Coordinates p);
 };
 
-class Trophie: public Tesoro {
+class Trophie: public Treasure {
 	public:
 	explicit Trophie(Coordinates p);
 };
 
-class Chest: public Tesoro {
+class Chest: public Treasure {
 	public:
 	explicit Chest(Coordinates p);
 };
 
-class Crown: public Tesoro {
+class Crown: public Treasure {
 	public:
 	explicit Crown(Coordinates p);
 };

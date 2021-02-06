@@ -102,16 +102,16 @@ void ThGameModelServer::sendPlayerProtocol(Protocol& protocol){
 
 void ThGameModelServer::processShoot(Protocol protocol){
     Player* player = players.at(protocol.getId());
-    int old_gun = player->numeroArmaActual();
+    int old_gun = player->actualGun();
     try {
-        player->disparar(players);
+        player->shoot(players);
     } catch(const RocketException &e) {
         Rocket* rocket = new Rocket(player->get_coordinates(),
             player->get_direction(), player, players, *this);
         Event *event = new RocketEvent(rocket);
         th_game_events.add(event);
     } catch(...) {}
-    int new_gun = player->numeroArmaActual();
+    int new_gun = player->actualGun();
     if (new_gun != old_gun){
         protocol.setAction(Protocol::action::SWITCH_GUN);
         protocol.setDamage(new_gun);
@@ -128,7 +128,7 @@ void ThGameModelServer::processShooted(Protocol protocol){
 
 void ThGameModelServer::processResurrect(Protocol& protocol){
     Player* player = players.at(protocol.getId());
-    player->revivir();
+    player->revive();
     echoProtocol(protocol);
     protocol.setAction(Protocol::action::SWITCH_GUN);
     protocol.setDamage(1);
@@ -138,7 +138,7 @@ void ThGameModelServer::processResurrect(Protocol& protocol){
 bool someoneWon(std::map<int, Player*>& players){
     bool winner = false;
     for (auto it = players.begin(); it != players.end(); ++it){
-        if (it->second->estaVivo()){
+        if (it->second->isAlive()){
             if (winner)
                 return false;
             winner = true;
@@ -149,7 +149,7 @@ bool someoneWon(std::map<int, Player*>& players){
 
 void ThGameModelServer::processDie(Protocol protocol){
     Player* player = players.at(protocol.getId());
-    player->morir();
+    player->die();
     if (someoneWon(players)){
         endGame(true);
     }
@@ -163,7 +163,7 @@ void ThGameModelServer::processOpen(Protocol& protocol){
 
 void ThGameModelServer::processOpening(Protocol& protocol){
     Coordinates pos(protocol.getPosition());
-    Puerta* door = map.getDoor(pos);
+    Door* door = map.getDoor(pos);
     Event* doorE = new DoorEvent(door);
     th_game_events.add(doorE);
     // Cambio la accion del protocolo ya que el mismo contiene toda
@@ -175,11 +175,11 @@ void ThGameModelServer::processOpening(Protocol& protocol){
 void ThGameModelServer::processClose(Protocol& protocol){
     Coordinates pos(protocol.getPosition());
     if (!map.playerIn(pos)){
-        Puerta* door = static_cast<Puerta*>(map.obtenerPosicionableEn(pos));
+        Door* door = static_cast<Door*>(map.getPosicionableIn(pos));
         door->close();
         echoProtocol(protocol);
     } else {
-        Puerta* door = map.getDoor(pos);
+        Door* door = map.getDoor(pos);
         Event* doorE = new DoorEvent(door);
         th_game_events.add(doorE);
     }
@@ -187,9 +187,9 @@ void ThGameModelServer::processClose(Protocol& protocol){
 
 void ThGameModelServer::processGunSwitch(Protocol& protocol){
     Player* player = players.at(protocol.getId());
-    int old_gun = player->numeroArmaActual();
-    player->cambiarArma(protocol.getDamage());
-    int new_gun = player->numeroArmaActual();
+    int old_gun = player->actualGun();
+    player->switchGun(protocol.getDamage());
+    int new_gun = player->actualGun();
     if (new_gun != old_gun)
         echoProtocol(protocol);
 }
@@ -197,7 +197,7 @@ void ThGameModelServer::processGunSwitch(Protocol& protocol){
 void ThGameModelServer::processRocket(Protocol& protocol){
     Coordinates pos(protocol.getPosition());
     try {
-        Rocket* rocket = static_cast<Rocket*>(map.obtenerPosicionableEn(pos));
+        Rocket* rocket = static_cast<Rocket*>(map.getPosicionableIn(pos));
         rocket->move(*this);
     } catch (...) {}
 }
@@ -228,7 +228,7 @@ void ThGameModelServer::removePlayer(int user_id){
     players.erase(user_id);
     users_sender.erase(user_id);
     Protocol protocol(user_id);
-    map.sacarPosicionable(coordenadas);
+    map.removePosicionable(coordenadas);
     protocol.setAction(Protocol::action::REMOVE);
     echoProtocol(protocol);
 }
@@ -274,9 +274,9 @@ void ThGameModelServer::processTopFiveEnd(){
     std::vector<std::pair<int,int>> ordered_players_bullets;
     for(auto& player: players){
         int player_id = player.second->getId();
-        int player_kills = player.second->getEnemigosMatados();
-        int player_points = player.second->getPuntuacion();
-        int player_bullets = player.second->getBalasDisparadas();
+        int player_kills = player.second->getKilledEnemies();
+        int player_points = player.second->getScore();
+        int player_bullets = player.second->getFiredBullets();
         ordered_players_kills.push_back(std::pair<int, int>(player_kills, 
             player_id));
         ordered_players_points.push_back(std::pair<int, int>(player_points, 
@@ -332,7 +332,7 @@ void ThGameModelServer::sendTopFiveToPlayers(
 void ThGameModelServer::processWinnerEnd(){
     int winner_id;
     for (auto& player :players)
-        if (player.second->estaVivo())
+        if (player.second->isAlive())
             winner_id =  player.second->getId();
     Protocol protocol(winner_id);
     protocol.setAction(Protocol::action::WINNER);

@@ -31,17 +31,16 @@ private:
 public:
     explicit Mapa(std::string map_filename);
     explicit Mapa(int alto, int ancho);
-    void agregarPlayer(Player* player);
+    void addPlayer(Player* player);
     void respawnPlayer(Player* player);
-    void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);
-    void agregarItem(Item* item, Coordinates posicion);
+    void addPosicionable(Posicionable* posicionable, Coordinates posicion);
+    void addItem(Item* item, Coordinates posicion);
     Coordinates throwItem(Item* item, Coordinates posicion);
     void addPassage(Object* passage);
-    void sacarPosicionable(Coordinates posicion);
-    void sacarPosicionable(Coordinates posicion, const std::type_info& type_id);
-    void sacarItem(Coordinates posicion, const std::type_info& type_id);
+    void removePosicionable(Coordinates posicion);
+    void removeItem(Coordinates posicion, const std::type_info& type_id);
     void removePassage(Coordinates& position);
-    Posicionable* obtenerPosicionableEn(Coordinates posicion) const;
+    Posicionable* getPosicionableIn(Coordinates posicion) const;
     Object* getNearestPassage(Coordinates& position);
     Door* getDoor(Coordinates& position);    
     void moveme(Player* player, const Coordinates& posicion);
@@ -50,9 +49,9 @@ public:
 //    Mapa& operator=(const Mapa&) = delete;
     Mapa& operator=(Mapa&& other);
     
-    bool hayObstaculoEn(const Coordinates& posicion) const;
+    bool obstacleIn(const Coordinates& posicion) const;
     bool playerIn(const Coordinates& posicion) const;
-    bool hayPuertaEn(float x, float y) const;
+    bool doorIn(float x, float y) const;
     int getAlto() const;
     int getAncho() const;
     ~Mapa();

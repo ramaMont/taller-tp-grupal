@@ -17,16 +17,16 @@ void Item::setPosition(Coordinates& position){
 
 
 bool Food::use(Player* player){
-	return player->agregarVida((int)configs[CONFIG::puntos_comida]);
+	return player->addHealth((int)configs[CONFIG::puntos_comida]);
 }
 
 bool Medicine::use(Player* player){
-	return player->agregarVida((int)configs[CONFIG::puntos_kit]);
+	return player->addHealth((int)configs[CONFIG::puntos_kit]);
 }
 
 bool Blood::use(Player* player){
-	if (player->estaPorMorir()){
-		player->agregarVida(1);
+	if (player->lowHealth()){
+		player->addHealth(1);
 		return true;
 	}
 	return false;
@@ -42,25 +42,25 @@ Bullets::Bullets(Coordinates p, int cant): Item(p){
 }
 
 bool Bullets::use(Player* player){
-	return player->agregarBalas(this->cantidad);
+	return player->addBullets(this->cantidad);
 }
 
 
 bool Key::use(Player* player){
-	return player->agregarLlave();
+	return player->addKey();
 }
 
 
 bool MachineGun::use(Player* player){
-	return player->agregarArma(this);
+	return player->addGun(GunNumber::MACHINE_GUN);
 }
 
 bool FireCanon::use(Player* player){
-	return player->agregarArma(this);
+	return player->addGun(GunNumber::CANON_GUN);
 }
 
 bool RocketLauncher::use(Player* player){
-	return player->agregarArma(this);
+	return player->addGun(GunNumber::ROCKET_GUN);
 }
 
 
@@ -68,7 +68,7 @@ Treasure::Treasure(int score, Coordinates p): Item(p), score(score){
 }
 
 bool Treasure::use(Player* player){
-	player->agregarPuntos(this->puntuacion);
+	player->addScore(score);
 	return true;
 }
 

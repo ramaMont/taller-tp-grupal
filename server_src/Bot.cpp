@@ -30,9 +30,9 @@ int Bot::luaGetMapObject(lua_State *L){
 	int x = (int)lua_tonumber(L, 2);
 	int y = (int)lua_tonumber(L, 3);
 	
-	if (!bot->map.hayObstaculoEn(Coordinates(x, y))){
+	if (!bot->map.obstacleIn(Coordinates(x, y))){
 		lua_pushnumber(L, MapSpot::Empty);
-	} else if (bot->map.hayPuertaEn(x, y)){
+	} else if (bot->map.doorIn(x, y)){
 		lua_pushnumber(L, MapSpot::Door);
 	} else {
 		lua_pushnumber(L, MapSpot::Busy);
@@ -78,7 +78,7 @@ Bot::Event Bot::getEvent(Player* player, std::map<int, Player*>& enemies){
 int Bot::pushInfoPlayer(Player* player){
 	AtomicCoordinates& position = player->getAtomicPosition();
 	AtomicCoordinates& direction = player->getAtomicDirection();
-	lua_pushnumber(this->script, player->numeroArmaActual());
+	lua_pushnumber(this->script, player->actualGun());
 	lua_pushnumber(this->script, position.x);
 	lua_pushnumber(this->script, position.y);
 	lua_pushnumber(this->script, direction.x);

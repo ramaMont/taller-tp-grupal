@@ -5,11 +5,11 @@
 #include <algorithm>
 
 
-Player::Player(Mapa& mapa, int id, BlockingQueue<Protocol>& game_model_queue):
+Player::Player(Mapa& map, int id, BlockingQueue<Protocol>& game_model_queue):
 		map(map), player_id(id), 
 		soldier(this, bullets),
 		_game_model_queue(game_model_queue){
-    map.agregarPlayer(this);
+    map.addPlayer(this);
     health = (int)configs[CONFIG::vida_maxima];
     lives = (int)configs[CONFIG::cantidad_de_vidas];
     bullets = (int)configs[CONFIG::balas_iniciales];
@@ -25,7 +25,7 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& map,
 		Posicionable(position),direction(direction), map(map), player_id(0),
 		soldier(this, bullets), 
 		posicion_inicial(posicion),	_game_model_queue(game_model_queue){
-    map.agregarPlayer(this);
+    map.addPlayer(this);
     health = (int)configs[CONFIG::vida_maxima];
     lives = (int)configs[CONFIG::cantidad_de_vidas];
     bullets = (int)configs[CONFIG::balas_iniciales];
@@ -44,7 +44,7 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& map, int id,
 		soldier(this, bullets),
 		posicion_inicial(posicion),
 		_game_model_queue(game_model_queue){
-    map.agregarPlayer(this);
+    map.addPlayer(this);
     health = (int)configs[CONFIG::vida_maxima];
     lives = (int)configs[CONFIG::cantidad_de_vidas];
     bullets = (int)configs[CONFIG::balas_iniciales];
@@ -111,12 +111,12 @@ double Player::calculateAngle(Player* player){
 	return player->calculateAngle(this->direction, this->posicion);
 }
 
-double Player::calcularAngulo(const Coordinates& direccion, const Coordinates& other_pos){
+double Player::calculateAngle(const Coordinates& direccion, const Coordinates& other_pos){
 	return other_pos.calculate_angle(direccion, this->posicion);
 }
 
 double Player::calculateDistance(Player* player){
-	return player->calcularDistancia(this->posicion);
+	return player->calculateDistance(this->posicion);
 }
 
 double Player::calculateDistance(const Coordinates& posicion){
@@ -138,7 +138,7 @@ bool Player::hurt(int damage){
 
 void Player::shoot(std::map<int, Player*>& players){
 	fired_bullets += soldier.shoot(players);
-	Protocol protocol(player_id, balas_restantes, Protocol::action::UPDATE_BULLETS);
+	Protocol protocol(player_id, bullets, Protocol::action::UPDATE_BULLETS);
 	_game_model_queue.push(protocol);
 }
 
@@ -208,7 +208,7 @@ bool Player::lowHealth(){
 
 void Player::die(){
     lives --;
-	map.sacarPosicionable(this->posicion);	
+	map.removePosicionable(this->posicion);	
 	throwGun();
 	throwBullets();
 	if (this->key)
@@ -264,7 +264,7 @@ void Player::setPosition(Coordinates position){
 }
 
 void Player::throwGun(){
-    int i = soldier.soltarArma();
+    int i = soldier.throwGun();
     if (i <= 0)
         return;
     Protocol protocol(Protocol::action::THROW, i,
@@ -283,7 +283,7 @@ void Player::throwBullets(){
 
 void Player::throwKey(){
     Key* new_key = new Key(this->posicion);
-    Coordinates pos = this->map.throwItem(key, this->posicion);
+    Coordinates pos = this->map.throwItem(new_key, this->posicion);
     new_key->setPosition(pos);
     key = false;
     Protocol protocol(Protocol::action::THROW, 7,
