@@ -208,7 +208,6 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
             Enemy* enemy = new Enemy(initial_position, initial_direction, map, player,player_id);
             enemy->set_texture(&texture);
             enemy->newEnemyType(1);
-            sprites.push_back(enemy);
             enemies.push_back(enemy);
             map.addPositionable(enemy,initial_position);    
             characters.insert(std::pair<int, Character*>(player_id, enemy));
@@ -316,6 +315,37 @@ void GameModelClient::addDeadSprite(Coordinates position, CharacterType characte
   }*/
 }
 
+
+void GameModelClient::removeCharacterFromMap(int id){
+    Character* removableCharacter = characters[id];
+    Coordinates removablePosition = removableCharacter->get_position();
+    //Me fijo si hay un sprite en esa posicion
+    //Me fijo si hay una puerta en esa posicion
+    unsigned int i=0;
+    bool done = false;
+    while(i<sprites.size() and !done){
+    	SpriteHolder* sprite = sprites[i];
+    	Coordinates sprite_position = sprite->get_position();
+    	if(sprite_position == removablePosition){
+    		done = true;
+    		sprite->remove();
+    	}
+    	i++;
+    }
+    i=0;
+    while(i<doors.size() and !done){
+    	Coordinates door_position = doors[i]->getPosicion();
+    	if(door_position == removablePosition){
+    		done = true;
+    		doors[i]->remove();
+    	}
+    	i++;
+    }
+    if(!done){
+    	map.removePositionable(removablePosition);
+    }
+}
+
 void GameModelClient::processProtocol(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::MOVE:
@@ -329,10 +359,11 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::DIE:{
             auto character = characters.at(protocol.getId());
-            CharacterType character_type = character->getType();
-            Coordinates position = character->getPosicion();
-            character->die();
-            addDeadSprite(position,character_type);
+            //CharacterType character_type = character->getType();
+            //Coordinates position = character->getPosicion();
+            //character->die();
+            //addDeadSprite(position,character_type);
+            removeCharacterFromMap(protocol.getId());
             playSound(SoundPlayer::sound_type::DYING, character);
             break;
         }

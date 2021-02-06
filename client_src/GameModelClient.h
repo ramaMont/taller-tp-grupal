@@ -31,7 +31,6 @@
 #include <Wall.h>
 #include <Door.h>
 #include <SpriteHolder.h>
-#include <SpriteDrawer.h>
 #include <Enemy.h>
 #include "SoundPlayer.h"
 
@@ -52,7 +51,7 @@ private:
     int protagonist_id;
 
     std::vector<Door*> doors;
-    std::vector<SpriteDrawer*> sprites;
+    std::vector<SpriteHolder*> sprites;
     std::vector<Enemy*> enemies;
 
 	bool is_running;
@@ -87,6 +86,8 @@ private:
     void endGame();
     void waitForAction(Protocol::action desired_action);
     void addDeadSprite(Coordinates position, CharacterType a_character_type);
+
+    void removeCharacterFromMap(int id);
 public:
     explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
     std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
