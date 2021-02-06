@@ -7,7 +7,7 @@
 
 Player::Player(Mapa& map, int id, BlockingQueue<Protocol>& game_model_queue):
 		map(map), player_id(id), 
-		soldier(this, bullets),
+		soldier(this, bullets, game_model_queue),
 		_game_model_queue(game_model_queue){
     map.addPlayer(this);
     health = (int)configs[CONFIG::vida_maxima];
@@ -23,7 +23,7 @@ Player::Player(Mapa& map, int id, BlockingQueue<Protocol>& game_model_queue):
 Player::Player(Coordinates position,Coordinates direction ,Mapa& map, 
 	BlockingQueue<Protocol>& game_model_queue):
 		Posicionable(position),direction(direction), map(map), player_id(0),
-		soldier(this, bullets), 
+		soldier(this, bullets, game_model_queue), 
 		posicion_inicial(posicion),	_game_model_queue(game_model_queue){
     map.addPlayer(this);
     health = (int)configs[CONFIG::vida_maxima];
@@ -41,7 +41,7 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& map,
 Player::Player(Coordinates position,Coordinates direction ,Mapa& map, int id,
 	BlockingQueue<Protocol>& game_model_queue):
 		Posicionable(position),direction(direction), map(map), player_id(id),
-		soldier(this, bullets),
+		soldier(this, bullets, game_model_queue),
 		posicion_inicial(posicion),
 		_game_model_queue(game_model_queue){
     map.addPlayer(this);
@@ -136,10 +136,13 @@ bool Player::hurt(int damage){
 	return false;
 }
 
-void Player::shoot(std::map<int, Player*>& players){
-	fired_bullets += soldier.shoot(players);
+bool Player::shoot(std::map<int, Player*>& players){
+    int bullets_before = bullets;
+    int result = soldier.shoot(players);
+	fired_bullets += bullets - bullets_before;
 	Protocol protocol(player_id, bullets, Protocol::action::UPDATE_BULLETS);
 	_game_model_queue.push(protocol);
+    return result == 0;
 }
 
 bool Player::use(Item* item){
@@ -209,11 +212,11 @@ bool Player::lowHealth(){
 
 void Player::die(){
     lives --;
-	map.removePosicionable(this->posicion);	
 	throwGun();
 	throwBullets();
 	if (this->key)
 		throwKey();
+	map.removePosicionable(this->posicion);	
 	if (lives > 0){
 		Protocol protocol(player_id);
 		protocol.setAction(Protocol::action::RESURRECT);
@@ -229,7 +232,7 @@ bool Player::revive(){
     map.respawnPlayer(this);
     health = (int)configs[CONFIG::vida_maxima];
     bullets = (int)configs[CONFIG::balas_iniciales];
-    soldier.switchGun(0);
+    soldier.rechargeBullets();
     atomic_dir(this->direction);
     atomic_pos(this->posicion);
     return true;
@@ -266,6 +269,7 @@ void Player::setPosition(Coordinates position){
 
 void Player::throwGun(){
     Coordinates pos = map.getEmptyPosition(posicion);
+    if (pos.x < 0 || pos.y < 0) return;
     int i = soldier.throwGun(pos);
     if (i <= 0)
         return;
@@ -276,6 +280,7 @@ void Player::throwGun(){
 
 void Player::throwBullets(){
     Coordinates pos = map.getEmptyPosition(posicion);
+    if (pos.x < 0 || pos.y < 0) return;
     Bullets* bullets = new Bullets(pos, 10);
     map.addItem(bullets, pos);
     Protocol protocol(Protocol::action::THROW, 10,
@@ -285,6 +290,7 @@ void Player::throwBullets(){
 
 void Player::throwKey(){
     Coordinates pos = map.getEmptyPosition(posicion);
+    if (pos.x < 0 || pos.y < 0) return;
     Key* new_key = new Key(pos);
     map.addItem(new_key, pos);
     key = false;

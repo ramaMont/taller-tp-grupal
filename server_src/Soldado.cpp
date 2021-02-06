@@ -24,9 +24,11 @@
 
 // Soldier State
 
-SoldierState::SoldierState(Player *player, int &bullets): player(player),
+SoldierState::SoldierState(Player *player, int &bullets,
+        BlockingQueue<Protocol>& game_model_queue): player(player),
     dog(bullets), guard(bullets), ss(bullets),
-    officer(bullets), mutant(bullets), actual_gun(1){
+    officer(bullets), mutant(bullets), actual_gun(1),
+    game_model_queue(game_model_queue){
 	soldier = &guard;
 	last_soldier = nullptr;
 }
@@ -69,32 +71,36 @@ void SoldierState::switchGun(int gun_number){
 				soldier = &mutant;
 			break;
 	}
-	this->actual_gun = soldier->gunNumber();
+    actual_gun = soldier->gunNumber();
 }
 
 
 int SoldierState::throwGun(const Coordinates& position){
-	Soldier *s = soldier;
-	soldier = &guard;
-	return s->throwGun(player->getMap(), position);
+    if (soldier == &guard){
+        return 0;
+    }
+    last_soldier = &guard;
+	return soldier->throwGun(player->getMap(), position);
 }
 
 int SoldierState::shoot(std::map<int, Player*>& enemies){
-	int fired_bullets = soldier->shoot(this->player, enemies);
+	int result = soldier->shoot(this->player, enemies);
 	if (!soldier->ready()){
 		last_soldier = soldier;
-		soldier = &dog;
+        Protocol protocol(player->getId(), GunNumber::KNIFE, 
+            Protocol::action::SWITCH_GUN);
+        game_model_queue.push(protocol);
 	}
-	actual_gun = soldier->gunNumber();
-	return fired_bullets;
+	return result;
 }
 
 void SoldierState::rechargeBullets(){
 	if (last_soldier){
-		soldier = last_soldier;
+        Protocol protocol(player->getId(), last_soldier->gunNumber(), 
+            Protocol::action::SWITCH_GUN);
+        game_model_queue.push(protocol);
 		last_soldier = nullptr;
 	}
-	actual_gun = soldier->gunNumber();
 }
 
 
@@ -219,7 +225,7 @@ int Guard::shoot(Player *player, std::map<int, Player*>& enemies){
 	getCloserEnemies(enemies, player, set_players);
 	tryShoot(player, set_players, configs[CONFIG::precision_pistola]);
 	bullets --;
-	return 1;
+	return 0;
 }
 
 int Guard::throwGun(Mapa& map, const Coordinates& position){
@@ -245,14 +251,12 @@ int SS::shoot(Player *player, std::map<int, Player*>& enemies){
 	std::set<std::pair<int, Player*>> set_players;
 	getCloserEnemies(enemies, player, set_players);
 
-	int fired_bullets = 0;
 	for (int i = 0; (i < configs[CONFIG::balas_rafaga_ametralladora]) 
 	    && (bullets > 0); i++){
 	    tryShoot(player, set_players, configs[CONFIG::precision_ametralladora]);
 	    bullets --;
-	    fired_bullets ++;
 	}
-	return fired_bullets;
+	return 0;
 }
 
 int SS::throwGun(Mapa& map, const Coordinates& position){
@@ -282,7 +286,7 @@ int Officer::shoot(Player *player, std::map<int, Player*>& enemies){
 	getCloserEnemies(enemies, player, set_players);
 	tryShoot(player, set_players, configs[CONFIG::precision_canion]);
 	bullets --;	
-	return 1;
+	return 0;
 }
 
 int Officer::throwGun(Mapa& map, const Coordinates& position){
@@ -308,9 +312,8 @@ Mutant::Mutant(int &bullets): Soldier(bullets){
 }
 
 int Mutant::shoot(Player *player, std::map<int, Player*>& enemies){
-	throw RocketException();//
 	bullets -= (int)configs[CONFIG::balas_gastadas_lanzacohetes];
-	return (int)configs[CONFIG::balas_gastadas_lanzacohetes];
+	return 1;
 }
 
 int Mutant::throwGun(Mapa& map, const Coordinates& position){

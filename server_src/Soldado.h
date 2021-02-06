@@ -6,6 +6,8 @@
 #include <atomic>
 #include <map>
 #include "coordinates.h"
+#include "BlockingQueue.h"
+#include "Protocol.h"
 class Mapa;
 class Player;
 
@@ -103,9 +105,11 @@ class SoldierState {
 	Mutant mutant;
 	Soldier *last_soldier;
 	std::atomic<int> actual_gun;
+    BlockingQueue<Protocol>& game_model_queue;
 	
 	public:
-	explicit SoldierState(Player *player, int& bullets);
+	explicit SoldierState(Player *player, int& bullets,
+        BlockingQueue<Protocol>& game_model_queue);
 	int actualGun();
 	bool addGun(int gun_number);
 	void switchGun(int gun_number);

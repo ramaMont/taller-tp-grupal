@@ -60,7 +60,7 @@ public:
     double calculateAngle(const Coordinates& dir, const Coordinates& posicion);
     double calculateDistance(Player* player);
     double calculateDistance(const Coordinates& position);    
-    void shoot(std::map<int, Player*>&);
+    bool shoot(std::map<int, Player*>&);
     bool hurt(int damage);
     bool use(Item* item);
     bool addGun(int gun_number);

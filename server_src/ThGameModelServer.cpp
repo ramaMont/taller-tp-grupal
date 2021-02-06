@@ -102,20 +102,12 @@ void ThGameModelServer::sendPlayerProtocol(Protocol& protocol){
 
 void ThGameModelServer::processShoot(Protocol protocol){
     Player* player = players.at(protocol.getId());
-    int old_gun = player->actualGun();
-    try {
-        player->shoot(players);
-    } catch(const RocketException &e) {
+    bool shooted = player->shoot(players);
+    if (!shooted) {
         Rocket* rocket = new Rocket(player->get_coordinates(),
             player->get_direction(), player, players, *this);
         Event *event = new RocketEvent(rocket);
         th_game_events.add(event);
-    } catch(...) {}
-    int new_gun = player->actualGun();
-    if (new_gun != old_gun){
-        protocol.setAction(Protocol::action::SWITCH_GUN);
-        protocol.setDamage(new_gun);
-        echoProtocol(protocol);
     }
 }
 
@@ -129,9 +121,6 @@ void ThGameModelServer::processShooted(Protocol protocol){
 void ThGameModelServer::processResurrect(Protocol& protocol){
     Player* player = players.at(protocol.getId());
     player->revive();
-    echoProtocol(protocol);
-    protocol.setAction(Protocol::action::SWITCH_GUN);
-    protocol.setDamage(1);
     echoProtocol(protocol);
 }
 

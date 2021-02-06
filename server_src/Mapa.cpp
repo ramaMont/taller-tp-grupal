@@ -189,16 +189,16 @@ Coordinates Mapa::getEmptyPosition(const Coordinates& posicion){
     int pos_x = floor(posicion.x);
     int pos_y = floor(posicion.y);
     for (int i = 1; i < 5; ++i){
-        for (int x = pos_x - i; x < pos_x+i+1; ++x){
+        for (int x = pos_x - i; x <= pos_x + i; ++x){
             if (x < 0 || x >= alto) continue;
-            for (int y = pos_y - i; y < pos_y+i+1; ++y){
+            for (int y = pos_y - i; y <= pos_y + i; ++y){
                  if (y < 0 || y >= ancho) continue;
                  if (items[x][y] || !mapaJuego[x][y].empty()) continue;
                  return Coordinates(x, y);
             }
         }
     }
-    return Coordinates(0, 0);
+    return Coordinates(-1, -1);
 }
 
 void Mapa::addPassage(Object* door){
