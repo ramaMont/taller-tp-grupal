@@ -65,7 +65,7 @@ private:
         int windows_x_pos, int length_x, int windows_y_pos, int lenght_y);
 
     //configura los parametros y llama al generic_show para graficar toda el arma
-    void showWeapon(int frame_gun, int current_gun, int left_start_texture, int right_end_texture);
+    void showWeapon(int frame_gun, int current_gun);
 
     // Muestra el texto de la barra de estado
     void showText(std::string text, int letter_width, int letter_height, int x_pos);

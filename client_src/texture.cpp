@@ -269,24 +269,25 @@ void Texture::showText(std::string text, int letter_width, int letter_height, in
 	SDL_DestroyTexture(Message);	
 }
 
-void Texture::showWeapon(int frame_gun, int current_gun, int left_start_texture, int right_end_texture){
-	int widht_drawable_pixel = right_end_texture - left_start_texture;
+void Texture::showWeapon(int frame_gun, int current_gun){
+	//int widht_drawable_pixel = right_end_texture - left_start_texture;
 
-	int first_x_pixel = 65*frame_gun + left_start_texture;
-	int cant_x_pixels = widht_drawable_pixel;
-	int first_y_pixel = current_gun*65;
-	int cant_y_pixels = 64;
+	int first_x_pixel = 129*frame_gun;
+	int cant_x_pixels = 128;
+	int first_y_pixel = current_gun*129;
+	int cant_y_pixels = 128;
 
-	int windows_x_pos = width/2 - (65/2 - left_start_texture)*4;
-	int windows_y_pos = height - 320;
-	int length_x = widht_drawable_pixel*5;
-	int lenght_y = 320;
+	int windows_x_pos = width/2 - 65;
+	int windows_y_pos = height - 160;
+	int length_x = 65*2;
+	int lenght_y = 160;
 
 	genericShow(guns,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 
 void Texture::showKnife(int frame_gun){
-		showWeapon(frame_gun,0,27,53);
+		//showWeapon(frame_gun,0,27,53);
+		showWeapon(frame_gun,0);
 
 		int first_x_pixel = 0;//Desde qué pixel en X quiero
 		int cant_x_pixels = 450;
@@ -300,7 +301,8 @@ void Texture::showKnife(int frame_gun){
 		genericShow(this->bar_guns[0],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showGun(int frame_gun){
-		showWeapon(frame_gun,1,20,47);
+		//showWeapon(frame_gun,1,20,47);
+		showWeapon(frame_gun,1);
 
 		int first_x_pixel = 0;//Desde qué pixel en X quiero
 		int cant_x_pixels = 400;
@@ -314,7 +316,8 @@ void Texture::showGun(int frame_gun){
 		genericShow(this->bar_guns[1],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showMachineGun(int frame_gun){
-		showWeapon(frame_gun,2,13,52);
+		//showWeapon(frame_gun,2,13,52);
+		showWeapon(frame_gun,2);
 
 		int first_x_pixel = 0;//Desde qué pixel en X quiero
 		int cant_x_pixels = 460;
@@ -328,7 +331,8 @@ void Texture::showMachineGun(int frame_gun){
 		genericShow(this->bar_guns[2],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showChainGun(int frame_gun){
-		showWeapon(frame_gun,3,7,59);
+		//showWeapon(frame_gun,3,7,59);
+		showWeapon(frame_gun,3);
 
 		int first_x_pixel = 0;//Desde qué pixel en X quiero
 		int cant_x_pixels = 490;
@@ -342,7 +346,8 @@ void Texture::showChainGun(int frame_gun){
 		genericShow(this->bar_guns[3],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showRocketLauncher(int frame_gun){
-		showWeapon(frame_gun,4,7,59);
+		//showWeapon(frame_gun,4,7,59);
+		showWeapon(frame_gun,4);
 
 		int first_x_pixel = 0;//Desde qué pixel en X quiero
 		int cant_x_pixels = 490;
