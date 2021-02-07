@@ -71,7 +71,7 @@ private:
     void showWeapon(int frame_gun, int current_gun);
 
     // Muestra el texto de la barra de estado
-    void showText(std::string text, int letter_width, int letter_height, int x_pos);
+    void showText(std::string text, int letter_width, int letter_height, int x_pos, int y_pos);
 
     //configura los parametros y llama al generic_show para graficar una unica linea de pixeles de la pared
     void showWall(SDL_Texture* texture,int x_pixel,float distance_player_plane, int number_line_texture);
@@ -153,7 +153,7 @@ public:
     void showWinningScreen(std::vector<std::pair<int,int>> &ordered_players_kills, \
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
 
-    void showLoosingScreen(std::vector<std::pair<int,int>> &ordered_players_kills, \
+    void showLoosingScreen(int winnder_id, std::vector<std::pair<int,int>> &ordered_players_kills, \
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
 
     void showDisconnectedScreen();

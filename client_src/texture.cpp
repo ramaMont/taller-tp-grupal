@@ -269,23 +269,23 @@ void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_
 	    };   
 	    SDL_RenderCopy(this->renderer, life_bar, &imgPartRect, &sdlDst);	
 
-	    showText(std::to_string(score).c_str(),20,80,170);
-	    showText(std::to_string(lives).c_str(),40,80,250);	    
+	    showText(std::to_string(score).c_str(),20,80,170,height+35);
+	    showText(std::to_string(lives).c_str(),40,80,250,height+35);	    
 
 	    std::string text_health = std::to_string(health).c_str();
 	    if(strlen(text_health.c_str())>2){
-	    	showText(text_health,17,80,390);	    
+	    	showText(text_health,17,80,390,height+35);	    
 	    }else{
-	    	showText(text_health,20,80,390);	    	    	
+	    	showText(text_health,20,80,390,height+35);	    	    	
 	    }
-	    showText(std::to_string(ammo).c_str(),20,80,480);	    
+	    showText(std::to_string(ammo).c_str(),20,80,480,height+35);	    
 
 	    showFaceHealth(portion_health);
         
         showKeys(has_key_1, has_key_2);
 }
 
-void Texture::showText(std::string text, int letter_width, int letter_height, int x_pos){
+void Texture::showText(std::string text, int letter_width, int letter_height, int x_pos, int y_pos){
 
 	SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
@@ -297,7 +297,7 @@ void Texture::showText(std::string text, int letter_width, int letter_height, in
 
 	const SDL_Rect sdlDst = {
 	    x_pos - len_message, //Posicion inicial de X donde voy a mostrar el pixel
-	    height+35, //Posicion inicial de Y donde voy a mostrar el pixel
+	    y_pos, //Posicion inicial de Y donde voy a mostrar el pixel
 	    len_message, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
 	    letter_height//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
 	};
@@ -306,7 +306,6 @@ void Texture::showText(std::string text, int letter_width, int letter_height, in
 	//Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
 
 	SDL_RenderCopy(renderer, Message, NULL, &sdlDst); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
-	//Don't forget to free your surface and texture
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);	
 }
@@ -693,9 +692,11 @@ void Texture::showWinningScreen(std::vector<std::pair<int,int>> &ordered_players
 
 	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
 
+	showText("You won!!",35 , 25, width/2, 40);
+
 }
 
-void Texture::showLoosingScreen(std::vector<std::pair<int,int>> &ordered_players_kills, \
+void Texture::showLoosingScreen(int winner_id, std::vector<std::pair<int,int>> &ordered_players_kills, \
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
 
 	int first_x_pixel = 0;
@@ -713,7 +714,7 @@ void Texture::showLoosingScreen(std::vector<std::pair<int,int>> &ordered_players
 }
 
 void Texture::showDisconnectedScreen(){
-	
+
 }
 
 Texture::~Texture() {
