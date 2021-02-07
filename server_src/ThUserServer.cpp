@@ -60,8 +60,6 @@ void ThUserServer::processReception(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::CREATE_GAME:{
             try{
-                // TODO: 
-                // y agregar cantidad de bots en el createGame
                 MapLoader mapLoader(protocol.getMapId());
                 int bots_cty = protocol.getBotsCty();
                 games_admin.createGame(*this, mapLoader.getFileName(),

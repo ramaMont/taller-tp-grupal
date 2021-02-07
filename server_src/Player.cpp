@@ -191,6 +191,7 @@ bool Player::agregarLlave(){
 	if (this->llave)
 		return false;
 	this->llave = true;
+    //TODO: Agregar protocolo de que se agrego una llave.
 	return true;
 }
 
