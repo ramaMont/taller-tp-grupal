@@ -9,8 +9,8 @@ static void sortVector(std::vector<SpriteDrawer*> &spotted_sprites){
 	});	
 }
 
-Screen::Screen(std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window):
-	n_rays(window.getResolutionWidth()/2),enemies(enemies) ,sprites(sprites), player(player),
+Screen::Screen(std::vector<Rocket*> &rockets,std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window):
+	n_rays(window.getResolutionWidth()/2), rockets(rockets), enemies(enemies) ,sprites(sprites), player(player),
 	map(map),
 	texture(texture),
 	window(window),
@@ -26,6 +26,11 @@ void Screen::unseeSprites(){
 	for(unsigned int i=0; i<enemies.size(); i++){
 		enemies[i]->disableSpotted();
 	}
+
+	for(unsigned int i=0; i<rockets.size(); i++){
+		rockets[i]->disableSpotted();
+	}
+
 }
 
 void Screen::getSpottedSprites(std::vector<SpriteDrawer*> &spotted_sprites){
@@ -37,6 +42,11 @@ void Screen::getSpottedSprites(std::vector<SpriteDrawer*> &spotted_sprites){
 	for(unsigned int i=0; i<enemies.size(); i++){
 		if(enemies[i]->isSpotted()){
 			spotted_sprites.push_back(enemies[i]);
+		}
+	}
+	for(unsigned int i=0; i<rockets.size(); i++){
+		if(rockets[i]->isSpotted()){
+			spotted_sprites.push_back(rockets[i]);
 		}
 	}
 }	

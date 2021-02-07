@@ -10,6 +10,8 @@
 class SpriteHolder;
 #include <SpriteHolder.h>
 
+class Rocket;
+#include <Rocket.h>
 class Enemy;
 #include <Enemy.h>
 #include <Player.h>
@@ -22,6 +24,7 @@ class Screen{
 	private:
 
 		int n_rays;
+		std::vector<Rocket*> &rockets;
 		std::vector<Enemy*> &enemies;
 		std::vector<SpriteHolder*> &sprites;
 		Player &player;
@@ -41,7 +44,7 @@ class Screen{
 		// Realiza los calculos necesarios para la correcta visualizacion de los sprites: distancia al jugador, etc
 		void initialiceSpottedSprites(std::vector<SpriteDrawer*> &spotted_sprites,Camera &camera);
 	public:
-		Screen(std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window);
+		Screen(std::vector<Rocket*> &rockets, std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window);
 
 		// Llama a los metodos correspondientes para la correcta visualizacion
 		void show();

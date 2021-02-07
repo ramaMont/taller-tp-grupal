@@ -2,7 +2,6 @@
 #define __DIRECTION__
 
 #include "coordinates.h"
-#include "Character.h"
 class Character;
 
 class Direction{

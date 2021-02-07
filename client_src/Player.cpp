@@ -120,6 +120,7 @@ void Player::updateKeys(int amount){
     }
 }
 
+
 Player::~Player(){
     if(gun_type!=nullptr)
         delete gun_type;

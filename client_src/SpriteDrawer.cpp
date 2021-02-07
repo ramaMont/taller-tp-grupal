@@ -51,6 +51,44 @@ void SpriteDrawer::disableSpotted(){
 	lowest_ray_distance = 90;
 }
 
+void SpriteDrawer::draw(const std::vector<float> &distances, int n_rays){
+	int first_ray = center_ray - cant_rays/2;
+	bool first_ray_already_sigted = false;
+	int first_sigted_ray = 0;
+	int first_num_pixel = 0;
+	int last_sigted_ray = 0;
+	int last_num_pixel = 0;
+
+	int cant_spotted_rays = 0;
+	for(int i=0 ; i<cant_rays ; i++){
+		int num_pixel = i*64/cant_rays;
+		int current_ray = first_ray + i+ n_rays;
+		if((current_ray)>0 and (current_ray)<2*n_rays){
+			if(distances[current_ray]>player_distance){
+				cant_spotted_rays++;
+
+				if(first_ray_already_sigted){
+					last_sigted_ray = first_ray + i + n_rays;
+					last_num_pixel = num_pixel;
+				}
+				else{
+					first_sigted_ray = first_ray + i + n_rays;
+					first_num_pixel = num_pixel;
+				}
+
+				first_ray_already_sigted = true;
+			}
+		}
+	}
+
+	if(cant_spotted_rays==1){
+		last_sigted_ray = first_sigted_ray;
+		last_num_pixel = first_num_pixel;
+	}
+
+	callDrawer(first_sigted_ray,first_num_pixel,last_sigted_ray,last_num_pixel,player_distance);
+}
+
 float SpriteDrawer::getDistancePlayerPlane() const {
 	return player_distance;
 }		    

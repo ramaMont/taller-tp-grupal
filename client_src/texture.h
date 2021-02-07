@@ -94,19 +94,19 @@ public:
     void showSprite(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int texture);
 
     //llama al show enemy con la textura del perro
-	void showDog(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
+	void showDog(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show enemy con la textura del guardia
-	void showGuard(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
+	void showGuard(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show enemy con la textura del oficial
-	void showOfficer(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
+	void showOfficer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show enemy con la textura del ss
-	void showSs(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
+	void showSs(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show enemy con la textura del mutante
-	void showMutant(int state, int frame,int pos_x, float distance_player_plane, int number_line_texture, bool is_shooting);
+	void showMutant(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show wall con la textura de la pared gris
 	void showWallGreystone(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);

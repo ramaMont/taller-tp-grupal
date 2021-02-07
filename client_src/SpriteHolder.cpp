@@ -23,8 +23,8 @@ void SpriteHolder::colisioned(Ray* ray,Coordinates coordinates_map,bool first_tr
 void SpriteHolder::spotted(){
     spottedSprite();
     if(character!=nullptr and player.get_position()!=posicion){
-		Enemy* enemy = dynamic_cast<Enemy*>(character);
-		enemy->spottedSprite();
+		SpriteDrawer* movable = dynamic_cast<SpriteDrawer*>(character);
+		movable->spottedSprite();
     }
 }   
 
@@ -50,7 +50,7 @@ Character* SpriteHolder::getCharacter(){
 	return character;
 }
 
-void SpriteHolder::draw(const std::vector<float> &distances, int n_rays){
+/*void SpriteHolder::draw(const std::vector<float> &distances, int n_rays){
 	int first_ray = center_ray - cant_rays/2;
 	bool first_ray_already_sigted = false;
 	int first_sigted_ray = 0;
@@ -90,7 +90,12 @@ void SpriteHolder::draw(const std::vector<float> &distances, int n_rays){
 	}
 
 	if(character!=nullptr and player.get_position()!=posicion){
-		Enemy* enemy = dynamic_cast<Enemy*>(character);
-		enemy->draw(distances,n_rays);
+		character->draw(distances,n_rays);
+	}
+}*/
+
+void SpriteHolder::callDrawer(int first_sigted_ray,int first_num_pixel,int last_sigted_ray,int last_num_pixel,float player_distance){
+	for(unsigned int j=0; j<sprites_textures.size(); j++){
+		texture_drawer->showSprite(first_sigted_ray,first_num_pixel,last_sigted_ray,last_num_pixel,player_distance ,sprites_textures[j]);
 	}
 }

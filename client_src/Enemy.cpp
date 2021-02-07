@@ -93,20 +93,50 @@ void Enemy::updateFrame(){
 
 }
 
-void Enemy::draw(const std::vector<float> &distances, int n_rays){
-	int first_ray = center_ray - cant_rays/2;
+
+/*void Enemy::draw(const std::vector<float> &distances, int n_rays){
 	int side_texture = get_num_texture(posicion,direction, player.get_position());
+	int first_ray = center_ray - cant_rays/2;
+	bool first_ray_already_sigted = false;
+	int first_sigted_ray = 0;
+	int first_num_pixel = 0;
+	int last_sigted_ray = 0;
+	int last_num_pixel = 0;
+
+	int cant_spotted_rays = 0;
 	for(int i=0 ; i<cant_rays ; i++){
 		int num_pixel = i*64/cant_rays;
 		int current_ray = first_ray + i+ n_rays;
 		if((current_ray)>0 and (current_ray)<2*n_rays){
 			if(distances[current_ray]>player_distance){
-				enemy_type->callDrawer(first_ray + i + n_rays,player_distance ,num_pixel,side_texture,moved_frames_continued/2);
+				cant_spotted_rays++;
+
+				if(first_ray_already_sigted){
+					last_sigted_ray = first_ray + i + n_rays;
+					last_num_pixel = num_pixel;
+				}
+				else{
+					first_sigted_ray = first_ray + i + n_rays;
+					first_num_pixel = num_pixel;
+				}
+
+				first_ray_already_sigted = true;
 			}
 		}
 	}
-}
 
+	if(cant_spotted_rays==1){
+		last_sigted_ray = first_sigted_ray;
+		last_num_pixel = first_num_pixel;
+	}
+
+	enemy_type->callDrawer(first_sigted_ray,first_num_pixel,last_sigted_ray,last_num_pixel,player_distance ,side_texture,moved_frames_continued/2 );
+}*/
+
+void Enemy::callDrawer(int first_sigted_ray,int first_num_pixel,int last_sigted_ray,int last_num_pixel,float player_distance){
+	int side_texture = get_num_texture(posicion,direction, player.get_position());	
+	enemy_type->callDrawer(first_sigted_ray,first_num_pixel,last_sigted_ray,last_num_pixel,player_distance ,side_texture,moved_frames_continued/2 );
+}
 
 Enemy::~Enemy(){
 	if(enemy_type!=nullptr)

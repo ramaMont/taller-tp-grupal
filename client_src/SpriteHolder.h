@@ -58,7 +58,7 @@ public:
 
     //Pre:-
     // Llamo a su dibujador de texturas
-    void draw(const std::vector<float> &distances, int n_rays) override;
+    void callDrawer(int first_sigted_ray,int first_num_pixel,int last_sigted_ray,int last_num_pixel,float player_distance) override;
 
 };
 

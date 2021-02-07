@@ -28,14 +28,14 @@ public:
 
     //Pre:-
     // Llamo a su respectivo metodo encargadao de dibujar	
-    virtual void callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame) = 0;
+	virtual void callDrawer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane, int texture, int state) = 0;
     virtual ~EnemyType(){};
 };
 
 class Dog : public EnemyType{
 public:
 	Dog(Texture *texture_drawer);
-	virtual void callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame) override;
+	virtual void callDrawer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane, int texture, int state) override;
 	virtual void shoot(SoundPlayer& soundPlayer, float distance) override;
 	~Dog();
 };
@@ -43,7 +43,7 @@ public:
 class Guard : public EnemyType{
 public:
 	Guard(Texture *texture_drawer);
-	virtual void callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame) override;
+	virtual void callDrawer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane, int texture, int state) override;
 	virtual void shoot(SoundPlayer& soundPlayer, float distance) override;
 	~Guard();
 };
@@ -51,7 +51,7 @@ public:
 class SS : public EnemyType{
 public:
 	SS(Texture *texture_drawer);
-	virtual void callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame) override;
+	virtual void callDrawer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane, int texture, int state) override;
 	virtual void shoot(SoundPlayer& soundPlayer, float distance) override;
 	~SS();
 };
@@ -59,7 +59,7 @@ public:
 class Officer : public EnemyType{
 public:
 	Officer(Texture *texture_drawer);
-	virtual void callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame) override;
+	virtual void callDrawer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane, int texture, int state) override;
 	virtual void shoot(SoundPlayer& soundPlayer, float distance) override;
 	~Officer();
 };
@@ -67,7 +67,7 @@ public:
 class Mutant : public EnemyType{
 public:
 	Mutant(Texture *texture_drawer);
-	virtual void callDrawer(int pos_x, float distance_player_plane, int number_line_texture, int texture, int frame) override;
+	virtual void callDrawer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane, int texture, int state) override;
 	virtual void shoot(SoundPlayer& soundPlayer, float distance) override;
 	~Mutant();
 };

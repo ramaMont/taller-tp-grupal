@@ -1,5 +1,8 @@
 #include "Cl_Direction.h"
 #include "math.h"
+
+#include "Character.h"
+
 static const double step_size=0.15;
 static double inc = 0.15;
 

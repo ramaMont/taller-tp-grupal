@@ -1,7 +1,8 @@
 #ifndef __CHARACTER__
 #define __CHARACTER__
 
-#include <Posicionable.h>
+class Movable;
+#include <Movable.h>
 
 #include "coordinates.h"
 class ClMap;
@@ -15,11 +16,9 @@ class Ray;
 #include "CharacterValues.h"
 
 //Jugadores o enemigos
-class Character : public Posicionable{
+class Character : public Movable{
 protected:
 	Coordinates direction;
-    ClMap &map;
-    int id;
     Coordinates initial_position;
     Coordinates initial_direction;
 public:

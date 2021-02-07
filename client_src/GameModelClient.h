@@ -32,6 +32,7 @@
 #include <Door.h>
 #include <SpriteHolder.h>
 #include <Enemy.h>
+#include <Rocket.h>
 #include "SoundPlayer.h"
 
 #include "CharacterValues.h"
@@ -53,6 +54,7 @@ private:
     std::vector<Door*> doors;
     std::vector<SpriteHolder*> sprites;
     std::vector<Enemy*> enemies;
+    std::vector<Rocket*> rockets;
 
 	bool is_running;
     SoundPlayer _sound_player;

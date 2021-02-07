@@ -13,7 +13,7 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,\
         texture(window), map(), 
         added_player(false),player(map),
         operations(), game_id(game_id),
-        screen(enemies,sprites,player,map,texture,window),
+        screen(rockets,enemies,sprites,player,map,texture,window),
         protagonist_id(protagonist_id),is_running(true),
         _sound_player(), _has_ended(false), _winner_id(_winner_id),
         game_done(game_done),_ordered_players_kills(_ordered_players_kills),
@@ -498,9 +498,26 @@ void GameModelClient::processGunSwitch(Protocol& protocol){
     }
 }
 
-void GameModelClient::processRocket(Protocol& protocol){
+void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con un solo rocket
     Coordinates position(protocol.getFloatPosition());
-    if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
+    Coordinates direction(1,1);
+    printf("proceso rocket\n");
+    //if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
+    if(rockets.size()>0){
+      printf("x cambiarle la posicion\n");
+      rockets[0]->changePosition(position);
+      printf("le cambie la posicion\n");
+    }
+    else{ //Creo el Rocket
+      printf("creo uno nuevo\n");
+      Rocket* rocket = new Rocket(position, direction, map, player,0);
+      rocket->set_texture(&texture);
+      rockets.push_back(rocket);
+      map.addPositionable(rocket,position);  
+      printf("cree uno nuevo\n");
+
+    }
+    /*if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
         map.removeAllPositionables(position);
         return;
     }
@@ -509,7 +526,7 @@ void GameModelClient::processRocket(Protocol& protocol){
     sprites.push_back(posicionable);
     try {
         map.addPositionable(posicionable, position);
-    } catch(...) {}
+    } catch(...) {}*/
 }
 
 void GameModelClient::processKey(Protocol& protocol){

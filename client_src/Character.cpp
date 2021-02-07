@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 Character::Character(Coordinates position,Coordinates direction ,ClMap& map, int id):
-        Posicionable(position),direction(direction), map(map), id(id){
+        Movable(position,map,id),direction(direction){
 }
 
 void Character::moveInOneDirection(Direction* direccion){

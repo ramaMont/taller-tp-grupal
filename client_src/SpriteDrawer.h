@@ -30,7 +30,9 @@ protected:
 public:
     explicit SpriteDrawer(Posicionable *posicionable, Player &player);
 
-    virtual void draw(const std::vector<float> &distances, int n_rays)  = 0;
+    void draw(const std::vector<float> &distances, int n_rays);
+
+    virtual void callDrawer(int first_sigted_ray,int first_num_pixel,int last_sigted_ray,int last_num_pixel,float player_distance){}
 
     // Calcula su angulo relativo respecto a la direccion del jugador
     void setRelativeAngleToPlayer();
