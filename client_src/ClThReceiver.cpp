@@ -92,6 +92,9 @@ void ClThReceiver::processReception(Protocol& protocol){
         case Protocol::action::MOVE_ROCKET:
             _gameModel->push(protocol);
             break;
+        case Protocol::action::KEY:
+            _gameModel->push(protocol);
+            break;
         case Protocol::action::END_GAME_BULLETS:
             _gameModel->push(protocol);
             break;

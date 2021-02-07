@@ -84,6 +84,10 @@ public:
     void addPoints(int amount);
 
     //Pre:-
+    // Actualiza la cantidad de llaves
+    void updateKeys(int amount);
+
+    //Pre:-
     // Libero la memoria del arma
     ~Player();  
 };

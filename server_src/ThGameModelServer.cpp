@@ -71,6 +71,9 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
         case Protocol::action::ROCKET:
             processRocket(protocol);
             break;
+        case Protocol::action::KEY:
+            echoProtocol(protocol);
+            break;
         case Protocol::action::ENDGAME:
             endGame();
             break;

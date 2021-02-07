@@ -412,6 +412,9 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::MOVE_ROCKET:
             processRocket(protocol);
             break;
+        case Protocol::action::KEY:
+            processKey(protocol);
+            break;
         case Protocol::action::END_GAME_KILLS:    
             _ordered_players_kills.push_back(
                 std::pair<int, int>(protocol.getDamage(), 
@@ -507,6 +510,12 @@ void GameModelClient::processRocket(Protocol& protocol){
     try {
         map.addPositionable(posicionable, position);
     } catch(...) {}
+}
+
+void GameModelClient::processKey(Protocol& protocol){
+    if (protagonist_id != protocol.getId())
+        return;
+    player.updateKeys(protocol.getDamage());
 }
 
 

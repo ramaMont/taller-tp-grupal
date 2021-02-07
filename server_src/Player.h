@@ -25,7 +25,7 @@ private:
     int lives;
     int health;
     int bullets;
-    bool key;
+    int keys;
     SoldierState soldier;
     Coordinates posicion_inicial;
     size_t score;

@@ -16,7 +16,7 @@ Player::Player(Mapa& map, int id, BlockingQueue<Protocol>& game_model_queue):
     score = 0;
     fired_bullets = 0;
     killed_enemies = 0;
-    key = false;  
+    keys = 0;  
     is_alive = true;
 }
 
@@ -32,7 +32,7 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& map,
     score = 0;
     fired_bullets = 0;
     killed_enemies = 0;
-    key = false;  
+    keys = 0;  
     is_alive = true;
     atomic_dir(direction);
     atomic_pos(posicion);
@@ -51,7 +51,7 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& map, int id,
     score = 0;
     fired_bullets = 0;
     killed_enemies = 0;
-    key = false;  
+    keys = 0;  
     is_alive = true;
     atomic_dir(direction);
     atomic_pos(posicion);
@@ -139,7 +139,7 @@ bool Player::hurt(int damage){
 bool Player::shoot(std::map<int, Player*>& players){
     int bullets_before = bullets;
     int result = soldier.shoot(players);
-	fired_bullets += bullets - bullets_before;
+	fired_bullets += bullets_before - bullets;
 	Protocol protocol(player_id, bullets, Protocol::action::UPDATE_BULLETS);
 	_game_model_queue.push(protocol);
     return result == 0;
@@ -191,16 +191,19 @@ bool Player::addBullets(int amount){
 }
 
 bool Player::addKey(){
-    bool had_key = key;
-	key = true;
-    //TODO: Agregar protocolo de que se agrego una llave.
-	return !had_key;
+    if (keys > 1) return false;
+	keys ++;
+    Protocol protocol(player_id, keys, Protocol::action::KEY);
+    _game_model_queue.push(protocol);
+	return true;
 }
 
 bool Player::useKey(){
-	bool had_key = key;
-	key = false;
-	return had_key;
+    if (keys == 0) return false;
+	keys --;
+    Protocol protocol(player_id, keys, Protocol::action::KEY);
+	_game_model_queue.push(protocol);
+	return true;
 }
 
 void Player::addKilledEnemy(){
@@ -215,7 +218,7 @@ void Player::die(){
     lives --;
 	throwGun();
 	throwBullets();
-	if (this->key)
+	if (keys > 0)
 		throwKey();
 	map.removePosicionable(this->posicion);	
 	if (lives > 0){
@@ -282,22 +285,26 @@ void Player::throwGun(){
 void Player::throwBullets(){
     Coordinates pos = map.getEmptyPosition(posicion);
     if (pos.x < 0 || pos.y < 0) return;
-    Bullets* bullets = new Bullets(pos, 10);
-    map.addItem(bullets, pos);
+    Bullets* new_bullets = new Bullets(pos, 10);
+    map.addItem(new_bullets, pos);
     Protocol protocol(Protocol::action::THROW, 10,
         Protocol::direction::STAY, 0, pos.x, pos.y);    
     _game_model_queue.push(protocol);
 }
 
 void Player::throwKey(){
-    Coordinates pos = map.getEmptyPosition(posicion);
-    if (pos.x < 0 || pos.y < 0) return;
-    Key* new_key = new Key(pos);
-    map.addItem(new_key, pos);
-    key = false;
-    Protocol protocol(Protocol::action::THROW, 7,
-        Protocol::direction::STAY, 0, pos.x, pos.y);    
-    _game_model_queue.push(protocol);
+    for (int i = 0; i < keys; i++){
+        Coordinates pos = map.getEmptyPosition(posicion);
+        if (pos.x < 0 || pos.y < 0) return;
+        Key* new_key = new Key(pos);
+        map.addItem(new_key, pos);
+        Protocol protocol(Protocol::action::THROW, 7,
+            Protocol::direction::STAY, 0, pos.x, pos.y);    
+        _game_model_queue.push(protocol);
+    }
+    keys = 0;
+    Protocol protocol(player_id, keys, Protocol::action::KEY);
+	_game_model_queue.push(protocol);
 }
 
 

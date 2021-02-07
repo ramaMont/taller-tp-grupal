@@ -90,6 +90,12 @@ void Texture::addBarGuns(std::string new_texture){
 
 }
 
+void Texture::addKeyTexture(){
+    SDL_Surface* loadedSurface = IMG_Load(("../data/textures/bar_textures/key.png"));
+    key = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+	SDL_FreeSurface(loadedSurface);	
+}
+
 void Texture::addEndingBackground(){
     SDL_Surface* loadedSurface = IMG_Load(("../data/endig_background.png"));
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
@@ -156,6 +162,8 @@ Texture::Texture(const Window& window):
 	addBarGuns("rocket_launcher");
 
 	addFaceHealth();
+    
+    addKeyTexture();
 
 	addEndingBackground();
 
@@ -215,6 +223,30 @@ void Texture::showFaceHealth(int portion_health){
 	genericShow(face_health,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 
+void Texture::showKeys(bool has_key_1, bool has_key_2){
+	int first_x_pixel = 0;//Desde qué pixel en X quiero
+	int cant_x_pixels = 18;
+	int first_y_pixel = 0;
+	int cant_y_pixels = 30;
+
+    if (has_key_1){
+        int windows_x_pos = width - 150;//Posicion inicial de X donde voy a mostrar el pixel
+        int windows_y_pos = height + 5;		
+        int length_x = 13;
+        int lenght_y = 45;
+
+        genericShow(key,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
+    }
+    if (has_key_2){
+        int windows_x_pos = width - 150;//Posicion inicial de X donde voy a mostrar el pixel
+        int windows_y_pos = height + 55;		
+        int length_x = 13;
+        int lenght_y = 45;
+        
+        genericShow(key,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
+    }
+}
+
 void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_health, int ammo, bool has_key_1, bool has_key_2){
 		imgPartRect.x = 0; //Desde qué pixel en X quiero
 		imgPartRect.y = 0;	//Desde qué pixel en Y quiero
@@ -241,6 +273,8 @@ void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_
 	    showText(std::to_string(ammo).c_str(),20,80,480);	    
 
 	    showFaceHealth(portion_health);
+        
+        showKeys(has_key_1, has_key_2);
 }
 
 void Texture::showText(std::string text, int letter_width, int letter_height, int x_pos){

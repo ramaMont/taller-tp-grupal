@@ -104,6 +104,22 @@ void Player::addPoints(int amount){
     score += amount;
 }
 
+void Player::updateKeys(int amount){
+    switch (amount){
+    case 0:
+        has_key_1 = false;
+        has_key_2 = false;
+        break;
+    case 1:
+        has_key_1 = true;
+        has_key_2 = false;
+        break;
+    case 2:
+        has_key_1 = true;
+        has_key_2 = true;
+    }
+}
+
 Player::~Player(){
     if(gun_type!=nullptr)
         delete gun_type;

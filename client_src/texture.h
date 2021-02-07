@@ -21,6 +21,7 @@ private:
     SDL_Texture* guns;
     SDL_Texture* door;
     SDL_Texture* life_bar;
+    SDL_Texture* key;
     SDL_Texture* endig_background;
     int height;
     int width;
@@ -59,6 +60,8 @@ private:
     void addBarGuns(std::string new_texture);
 
     void addEndingBackground();
+    
+    void addKeyTexture();
 
     //Grafica los pixeles solicitados de la textura recibida en la posicion recibida
     void genericShow(SDL_Texture* texture, int first_x_pixel, int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\
@@ -77,6 +80,8 @@ private:
     void showEnemy(SDL_Texture* texture, int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture);
 
     void showFaceHealth(int portion_health);
+    
+    void showKeys(bool has_key_1, bool has_key_2);
 
 public:
 
