@@ -3,7 +3,6 @@
 #include "Player.h"
 #include "Item.h"
 #include "Posicionable.h"
-#include "Objeto.h"
 #include <vector>
 #include "ParamReaderServer.h"
 

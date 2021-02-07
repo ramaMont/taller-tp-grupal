@@ -11,7 +11,7 @@ TEST(ItemsTests, comidaRecupera10puntosDeVida) {
     Mapa mapa(20,20);
     BlockingQueue<Protocol> bq;
     Player* jugador = new Player(Coordinates(5,5), Coordinates(1,0), mapa, bq);
-    Comida* comida = new Comida(Coordinates(6,5));
+    Food* comida = new Food(Coordinates(6,5));
     mapa.agregarItem(comida, Coordinates(6,5));
     int vida_maxima = jugador->getVida();
     

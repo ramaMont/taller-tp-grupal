@@ -31,7 +31,12 @@ Knife::~Knife(){}
 
 Gun::Gun(Texture *texture_drawer):GunType(texture_drawer, 30, false, guard){}		//frecuencia. 1 segundo (30 frames)
 void Gun::callDrawer(int frame){
-	texture_drawer->showGun((float)frame/7.6);
+	if(frame<15){
+		frame  = (float)frame/3.76;	
+	}else{
+		frame = 0;
+	}
+	texture_drawer->showGun(frame);
 }
 void Gun::playWeaponSound(SoundPlayer& soundPlayer, float distance){
 	soundPlayer.playSoundAtDistance(SoundPlayer::sound_type::PISTOL_SHOOT, distance);
@@ -61,7 +66,12 @@ ChainGun::~ChainGun(){}
 
 RocketLauncher::RocketLauncher(Texture *texture_drawer):GunType(texture_drawer, 30, true, mutant){} //frecuencia. 1 segundo (30 frames)
 void RocketLauncher::callDrawer(int frame){
-	texture_drawer->showRocketLauncher((float)frame/7.6);
+	if(frame<15){
+		frame  = (float)frame/3.76;	
+	}else{
+		frame = 0;
+	}
+	texture_drawer->showRocketLauncher(frame);
 }
 void RocketLauncher::playWeaponSound(SoundPlayer& soundPlayer, float distance){
 	soundPlayer.playSoundAtDistance(SoundPlayer::sound_type::ROCKET_LAUNCHER, distance);	
