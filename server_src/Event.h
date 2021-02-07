@@ -2,7 +2,7 @@
 #define __EVENT_H__
 
 #include <ctime>
-#include "Objeto.h"
+#include "Object.h"
 class ThGameEvents;
 class ThGameModelServer;
 
@@ -41,21 +41,21 @@ class FinishGameEvent: public Event{
 
 class DoorOpeningEvent: public Event{
     private:
-    Puerta* door;
+    Door* door;
 
     public:
-    DoorOpeningEvent(Puerta *puerta);
+    DoorOpeningEvent(Door *door);
     virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
     ~DoorOpeningEvent();
 };
 
 class DoorEvent: public Event{
     private:
-    Puerta* door;
+    Door* door;
     std::atomic<bool>& reopen;
 
     public:
-    DoorEvent(Puerta *puerta);
+    DoorEvent(Door *door);
     virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
     void resetTime();
     ~DoorEvent();

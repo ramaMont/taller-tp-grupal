@@ -3,7 +3,6 @@
 #include <utility>
 #include <cmath>
 #include <typeinfo>
-#include "Objeto.h"
 #include "Event.h"
 #include <ConfigVariable.h>
 
@@ -34,10 +33,10 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
             if (parsed_element == "wall_"){
                 Coordinates position((float)i,(float)j);
                 Posicionable* posicionable = new Posicionable(position);
-                map.agregarPosicionable(posicionable,position);
+                map.addPosicionable(posicionable,position);
             } else if (parsed_element == "door"){
                 Coordinates position((float)i,(float)j);
-                Puerta* posicionable = new Puerta(position);
+                Door* posicionable = new Door(position);
                 map.addPassage(posicionable);
             } else if (parsed_element == "playe"){
                 std::string dir_str = elemento.substr(7, elemento.size() - 5);
@@ -49,65 +48,65 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
                 // No hace falta hacer nada.
             } else if (elemento == "key_door"){
                 Coordinates position((float)i,(float)j);
-                PuertaCerrada* posicionable = new PuertaCerrada(position);
+                KeyDoor* posicionable = new KeyDoor(position);
                 map.addPassage(posicionable);
             } else if (elemento == "passage"){
                 Coordinates position((float)i,(float)j);
-                ParedFalsa* posicionable = new ParedFalsa(position);
+                Passage* posicionable = new Passage(position);
                 map.addPassage(posicionable);
             } else if (elemento == "food"){
                 Coordinates position((float)i,(float)j);
-                Comida* posicionable = new Comida(position);
-                map.agregarItem(posicionable, position);
+                Food* posicionable = new Food(position);
+                map.addItem(posicionable, position);
             } else if (elemento == "medicine"){
                 Coordinates position((float)i,(float)j);
-                KitMedico* posicionable = new KitMedico(position);
-                map.agregarItem(posicionable, position);
+                Medicine* posicionable = new Medicine(position);
+                map.addItem(posicionable, position);
             } else if (elemento == "blood"){
                 Coordinates position((float)i,(float)j);
-                Sangre* posicionable = new Sangre(position);
-                map.agregarItem(posicionable, position);
+                Blood* posicionable = new Blood(position);
+                map.addItem(posicionable, position);
             } else if (elemento == "bullets"){
                 Coordinates position((float)i,(float)j);
-                Balas* posicionable = new Balas(position);
-                map.agregarItem(posicionable, position);
+                Bullets* posicionable = new Bullets(position);
+                map.addItem(posicionable, position);
             } else if (elemento == "key"){
                 Coordinates position((float)i,(float)j);
-                Llave* posicionable = new Llave(position);
-                map.agregarItem(posicionable, position);
-            } else if (elemento == "trophie"){   // cross
+                Key* posicionable = new Key(position);
+                map.addItem(posicionable, position);
+            } else if (elemento == "cross__"){   // cross
                 Coordinates position((float)i,(float)j);
-                Cruz* posicionable = new Cruz(position);
-                map.agregarItem(posicionable, position);
+                Cross* posicionable = new Cross(position);
+                map.addItem(posicionable, position);
             } else if (elemento == "trophie"){
                 Coordinates position((float)i,(float)j);
-                Copa* posicionable = new Copa(position);
-                map.agregarItem(posicionable, position);
-            } else if (elemento == "trophie"){    //
+                Trophie* posicionable = new Trophie(position);
+                map.addItem(posicionable, position);
+            } else if (elemento == "chest__"){    //
                 Coordinates position((float)i,(float)j);
-                Cofre* posicionable = new Cofre(position);
-                map.agregarItem(posicionable, position);
-            } else if (elemento == "trophie"){    //
+                Chest* posicionable = new Chest(position);
+                map.addItem(posicionable, position);
+            } else if (elemento == "crown__"){    //
                 Coordinates position((float)i,(float)j);
-                Corona* posicionable = new Corona(position);
-                map.agregarItem(posicionable, position);
+                Crown* posicionable = new Crown(position);
+                map.addItem(posicionable, position);
             } else if (elemento == "machine_gun"){
                 Coordinates position((float)i,(float)j);
-                Ametralladora* posicionable = new Ametralladora(position);
-                map.agregarItem(posicionable, position);
+                MachineGun* posicionable = new MachineGun(position);
+                map.addItem(posicionable, position);
             } else if (elemento == "fire_canon"){
                 Coordinates position((float)i,(float)j);
-                CanionDeCadena* posicionable = new CanionDeCadena(position);
-                map.agregarItem(posicionable, position);
+                FireCanon* posicionable = new FireCanon(position);
+                map.addItem(posicionable, position);
             } else if (elemento == "rocket_launcher"){
                 Coordinates position((float)i,(float)j);
-                Lanzacohetes* posicionable = new Lanzacohetes(position);
-                map.agregarItem(posicionable, position);
+                RocketLauncher* posicionable = new RocketLauncher(position);
+                map.addItem(posicionable, position);
             } else if (elemento == "barrel" || elemento == "pillar" ||
                        elemento == "table"){
                 Coordinates position((float)i,(float)j);
                 Posicionable* posicionable = new Posicionable(position);
-                map.agregarPosicionable(posicionable, position);
+                map.addPosicionable(posicionable, position);
             }
         }
     }
@@ -119,14 +118,15 @@ Mapa::Mapa(std::string map_filename): players_added(0){
     alto = map_node["filas"].as<int>();
     ancho = map_node["columnas"].as<int>();
     mapaJuego.resize(alto, std::vector<std::vector<Posicionable*>>(ancho));
-    items.resize(alto, std::vector<std::vector<Item*>>(ancho));
+    items.resize(alto, std::vector<Item*>(ancho));
+    initItems();
     initMap(*this, map_node["elementos"]);
 }
 
 Mapa::Mapa(int alto, int ancho):
         alto(alto), ancho(ancho),
         mapaJuego(alto, std::vector<std::vector<Posicionable*>>(ancho)),
-        items(alto, std::vector<std::vector<Item*>>(ancho)),players_added(0){
+        items(alto, std::vector<Item*>(ancho)),players_added(0){
     /*for (int i=0; i<alto; i++){
         for (int j=0; j<ancho; j++){
             mapaJuego[i][j]=nullptr;
@@ -134,25 +134,33 @@ Mapa::Mapa(int alto, int ancho):
     }*/
 }
 
-void Mapa::agregarPlayer(Player* jugador){
+void Mapa::initItems(){
+    for (int x = 0; x < alto; ++x){
+        for (int y = 0; y < ancho; ++y){
+            items[x][y] = nullptr;
+        }
+    }
+}
+
+void Mapa::addPlayer(Player* player){
     if (players_added >= (int)player_positions.size())
         throw -1; // Se quiere agregar un jugador mas a una partida completa
     auto player_data = player_positions.at(players_added);
     auto player_position = std::get<0>(player_data);
     auto player_dir = std::get<1>(player_data);
-    jugador->setPosition(player_position);
-    jugador->set_direction(player_dir);
-	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(jugador);
+    player->setPosition(player_position);
+    player->set_direction(player_dir);
+	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(player);
     ++players_added;
 }
 
-void Mapa::respawnPlayer(Player* jugador){
-    Coordinates player_position = jugador->get_position(); 
-    sacarPosicionable(player_position);
-	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(jugador);
+void Mapa::respawnPlayer(Player* player){
+    Coordinates player_position = player->get_position(); 
+    removePosicionable(player_position);
+	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(player);
 }
 
-void Mapa::agregarPosicionable(Posicionable* posicionable, 
+void Mapa::addPosicionable(Posicionable* posicionable, 
         Coordinates posicion){
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return;
@@ -169,66 +177,48 @@ void Mapa::agregarPosicionable(Posicionable* posicionable,
 	}
 }
 
-void Mapa::agregarItem(Item* item, Coordinates posicion){
+void Mapa::addItem(Item* item, Coordinates posicion){
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return;
-	items[floor(posicion.x)][floor(posicion.y)].push_back(item);
+	if (items[floor(posicion.x)][floor(posicion.y)] == nullptr)
+        items[floor(posicion.x)][floor(posicion.y)] = item;
 }
 
-// Por si solo guardamos un item por posicion
-Coordinates Mapa::throwItem(Item* item, Coordinates posicion){
+Coordinates Mapa::getEmptyPosition(const Coordinates& posicion){
     int pos_x = floor(posicion.x);
     int pos_y = floor(posicion.y);
     for (int i = 1; i < 5; ++i){
-        for (int x = pos_x - i; x < pos_x + i; ++x){
-            for (int y = pos_y - i; y < pos_y + i; ++y){
-                 if (x < 0 || x >= alto || y < 0 || y >= ancho ||
-                     !items[x][y].empty() || !mapaJuego[x][y].empty()) continue;
-                 items[x][y].push_back(item);
+        for (int x = pos_x - i; x <= pos_x + i; ++x){
+            if (x < 0 || x >= alto) continue;
+            for (int y = pos_y - i; y <= pos_y + i; ++y){
+                 if (y < 0 || y >= ancho) continue;
+                 if (items[x][y] || !mapaJuego[x][y].empty()) continue;
                  return Coordinates(x, y);
             }
         }
     }
-    return Coordinates(0, 0);
+    return Coordinates(-1, -1);
 }
 
-void Mapa::addPassage(Objeto* door){
+void Mapa::addPassage(Object* door){
     passages.push_back(door);
-    agregarPosicionable(door, door->getCoordinates());
+    addPosicionable(door, door->getPosicion());
 }
 
-void Mapa::sacarPosicionable(Coordinates posicion){
+void Mapa::removePosicionable(const Coordinates& posicion){
     if (!mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
 	    mapaJuego[floor(posicion.x)][floor(posicion.y)].pop_back();
 }
-
-void Mapa::sacarPosicionable(Coordinates posicion, 
-        const std::type_info& type_id){
-    if (mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
-        return;
-    std::vector<Posicionable*>& vec = 
-        mapaJuego[floor(posicion.x)][floor(posicion.y)];
-    for (auto it = vec.begin(); it < vec.end(); ++it){
-        if (typeid(*it) == type_id){
-            vec.erase(it);
-            return;
-        }
-    }           
-}
     
-void Mapa::sacarItem(Coordinates posicion, const std::type_info& type_id){
-    std::vector<Item*>& vec = items[floor(posicion.x)][floor(posicion.y)];
-    for (auto it = vec.begin(); it < vec.end(); ++it){
-        if (typeid(*it) == type_id){
-            delete(*it);
-            vec.erase(it);
-            return;
-        }
+void Mapa::removeItem(const Coordinates& posicion){
+    if (items[floor(posicion.x)][floor(posicion.y)]){
+        delete(items[floor(posicion.x)][floor(posicion.y)]);
+        items[floor(posicion.x)][floor(posicion.y)] = nullptr;
     }
 }
 
-void Mapa::removePassage(Coordinates& position){
-    sacarPosicionable(position);
+void Mapa::removePassage(const Coordinates& position){
+    removePosicionable(position);
     for (auto it = passages.begin(); it < passages.end(); ++it){
         if ((*it)->getPosicion() == position){
             passages.erase(it);
@@ -238,7 +228,7 @@ void Mapa::removePassage(Coordinates& position){
 }
 
 
-Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
+Posicionable* Mapa::getPosicionableIn(Coordinates posicion) const{
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return nullptr;
 	if (mapaJuego[floor(posicion.x)][floor(posicion.y)].empty())
@@ -246,11 +236,11 @@ Posicionable* Mapa::obtenerPosicionableEn(Coordinates posicion) const{
 	return mapaJuego[floor(posicion.x)][floor(posicion.y)].back();
 }
 
-Objeto* Mapa::getNearestPassage(Coordinates& position){
-    Objeto* nearest = nullptr;
+Object* Mapa::getNearestPassage(Coordinates& position){
+    Object* nearest = nullptr;
     float min_distance = configs[CONFIG::open_distance];
-    for (Objeto* passage: passages){
-        float dist = position.calculate_distance(passage->getCoordinates());
+    for (Object* passage: passages){
+        float dist = position.calculate_distance(passage->getPosicion());
         if (dist < min_distance){
             min_distance = dist;
             nearest = passage;
@@ -259,39 +249,30 @@ Objeto* Mapa::getNearestPassage(Coordinates& position){
     return nearest;
 }
 
-Puerta* Mapa::getDoor(Coordinates& position){
-    for (Objeto* passage: passages){
+Door* Mapa::getDoor(Coordinates& position){
+    for (Object* passage: passages){
         if (passage->getPosicion() == position &&
-            typeid(*passage) == typeid(Puerta)){
-            return static_cast<Puerta*>(passage);
+            typeid(*passage) == typeid(Door)){
+            return static_cast<Door*>(passage);
         }
     }
     return nullptr;
 } 
 
-void usarItems(std::vector<Item*>& items, Player *player){
-    for (auto it = items.begin(); it < items.end(); it++){
-        if ((player)->usar(*it)){
-            delete(*it);
-            items.erase(it);
-        }
-    }
-}
-
-void Mapa::moveme(Player* jugador, const Coordinates& posicion){
+void Mapa::moveme(Player* player, const Coordinates& posicion){
     if (floor(posicion.x) >= alto || floor(posicion.y) >= ancho)
         throw -1;
     if (floor(posicion.x) < 0 || floor(posicion.y) < 0)
         throw -1;
-    Coordinates posJugador = jugador->getPosicion();
-    if (jugador->getPosicion() == posicion){
+    Coordinates posPlayer = player->getPosicion();
+    if (posPlayer == posicion){
         return;
     }
     try {
-        if (!items[floor(posicion.x)][floor(posicion.y)].empty())
-            usarItems(items[floor(posicion.x)][floor(posicion.y)], jugador);
-        agregarPosicionable(jugador, posicion);
-        sacarPosicionable(posJugador);
+        if (items[floor(posicion.x)][floor(posicion.y)])
+            player->use(items[floor(posicion.x)][floor(posicion.y)]);
+        addPosicionable(player, posicion);
+        removePosicionable(posPlayer);
     } catch(int e){
         throw;
     }
@@ -313,7 +294,7 @@ Mapa& Mapa::operator=(Mapa&& other){
     return *this;
 }
 
-bool Mapa::hayObstaculoEn(const Coordinates& posicion) const{
+bool Mapa::obstacleIn(const Coordinates& posicion) const{
 	float x = posicion.x;
 	float y = posicion.y;
 	if (floor(x) < 0 || floor(x) >= alto ||
@@ -333,11 +314,11 @@ bool Mapa::playerIn(const Coordinates& posicion) const{
 	typeid(*mapaJuego[floor(posicion.x)][floor(posicion.y)].back()) == typeid(Player));
 }
 
-bool Mapa::hayPuertaEn(float x, float y) const{
+bool Mapa::doorIn(float x, float y) const{
 	if (floor(x) < 0 || floor(x) >= alto ||
 	    floor(y) < 0 || floor(y) >= ancho ||
 	    mapaJuego[floor(x)][floor(y)].empty()) return false;
-	return typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Puerta);
+	return typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Door);
 }
 
 int Mapa::getAlto() const{
@@ -355,9 +336,8 @@ Mapa::~Mapa(){
             for (Posicionable* p: mapaJuego[i][j]){
                 delete(p);
             }
-            for (Item* i: items[i][j]){
-                delete(i);
-            }
+            if (items[i][j])
+                delete(items[i][j]);
         }
     }
 }

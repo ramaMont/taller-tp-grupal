@@ -2,70 +2,77 @@
 #include "Player.h"
 #include <ConfigVariable.h>
 
+
 Item::Item(Coordinates p): Posicionable(p) { 
 	atravesable(true);
 }
 
-Coordinates& Item::getPosition(){
-	return posicion;
+
+bool Food::use(Player* player){
+	return player->addHealth((int)configs[CONFIG::puntos_comida]);
 }
 
-void Item::setPosition(Coordinates& position){
-	posicion = position;
+bool Medicine::use(Player* player){
+	return player->addHealth((int)configs[CONFIG::puntos_kit]);
 }
 
-bool Comida::usar(Player* jugador){
-	return jugador->agregarVida((int)configs[CONFIG::puntos_comida]);
-}
-
-bool KitMedico::usar(Player* jugador){
-	return jugador->agregarVida((int)configs[CONFIG::puntos_kit]);
-}
-
-bool Sangre::usar(Player* jugador){
-	if (jugador->estaPorMorir()){
-		jugador->agregarVida(1);
+bool Blood::use(Player* player){
+	if (player->lowHealth()){
+		player->addHealth(1);
 		return true;
 	}
 	return false;
 }
 
 
-Balas::Balas(Coordinates p): Item(p){
+Bullets::Bullets(Coordinates p): Item(p){
 	this->cantidad = (int)configs[CONFIG::cantidad_balas];
 }
 
-Balas::Balas(Coordinates p, int cant): Item(p){
+Bullets::Bullets(Coordinates p, int cant): Item(p){
 	this->cantidad = cant;
 }
 
-bool Balas::usar(Player* jugador){
-	return jugador->agregarBalas(this->cantidad);
+bool Bullets::use(Player* player){
+	return player->addBullets(this->cantidad);
 }
 
 
-bool Llave::usar(Player* jugador){
-	return jugador->agregarLlave();
+bool Key::use(Player* player){
+	return player->addKey();
 }
 
 
-Tesoro::Tesoro(int puntuacion, Coordinates p): Item(p), puntuacion(puntuacion){
+bool MachineGun::use(Player* player){
+	return player->addGun(GunNumber::MACHINE_GUN);
 }
 
-bool Tesoro::usar(Player* jugador){
-	jugador->agregarPuntos(this->puntuacion);
+bool FireCanon::use(Player* player){
+	return player->addGun(GunNumber::CANON_GUN);
+}
+
+bool RocketLauncher::use(Player* player){
+	return player->addGun(GunNumber::ROCKET_GUN);
+}
+
+
+Treasure::Treasure(int score, Coordinates p): Item(p), score(score){
+}
+
+bool Treasure::use(Player* player){
+	player->addScore(score);
 	return true;
 }
 
-Cruz::Cruz(Coordinates p): Tesoro((int)configs[CONFIG::puntos_cruz], p){
+Cross::Cross(Coordinates p): Treasure((int)configs[CONFIG::puntos_cruz], p){
 }
 
-Copa::Copa(Coordinates p): Tesoro((int)configs[CONFIG::puntos_copa], p){
+Trophie::Trophie(Coordinates p): Treasure((int)configs[CONFIG::puntos_copa], p){
 }
 
-Cofre::Cofre(Coordinates p): Tesoro((int)configs[CONFIG::puntos_cofre], p){
+Chest::Chest(Coordinates p): Treasure((int)configs[CONFIG::puntos_cofre], p){
 }
 
-Corona::Corona(Coordinates p): Tesoro((int)configs[CONFIG::puntos_corona], p){
+Crown::Crown(Coordinates p): Treasure((int)configs[CONFIG::puntos_corona], p){
 }
 

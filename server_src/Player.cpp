@@ -5,77 +5,77 @@
 #include <algorithm>
 
 
-Player::Player(Mapa& mapa, int id, BlockingQueue<Protocol>& game_model_queue):
-		mapa(mapa), player_id(id), 
-		soldado(this, this->balas_restantes),
+Player::Player(Mapa& map, int id, BlockingQueue<Protocol>& game_model_queue):
+		map(map), player_id(id), 
+		soldier(this, bullets, game_model_queue),
 		_game_model_queue(game_model_queue){
-    mapa.agregarPlayer(this);
-    this->vida = (int)configs[CONFIG::vida_maxima];
-    this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
-    this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
-    this->puntuacion = 0;
-    this->balas_disparadas = 0;
-    this->enemigos_matados = 0;
-    this->llave = false;  
-    this->is_alive = true;
+    map.addPlayer(this);
+    health = (int)configs[CONFIG::vida_maxima];
+    lives = (int)configs[CONFIG::cantidad_de_vidas];
+    bullets = (int)configs[CONFIG::balas_iniciales];
+    score = 0;
+    fired_bullets = 0;
+    killed_enemies = 0;
+    key = false;  
+    is_alive = true;
 }
 
-Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, 
+Player::Player(Coordinates position,Coordinates direction ,Mapa& map, 
 	BlockingQueue<Protocol>& game_model_queue):
-		Posicionable(position),direction(direction), mapa(mapa), player_id(0),
-		soldado(this, this->balas_restantes), 
+		Posicionable(position),direction(direction), map(map), player_id(0),
+		soldier(this, bullets, game_model_queue), 
 		posicion_inicial(posicion),	_game_model_queue(game_model_queue){
-    mapa.agregarPlayer(this);
-    this->vida = (int)configs[CONFIG::vida_maxima];
-    this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
-    this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
-    this->puntuacion = 0;
-    this->balas_disparadas = 0;
-    this->enemigos_matados = 0;
-    this->llave = false;  
-    this->is_alive = true;
+    map.addPlayer(this);
+    health = (int)configs[CONFIG::vida_maxima];
+    lives = (int)configs[CONFIG::cantidad_de_vidas];
+    bullets = (int)configs[CONFIG::balas_iniciales];
+    score = 0;
+    fired_bullets = 0;
+    killed_enemies = 0;
+    key = false;  
+    is_alive = true;
     atomic_dir(direction);
     atomic_pos(posicion);
 }
 
-Player::Player(Coordinates position,Coordinates direction ,Mapa& mapa, int id,
+Player::Player(Coordinates position,Coordinates direction ,Mapa& map, int id,
 	BlockingQueue<Protocol>& game_model_queue):
-		Posicionable(position),direction(direction), mapa(mapa), player_id(id),
-		soldado(this, this->balas_restantes),
+		Posicionable(position),direction(direction), map(map), player_id(id),
+		soldier(this, bullets, game_model_queue),
 		posicion_inicial(posicion),
 		_game_model_queue(game_model_queue){
-    mapa.agregarPlayer(this);
-    this->vida = (int)configs[CONFIG::vida_maxima];
-    this->vidasRestantes = (int)configs[CONFIG::cantidad_de_vidas];
-    this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
-    this->puntuacion = 0;
-    this->balas_disparadas = 0;
-    this->enemigos_matados = 0;
-    this->llave = false;  
-    this->is_alive = true;
+    map.addPlayer(this);
+    health = (int)configs[CONFIG::vida_maxima];
+    lives = (int)configs[CONFIG::cantidad_de_vidas];
+    bullets = (int)configs[CONFIG::balas_iniciales];
+    score = 0;
+    fired_bullets = 0;
+    killed_enemies = 0;
+    key = false;  
+    is_alive = true;
     atomic_dir(direction);
     atomic_pos(posicion);
 }
 
-void Player::mover(Direccion* direccion){
-    Coordinates nuevaPos = direccion->mover(this,direction);
+void Player::mover(Direccion* _direction){
+    Coordinates new_pos = _direction->mover(this,direction);
     try{
-        mapa.moveme(this, nuevaPos);
-        this->posicion = nuevaPos;
+        map.moveme(this, new_pos);
+        this->posicion = new_pos;
     } catch(...){
         Coordinates movimiento_unidireccional;
-        movimiento_unidireccional.x = nuevaPos.x;
+        movimiento_unidireccional.x = new_pos.x;
         movimiento_unidireccional.y = this->posicion.y;
         try{
-            mapa.moveme(this, movimiento_unidireccional);
+            map.moveme(this, movimiento_unidireccional);
             this->posicion = movimiento_unidireccional;
         } catch(...){
         }
 
         movimiento_unidireccional.x = this->posicion.x;
-        movimiento_unidireccional.y = nuevaPos.y;
+        movimiento_unidireccional.y = new_pos.y;
         try{
-            mapa.moveme(this, movimiento_unidireccional);
+            map.moveme(this, movimiento_unidireccional);
             this->posicion = movimiento_unidireccional;
         } catch(...){
         }
@@ -107,27 +107,27 @@ int Player::getId(){
     return player_id;
 }
 
-double Player::calcularAngulo(Player* jugador){
-	return jugador->calcularAngulo(this->direction, this->posicion);
+double Player::calculateAngle(Player* player){
+	return player->calculateAngle(this->direction, this->posicion);
 }
 
-double Player::calcularAngulo(const Coordinates& direccion, const Coordinates& other_pos){
+double Player::calculateAngle(const Coordinates& direccion, const Coordinates& other_pos){
 	return other_pos.calculate_angle(direccion, this->posicion);
 }
 
-double Player::calcularDistancia(Player* jugador){
-	return jugador->calcularDistancia(this->posicion);
+double Player::calculateDistance(Player* player){
+	return player->calculateDistance(this->posicion);
 }
 
-double Player::calcularDistancia(const Coordinates& posicion){
+double Player::calculateDistance(const Coordinates& posicion){
 	return posicion.calculate_distance(this->posicion);
 }
 
-bool Player::recibirDanio(int danio){
-	this->vida = std::max(this->vida - danio, 0);
-	Protocol protocol(player_id, vida, Protocol::action::SHOOTED);
+bool Player::hurt(int damage){
+	health = std::max(health - damage, 0);
+	Protocol protocol(player_id, health, Protocol::action::SHOOTED);
 	_game_model_queue.push(protocol);
-	if (this->vida <= 0){
+	if (health <= 0){
 		Protocol protocol(player_id);
 		protocol.setAction(Protocol::action::DIE);
 		_game_model_queue.push(protocol);
@@ -136,16 +136,20 @@ bool Player::recibirDanio(int danio){
 	return false;
 }
 
-void Player::disparar(std::map<int, Player*>& jugadores){
-	this->balas_disparadas += this->soldado.disparar(jugadores);
-	Protocol protocol(player_id, balas_restantes, Protocol::action::UPDATE_BULLETS);
+bool Player::shoot(std::map<int, Player*>& players){
+    int bullets_before = bullets;
+    int result = soldier.shoot(players);
+	fired_bullets += bullets - bullets_before;
+	Protocol protocol(player_id, bullets, Protocol::action::UPDATE_BULLETS);
 	_game_model_queue.push(protocol);
+    return result == 0;
 }
 
-bool Player::usar(Item* item){
-    bool b = item->usar(this);
+bool Player::use(Item* item){
+    bool b = item->use(this);
     if (b){
-        Coordinates& position = item->getPosition();
+        Coordinates position = item->getPosicion();
+        map.removeItem(position);
         Protocol protocol(Protocol::action::PICKUP, player_id,
             Protocol::direction::STAY, 0, position.x, position.y);    
         _game_model_queue.push(protocol);
@@ -153,70 +157,68 @@ bool Player::usar(Item* item){
     return b;
 }
 
-bool Player::agregarArma(Arma* arma){
-	return this->soldado.agregarArma(arma);
+bool Player::addGun(int gun_number){
+	return soldier.addGun(gun_number);
 }
 
-void Player::cambiarArma(int numero_arma){
-	this->soldado.cambiarArma(numero_arma);
+void Player::switchGun(int gun_number){
+	soldier.switchGun(gun_number);
 }
 
-bool Player::agregarVida(int cantidad){
-	if (this->vida == (int)configs[CONFIG::vida_maxima])
+bool Player::addHealth(int amount){
+	if (health == (int)configs[CONFIG::vida_maxima])
 		return false;
-	this->vida = std::min(this->vida + cantidad, (int)configs[CONFIG::vida_maxima]);
-	Protocol protocol(player_id, vida, Protocol::action::UPDATE_HEALTH);
+	health = std::min(health + amount, (int)configs[CONFIG::vida_maxima]);
+	Protocol protocol(player_id, health, Protocol::action::UPDATE_HEALTH);
 	_game_model_queue.push(protocol);
 	return true;
 }
 	
-void Player::agregarPuntos(int cantidad){
-	this->puntuacion += cantidad;
-	Protocol protocol(player_id, cantidad, Protocol::action::ADDPOINTS);
+void Player::addScore(int amount){
+	score += amount;
+	Protocol protocol(player_id, amount, Protocol::action::ADDPOINTS);
 	_game_model_queue.push(protocol);
 }
 
-bool Player::agregarBalas(int cant){
-	if (this->balas_restantes == (int)configs[CONFIG::balas_maximas])
+bool Player::addBullets(int amount){
+	if (bullets == (int)configs[CONFIG::balas_maximas])
 		return false;
-	this->balas_restantes = std::min(this->balas_restantes+cant, 
-	    (int)configs[CONFIG::balas_maximas]);
-	this->soldado.recargarBalas();
-	Protocol protocol(player_id, balas_restantes, Protocol::action::UPDATE_BULLETS);
+	bullets = std::min(bullets + amount, (int)configs[CONFIG::balas_maximas]);
+	soldier.rechargeBullets();
+	Protocol protocol(player_id, bullets, Protocol::action::UPDATE_BULLETS);
 	_game_model_queue.push(protocol);
 	return true;
 }
 
-bool Player::agregarLlave(){
-	if (this->llave)
-		return false;
-	this->llave = true;
+bool Player::addKey(){
+    bool had_key = key;
+	key = true;
     //TODO: Agregar protocolo de que se agrego una llave.
-	return true;
+	return !had_key;
 }
 
-bool Player::usarLlave(){
-	bool aux = this->llave;
-	this->llave = false;
-	return aux;
+bool Player::useKey(){
+	bool had_key = key;
+	key = false;
+	return had_key;
 }
 
-void Player::agregarEnemigoMuerto(){
-	this->enemigos_matados ++;
+void Player::addKilledEnemy(){
+	killed_enemies ++;
 }
 
-bool Player::estaPorMorir(){
-	return this->vida <= (int)configs[CONFIG::vida_minima];
+bool Player::lowHealth(){
+	return health <= (int)configs[CONFIG::vida_minima];
 }
 
-void Player::morir(){
-    this->vidasRestantes --;
-	mapa.sacarPosicionable(this->posicion);	
+void Player::die(){
+    lives --;
 	throwGun();
 	throwBullets();
-	if (this->llave)
+	if (this->key)
 		throwKey();
-	if (this->vidasRestantes > 0){
+	map.removePosicionable(this->posicion);	
+	if (lives > 0){
 		Protocol protocol(player_id);
 		protocol.setAction(Protocol::action::RESURRECT);
 		_game_model_queue.push(protocol);
@@ -225,47 +227,39 @@ void Player::morir(){
     }
 }
 
-bool Player::revivir(){
+bool Player::revive(){
     this->posicion = posicion_inicial;
     this->direction = initial_direction;
-    mapa.respawnPlayer(this);
-    this->vida = (int)configs[CONFIG::vida_maxima];
-    this->balas_restantes = (int)configs[CONFIG::balas_iniciales];
-    this->soldado.cambiarArma(N_PISTOLA);
+    map.respawnPlayer(this);
+    health = (int)configs[CONFIG::vida_maxima];
+    bullets = (int)configs[CONFIG::balas_iniciales];
+    soldier.rechargeBullets();
     atomic_dir(this->direction);
     atomic_pos(this->posicion);
     return true;
 }
-bool Player::estaVivo(){
-	return this->is_alive;
+bool Player::isAlive(){
+	return is_alive;
 }
 
-Mapa& Player::getMapa(){
-	return this->mapa;
+Mapa& Player::getMap(){
+	return map;
 }
 
-int Player::numeroArmaActual(){
-	return this->soldado.armaActual();
+int Player::actualGun(){
+	return soldier.actualGun();
 }
 
-size_t Player::getBalasDisparadas(){
-	return this->balas_disparadas;
+size_t Player::getFiredBullets(){
+	return fired_bullets;
 }
 
-size_t Player::getEnemigosMatados(){
-	return this->enemigos_matados;
+size_t Player::getKilledEnemies(){
+	return killed_enemies;
 }
 
-size_t Player::getPuntuacion(){
-	return this->puntuacion;
-}
-
-int Player::getVida(){
-	return this->vida;
-}
-
-int Player::getBalas(){
-	return this->balas_restantes;
+size_t Player::getScore(){
+	return score;
 }
 
 void Player::setPosition(Coordinates position){
@@ -275,28 +269,32 @@ void Player::setPosition(Coordinates position){
 }
 
 void Player::throwGun(){
-    int i = this->soldado.soltarArma();
+    Coordinates pos = map.getEmptyPosition(posicion);
+    if (pos.x < 0 || pos.y < 0) return;
+    int i = soldier.throwGun(pos);
     if (i <= 0)
         return;
     Protocol protocol(Protocol::action::THROW, i,
-        Protocol::direction::STAY, 0, posicion.x, posicion.y);    
+        Protocol::direction::STAY, 0, pos.x, pos.y);    
     _game_model_queue.push(protocol);
 }
 
 void Player::throwBullets(){
-    Balas* bullets = new Balas(this->posicion, 10);
-    Coordinates pos = this->mapa.throwItem(bullets, this->posicion);
-    bullets->setPosition(pos);
+    Coordinates pos = map.getEmptyPosition(posicion);
+    if (pos.x < 0 || pos.y < 0) return;
+    Bullets* bullets = new Bullets(pos, 10);
+    map.addItem(bullets, pos);
     Protocol protocol(Protocol::action::THROW, 10,
         Protocol::direction::STAY, 0, pos.x, pos.y);    
     _game_model_queue.push(protocol);
 }
 
 void Player::throwKey(){
-    Llave* key = new Llave(this->posicion);
-    Coordinates pos = this->mapa.throwItem(key, this->posicion);
-    key->setPosition(pos);
-    this->llave = false;
+    Coordinates pos = map.getEmptyPosition(posicion);
+    if (pos.x < 0 || pos.y < 0) return;
+    Key* new_key = new Key(pos);
+    map.addItem(new_key, pos);
+    key = false;
     Protocol protocol(Protocol::action::THROW, 7,
         Protocol::direction::STAY, 0, pos.x, pos.y);    
     _game_model_queue.push(protocol);

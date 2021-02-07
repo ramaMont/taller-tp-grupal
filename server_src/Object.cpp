@@ -1,4 +1,4 @@
-#include "Objeto.h"
+#include "Object.h"
 
 #include <ConfigVariable.h>
 class Mapa;
@@ -8,38 +8,35 @@ class Mapa;
 
 #define STEP 1
 
+// Passage
 
-Coordinates& Objeto::getCoordinates(){
-    return this->posicion;
-}
-
-
-ParedFalsa::ParedFalsa(Coordinates coordenadas): Objeto(coordenadas) {
+Passage::Passage(Coordinates coordinates): Object(coordinates) {
     posicion.x += 0.5;  // Para estar en el centro de la posicion
     posicion.y += 0.5;  // Para estar en el centro de la posicion
 }
-bool ParedFalsa::abrir(Player *jugador){
-    double angle = jugador->get_coordinates().calculate_angle(
-        jugador->get_direction(), posicion);
+
+bool Passage::open(Player *player){
+    double angle = player->getPosicion().calculate_angle(
+        player->get_direction(), posicion);
     return (angle < 1);
 }
 
 
-Puerta::Puerta(Coordinates coordenadas): Objeto(coordenadas), reopen(false){
+// Door
+
+Door::Door(Coordinates coordinates): Object(coordinates), reopen(false){
     posicion.x += 0.5;  // Para estar en el centro de la posicion
     posicion.y += 0.5;  // Para estar en el centro de la posicion
     has_event = false;
 }
 
-
-
-bool Puerta::abrir(Player *jugador){
-    return abrirPuerta(jugador);
+bool Door::open(Player *player){
+    return openDoor(player);
 }
 
-bool Puerta::abrirPuerta(Player *jugador){
-    double angle = jugador->get_coordinates().calculate_angle(
-        jugador->get_direction(), posicion);
+bool Door::openDoor(Player *player){
+    double angle = player->getPosicion().calculate_angle(
+        player->get_direction(), posicion);
     if (angle > 1)
         return false;
     bool had_event = has_event;
@@ -48,37 +45,40 @@ bool Puerta::abrirPuerta(Player *jugador){
     return !had_event;
 }
 
-void Puerta::close(){
+void Door::close(){
 	atravesable(false);
 	has_event = false;
 }
 
-void Puerta::letPass(){
+void Door::letPass(){
     atravesable(true);
     reopen = true;
 }
 
-std::atomic<bool>& Puerta::getReopen(){
+std::atomic<bool>& Door::getReopen(){
     return reopen;
 }
 
-bool PuertaCerrada::abrir(Player *jugador){
-	if (this->llave || jugador->usarLlave())
-		return abrirPuerta(jugador);
+bool KeyDoor::open(Player *player){
+	if (opened || player->useKey()){
+        opened = true;
+		return openDoor(player);
+    }
     return false;
 }
 	
     
+// Rocket
 
 Rocket::Rocket(Coordinates position, Coordinates dir,
     Player* player, std::map<int, Player*>& enemies,
     ThGameModelServer& game_model):
-    Objeto(position), direction(dir), player(player), enemies(enemies),
-    map(player->getMapa()){
+    Object(position), direction(dir), player(player), enemies(enemies),
+    map(player->getMap()){
     exploded = false;
     posicion.increment_on_direction(direction, 1.1);
     try {
-        map.agregarPosicionable(this, posicion);
+        map.addPosicionable(this, posicion);
     } catch (...) {
         explode();
         return;
@@ -88,14 +88,14 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
 }
 
 void Rocket::move(ThGameModelServer& game_model){
-    map.sacarPosicionable(posicion);
+    map.removePosicionable(posicion);
     Protocol protocol(Protocol::action::MOVE_ROCKET, 0, posicion.x, posicion.y);
     game_model.echoProtocol(protocol);
     posicion.increment_on_direction(direction, ROCKET_STEP);
-    if (map.hayObstaculoEn(posicion) || map.playerIn(posicion)){
+    if (map.obstacleIn(posicion) || map.playerIn(posicion)){
         return explode();
     }
-    map.agregarPosicionable(this, posicion);
+    map.addPosicionable(this, posicion);
     Protocol p(Protocol::action::ROCKET, 0, posicion.x, posicion.y);
     game_model.echoProtocol(p);
 }
@@ -103,19 +103,18 @@ void Rocket::move(ThGameModelServer& game_model){
 void Rocket::explode(){
     for (auto it = enemies.begin(); it != enemies.end(); ++it){
         auto* enemy = it->second;
-        double distancia = posicion.calculate_distance(
-			enemy->get_coordinates());
+        double distance = posicion.calculate_distance(enemy->getPosicion());
 
-        if (distancia > (int)configs[CONFIG::distancia_explosion_cohete])
+        if (distance > (int)configs[CONFIG::distancia_explosion_cohete])
             continue;
-        if (colisionaConObjeto(posicion, enemy->get_coordinates()))
+        if (crashes(posicion, enemy->getPosicion()))
             continue;
 			
         float damage = (int)configs[CONFIG::maximo_danio] * 
-        (1 - distancia /(int)configs[CONFIG::distancia_explosion_cohete]);
-        bool is_dead = enemy->recibirDanio(std::ceil(damage));
+        (1 - distance /(int)configs[CONFIG::distancia_explosion_cohete]);
+        bool is_dead = enemy->hurt(std::ceil(damage));
         if (is_dead)
-            player->agregarEnemigoMuerto();
+            player->addKilledEnemy();
     }
     exploded = true;
 }
@@ -124,18 +123,17 @@ bool Rocket::hasExploded(){
     return exploded;
 }
 
-bool Rocket::colisionaConObjeto(const Coordinates& inicio, 
-    const Coordinates& fin){
-	if (inicio == fin) return false;
-	Coordinates direccion(fin.x - inicio.x, fin.y - inicio.y);
-	Coordinates actual(inicio.x, inicio.y);
-	direccion.normalice_direction();
-	actual.increment_on_direction(direccion, STEP);
+bool Rocket::crashes(const Coordinates& start, const Coordinates& end){
+	if (start == end) return false;
+	Coordinates direction(end.x - start.x, end.y - start.y);
+	Coordinates actual(start.x, start.y);
+	direction.normalice_direction();
+	actual.increment_on_direction(direction, STEP);
 
-	while (actual != fin){
-		if (map.hayObstaculoEn(actual) && actual != inicio)
+	while (actual != end){
+		if (map.obstacleIn(actual) && actual != start)
 			return true;
-		actual.increment_on_direction(direccion, STEP);
+		actual.increment_on_direction(direction, STEP);
 	}
 	return false;
 }

@@ -11,8 +11,8 @@
 class Mapa;
 #include "Direccion.h"
 class Direccion;
-class EstadoSoldado;
-#include "Soldado.h"
+class SoldierState;
+#include "Soldier.h"
 #include "Item.h"
 #include <map>
 
@@ -20,17 +20,17 @@ class EstadoSoldado;
 class Player final : public Posicionable{
 private:
     Coordinates direction;
-    Mapa &mapa;
+    Mapa &map;
     int player_id;
-    int vidasRestantes;
-    int vida;
-    int balas_restantes;
-    bool llave;
-    EstadoSoldado soldado;
+    int lives;
+    int health;
+    int bullets;
+    bool key;
+    SoldierState soldier;
     Coordinates posicion_inicial;
-    size_t puntuacion;
-    size_t balas_disparadas;
-    size_t enemigos_matados;
+    size_t score;
+    size_t fired_bullets;
+    size_t killed_enemies;
     BlockingQueue<Protocol>& _game_model_queue;
     bool is_alive;
     Coordinates initial_direction;
@@ -45,9 +45,9 @@ public:
 
     explicit Player(Mapa& mapa, int id, 
         BlockingQueue<Protocol>& game_model_queue);
-    explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa,
+    explicit Player(Coordinates position,Coordinates direction ,Mapa& map,
         BlockingQueue<Protocol>& game_model_queue);
-    explicit Player(Coordinates position,Coordinates direction ,Mapa& mapa,
+    explicit Player(Coordinates position,Coordinates direction ,Mapa& map,
         int id, BlockingQueue<Protocol>& game_model_queue);
     void mover(Direccion* direccion);
     void set_direction(Coordinates direction);
@@ -56,39 +56,35 @@ public:
     Coordinates get_direction() const;
     int getId();
 
-    double calcularAngulo(Player* jugador);
-    double calcularAngulo(const Coordinates& dir, const Coordinates& posicion);
-    double calcularDistancia(Player* jugador);
-    double calcularDistancia(const Coordinates& posicion);    
-    void disparar(std::map<int, Player*>&);
-    bool recibirDanio(int danio);
-    bool usar(Item* item);
-    bool agregarArma(Arma* arma);
-    void cambiarArma(int numero_arma);
-    bool agregarVida(int cantidad);
-    void agregarPuntos(int cantidad);
-    bool agregarBalas(int cantidad);
-    bool agregarLlave();
-    bool usarLlave();
-    void agregarEnemigoMuerto();
-    bool estaPorMorir();
-    void morir();
-    bool revivir();
-    bool estaVivo();
-    Mapa& getMapa();
-    int numeroArmaActual();
-    size_t getBalasDisparadas();
-    size_t getEnemigosMatados();
-    size_t getPuntuacion();    
+    double calculateAngle(Player* player);
+    double calculateAngle(const Coordinates& dir, const Coordinates& posicion);
+    double calculateDistance(Player* player);
+    double calculateDistance(const Coordinates& position);    
+    bool shoot(std::map<int, Player*>&);
+    bool hurt(int damage);
+    bool use(Item* item);
+    bool addGun(int gun_number);
+    void switchGun(int gun_number);
+    bool addHealth(int amount);
+    void addScore(int amount);
+    bool addBullets(int amount);
+    bool addKey();
+    bool useKey();
+    void addKilledEnemy();
+    bool lowHealth();
+    void die();
+    bool revive();
+    bool isAlive();
+    Mapa& getMap();
+    int actualGun();
+    size_t getFiredBullets();
+    size_t getKilledEnemies();
+    size_t getScore();    
     void setPosition(Coordinates position);
     AtomicCoordinates& getAtomicDirection();
     AtomicCoordinates& getAtomicPosition();
 
-    ~Player();    
-      
-    // Para pruebas
-    int getVida();
-    int getBalas();     
+    ~Player();     
 };
 
 #endif

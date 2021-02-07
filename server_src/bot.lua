@@ -1,9 +1,9 @@
 
 local bot = {
-    mapa = {},
-    mapa_size = {ancho = 0, alto = 0},
+    map = {},
+    map_size = {ancho = 0, alto = 0},
     grafo = {},
-    enemigos = {},
+    enemies = {},
     enemigo_actual = false,
     abriPuerta = 0,
     aux = {}
@@ -33,10 +33,10 @@ local MOVIMIENTOS = 5
 -- Funciones Locales
 
 function bot.crearVertices()
-	for i = 1, bot.mapa_size.alto do
+	for i = 1, bot.map_size.alto do
 	    bot.grafo[i] = {}
-		for j = 1, bot.mapa_size.ancho do
-		    if (bot.mapa[i][j] ~= OCUPADO) then
+		for j = 1, bot.map_size.ancho do
+		    if (bot.map[i][j] ~= OCUPADO) then
 				bot.grafo[i][j] = {x = i, y = j, aristas = {}}
             end
 		end
@@ -44,16 +44,16 @@ function bot.crearVertices()
 end
 
 function bot.agregarArista(v_x, v_y, x, y)
-    if (1 <= x and x <= bot.mapa_size.alto and
-        1 <= y and y <= bot.mapa_size.ancho and bot.mapa[x][y] ~= OCUPADO) then
+    if (1 <= x and x <= bot.map_size.alto and
+        1 <= y and y <= bot.map_size.ancho and bot.map[x][y] ~= OCUPADO) then
         table.insert(bot.grafo[v_x][v_y].aristas, bot.grafo[x][y])
     end
 end
 
 function bot.crearAristas()
-	for i = 1, bot.mapa_size.alto do
-		for j = 1, bot.mapa_size.ancho do
-		    if (bot.mapa[i][j] ~= OCUPADO) then
+	for i = 1, bot.map_size.alto do
+		for j = 1, bot.map_size.ancho do
+		    if (bot.map[i][j] ~= OCUPADO) then
 				bot.agregarArista(i, j, i-1, j)
 				bot.agregarArista(i, j, i+1, j)
 				bot.agregarArista(i, j, i, j-1)
@@ -78,7 +78,7 @@ function bot.visitarAristas(visitados, cola)
 	    x, y = cola[inicio][1], cola[inicio][2]
 	    inicio = inicio + 1
 	    
-	    if bot.mapa[x][y] == ENEMIGO then
+	    if bot.map[x][y] == ENEMIGO then
 	        return x, y, visitados
 	    end
 
@@ -96,9 +96,9 @@ end
 function bot.bfs(inicio_x, inicio_y)
     cola = {}
     visitados = {}
- 	for i = 1, bot.mapa_size.alto do
+ 	for i = 1, bot.map_size.alto do
  	    visitados[i] = {}
-		for j = 1, bot.mapa_size.ancho do
+		for j = 1, bot.map_size.ancho do
 		    visitados[i][j] = {v = false, anterior = 0}
 		end
 	end
@@ -110,7 +110,7 @@ end
 
 -- Decide si tiene que abrir una puerta
 function bot.abrePuerta(next_pos_x, next_pos_y)
-    if bot.mapa[next_pos_x][next_pos_y] == PUERTA and bot.abriPuerta == 0 then
+    if bot.map[next_pos_x][next_pos_y] == PUERTA and bot.abriPuerta == 0 then
         bot.abriPuerta = 5
         return true
     end
@@ -120,14 +120,14 @@ end
 
 
 function bot.tengoEnemigoAdelante(next_pos_x, next_pos_y)
-    return bot.mapa[next_pos_x][next_pos_y] == ENEMIGO 
+    return bot.map[next_pos_x][next_pos_y] == ENEMIGO 
 end
 
 
 function bot.tengoEnemigoAlrededor(pos_x, pos_y)
     for i = 1, #bot.grafo[pos_x][pos_y].aristas do
 	    arista = bot.grafo[pos_x][pos_y].aristas[i]
-        if bot.mapa[arista.x][arista.y] == ENEMIGO then
+        if bot.map[arista.x][arista.y] == ENEMIGO then
 	        return true, arista.x, arista.y
 	    end
 	end
@@ -193,39 +193,39 @@ end
 function bot.agregarEnemigosAlMapa(...)
     local arg = {...}
     for i = 1, #arg/2 do
-        bot.enemigos[i] = {x = math.floor(arg[i+i-1]) + 1,
+        bot.enemies[i] = {x = math.floor(arg[i+i-1]) + 1,
 		           y = math.floor(arg[i*2]) + 1}
-        if bot.mapa[bot.enemigos[i].x][bot.enemigos[i].y] == PUERTA then    
+        if bot.map[bot.enemies[i].x][bot.enemies[i].y] == PUERTA then    
             -- Para guardar el valor anterior
-            table.insert(bot.aux, 1, {bot.enemigos[i].x, bot.enemigos[i].y, PUERTA})
+            table.insert(bot.aux, 1, {bot.enemies[i].x, bot.enemies[i].y, PUERTA})
         end
-        bot.mapa[bot.enemigos[i].x][bot.enemigos[i].y] = ENEMIGO
+        bot.map[bot.enemies[i].x][bot.enemies[i].y] = ENEMIGO
     end 
 end
 
 -- Borra las posiciones de los enemigos del mapa
 function bot.borrarEnemigosAnterioresDelMapa()
-    for i = 1, #bot.enemigos do
-        bot.mapa[bot.enemigos[i].x][bot.enemigos[i].y] = VACIO
+    for i = 1, #bot.enemies do
+        bot.map[bot.enemies[i].x][bot.enemies[i].y] = VACIO
     end
     for i = 1, #bot.aux do
         elemento = bot.aux[i]
-        bot.mapa[elemento[1]][elemento[2]] = elemento[3]
+        bot.map[elemento[1]][elemento[2]] = elemento[3]
     end
-    bot.enemigos = {}
+    bot.enemies = {}
     bot.aux = {}
 end
 
 
 -- Funciones publicas
 
-function bot.cargarMapa(objeto, ancho, alto)
-    bot.mapa_size.ancho = ancho
-    bot.mapa_size.alto = alto
+function bot.loadMap(objeto, ancho, alto)
+    bot.map_size.ancho = ancho
+    bot.map_size.alto = alto
 	for x = 1, alto do
-	    bot.mapa[x] = {}
+	    bot.map[x] = {}
 		for y = 1, ancho do
-			bot.mapa[x][y]  = obtenerObjetoMapa(objeto, x - 1, y - 1)
+			bot.map[x][y]  = getMapObject(objeto, x - 1, y - 1)
 		end
 	end
 	bot.crearGrafo()

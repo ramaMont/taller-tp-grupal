@@ -8,73 +8,93 @@ class Player;
 class Item: public Posicionable {
 	public:
 	explicit Item(Coordinates p);
-	virtual bool usar(Player* jugador) = 0;
-	Coordinates& getPosition();
-	void setPosition(Coordinates& position);
+	virtual bool use(Player* player) = 0;
 };
 
 
-class Comida: public Item {
+class Food: public Item {
 	public:
-	explicit Comida(Coordinates p): Item(p) { }
-	bool usar(Player* jugador) override;
+	explicit Food(Coordinates p): Item(p) { }
+	bool use(Player* player) override;
 };
 
-class KitMedico: public Item {
+class Medicine: public Item {
 	public:
-	explicit KitMedico(Coordinates p): Item(p) { }
-	bool usar(Player* jugador) override;
+	explicit Medicine(Coordinates p): Item(p) { }
+	bool use(Player* player) override;
 };
 
-class Sangre: public Item {
+class Blood: public Item {
 	public:
-	explicit Sangre(Coordinates p): Item(p) { }
-	bool usar(Player* jugador) override;
+	explicit Blood(Coordinates p): Item(p) { }
+	bool use(Player* player) override;
 };
 
 
-class Balas: public Item {
+class Bullets: public Item {
 	int cantidad;
 	public:
-	explicit Balas(Coordinates p);
-	explicit Balas(Coordinates p, int cant);
-	bool usar(Player* jugador) override;
+	explicit Bullets(Coordinates p);
+	explicit Bullets(Coordinates p, int cant);
+	bool use(Player* player) override;
 };
 
 
-class Llave: public Item {
+class Key: public Item {
 	public:
-	explicit Llave(Coordinates p): Item(p) { }
-	bool usar(Player* jugador) override;
+	explicit Key(Coordinates p): Item(p) { }
+	bool use(Player* player) override;
 };
 
 
-class Tesoro: public Item {
+class MachineGun: public Item {
+	public:
+	explicit MachineGun(Coordinates p): Item(p) { }
+	bool use(Player* player) override;
+};
+
+
+class FireCanon: public Item {
+	public:
+	explicit FireCanon(Coordinates p): Item(p) { }
+	bool use(Player* player) override;
+};
+
+
+class RocketLauncher: public Item {
+	public:
+	explicit RocketLauncher(Coordinates p): Item(p) { }
+	bool use(Player* player) override;
+};
+
+
+class Treasure: public Item {
 	private:
-	int puntuacion;
+	int score;
+    
 	public:
-	explicit Tesoro(int puntuacion, Coordinates p);
-	bool usar(Player* jugador) override;
+	explicit Treasure(int score, Coordinates p);
+	bool use(Player* player) override;
 };
 
-class Cruz: public Tesoro {
+class Cross: public Treasure {
 	public:
-	explicit Cruz(Coordinates p);
+	explicit Cross(Coordinates p);
 };
 
-class Copa: public Tesoro {
+class Trophie: public Treasure {
 	public:
-	explicit Copa(Coordinates p);
+	explicit Trophie(Coordinates p);
 };
 
-class Cofre: public Tesoro {
+class Chest: public Treasure {
 	public:
-	explicit Cofre(Coordinates p);
+	explicit Chest(Coordinates p);
 };
 
-class Corona: public Tesoro {
+class Crown: public Treasure {
 	public:
-	explicit Corona(Coordinates p);
+	explicit Crown(Coordinates p);
 };
 
 

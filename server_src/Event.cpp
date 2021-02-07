@@ -2,14 +2,12 @@
 #include <ConfigVariable.h>
 #include <chrono>
 #include <cmath>
-#include <iostream>
+#include <iostream> //
 #include <sys/time.h>
 #include "ThGameEvents.h"
 #include "ThGameModelServer.h"
 #include <Protocol.h>
 
-#define WALL_TIME_TO_MOVE 1000
-#define WALL_STEP 0.15
 #define ROCKET_TIME_TO_MOVE 100
 #define MINUTE_SECONDS 60
 
@@ -32,11 +30,11 @@ OpenEvent::OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e):
 }
 
 void OpenEvent::process(ThGameModelServer& game_model){
-    Coordinates pos = player->get_coordinates();
-    Objeto* p = map.getNearestPassage(pos);
-    if (p && typeid(*p) == typeid(Puerta)){
-        Puerta* puerta = static_cast<Puerta*>(p);
-        if (puerta->abrir(player)){
+    Coordinates pos = player->getPosicion();
+    Object* p = map.getNearestPassage(pos);
+    if (p && typeid(*p) == typeid(Door)){
+        Door* puerta = static_cast<Door*>(p);
+        if (puerta->open(player)){
             Event* doorE = new DoorOpeningEvent(puerta);
             th_game_events.add(doorE);
 
@@ -46,9 +44,9 @@ void OpenEvent::process(ThGameModelServer& game_model){
             game_model.echoProtocol(protocol);
         }
     }
-    if (p && typeid(*p) == typeid(ParedFalsa)){
-        ParedFalsa* wall = static_cast<ParedFalsa*>(p);
-        if (wall->abrir(player)){
+    if (p && typeid(*p) == typeid(Passage)){
+        Passage* wall = static_cast<Passage*>(p);
+        if (wall->open(player)){
             Coordinates position = wall->getPosicion();
             Protocol protocol(Protocol::action::OPEN_PASSAGE, player->getId(),
             Protocol::direction::STAY, 0, position.x, position.y);    
@@ -83,8 +81,8 @@ FinishGameEvent::~FinishGameEvent(){
 }
 
 // Opening Door
-DoorOpeningEvent::DoorOpeningEvent(Puerta *puerta):
-    Event(), door(puerta){
+DoorOpeningEvent::DoorOpeningEvent(Door *door):
+    Event(), door(door){
     struct timeval time_now{};
     gettimeofday(&time_now, nullptr);
     _time = (time_now.tv_usec / 1000);
@@ -114,8 +112,8 @@ DoorOpeningEvent::~DoorOpeningEvent(){
 
 
 // Door 
-DoorEvent::DoorEvent(Puerta* puerta): 
-    Event(), door(puerta), reopen(puerta->getReopen()){
+DoorEvent::DoorEvent(Door* door): 
+    Event(), door(door), reopen(door->getReopen()){
     door->letPass();
 }
 

@@ -7,9 +7,9 @@
 #include "Player.h"
 class Player;
 #include "Item.h"
-class Objeto;
-class Puerta;
-#include "Objeto.h"
+class Object;
+class Door;
+#include "Object.h"
 
 #include "coordinates.h"
 #include <yaml-cpp/yaml.h>
@@ -21,38 +21,37 @@ private:
     int alto;
     int ancho;
     std::vector<std::vector<std::vector<Posicionable*>>> mapaJuego;
-    std::vector<std::vector<std::vector<Item*>>> items;
-    std::vector<Objeto*> passages;
+    std::vector<std::vector<Item*>> items;
+    std::vector<Object*> passages;
     std::vector<std::tuple<Coordinates, std::string>> player_positions;
     int players_added;
     void initMap(Mapa& map, YAML::Node map_node);
-
+    void initItems();
 
 public:
     explicit Mapa(std::string map_filename);
     explicit Mapa(int alto, int ancho);
-    void agregarPlayer(Player* jugador);
-    void respawnPlayer(Player* jugador);
-    void agregarPosicionable(Posicionable* posicionable, Coordinates posicion);
-    void agregarItem(Item* item, Coordinates posicion);
-    Coordinates throwItem(Item* item, Coordinates posicion);
-    void addPassage(Objeto* passage);
-    void sacarPosicionable(Coordinates posicion);
-    void sacarPosicionable(Coordinates posicion, const std::type_info& type_id);
-    void sacarItem(Coordinates posicion, const std::type_info& type_id);
-    void removePassage(Coordinates& position);
-    Posicionable* obtenerPosicionableEn(Coordinates posicion) const;
-    Objeto* getNearestPassage(Coordinates& position);
-    Puerta* getDoor(Coordinates& position);    
-    void moveme(Player* jugador, const Coordinates& posicion);
+    void addPlayer(Player* player);
+    void respawnPlayer(Player* player);
+    void addPosicionable(Posicionable* posicionable, Coordinates posicion);
+    void addItem(Item* item, Coordinates posicion);
+    void addPassage(Object* passage);
+    void removePosicionable(const Coordinates& posicion);
+    void removeItem(const Coordinates& posicion);
+    void removePassage(const Coordinates& position);
+    Posicionable* getPosicionableIn(Coordinates posicion) const;
+    Object* getNearestPassage(Coordinates& position);
+    Door* getDoor(Coordinates& position);    
+    void moveme(Player* player, const Coordinates& posicion);
 //    Mapa(const Mapa&) = delete;
     Mapa(Mapa&& other);
 //    Mapa& operator=(const Mapa&) = delete;
     Mapa& operator=(Mapa&& other);
     
-    bool hayObstaculoEn(const Coordinates& posicion) const;
+    Coordinates getEmptyPosition(const Coordinates& posicion);
+    bool obstacleIn(const Coordinates& posicion) const;
     bool playerIn(const Coordinates& posicion) const;
-    bool hayPuertaEn(float x, float y) const;
+    bool doorIn(float x, float y) const;
     int getAlto() const;
     int getAncho() const;
     ~Mapa();
