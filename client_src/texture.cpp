@@ -183,9 +183,9 @@ Texture::Texture(const Window& window):
 	}
 
 
-	this->Sans = TTF_OpenFont("../data/comic-sans.ttf", 24); //this opens a font style and sets a size
+	this->wolfensteinFont = TTF_OpenFont("../data/wolfenstein_font.ttf", 24); //this opens a font style and sets a size
 
-	if(!Sans){
+	if(!wolfensteinFont){
 		printf("no encuentro la fooont\n");
 	}
 }
@@ -289,7 +289,7 @@ void Texture::showText(std::string text, int letter_width, int letter_height, in
 
 	SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text.c_str(), White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(wolfensteinFont, text.c_str(), White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
 
@@ -297,7 +297,7 @@ void Texture::showText(std::string text, int letter_width, int letter_height, in
 
 	const SDL_Rect sdlDst = {
 	    x_pos - len_message, //Posicion inicial de X donde voy a mostrar el pixel
-	    height+25, //Posicion inicial de Y donde voy a mostrar el pixel
+	    height+35, //Posicion inicial de Y donde voy a mostrar el pixel
 	    len_message, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
 	    letter_height//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
 	};

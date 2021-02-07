@@ -28,7 +28,7 @@ private:
     SDL_Rect imgPartRect;
     int x_lenght_ray; //Prox: ancho pixel: ancho_pantalla/cant_pixeles_x
 
-    TTF_Font* Sans;
+    TTF_Font* wolfensteinFont;
 
     // Carga todas las texturas de paredes
     void addWallTexture(std::string new_texture);
