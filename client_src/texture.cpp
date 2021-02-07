@@ -105,10 +105,10 @@ void Texture::addKeyTexture(){
 }
 
 void Texture::addEndingBackground(){
-    SDL_Surface* loadedSurface = IMG_Load(("../data/endig_background.png"));
-    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
+    SDL_Surface* loadedSurface = IMG_Load(("../data/ending_background.png"));
+    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 255, 255, 255);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
-	endig_background = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+	ending_background = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);		
 
 }
@@ -675,7 +675,45 @@ void Texture::showEndgame(){
 	int length_x = width;
 	int lenght_y = height;
 
-	genericShow(endig_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
+	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
+}
+
+void Texture::showWinningScreen(std::vector<std::pair<int,int>> &ordered_players_kills, \
+    std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
+
+	int first_x_pixel = 0;
+	int cant_x_pixels = 640;
+	int first_y_pixel = 0;
+	int cant_y_pixels = 598;
+
+	int windows_x_pos = 0;
+	int windows_y_pos = 0;
+	int length_x = width;
+	int lenght_y = height + INFO_BAR_HEIGHT;
+
+	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
+
+}
+
+void Texture::showLoosingScreen(std::vector<std::pair<int,int>> &ordered_players_kills, \
+    std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
+
+	int first_x_pixel = 0;
+	int cant_x_pixels = 640;
+	int first_y_pixel = 0;
+	int cant_y_pixels = 598;
+
+	int windows_x_pos = 0;
+	int windows_y_pos = 0;
+	int length_x = width;
+	int lenght_y = height + INFO_BAR_HEIGHT;
+
+	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
+
+}
+
+void Texture::showDisconnectedScreen(){
+	
 }
 
 Texture::~Texture() {

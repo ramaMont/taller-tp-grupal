@@ -49,6 +49,7 @@ class Screen{
 		// Llama a los metodos correspondientes para la correcta visualizacion
 		void show();
 
-		void showEndgame();
+		void showEndgame(bool player_won, int winnder_id, bool game_done, std::vector<std::pair<int,int>> &ordered_players_kills,\
+	std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
 };
 #endif

@@ -85,8 +85,18 @@ void Screen::show(){
 }
 
 
-void Screen::showEndgame(){
-	window.setNoColor();
-	texture.showEndgame();
+void Screen::showEndgame(bool player_won, int winner_id, bool game_done, std::vector<std::pair<int,int>> &ordered_players_kills, \
+	std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
+	if(game_done){
+		if(player_won){
+			window.setColor(0x0e,0x6b,0x0e,0xFF);
+			texture.showWinningScreen(ordered_players_kills,ordered_players_points,ordered_players_bullets);
+		}else{
+			window.setColor(0x54,0x1e,0x1b,0xFF);
+			texture.showLoosingScreen(ordered_players_kills,ordered_players_points,ordered_players_bullets);
+		}
+	}else{
+		texture.showDisconnectedScreen();
+	}
 	window.render();
 }

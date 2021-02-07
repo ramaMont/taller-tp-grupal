@@ -22,7 +22,7 @@ private:
     SDL_Texture* door;
     SDL_Texture* life_bar;
     SDL_Texture* key;
-    SDL_Texture* endig_background;
+    SDL_Texture* ending_background;
     int height;
     int width;
     SDL_Rect imgPartRect;
@@ -149,6 +149,14 @@ public:
 
 	//llama al show weapon con la textura del lanza misiles
 	void showRocketLauncher(int frame_gun);
+
+    void showWinningScreen(std::vector<std::pair<int,int>> &ordered_players_kills, \
+    std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
+
+    void showLoosingScreen(std::vector<std::pair<int,int>> &ordered_players_kills, \
+    std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
+
+    void showDisconnectedScreen();
 
     void showEndgame();
 

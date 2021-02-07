@@ -46,7 +46,10 @@ void UserClient::endGame(){
     }
 
     Screen screen(_game_model.getScreen());
-    screen.showEndgame();
+
+    bool player_won = (_game_model.getPlayer().getId() == _winner_id);
+
+    screen.showEndgame(player_won,_winner_id, game_done, _ordered_players_kills,_ordered_players_points,_ordered_players_bullets);
     SDL_Event event;
     game_done = false;
     while(!game_done){
