@@ -114,19 +114,16 @@ void GameModelClient::initMap(std::string map_filename){
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position); 
             }else if (elemento == "trophie"){
-               printf("El trofeo está en: (%f,%f)\n",position.x,position.y );
                SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "rocket_launcher"){
-              std::cout<<"elemento:"<<elemento<<std::endl;
                SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }else if (elemento == "medicine"){
-              std::cout<<"elemento:"<<elemento<<std::endl;
                SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
                sprites.push_back(posicionable);

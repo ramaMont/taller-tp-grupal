@@ -294,9 +294,9 @@ void Texture::showText(Colors selected_color, std::string text, int letter_width
 		color = {255, 255, 255};
 	}
 
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(wolfensteinFont, text.c_str(), color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(wolfensteinFont, text.c_str(), color);
 
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+	SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
 	int len_message = letter_width*(int)strlen(text.c_str());
 
@@ -306,18 +306,13 @@ void Texture::showText(Colors selected_color, std::string text, int letter_width
 	    len_message, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
 	    letter_height//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
 	};
-	//Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understand
 
-	//Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
-
-	SDL_RenderCopy(renderer, Message, NULL, &sdlDst); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
+	SDL_RenderCopy(renderer, message, NULL, &sdlDst);
 	SDL_FreeSurface(surfaceMessage);
-	SDL_DestroyTexture(Message);	
+	SDL_DestroyTexture(message);	
 }
 
 void Texture::showWeapon(int frame_gun, int current_gun){
-	//int widht_drawable_pixel = right_end_texture - left_start_texture;
-
 	int first_x_pixel = 129*frame_gun;
 	int cant_x_pixels = 128;
 	int first_y_pixel = current_gun*129;
@@ -347,7 +342,6 @@ void Texture::showKnife(int frame_gun){
 		genericShow(this->bar_guns[0],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showGun(int frame_gun){
-		//showWeapon(frame_gun,1,20,47);
 		showWeapon(frame_gun,1);
 
 		int first_x_pixel = 0;//Desde qué pixel en X quiero
@@ -548,19 +542,6 @@ void Texture::showMutant(int first_x_pixel,int first_number_line_texture,int las
 	//	showEnemy(this->shooting_effect[3],state,0,x_pixel,distance_player_plane, number_line_texture);
 }
 
-/*void Texture::showSprite(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int texture){
-	sortValues(first_x_pixel,last_x_pixel);
-	sortValues(first_number_line_texture,last_number_line_texture);
-
-	float lineHeight = (this->height / distance_player_plane);
-	int initial_position_y =  -lineHeight/2 + height/2;
-	float pixel_length = lineHeight/64;
-	int x_initial_pos = x_lenght_ray*first_x_pixel;
-	int height_ray = (int)ceil((pixel_length)*64);
-	
-	genericShow(this->sprites[texture],first_number_line_texture, last_number_line_texture - first_number_line_texture,0,64,\
-		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
-}*/
 
 void Texture::showDog(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
 	sortValues(first_x_pixel,last_x_pixel);
