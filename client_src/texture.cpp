@@ -662,26 +662,34 @@ void Texture::showSprite(int first_x_pixel,int first_number_line_texture,int las
 		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 }
 
-void Texture::showEndgame(){
+void Texture::showRanking(std::vector<std::pair<int,int>> &ordered_players_kills, \
+    std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
 
-	int first_x_pixel = 0;
-	int cant_x_pixels = 662;
-	int first_y_pixel = 0;
-	int cant_y_pixels = 281;
+    int position = 0;
+    for (auto& player : ordered_players_kills){
+    	showText(std::to_string(player.second).c_str(),40 , 40, 100 , 163 + position*50);
+    	showText(std::to_string(player.first).c_str(),40 , 40, 150, 163 + position*50);
+        ++position;
+    }
+    position = 0;
+    for (auto& player : ordered_players_points){
+    	showText(std::to_string(player.second).c_str(),40 , 40, 300 , 163 + position*50);
+    	showText(std::to_string(player.first).c_str(),40 , 40, 350, 163 + position*50);
+        ++position;
+    }
+    position = 0;
+    for (auto& player : ordered_players_bullets){
+        std::cout << "Position " << position << " Player_ID: " << player.second << " Bullets: " << player.first << std::endl;
+        ++position;
+    }
 
-	int windows_x_pos = 0;
-	int windows_y_pos = 0;
-	int length_x = width;
-	int lenght_y = height;
-
-	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
 }
 
 void Texture::showWinningScreen(std::vector<std::pair<int,int>> &ordered_players_kills, \
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
 
 	int first_x_pixel = 0;
-	int cant_x_pixels = 640;
+	int cant_x_pixels = 703;
 	int first_y_pixel = 0;
 	int cant_y_pixels = 598;
 
@@ -692,7 +700,9 @@ void Texture::showWinningScreen(std::vector<std::pair<int,int>> &ordered_players
 
 	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
 
-	showText("You won!!",35 , 25, width/2, 40);
+	showText("You won!!",40 , 40, width/2 + 190, 40);
+
+	showRanking(ordered_players_kills,ordered_players_points,ordered_players_bullets);
 
 }
 
@@ -700,7 +710,7 @@ void Texture::showLoosingScreen(int winner_id, std::vector<std::pair<int,int>> &
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
 
 	int first_x_pixel = 0;
-	int cant_x_pixels = 640;
+	int cant_x_pixels = 703;
 	int first_y_pixel = 0;
 	int cant_y_pixels = 598;
 
@@ -710,6 +720,8 @@ void Texture::showLoosingScreen(int winner_id, std::vector<std::pair<int,int>> &
 	int lenght_y = height + INFO_BAR_HEIGHT;
 
 	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
+
+	showRanking(ordered_players_kills,ordered_players_points,ordered_players_bullets);
 
 }
 

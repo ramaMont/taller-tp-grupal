@@ -83,6 +83,9 @@ private:
     
     void showKeys(bool has_key_1, bool has_key_2);
 
+    void showRanking(std::vector<std::pair<int,int>> &ordered_players_kills, \
+    std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
+
 public:
 
     Texture(const Window& window);
@@ -157,8 +160,6 @@ public:
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
 
     void showDisconnectedScreen();
-
-    void showEndgame();
 
     // Destruye las texturas iniciadas
     ~Texture();

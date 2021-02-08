@@ -412,6 +412,9 @@ void GameModelClient::processProtocol(Protocol& protocol){
         case Protocol::action::MOVE_ROCKET:
             processRocket(protocol);
             break;
+        case Protocol::action::EXPLOSION:
+            processExplosion(protocol);
+            break;
         case Protocol::action::KEY:
             processKey(protocol);
             break;
@@ -527,6 +530,9 @@ void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con 
     try {
         map.addPositionable(posicionable, position);
     } catch(...) {}*/
+}
+
+void GameModelClient::processExplosion(Protocol& protocol){
 }
 
 void GameModelClient::processKey(Protocol& protocol){
