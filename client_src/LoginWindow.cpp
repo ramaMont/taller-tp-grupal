@@ -101,6 +101,9 @@ void LoginWindow::crearPartidaScreen() {
     "background-image: url(invalid);");
 
     // Creo un dialog con un form
+    QHBoxLayout* labelLayout = new QHBoxLayout(partidaScreen);
+
+    // Creo un dialog con un form
     QHBoxLayout* hlayout = new QHBoxLayout(partidaScreen);
 
     QPushButton* botonCrear = new QPushButton(partidaScreen);
@@ -113,10 +116,17 @@ void LoginWindow::crearPartidaScreen() {
     botonUnirse->setText("Unirse a Partida");
     botonUnirse->setObjectName(QStringLiteral("botonUnirse"));
 
+    QLabel* labelId = new QLabel(partidaScreen);
+    std::string msg = "Tu ID de jugador es: " + std::to_string(_user_id);
+    labelId->setText(QString::fromStdString(msg));
+    labelId->setStyleSheet("background-color: brown;");
+    labelLayout->addWidget(labelId);
+
     hlayout->addWidget(botonCrear);
     hlayout->addWidget(botonUnirse);
     hlayout->setAlignment(botonCrear, Qt::AlignHCenter);
 
+    labelLayout->addWidget(partidaScreen, Qt::AlignCenter);
     layout->addWidget(partidaScreen, Qt::AlignCenter);
 
     partidaScreen->setFixedWidth(300);
@@ -158,6 +168,8 @@ bool LoginWindow::validarCampos() {
                        QMessageBox::Warning, true);
         return false;
     }
+
+    this->_user_id = _user_id;
 
     return true;
 }
@@ -260,8 +272,8 @@ void LoginWindow::crearPartida(){
 }
 
 void LoginWindow::waitUntilLaunch(int& game_id) {
-    std::string message = "ID de Partida: " + std::to_string(game_id)
-        + "\n";
+    std::string message = "ID de Partida: " + std::to_string(game_id);
+    message += "     ID de Jugador: " + std::to_string(_user_id) + "\n";
     message += "Presione OK para lanzar la partida";
     mostrarWarning(QString::fromStdString(message),
                    QMessageBox::Information, true);
