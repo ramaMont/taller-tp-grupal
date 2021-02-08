@@ -467,7 +467,7 @@ void GameModelClient::processPickup(Protocol& protocol){
     SpriteHolder* sprite = static_cast<SpriteHolder*>
         (map.getPositionableIn(position));
     if(sprite->hasCharacter()){
-      Character* character = sprite->getCharacter();
+      Movable* character = sprite->getCharacter();
       map.removeSpriteWithCharacter(position,character);
     }else{
       map.removePositionable(position);
@@ -495,7 +495,6 @@ void GameModelClient::processGunSwitch(Protocol& protocol){
 
 void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con un solo rocket
     Coordinates position(protocol.getFloatPosition());
-    Coordinates direction(1,1);
     printf("proceso rocket\n");
     //if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
     if(rockets.size()>0){
@@ -505,7 +504,7 @@ void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con 
     }
     else{ //Creo el Rocket
       printf("creo uno nuevo\n");
-      Rocket* rocket = new Rocket(position, direction, map, player,0);
+      Rocket* rocket = new Rocket(position, map, player,0);
       rocket->set_texture(&texture);
       rockets.push_back(rocket);
       map.addPositionable(rocket,position);  

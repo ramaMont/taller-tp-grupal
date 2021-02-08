@@ -28,7 +28,7 @@ void SpriteHolder::spotted(){
     }
 }   
 
-void SpriteHolder::add(Character* new_character){
+void SpriteHolder::add(Movable* new_character){
 	if(character!=nullptr or colidable){
 		throw -2;
 	}else{
@@ -46,7 +46,7 @@ bool SpriteHolder::hasCharacter(){
 	return (character!=nullptr);
 }
 
-Character* SpriteHolder::getCharacter(){
+Movable* SpriteHolder::getCharacter(){
 	return character;
 }
 

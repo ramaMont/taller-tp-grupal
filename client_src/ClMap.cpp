@@ -1,4 +1,5 @@
 #include "ClMap.h"
+#include "Movable.h"
 #include "Character.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -38,7 +39,7 @@ void ClMap::addPositionable(Posicionable* positionable,
     }
 }
 
-void ClMap::relocate(Character* _player, Coordinates position){
+void ClMap::relocate(Movable* _player, Coordinates position){
         if(mapGame[floor(position.x)][floor(position.y)]==nullptr){
             mapGame[floor(position.x)][floor(position.y)]=_player;
         }else{
@@ -62,7 +63,7 @@ void ClMap::removeAllPositionables(Coordinates position){
     mapGame[floor(position.x)][floor(position.y)]=nullptr;
 }
 
-void ClMap::removeSpriteWithCharacter(Coordinates position, Character* character){
+void ClMap::removeSpriteWithCharacter(Coordinates position, Movable* character){
     mapGame[floor(position.x)][floor(position.y)]=character;
 }
 
@@ -70,7 +71,7 @@ Posicionable* ClMap::getPositionableIn(Coordinates position){
 	return mapGame[floor(position.x)][floor(position.y)];
 }
 
-void ClMap::moveme(Character* _player, const Coordinates& position){
+void ClMap::moveme(Movable* _player, const Coordinates& position){
 	
     if (position.x > alto || position.y > ancho)
         throw -1;

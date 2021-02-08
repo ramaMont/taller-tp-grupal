@@ -2,7 +2,7 @@
 #define __DOOR__
 
 #include <string>
-#include <Character.h>
+#include <Movable.h>
 #include "Posicionable.h"
 class Ray;
 
@@ -13,14 +13,14 @@ class Door : public Posicionable{
 private:
 	int current_frame;
 	std::string state;
-	Character* character;
+	Movable* character;
 
 public:
     explicit Door(Coordinates posicion);
 
     //Pre:-
     // Almacena a un personaje mientras este se encuentra en el casillero de la puerta
-    void add(Character* character) override;
+    void add(Movable* character) override;
 
     //Pre:-
     // Remueve al personaje una vez que este salga de su casillero

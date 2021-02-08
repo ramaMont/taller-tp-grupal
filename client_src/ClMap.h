@@ -6,6 +6,7 @@
 class Posicionable;
 //#include "Posicionable.h"
 class Character;
+class Movable;
 class Player;
 //#include "Player.h"
 class Enemy;
@@ -33,7 +34,7 @@ public:
 
     //Pre:-
     // Asigna una nueva posicion al personaje
-    void relocate(Character* _character, Coordinates posicion);
+    void relocate(Movable* _character, Coordinates posicion);
 
     //Pre:-
     // Remueve a un personaje de su posicion
@@ -45,7 +46,7 @@ public:
 
     //Pre:-
     // Remueve un sprite donde actualmente se encuentra un personaje, y deja al personaje en el mismo lugar    
-    void removeSpriteWithCharacter(Coordinates position, Character* character);
+    void removeSpriteWithCharacter(Coordinates position, Movable* character);
 
     //Pre:-
     // Devuelve el puntero al objeto almacenado en cierta posicion    
@@ -53,7 +54,7 @@ public:
 
     //Pre:-
     // Mueve al jugador (llama al relocate y al removePositionable)    
-    void moveme(Character* character, const Coordinates& position);
+    void moveme(Movable* character, const Coordinates& position);
 
     //Pre:-
     // Modifica el ancho y el alto del mapa    

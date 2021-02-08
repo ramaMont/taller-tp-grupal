@@ -11,7 +11,7 @@ void Door::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
 	ray->doorColided(coordinates_map,first_triangle,this);
 }
 
-void Door::add(Character* new_character){
+void Door::add(Movable* new_character){
 	if(character!=nullptr or state!="open"){
 		throw -2;
 	}else{

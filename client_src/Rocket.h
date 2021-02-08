@@ -17,31 +17,20 @@ class Character;
 
 
 // Es tanto un Movible como un sprite, dado que su metodo para dibujar es el mismo que el de los sprites
-class Rocket : public Character, public SpriteDrawer{
+class Rocket : public Movable, public SpriteDrawer{
 private:
 	Player &player;	
-	bool is_moving;
 	int moved_frames_continued;
 
 public:
-	explicit Rocket(Coordinates posicion, Coordinates direction ,ClMap& map, Player &player ,int id);
+	explicit Rocket(Coordinates posicion, ClMap& map, Player &player ,int id);
 
     //Pre:-
     // Le indico al rayo que colisionó con un enemigo y setea al 
     // enemigo como 'avistado' para que luego sea dibujado
     void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
-    //Pre:-
-    // Cambio el tipo actual del enemigo
-    void newRocketType(int new_enemy_type);
-
-    void changePosition(Coordinates position);
-
-    //Pre:-
-    // Actualiza el actual frame del enemigo
-	void updateFrame();
-
-    CharacterType getType() override;
+    void changePosition(Coordinates new_position);
 
     //Pre:-
     // Llamo a su dibujador de texturas
