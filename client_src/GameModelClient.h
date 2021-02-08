@@ -80,6 +80,7 @@ private:
     void processThrow(Protocol& protocol);
     void processGunSwitch(Protocol& protocol);
     void processRocket(Protocol& protocol);
+    void processExplosion(Protocol& protocol);
     void processKey(Protocol& protocol);
     void openDoor(const Protocol& protocol);
     void openingDoor(const Protocol& protocol);
