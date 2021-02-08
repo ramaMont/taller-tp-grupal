@@ -269,27 +269,32 @@ void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_
 	    };   
 	    SDL_RenderCopy(this->renderer, life_bar, &imgPartRect, &sdlDst);	
 
-	    showText(std::to_string(score).c_str(),20,80,170,height+35);
-	    showText(std::to_string(lives).c_str(),40,80,250,height+35);	    
+	    showText( white, std::to_string(score).c_str(),20,80,170,height+35);
+	    showText( white, std::to_string(lives).c_str(),40,80,250,height+35);	    
 
 	    std::string text_health = std::to_string(health).c_str();
 	    if(strlen(text_health.c_str())>2){
-	    	showText(text_health,17,80,390,height+35);	    
+	    	showText( white, text_health,17,80,390,height+35);	    
 	    }else{
-	    	showText(text_health,20,80,390,height+35);	    	    	
+	    	showText( white, text_health,20,80,390,height+35);	    	    	
 	    }
-	    showText(std::to_string(ammo).c_str(),20,80,480,height+35);	    
+	    showText( white, std::to_string(ammo).c_str(),20,80,480,height+35);	    
 
 	    showFaceHealth(portion_health);
         
         showKeys(has_key_1, has_key_2);
 }
 
-void Texture::showText(std::string text, int letter_width, int letter_height, int x_pos, int y_pos){
+void Texture::showText(Colors selected_color, std::string text, int letter_width, int letter_height, int x_pos, int y_pos){
 
-	SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+	SDL_Color color = { 62, 62, 62};  // Gris por defecto
+	if(selected_color == black){
+		color = {0, 0, 0};
+	}else{ //Blanco
+		color = {255, 255, 255};
+	}
 
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(wolfensteinFont, text.c_str(), White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(wolfensteinFont, text.c_str(), color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
 
@@ -667,19 +672,31 @@ void Texture::showRanking(std::vector<std::pair<int,int>> &ordered_players_kills
 
     int position = 0;
     for (auto& player : ordered_players_kills){
-    	showText(std::to_string(player.second).c_str(),40 , 40, 100 , 163 + position*50);
-    	showText(std::to_string(player.first).c_str(),40 , 40, 150, 163 + position*50);
+    	showText( black, std::to_string(player.second).c_str(),40 , 40, 80 , 163 + position*50);
+    	showText( black, std::to_string(player.first).c_str(),40 , 40, 150, 163 + position*50);
         ++position;
     }
     position = 0;
     for (auto& player : ordered_players_points){
-    	showText(std::to_string(player.second).c_str(),40 , 40, 300 , 163 + position*50);
-    	showText(std::to_string(player.first).c_str(),40 , 40, 350, 163 + position*50);
+    	showText( black, std::to_string(player.second).c_str(),40 , 40, 280 , 163 + position*50);
+
+    	int points = player.first;
+    	if(points>=100){ //Tiene 3 digitos
+	    	showText( black, std::to_string(points).c_str(),25 , 40, 380, 163 + position*50);
+	    }else{
+	    	showText( black, std::to_string(player.first).c_str(),40 , 40, 380, 163 + position*50);
+	    }
         ++position;
     }
     position = 0;
     for (auto& player : ordered_players_bullets){
-        std::cout << "Position " << position << " Player_ID: " << player.second << " Bullets: " << player.first << std::endl;
+    	showText( black, std::to_string(player.second).c_str(),40 , 40, 510 , 163 + position*50);
+    	int bullets = player.first;
+    	if(bullets>=100){ //Tiene 3 digitos    	
+	    	showText( black, std::to_string(player.first).c_str(),25 , 40, 620, 163 + position*50);
+	    }else{
+	    	showText( black, std::to_string(player.first).c_str(),40 , 40, 620, 163 + position*50);
+	    }
         ++position;
     }
 
@@ -689,7 +706,7 @@ void Texture::showWinningScreen(std::vector<std::pair<int,int>> &ordered_players
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
 
 	int first_x_pixel = 0;
-	int cant_x_pixels = 703;
+	int cant_x_pixels = 913;
 	int first_y_pixel = 0;
 	int cant_y_pixels = 598;
 
@@ -700,7 +717,7 @@ void Texture::showWinningScreen(std::vector<std::pair<int,int>> &ordered_players
 
 	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
 
-	showText("You won!!",40 , 40, width/2 + 190, 40);
+	showText( black, "You won!!",30 , 40, width/2 + 150, 40);
 
 	showRanking(ordered_players_kills,ordered_players_points,ordered_players_bullets);
 
@@ -710,7 +727,7 @@ void Texture::showLoosingScreen(int winner_id, std::vector<std::pair<int,int>> &
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
 
 	int first_x_pixel = 0;
-	int cant_x_pixels = 703;
+	int cant_x_pixels = 913;
 	int first_y_pixel = 0;
 	int cant_y_pixels = 598;
 
@@ -720,13 +737,15 @@ void Texture::showLoosingScreen(int winner_id, std::vector<std::pair<int,int>> &
 	int lenght_y = height + INFO_BAR_HEIGHT;
 
 	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
+	std::string winner_letter= "Winner id: " + std::to_string(winner_id);
+	showText( black, winner_letter.c_str(),20 , 40, width/2 + 130, 40);
 
 	showRanking(ordered_players_kills,ordered_players_points,ordered_players_bullets);
 
 }
 
 void Texture::showDisconnectedScreen(){
-
+	showText( white, "Interrupted match",30 , 80, width/2 + 230, height/2 );	
 }
 
 Texture::~Texture() {
