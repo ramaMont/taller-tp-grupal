@@ -9,10 +9,13 @@ class Ray;
 const int CANT_FRAMES_ANIMATION = 20;
 const int TEXTURE_LENGTH = 64;
 
+enum State { opening, open, closed};
+
+
 class Door : public Posicionable{
 private:
 	int current_frame;
-	std::string state;
+	State state;
 	Movable* character;
 
 public:
@@ -36,7 +39,7 @@ public:
 
     //Pre:-
     // Setea su estado(abriendo, abierto, o cerrado)
-	void setState(std::string new_state);
+	void setState(State new_state);
 
     //Pre:-
     // Actualiza el actual frame de la puerta

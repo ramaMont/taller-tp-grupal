@@ -5,14 +5,14 @@
 #include "Enemy.h"
 
 Door::Door(Coordinates posicion): 
-    Posicionable(posicion), current_frame(0), state("closed"), character(nullptr){}
+    Posicionable(posicion), current_frame(0), state(closed), character(nullptr){}
 
 void Door::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
 	ray->doorColided(coordinates_map,first_triangle,this);
 }
 
 void Door::add(Movable* new_character){
-	if(character!=nullptr or state!="open"){
+	if(character!=nullptr or state!=open){
 		throw -2;
 	}else{
 		character=new_character;
@@ -30,16 +30,16 @@ void Door::remove(){
 	character = nullptr;
 }
 
-void Door::setState(std::string new_state){
+void Door::setState(State new_state){
 	state = new_state;
 	//Tirar excepciones si no es ninguno de los estados admisibles? nah, cambiar x enum
 }
 
 void Door::updateFrame(){ //Me tardo 20 frames en abrirla
-	if(state=="opening" or state =="open"){
+	if(state==opening or state ==open){
 		if(current_frame<CANT_FRAMES_ANIMATION)
 			current_frame++;
-	}else if(state=="closed"){
+	}else if(state==closed){
 		if(current_frame>0)
 			current_frame--;
 	}

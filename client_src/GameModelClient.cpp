@@ -540,13 +540,13 @@ void GameModelClient::push(Protocol protocol){
 void GameModelClient::openDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
-    door->setState("open");
+    door->setState(open);
 }
 
 void GameModelClient::openingDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
-    door->setState("opening");
+    door->setState(opening);
     playSound(SoundPlayer::sound_type::DOOR_OPENING, 
         map.getPositionableIn(door_pos));
 }
@@ -554,7 +554,7 @@ void GameModelClient::openingDoor(const Protocol& protocol){
 void GameModelClient::closeDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
     Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
-    door->setState("closed");
+    door->setState(closed);
     playSound(SoundPlayer::sound_type::DOOR_CLOSING, 
         map.getPositionableIn(door_pos));
 }
