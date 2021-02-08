@@ -257,10 +257,14 @@ void LoginWindow::crearPartida(){
             //TODO: Mandar a la pantalla de inicio, para volver a conectarse
             mostrarWarning(QString(sockt_exc.what()),
                         QMessageBox::Warning, true);
+            loginScreen->show();
+            partidaScreen->hide();
             return;
         } catch (...) {
             mostrarWarning(QString("Ha ocurrido un error, intente nuevamente"),
                         QMessageBox::Warning, true);
+            loginScreen->show();
+            partidaScreen->hide();
             return;
         }
     } else {
@@ -278,7 +282,14 @@ void LoginWindow::waitUntilLaunch(int& game_id) {
     std::cout << "LANZANDO!!!";
     // TODO: Poner un try catch aca y llevar a la pantalla 
     // inicial si se corto la conexion
-    client_holder.launchGame();
+    try {
+        client_holder.launchGame();
+    } catch (...) {
+        mostrarWarning(QString("Ha ocurrido un error en la conexión, intente nuevamente"),
+                        QMessageBox::Warning, true);
+        loginScreen->show();
+        partidaScreen->hide();
+    }
     QCoreApplication::quit();
 }
 

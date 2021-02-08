@@ -47,10 +47,13 @@ void MapWidget::dragMoveEvent(QDragMoveEvent *event) {
         if (event->source() == this) {
             QPoint pt = this->mapFromGlobal(QCursor::pos());
             QWidget* child = childAt(pt);
-            if (highlighted_label != nullptr)
+            QLabel* child_label = qobject_cast<QLabel *>(child);
+            if (child_label == origin_label) return;
+            if (highlighted_label != nullptr) {
                 highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
-            highlighted_label = qobject_cast<QLabel *>(child);
-            highlighted_label->setStyleSheet("QLabel { background-color : #D9FAC5; }");
+            }
+            highlighted_label = child_label;
+            highlighted_label->setStyleSheet("QWidget { background-color : #D9FAC5; }");
             event->setDropAction(Qt::MoveAction);
             event->accept();
         } else {
@@ -86,7 +89,9 @@ void MapWidget::dropEvent(QDropEvent *event) {
             hidden_label->setText(event->mimeData()->text());
         }
 
-        highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+        if (highlighted_label != nullptr) {
+            highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+        }
 
         if (event->source() == this) {
             // Envio una señal de movimiento para el fin del drag.
@@ -322,8 +327,9 @@ void MapWidget::desplegarMenuOpciones(QMouseEvent *event, QLabel* label_visual,
     QPoint globalPos = mapToGlobal(event->pos());
     contextMenu.exec(globalPos);
 
-    if (highlighted_label != nullptr)
+    if (highlighted_label != nullptr) {
         highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+    }
 }
 
 void MapWidget::pointAndClick(QLabel* label_visual, QLabel* label_elemento) {
@@ -375,9 +381,11 @@ void MapWidget::mousePressEvent(QMouseEvent *event) {
     QLabel* label_visual = static_cast<QLabel*>(childAt(event->pos()));
     QLabel* label_elemento = findChild<QLabel*>
                                 (label_visual->objectName() + "_element");
-    highlighted_label = label_visual;
     if (!label_visual)
         return;
+
+    highlighted_label = label_visual;
+    origin_label = label_visual;
 
     // Si es click derecho, despliego el menu de opciones
     if (event->button() == Qt::RightButton) {
@@ -556,5 +564,12 @@ void MapWidget::pintarParedes(QString object_name) {
         label_primera_fila_e->setText(object_name);
         label_ultima_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
         label_ultima_fila_e->setText(object_name);
+    }
+}
+
+void MapWidget::limpiarHighlightedLabel() {
+    if (highlighted_label != nullptr) {
+        highlighted_label->setStyleSheet("QWidget { background-color : transparent; }");
+        highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
     }
 }

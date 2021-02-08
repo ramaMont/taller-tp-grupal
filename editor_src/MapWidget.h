@@ -34,6 +34,8 @@ class MapWidget : public QFrame
     void pintarParedes(QString object_name);
     void limpiarGridYMapa();
     void mostrarWarning(QString message, QMessageBox::Icon icon);
+    void limpiarHighlightedLabel();
+    void cleanHighlightedLabels();
 
  protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -46,6 +48,7 @@ class MapWidget : public QFrame
     QGridLayout* gridLayout;
     std::map<std::string, std::string> mapa_recursos;
     QLabel* highlighted_label;
+    QLabel* origin_label;
     bool mapa_creado;
     void pointAndClick(QLabel* label_visual, QLabel* label_elemento);
     void desplegarMenuOpciones(QMouseEvent *event, QLabel* label_visual,

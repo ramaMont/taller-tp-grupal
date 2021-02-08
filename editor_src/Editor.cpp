@@ -75,6 +75,8 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     // Conecto eventos
     QMetaObject::connectSlotsByName(this);
     this->show();
+
+    qApp->installEventFilter(this);
 }
 
 void Editor::setScrollBarStyle(QScrollArea* scrollArea) {
@@ -379,4 +381,13 @@ std::map<std::string, std::string> Editor::obtenerMapaRecursos() {
                                                     "../data/textures/greenlight.png"));
 
     return mapa;
+}
+
+bool Editor::eventFilter(QObject *obj, QEvent *event)
+{
+  if (event->type() == QEvent::MouseMove)
+  {
+    mapWidget->limpiarHighlightedLabel();
+  }
+  return false;
 }
