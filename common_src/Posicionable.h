@@ -11,7 +11,6 @@ class Posicionable{
 protected:
     Coordinates posicion;
     Texture *texture_drawer;
-    int texture;
     bool esObstaculo;
     
 public:

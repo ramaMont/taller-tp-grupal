@@ -40,10 +40,6 @@ public:
     // setea la posicion inicial  del personaje, donde va a revivir.
     void setInitialPosition(Coordinates initial_position);
 
-    //Pre:-
-    // Se remueve a sí mismo del mapa
-    void die();
-
     virtual CharacterType getType() = 0;
 
     //Pre:-

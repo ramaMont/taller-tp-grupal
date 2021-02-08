@@ -55,11 +55,6 @@ void Character::setInitialPosition(Coordinates initial_position){
     this->initial_position = initial_position;
 }
 
-void Character::die(){
-	//TODO: Animaciones de muerte =O.
-	map.removePositionable(this->posicion);
-}
-
 void Character::resurrect(){
 	//TODO: Resetear vida y demas atributos
     posicion = initial_position;

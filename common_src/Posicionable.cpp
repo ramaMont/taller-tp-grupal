@@ -1,7 +1,7 @@
 #include "Posicionable.h"
 
 Posicionable::Posicionable():
-	texture_drawer(nullptr), texture(-1), esObstaculo(true){
+	texture_drawer(nullptr),  esObstaculo(true){
 }
 
 Posicionable::Posicionable(Coordinates posicion):
