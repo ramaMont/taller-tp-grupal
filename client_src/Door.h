@@ -27,8 +27,8 @@ public:
     void remove() override;
 
     //Pre:-
-    // Le indica al jugador(sprite enemigo) que fue avistado
-    void spottedEnemy();
+    // Le indica al movible que fue avistado
+    void spottedMovable();
 
     //Pre:-
     // Le indica al rayo que colisionó con una puerta

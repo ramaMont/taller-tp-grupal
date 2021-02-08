@@ -42,7 +42,7 @@
 
 Rocket::Rocket(Coordinates posicion,ClMap& map, Player &player ,int id):
     Movable(posicion,map,id),SpriteDrawer(this,player),
-   	player(player), moved_frames_continued(0){	
+   	player(player){	
     }
 
 

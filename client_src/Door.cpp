@@ -19,10 +19,10 @@ void Door::add(Movable* new_character){
 	}
 }
 
-void Door::spottedEnemy(){
+void Door::spottedMovable(){
 	if(character!=nullptr){
-		Enemy* enemy = dynamic_cast<Enemy*>(character);
-		enemy->spottedSprite();
+		SpriteDrawer* movable = dynamic_cast<SpriteDrawer*>(character);
+		movable->spottedSprite();
 	}
 }
 

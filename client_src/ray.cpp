@@ -205,7 +205,7 @@ void Ray::yDoorColided(Coordinates coordinates_map,bool first_triangle,Door *obj
 
 void Ray::doorColided(Coordinates coordinates_map,bool first_triangle,Door *object){
 
-	object->spottedEnemy();
+	object->spottedMovable();
 
 	if(first_triangle)
 		yDoorColided(coordinates_map,first_triangle,object);

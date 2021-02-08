@@ -20,7 +20,7 @@ class Character;
 class Rocket : public Movable, public SpriteDrawer{
 private:
 	Player &player;	
-	int moved_frames_continued;
+	//int moved_frames_continued;
 
 public:
 	explicit Rocket(Coordinates posicion, ClMap& map, Player &player ,int id);
