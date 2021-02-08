@@ -96,7 +96,7 @@ void Screen::showEndgame(bool player_won, int winner_id, bool game_done, std::ve
 			texture.showLoosingScreen(winner_id,ordered_players_kills,ordered_players_points,ordered_players_bullets);
 		}
 	}else{
-		texture.showDisconnectedScreen();
+		//texture.showDisconnectedScreen();
 	}
 	window.render();
 }
