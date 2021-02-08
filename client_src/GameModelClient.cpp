@@ -497,6 +497,7 @@ void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con 
     Coordinates position(protocol.getFloatPosition());
     printf("proceso rocket\n");
     //if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
+    //posicion.increment_on_direction(direction, 0.25);
     if(rockets.size()>0){
       printf("x cambiarle la posicion\n");
       rockets[0]->changePosition(position);

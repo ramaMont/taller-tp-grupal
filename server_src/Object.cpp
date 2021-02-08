@@ -91,8 +91,7 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
 
 void Rocket::move(ThGameModelServer& game_model){
     map.removePosicionable(posicion);
-    Protocol protocol(Protocol::action::MOVE_ROCKET, 0, posicion.x, posicion.y);
-    game_model.echoProtocol(protocol);
+    Coordinates position_aux = posicion;
     posicion.increment_on_direction(direction, ROCKET_STEP);
     if (map.obstacleIn(posicion) || map.playerIn(posicion)){
         Protocol protocol(Protocol::action::EXPLOSION, 0, posicion.x, posicion.y);
@@ -100,7 +99,7 @@ void Rocket::move(ThGameModelServer& game_model){
         return explode();
     }
     map.addPosicionable(this, posicion);
-    Protocol p(Protocol::action::ROCKET, 0, posicion.x, posicion.y);
+    Protocol p(Protocol::action::MOVE_ROCKET, 0, position_aux.x, position_aux.y);
     game_model.echoProtocol(p);
 }
 
