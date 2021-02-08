@@ -85,7 +85,7 @@ void LoginWindow::crearLogInScreen() {
     layout->addWidget(loginScreen, Qt::AlignCenter);
 
     loginScreen->setFixedWidth(300);
-    loginScreen->setFixedHeight(140);
+    loginScreen->setFixedHeight(110);
 }
 
 void LoginWindow::login() {
