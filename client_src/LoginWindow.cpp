@@ -59,22 +59,12 @@ void LoginWindow::crearLogInScreen() {
     // Agrego una lista con los campos
     QList<QLineEdit *> fields;
 
-    // Nombre del mapa
-    QLineEdit* lineEditNombre = new QLineEdit(loginScreen);
-    lineEditNombre->setObjectName("Nombre");
-    lineEditNombre->setFixedWidth(150);
-    QString labelNombre = QString("Nombre");
-    form->addRow(labelNombre, lineEditNombre);
-    fields << lineEditNombre;
-
-    // Filas
     QLineEdit* lineEditServer = new QLineEdit(loginScreen);
     lineEditServer->setObjectName("Server");
     QString labelServer = QString("Server");
     form->addRow(labelServer, lineEditServer);
     fields << lineEditServer;
 
-    // Nombre del mapa
     QLineEdit* lineEditPuerto = new QLineEdit(loginScreen);
     lineEditPuerto->setObjectName("Puerto");
     lineEditPuerto->setFixedWidth(100);
@@ -135,15 +125,12 @@ void LoginWindow::crearPartidaScreen() {
 bool LoginWindow::validarCampos() {
     bool puerto_entero = false;
     // int puerto;
-    QLineEdit* nombreEdit = findChild<QLineEdit*>("Nombre");
     QLineEdit* serverEdit = findChild<QLineEdit*>("Server");
     QLineEdit* puertoEdit = findChild<QLineEdit*>("Puerto");
     QString puerto_qstring = puertoEdit->text();
-    QString nombre_qstring = nombreEdit->text();
     QString server_qstring = serverEdit->text();
 
-    if ((puerto_qstring.length() == 0) || (nombre_qstring.length() == 0)
-        || (server_qstring.length() == 0)) {
+    if ((puerto_qstring.length() == 0) || (server_qstring.length() == 0)) {
         mostrarWarning(QString("Todos los campos deben completarse!"),
                        QMessageBox::Warning, true);
         return false;
@@ -156,13 +143,11 @@ bool LoginWindow::validarCampos() {
         return false;
     }
 
-    // TODO: Usar puerto, nombre_qstring, server_qstring para mandar al sv.
-    std::string nombre = nombre_qstring.toStdString();
     std::string puerto = puerto_qstring.toStdString();
     std::string server = server_qstring.toStdString();
 
     try {
-        client_holder.logged(nombre, puerto, server);
+        client_holder.logged(puerto, server);
     } catch (SocketException& sockt_exc) {
         mostrarWarning(QString(sockt_exc.what()),
                        QMessageBox::Warning, true);
