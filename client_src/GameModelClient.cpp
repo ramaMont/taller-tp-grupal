@@ -283,7 +283,6 @@ GameModelClient& GameModelClient::operator=(GameModelClient&& other){
 
 void GameModelClient::addDeadSprite(Coordinates position, CharacterType character_type){
   //printf("El personaje muerto es: %i \n", a_character_type);
-  printf("su posicion es: (%f,%f)\n",position.x,position.y );
   if(character_type==dog){
     SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at("dead_dog"),player);
     posicionable->set_texture(&texture);
@@ -316,11 +315,9 @@ void GameModelClient::addDeadSprite(Coordinates position, CharacterType characte
 void GameModelClient::removeCharacterFromMap(int id){
     Character* removableCharacter = characters[id];
     Coordinates removablePosition = removableCharacter->get_position();
-    //Me fijo si hay un sprite en esa posicion
-    //Me fijo si hay una puerta en esa posicion
     unsigned int i=0;
     bool done = false;
-    while(i<sprites.size() and !done){
+    while(i<sprites.size() and !done){     //Me fijo si hay un sprite en esa posicion
     	SpriteHolder* sprite = sprites[i];
     	Coordinates sprite_position = sprite->get_position();
     	if(sprite_position == removablePosition){
@@ -330,7 +327,7 @@ void GameModelClient::removeCharacterFromMap(int id){
     	i++;
     }
     i=0;
-    while(i<doors.size() and !done){ //Falta que ande este
+    while(i<doors.size() and !done){     //Me fijo si hay una puerta en esa posicion
     	Coordinates door_position = doors[i]->getPosicion();
     	if(door_position == removablePosition){
     		done = true;
@@ -370,7 +367,6 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         }
         case Protocol::action::REMOVE:
-        	printf("EL REMOVE FUE LLAMADO! CORRAAAAN\n" );
             removePlayer(protocol.getUserId());
             break;
         case Protocol::action::OPEN:
@@ -468,7 +464,6 @@ void GameModelClient::processShooted(Protocol protocol){
 
 void GameModelClient::processPickup(Protocol& protocol){
     Coordinates position(protocol.getPosition());
-    //printf("El sprite a eliminar está en: (%f,%f)\n",position.x,position.y);
     SpriteHolder* sprite = static_cast<SpriteHolder*>
         (map.getPositionableIn(position));
     if(sprite->hasCharacter()){
