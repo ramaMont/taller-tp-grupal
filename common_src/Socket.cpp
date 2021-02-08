@@ -83,12 +83,10 @@ int Socket::send(const Protocol& protocol){
         sent = ::send(socketFd, (char *)&sending_protocol + bytes_enviados,
             size - bytes_enviados, MSG_NOSIGNAL);
         if (sent == -1){
-//            printf("Error: %s\n", strerror(errno));
             std::string er_erno = strerror(errno);
             std::string error = "Error: " + er_erno + "\n";
             throw SocketException(error);
         } else if (sent == 0){
-            printf("Error: %s\n", strerror(errno));
             std::string er_erno = strerror(errno);
             std::string error = "Error: " + er_erno + "\n";
             throw SocketException(error);

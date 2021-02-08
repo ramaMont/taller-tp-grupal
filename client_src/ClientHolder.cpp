@@ -46,8 +46,7 @@ void ClientHolder::unirseAPartida(std::string& id_partida) {
     addLoggedUsers();
 }
 
-void ClientHolder::logged(std::string& nombre, std::string& puerto, std::string& servidor){
-    _player_name = nombre;
+void ClientHolder::logged(std::string& puerto, std::string& servidor, int& user_id){
     _port = puerto;
     _host_dns = servidor;
     Protocol protocol;
@@ -176,7 +175,12 @@ void ClientHolder::receiveConfiguration(){
 }
 
 void ClientHolder::connectionLost(){
-    _user_client->stop();
+    if (_user_client != nullptr)
+        _user_client->stop();
+    if (socket != nullptr){
+        socket->close();
+        socket->shutdown();
+    }
 }
 
 ClientHolder::~ClientHolder(){

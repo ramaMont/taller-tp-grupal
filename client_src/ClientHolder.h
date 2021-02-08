@@ -10,7 +10,6 @@ class ClThReceiver;
 
 class ClientHolder{
 private:
-    std::string _player_name;
     std::string _host_dns;
     std::string _port;
     int user_id;
@@ -43,7 +42,7 @@ public:
     void crearPartida(const std::string& map_filename, 
         int bots_cty, int& game_id);
     void unirseAPartida(std::string& id_partida);
-    void logged(std::string& nombre, std::string& puerto, std::string& servidor);
+    void logged(std::string& puerto, std::string& servidor, int& user_id);
     // Se cierra todo lo correspondiente a qt y se setea en true el booleano ready to play
     void startGame();
     void launchGame();

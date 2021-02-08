@@ -13,7 +13,8 @@
 #include <SocketException.hpp>
 
 
-LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) : QWidget(parent), client_holder(client_holder) {
+LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) : 
+        QWidget(parent), client_holder(client_holder), _user_id(-1) {
 
     // Tamaño y titulo de la ventana
     this->resize(900, 900);
@@ -162,7 +163,7 @@ bool LoginWindow::validarCampos() {
     std::string server = server_qstring.toStdString();
 
     try {
-        client_holder.logged(nombre, puerto, server);
+        client_holder.logged(puerto, server, _user_id);
     } catch (SocketException& sockt_exc) {
         mostrarWarning(QString(sockt_exc.what()),
                        QMessageBox::Warning, true);
@@ -284,13 +285,13 @@ void LoginWindow::waitUntilLaunch(int& game_id) {
     // inicial si se corto la conexion
     try {
         client_holder.launchGame();
+        QCoreApplication::quit();
     } catch (...) {
         mostrarWarning(QString("Ha ocurrido un error en la conexión, intente nuevamente"),
                         QMessageBox::Warning, true);
         loginScreen->show();
         partidaScreen->hide();
     }
-    QCoreApplication::quit();
 }
 
 void LoginWindow::waitUntilAnotherUserLaunch() {

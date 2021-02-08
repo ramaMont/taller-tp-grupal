@@ -24,7 +24,7 @@
 
 class LoginWindow : public QWidget {
 public:
-    LoginWindow(ClientHolder& client_holder, QWidget *parent = 0);
+    explicit LoginWindow(ClientHolder& client_holder, QWidget *parent = 0);
 
 private:
     // Creo los widgets asignandole un padre
@@ -44,6 +44,7 @@ private:
     QWidget* loginScreen;
     QWidget* partidaScreen;
     ClientHolder& client_holder;
+    int _user_id;
 };
 
 #endif // GREETER_H
