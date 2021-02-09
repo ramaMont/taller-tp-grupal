@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(TPWOLFSTEIN)
+project(Wolfenstein)
 
 set(CMAKE_CXX_STANDARD 11)
 # set(CMAKE_CXX_FLAGS "-Wall -Werror -pedantic -pedantic-errors -ggdb -DDEBUG -fno-inline -pthread")
