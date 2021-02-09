@@ -70,6 +70,8 @@ private:
     std::vector<std::pair<int,int>> &_ordered_players_points;
     std::vector<std::pair<int,int>> &_ordered_players_bullets;
 
+    void addWall(std::string type, Coordinates position);
+
     void updateEvent();
     void move(int player_id);
     void shoot();

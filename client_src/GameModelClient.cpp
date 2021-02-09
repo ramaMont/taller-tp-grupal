@@ -46,6 +46,41 @@ void GameModelClient::initDirections(){
     directions[Protocol::direction::ROTATE_RIGHT] = rotRight;
 }
 
+void GameModelClient::addWall(std::string elemento, Coordinates position){
+		std::cout<<"Elementoo: "<<elemento<<std::endl;
+			if (elemento == "_greystone"){
+                  Wall *posicionable = new WallGreystone(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);
+            }else if (elemento == "_bluestone"){
+                  Wall *posicionable = new WallBluestone(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+            }else if (elemento == "_colorstone"){
+                  Wall *posicionable = new WallColorstone(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+            }else if (elemento == "_pruplestone"){
+                  Wall *posicionable = new WallPurplestone(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+            }else if (elemento == "_redbrick"){
+                  Wall *posicionable = new WallRedbrick(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+            }else{
+                  Wall *posicionable = new WallWood(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+              }
+}
+
 void GameModelClient::initMap(std::string map_filename){
 	std::string MAPS_PATH = "../data/maps/";
     YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
@@ -73,41 +108,10 @@ void GameModelClient::initMap(std::string map_filename){
                 std::to_string(j);
             std::string elemento = map_elements[actual_position].as<std::string>();
             Coordinates position((float)i,(float)j);
-            if (elemento == "wall_greystone"){
-                  Wall *posicionable = new WallGreystone(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);
-            }else if (elemento == "wall_bluestone"){
-                  Wall *posicionable = new WallBluestone(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "wall_colorstone"){
-                  Wall *posicionable = new WallColorstone(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "wall_pruplestone"){
-                  Wall *posicionable = new WallPurplestone(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "wall_redbrick"){
-                  Wall *posicionable = new WallRedbrick(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "wall_wood"){
-                  Wall *posicionable = new WallWood(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "passage"){
-                Wall *posicionable = new WallEagle(position);
-                posicionable->set_texture(&texture);
-                walls.push_back(posicionable);
-                map.addPositionable(posicionable,position);  
+            if("wall" == elemento.substr(0,4)){
+            	addWall(elemento.substr(4), position);
+            }else if ("passage" == elemento.substr(0,7)){
+            	addWall(elemento.substr(7), position);
             }else if (elemento == "door"){
                 Door *posicionable = new Door(position);
                 posicionable->set_texture(&texture);

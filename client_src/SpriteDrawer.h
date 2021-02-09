@@ -30,6 +30,7 @@ protected:
 public:
     explicit SpriteDrawer(Posicionable *posicionable, Player &player);
 
+    //Calcula cuales rayos llegaron a avistar al sprite segun su distancia al jugador y las distacias de los rayos a las paredes
     void draw(const std::vector<float> &distances, int n_rays);
 
     virtual void callDrawer(int first_sigted_ray,int first_num_pixel,int last_sigted_ray,int last_num_pixel,float player_distance){}

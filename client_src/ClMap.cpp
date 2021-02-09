@@ -26,8 +26,6 @@ ClMap::ClMap(int alto, int ancho):alto(alto), ancho(ancho),mapGame(ancho,
 
 void ClMap::addPlayer(Character* _player){
     this->player = _player;
-	//mapGame[floor(jugador->getPosicion().x)]
-    //    [floor(jugador->getPosicion().y)]=jugador;
 }
 
 void ClMap::addPositionable(Posicionable* positionable, 
@@ -95,6 +93,5 @@ void ClMap::resize(int ancho, int alto){
     mapGame.resize(alto, std::vector<Posicionable*>(ancho));
 }
 
-//Problema: intento borrar tambien la position donde almaceno el jugador..."solucion": lo saco manualmente...
 ClMap::~ClMap(){
 }
