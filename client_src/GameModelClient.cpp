@@ -47,7 +47,6 @@ void GameModelClient::initDirections(){
 }
 
 void GameModelClient::addWall(std::string elemento, Coordinates position){
-		std::cout<<"Elementoo: "<<elemento<<std::endl;
 			if (elemento == "_greystone"){
                   Wall *posicionable = new WallGreystone(position);
                   posicionable->set_texture(&texture);
@@ -113,6 +112,11 @@ void GameModelClient::initMap(std::string map_filename){
             }else if ("passage" == elemento.substr(0,7)){
             	addWall(elemento.substr(7), position);
             }else if (elemento == "door"){
+                Door *posicionable = new Door(position);
+                posicionable->set_texture(&texture);
+                doors.push_back(posicionable);
+                map.addPositionable(posicionable,position);   
+            }else if (elemento == "key_door"){//Cambiarle la textura
                 Door *posicionable = new Door(position);
                 posicionable->set_texture(&texture);
                 doors.push_back(posicionable);
