@@ -1,6 +1,6 @@
-nombre: MapaDificil
-filas: 13
-columnas: 17
+name: MapaDificil
+rows: 13
+columns: 17
 elementos:
   pos_0_0: guardia
   pos_0_1: barril

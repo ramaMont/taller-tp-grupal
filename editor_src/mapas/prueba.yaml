@@ -1,6 +1,6 @@
-nombre: prueba
-filas: 15
-columnas: 15
+name: prueba
+rows: 15
+columns: 15
 elementos:
   pos_0_0: pared
   pos_0_1: pared

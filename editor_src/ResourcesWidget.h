@@ -16,7 +16,7 @@ class ResourcesWidget : public QFrame
  public:
     explicit ResourcesWidget(QWidget *parent,
                              const std::map<std::string, std::string>&
-                              recursos_del_juego, MapWidget* map);
+                              gameResources, MapWidget* map);
 
  protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -24,7 +24,7 @@ class ResourcesWidget : public QFrame
  private:
     QVBoxLayout *verticalLayout;
     MapWidget* map;
-    std::map<std::string, std::string> recursos_del_juego;
+    std::map<std::string, std::string> gameResources;
 };
 
 #endif  // RESOURCESWIDGET_H

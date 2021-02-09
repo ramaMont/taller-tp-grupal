@@ -14,7 +14,7 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     // Tamaño y titulo de la ventana
     this->resize(1050, 800);
     this->setWindowTitle(QString("Editor de Mapas - Wolfenstein 3D"));
-    fabricarMenu();
+    createMenu();
 
     this->setStyleSheet("QWidget {background-image: url(../data/fondo_sangre.jpg) }"
     "QLabel { color : white; }"
@@ -27,22 +27,22 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     "QDialogButtonBox {color: white;}");
 
     // Obtengo los recursos con los que se crearan los mapas
-    recursos_del_juego = obtenerMapaRecursos();
+    gameResources = getResourcesMap();
 
     // Creo un widget para la creacion del mapa, con su widget y labels.
-    widgetCrearMapa = new QWidget(this);
-    widgetCrearMapa->setObjectName(QStringLiteral("widgetCrearMapa"));
-    widgetCrearMapa->setGeometry(QRect(230, 0, 631, 80));
+    createMapWidget = new QWidget(this);
+    createMapWidget->setObjectName(QStringLiteral("createMapWidget"));
+    createMapWidget->setGeometry(QRect(230, 0, 631, 80));
 
-    filasLabel = new QLabel(this);
-    filasLabel->setObjectName("filasColumnasLabel");
-    filasLabel->setText("");
+    rowLabel = new QLabel(this);
+    rowLabel->setObjectName("filascolumnsLabel");
+    rowLabel->setText("");
 
-    horizontalLayoutCrearMapa = new QHBoxLayout(widgetCrearMapa);
-    horizontalLayoutCrearMapa->setObjectName(QStringLiteral("horizontalLayout"));
-    horizontalLayoutCrearMapa->setContentsMargins(0, 0, 0, 0);
+    createMapHLayout = new QHBoxLayout(createMapWidget);
+    createMapHLayout->setObjectName(QStringLiteral("horizontalLayout"));
+    createMapHLayout->setContentsMargins(0, 0, 0, 0);
 
-    horizontalLayoutCrearMapa->addWidget(filasLabel);
+    createMapHLayout->addWidget(rowLabel);
 
     // Creo el area donde se dibujará el mapa, tabien con scroll.
     scrollMapArea = new QScrollArea(this);
@@ -51,14 +51,14 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     scrollMapArea->setWidgetResizable(true);
     scrollMapArea->setGeometry(QRect(230, 60, 750, 700));
 
-    mapWidget = new MapWidget(this, recursos_del_juego);
+    mapWidget = new MapWidget(this, gameResources);
     mapWidget->setStyleSheet("QWidget {background-image: url(../data/textures/fondo32.png) }");
     scrollMapArea->setWidget(mapWidget);
     scrollMapArea->show();
 
     // Creo un widget para los recursos con los que armaremos el mapa.
-    widgetRecursos = new ResourcesWidget(this, recursos_del_juego, mapWidget);
-    widgetRecursos->setStyleSheet("QWidget {background-image: url(../data/textures/fondo33.png) }");
+    resourcesWidget = new ResourcesWidget(this, gameResources, mapWidget);
+    resourcesWidget->setStyleSheet("QWidget {background-image: url(../data/textures/fondo33.png) }");
 
     // Agrego una barra de scroll por si los elementos son muchos.
     scrollResourcesArea = new QScrollArea(this);
@@ -66,7 +66,7 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     scrollResourcesArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollResourcesArea->setWidgetResizable(true);
     scrollResourcesArea->setGeometry(QRect(50, 60, 95, 700));
-    scrollResourcesArea->setWidget(widgetRecursos);
+    scrollResourcesArea->setWidget(resourcesWidget);
     scrollResourcesArea->show();
 
     setScrollBarStyle(scrollResourcesArea);
@@ -154,7 +154,7 @@ void Editor::setScrollBarStyle(QScrollArea* scrollArea) {
     ));
 }
 
-void Editor::crearMapaNuevo() {
+void Editor::createNewMap() {
     QDialog dialog(this);
     dialog.setWindowTitle(QString("Nuevo mapa"));
     // Creo un dialog con un form
@@ -198,15 +198,15 @@ void Editor::crearMapaNuevo() {
         QString filas_qstring = lineEditFilas->text();
         QString columnas_qstring = lineEditColumnas->text();
         std::string nombre_map = nombre_qstring.toStdString();
-        int filas = filas_qstring.toInt();
-        int columnas = columnas_qstring.toInt();
+        int rows = filas_qstring.toInt();
+        int columns = columnas_qstring.toInt();
 
         // Valido valores.
-        if (filas > MAX_FC || columnas > MAX_FC ||
-            filas < MIN_FC || columnas < MIN_FC) {
+        if (rows > MAX_RC || columns > MAX_RC ||
+            rows < MIN_Rc || columns < MIN_Rc) {
             messageBox = new QMessageBox(this);
-            messageBox->setText("El número de filas y columnas "
-                                "debe estar entre 10 y 50");
+            messageBox->setText("El número de rows y columns "
+                                "debe estar entre 10 y 40");
             messageBox->setWindowTitle("Error");
             messageBox->setIcon(QMessageBox::Warning);
             messageBox->show();
@@ -214,7 +214,7 @@ void Editor::crearMapaNuevo() {
         }
 
         try {
-            mapWidget->crearMapaNuevo(nombre_map, filas, columnas);
+            mapWidget->createNewMap(nombre_map, rows, columns);
         } catch (std::exception& exc) {
             mapWidget->mostrarWarning(QString::fromStdString(exc.what()),
                         QMessageBox::Warning);
@@ -227,7 +227,7 @@ void Editor::crearMapaNuevo() {
     }
 }
 
-bool Editor::desplegarFileDialog() {
+bool Editor::showFileDialog() {
     QString file_name = QFileDialog::getOpenFileName(this,
             tr("Editar Mapa"), "",
             tr("Mapas (*.yaml)"));
@@ -252,7 +252,7 @@ bool Editor::desplegarFileDialog() {
     return false;
 }
 
-void Editor::cargarArchivoMapa() {
+void Editor::loadMapFile() {
     if (mapWidget->hayMapaCreado()) {
         // Mensaje de confirmación.
         QMessageBox messageBox(QMessageBox::Question, "Alerta",
@@ -264,7 +264,7 @@ void Editor::cargarArchivoMapa() {
         messageBox.setButtonText(QMessageBox::No, tr("No"));
 
         if (messageBox.exec() == QMessageBox::Yes) {
-            if (desplegarFileDialog()) {
+            if (showFileDialog()) {
                 mapWidget->actualizarNombreVentana();
                 mapWidget->actualizarLabelFyC();
             }
@@ -272,34 +272,32 @@ void Editor::cargarArchivoMapa() {
             return;
         }
     } else {
-        if (desplegarFileDialog()) {
+        if (showFileDialog()) {
             mapWidget->actualizarNombreVentana();
             mapWidget->actualizarLabelFyC();
         }
     }
 }
 
-void Editor::guardarMapa() {
-    // TOD: Excepciones.
+void Editor::saveMap() {
     if (!mapWidget->hayMapaCreado()) return;
-    // Sincronizo el mapa visual con el real y guardo.
-    mapWidget->guardarMapa();
+    mapWidget->saveMap();
 }
 
-void Editor::fabricarMenu() {
-    auto* nuevo_mapa = new QAction("&Nuevo Mapa...", this);
-    auto* cargar_mapa = new QAction("&Cargar Mapa...", this);
-    auto* guardar_mapa = new QAction("&Guardar", this);
+void Editor::createMenu() {
+    auto* new_map = new QAction("&Nuevo Mapa...", this);
+    auto* load_map = new QAction("&Cargar Mapa...", this);
+    auto* save_map = new QAction("&Guardar", this);
 
     QMenuBar* menuBar = new QMenuBar(this);
     QMenu *file = menuBar->addMenu("&Archivo");
-    file->addAction(nuevo_mapa);
-    file->addAction(cargar_mapa);
-    file->addAction(guardar_mapa);
+    file->addAction(new_map);
+    file->addAction(load_map);
+    file->addAction(save_map);
 
-    connect(nuevo_mapa, &QAction::triggered, this, &Editor::crearMapaNuevo);
-    connect(cargar_mapa, &QAction::triggered, this, &Editor::cargarArchivoMapa);
-    connect(guardar_mapa, &QAction::triggered, this, &Editor::guardarMapa);
+    connect(new_map, &QAction::triggered, this, &Editor::createNewMap);
+    connect(load_map, &QAction::triggered, this, &Editor::loadMapFile);
+    connect(save_map, &QAction::triggered, this, &Editor::saveMap);
 }
 
 void Editor::keyPressEvent(QKeyEvent* event) {
@@ -311,83 +309,55 @@ void Editor::keyPressEvent(QKeyEvent* event) {
 }
 
 
-std::map<std::string, std::string> Editor::obtenerMapaRecursos() {
+std::map<std::string, std::string> Editor::getResourcesMap() {
     // Genero un mapa con todos los recursos.
-    std::map<std::string, std::string> mapa;
+    std::map<std::string, std::string> map;
 
     // Armas y jugadores.
-    mapa.insert(std::pair<std::string, std::string>("player_front",
-                                                    "../data/textures/player_front.png"));
-    mapa.insert(std::pair<std::string, std::string>("player_left",
-                                                    "../data/textures/player_left.png"));
-    mapa.insert(std::pair<std::string, std::string>("player_right",
-                                                    "../data/textures/player_right.png"));
-    mapa.insert(std::pair<std::string, std::string>("player_back",
-                                                    "../data/textures/player_back.png"));
-    mapa.insert(std::pair<std::string, std::string>("machine_gun",
-                                                    "../data/textures/machine_gun.png"));
-    mapa.insert(std::pair<std::string, std::string>("fire_canon",
-                                                    "../data/textures/fire_canon.png"));
-    mapa.insert(std::pair<std::string, std::string>("rocket_launcher",
-                                                    "../data/textures/rocket_launcher.png"));
+    insertInResourcesMap(map, "player_front", "../data/textures/player_front.png");
+    insertInResourcesMap(map, "player_left", "../data/textures/player_left.png");
+    insertInResourcesMap(map, "player_right", "../data/textures/player_right.png");
+    insertInResourcesMap(map, "player_back", "../data/textures/player_back.png");
+    insertInResourcesMap(map, "machine_gun", "../data/textures/machine_gun.png");
+    insertInResourcesMap(map, "fire_canon", "../data/textures/fire_canon.png");
+    insertInResourcesMap(map, "rocket_launcher", "../data/textures/rocket_launcher.png");
     // Pickeables
-    mapa.insert(std::pair<std::string, std::string>("key",
-                                                    "../data/textures/key.png"));
-    mapa.insert(std::pair<std::string, std::string>("medicine",
-                                                    "../data/textures/medicine.png"));
-    mapa.insert(std::pair<std::string, std::string>("trophie",
-                                                    "../data/textures/trophie.png"));
-    mapa.insert(std::pair<std::string, std::string>("bullets",
-                                                    "../data/textures/bullets.png"));
-    mapa.insert(std::pair<std::string, std::string>("food",
-                                                    "../data/textures/food.png"));
-
+    insertInResourcesMap(map, "key", "../data/textures/key.png");
+    insertInResourcesMap(map, "medicine", "../data/textures/medicine.png");
+    insertInResourcesMap(map, "trophie", "../data/textures/trophie.png");
+    insertInResourcesMap(map, "bullets", "../data/textures/bullets.png");
+    insertInResourcesMap(map, "food", "../data/textures/food.png");
     // Decoraciones
-    mapa.insert(std::pair<std::string, std::string>("water",
-                                                    "../data/textures/water.png"));
-    mapa.insert(std::pair<std::string, std::string>("barrel",
-                                                    "../data/textures/barrel.png"));
-
+    insertInResourcesMap(map, "water", "../data/textures/water.png");
+    insertInResourcesMap(map, "barrel", "../data/textures/barrel.png");
     // Paredes y puertas
-    mapa.insert(std::pair<std::string, std::string>("wall_bluestone",
-                                                    "../data/textures/wall_bluestone_editor.png"));
-    mapa.insert(std::pair<std::string, std::string>("wall_greystone",
-                                                    "../data/textures/wall_greystone_editor.png"));
-    mapa.insert(std::pair<std::string, std::string>("wall_colorstone",
-                                                    "../data/textures/wall_colorstone_editor.png"));
-    mapa.insert(std::pair<std::string, std::string>("wall_redbrick",
-                                                    "../data/textures/wall_redbrick_editor.png"));
-    mapa.insert(std::pair<std::string, std::string>("wall_purplestone",
-                                                    "../data/textures/wall_purplestone_editor.png"));
-    mapa.insert(std::pair<std::string, std::string>("passage_bluestone",
-                                                    "../data/textures/passage_bluestone.png"));
-    mapa.insert(std::pair<std::string, std::string>("passage_colorstone",
-                                                    "../data/textures/passage_colorstone.png"));
-    mapa.insert(std::pair<std::string, std::string>("passage_greystone",
-                                                    "../data/textures/passage_greystone.png"));
-    mapa.insert(std::pair<std::string, std::string>("passage_purplestone",
-                                                    "../data/textures/passage_purplestone.png"));
-    mapa.insert(std::pair<std::string, std::string>("passage_redbrick",
-                                                    "../data/textures/passage_redbrick.png"));
-    mapa.insert(std::pair<std::string, std::string>("door",
-                                                    "../data/textures/door_editor.png"));
-    mapa.insert(std::pair<std::string, std::string>("key_door",
-                                                    "../data/textures/key_door.png"));
-    mapa.insert(std::pair<std::string, std::string>("pillar",
-                                                    "../data/textures/pillar.png"));
-    mapa.insert(std::pair<std::string, std::string>("table",
-                                                    "../data/textures/table.png"));
-    mapa.insert(std::pair<std::string, std::string>("greenlight",
-                                                    "../data/textures/greenlight.png"));
-
-    return mapa;
+    insertInResourcesMap(map, "wall_bluestone", "../data/textures/wall_bluestone_editor.png");
+    insertInResourcesMap(map, "wall_greystone", "../data/textures/wall_greystone_editor.png");
+    insertInResourcesMap(map, "wall_colorstone", "../data/textures/wall_colorstone_editor.png");
+    insertInResourcesMap(map, "wall_redbrick", "../data/textures/wall_redbrick_editor.png");
+    insertInResourcesMap(map, "wall_purplestone", "../data/textures/wall_purplestone_editor.png");
+    insertInResourcesMap(map, "passage_bluestone", "../data/textures/passage_bluestone.png");
+    insertInResourcesMap(map, "passage_colorstone", "../data/textures/passage_colorstone.png");
+    insertInResourcesMap(map, "passage_greystone", "../data/textures/passage_greystone.png");
+    insertInResourcesMap(map, "passage_purplestone", "../data/textures/passage_purplestone.png");
+    insertInResourcesMap(map, "passage_redbrick", "../data/textures/passage_redbrick.png");
+    insertInResourcesMap(map, "door", "../data/textures/door_editor.png");
+    insertInResourcesMap(map, "key_door", "../data/textures/key_door.png");
+    insertInResourcesMap(map, "pillar", "../data/textures/pillar.png");
+    insertInResourcesMap(map, "table", "../data/textures/table.png");
+    insertInResourcesMap(map, "greenlight", "../data/textures/greenlight.png");
+    return map;
 }
 
-bool Editor::eventFilter(QObject *obj, QEvent *event)
-{
-  if (event->type() == QEvent::MouseMove)
-  {
-    mapWidget->limpiarHighlightedLabel();
-  }
-  return false;
+void Editor::insertInResourcesMap(std::map<std::string, std::string>& map,
+                          std::string key, std::string value) {
+    map.insert(std::pair<std::string, std::string>(key, value));
+}
+
+bool Editor::eventFilter(QObject *obj, QEvent *event) {
+    if (event->type() == QEvent::MouseMove) {
+        if (mapWidget->hayMapaCreado())
+            mapWidget->limpiarHighlightedLabel();
+    }
+    return false;
 }

@@ -8,7 +8,7 @@
 #include <QMainWindow>
 #include <iostream>
 #include <map>
-#include "MapaEditable.h"
+#include "EditableMap.h"
 
 #ifndef MAPWIDGET_H
 #define MAPWIDGET_H
@@ -26,9 +26,9 @@ class MapWidget : public QFrame
     ~MapWidget();
     bool hayMapaCreado();
     void fabricarMapa(const int& flag);
-    void guardarMapa();
-    void crearMapaNuevo(const std::string& nombre,
-                        const int& filas, const int& columnas);
+    void saveMap();
+    void createNewMap(const std::string& name,
+                        const int& rows, const int& columns);
     void cargarMapaDesdeArchivo(const std::string& map_file);
     void actualizarNombreVentana();
     void actualizarLabelFyC();
@@ -45,7 +45,7 @@ class MapWidget : public QFrame
     void mousePressEvent(QMouseEvent *event) override;
 
  private:
-    MapaEditable* mapa;
+    EditableMap* mapa;
     QGridLayout* gridLayout;
     std::map<std::string, std::string> mapa_recursos;
     QLabel* highlighted_label;

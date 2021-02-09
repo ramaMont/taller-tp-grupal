@@ -1,50 +1,50 @@
-#include "MapaEditable.h"
+#include "EditableMap.h"
 #include <algorithm>
 #include <utility>
 #include "yaml-cpp/yaml.h"
 
-MapaEditable::MapaEditable(const int& flag,
-                           const std::string& nombre,
-                           const std::string& archivo_mapa,
-                           const int& filas, const int& columnas)
-                           : nombre(nombre), filas(filas), columnas(columnas) {
-    if (flag == CARGAR_DESDE_ARCHIVO) {
-        this->archivo_mapa = archivo_mapa;
+EditableMap::EditableMap(const int& flag,
+                           const std::string& name,
+                           const std::string& mapfile,
+                           const int& rows, const int& columns)
+                           : name(name), rows(rows), columns(columns) {
+    if (flag == LOAD_FROM_FILE) {
+        this->mapfile = mapfile;
         cargarMapaExistente();
     } else {
-        if (filas > MAX_FC || columnas > MAX_FC ||
-            filas < MIN_FC || columnas < MIN_FC)
-            throw MapException("El número de filas y columnas "
+        if (rows > MAX_RC || columns > MAX_RC ||
+            rows < MIN_Rc || columns < MIN_Rc)
+            throw MapException("El número de rows y columns "
                 "debe estar entre 10 y 40");
-        this->archivo_mapa = "../data/maps/" + nombre + ".yaml";
+        this->mapfile = "../data/maps/" + name + ".yaml";
     }
 }
 
-void MapaEditable::cargarMapaExistente() {
-    YAML::Node map = YAML::LoadFile(archivo_mapa);
+void EditableMap::cargarMapaExistente() {
+    YAML::Node map = YAML::LoadFile(mapfile);
 
-    if ((!map["nombre"] || !map["filas"]) |
-        (!map["columnas"] || !map["elementos"])) {
+    if ((!map["name"] || !map["rows"]) |
+        (!map["columns"] || !map["elementos"])) {
         throw MapException("Mapa inválido!");
         return;
     }
 
     try {
-        nombre = map["nombre"].as<std::string>();
-        filas = map["filas"].as<int>();
-        columnas = map["columnas"].as<int>();
+        name = map["name"].as<std::string>();
+        rows = map["rows"].as<int>();
+        columns = map["columns"].as<int>();
     } catch (...) {
         throw MapException("El mapa contiene campos inválidos!");
     }
 
-    if (filas > MAX_FC || columnas > MAX_FC ||
-        filas < MIN_FC || columnas < MIN_FC) {
-        throw MapException("El número de filas y columnas "
+    if (rows > MAX_RC || columns > MAX_RC ||
+        rows < MIN_Rc || columns < MIN_Rc) {
+        throw MapException("El número de rows y columns "
                "debe estar entre 10 y 40");
     }
 
-    for (int i=0; i < filas; i++) {
-        for (int k=0; k < columnas; k++) {
+    for (int i=0; i < rows; i++) {
+        for (int k=0; k < columns; k++) {
             std::string pos = "pos_" + std::to_string(i) +
                 "_" + std::to_string(k);
             if (!map["elementos"][pos]) {
@@ -56,15 +56,15 @@ void MapaEditable::cargarMapaExistente() {
     }
 }
 
-void MapaEditable::guardarMapa() {
+void EditableMap::saveMap() {
     YAML::Emitter out;
     out << YAML::BeginMap;
-    out << YAML::Key << "nombre";
-    out << YAML::Value << nombre;
-    out << YAML::Key << "filas";
-    out << YAML::Value << filas;
-    out << YAML::Key << "columnas";
-    out << YAML::Value << columnas;
+    out << YAML::Key << "name";
+    out << YAML::Value << name;
+    out << YAML::Key << "rows";
+    out << YAML::Value << rows;
+    out << YAML::Key << "columns";
+    out << YAML::Value << columns;
     out << YAML::Key << "elementos";
     out << YAML::BeginMap;
     for (auto const& element : mapa) {
@@ -73,11 +73,11 @@ void MapaEditable::guardarMapa() {
     }
     out << YAML::EndMap;
     out << YAML::EndMap;
-    std::ofstream file(archivo_mapa);
+    std::ofstream file(mapfile);
     file << out.c_str();
 }
 
-void MapaEditable::obtenerElemento(const std::string& posicion,
+void EditableMap::obtenerElemento(const std::string& posicion,
                                    std::string& elemento) {
     try {
         elemento = mapa[posicion];
@@ -86,27 +86,27 @@ void MapaEditable::obtenerElemento(const std::string& posicion,
     }
 }
 
-void MapaEditable::cargarElemento(const std::string& posicion,
+void EditableMap::cargarElemento(const std::string& posicion,
                                   const std::string& elemento) {
     mapa.insert(std::pair<std::string, std::string>(posicion,
                                                     elemento));
 }
 
-void MapaEditable::actualizarElemento(const std::string& posicion,
+void EditableMap::actualizarElemento(const std::string& posicion,
                                   const std::string& elemento) {
     mapa[posicion] = elemento;
 }
 
-void MapaEditable::validarMapa() {
+void EditableMap::validarMapa() {
     validarParedes();
     validarPuertas();
 }
 
-void MapaEditable::validarParedes() {
+void EditableMap::validarParedes() {
     // Validar que todos los bordes sean paredes.
-    for (int c=0; c < columnas; c++) {
+    for (int c=0; c < columns; c++) {
         std::string pos_first_row = "pos_0_" + std::to_string(c);
-        std::string pos_last_row = "pos_" + std::to_string(filas-1)
+        std::string pos_last_row = "pos_" + std::to_string(rows-1)
             + "_" + std::to_string(c);
         std::string element_first_row = mapa[pos_first_row];
         std::string element_last_row = mapa[pos_last_row];
@@ -116,10 +116,10 @@ void MapaEditable::validarParedes() {
         }
     }
 
-    for (int f=0; f < filas; f++) {
+    for (int f=0; f < rows; f++) {
         std::string pos_first_column = "pos_" + std::to_string(f) + "_0";
         std::string pos_last_column = "pos_" + std::to_string(f)
-            + "_" + std::to_string(columnas-1);
+            + "_" + std::to_string(columns-1);
         std::string element_first_column = mapa[pos_first_column];
         std::string element_last_column = mapa[pos_last_column];
         if ((!element_first_column.rfind("wall", 0) == 0) ||
@@ -129,9 +129,9 @@ void MapaEditable::validarParedes() {
     }
 }
 
-void MapaEditable::validarPuertas() {
-    for (int i=1; i < filas-1; i++) {
-        for (int k=1; k < columnas-1; k++) {
+void EditableMap::validarPuertas() {
+    for (int i=1; i < rows-1; i++) {
+        for (int k=1; k < columns-1; k++) {
             std::string pos = "pos_" + std::to_string(i) + "_" + std::to_string(k);
             std::string elemento = mapa[pos];
             if (elemento.rfind("door", 0) == 0) {
@@ -152,38 +152,38 @@ void MapaEditable::validarPuertas() {
     }
 }
 
-std::string MapaEditable::getNombre() {
-    return nombre;
+std::string EditableMap::getNombre() {
+    return name;
 }
 
-int MapaEditable::getColumnas() {
-    return columnas;
+int EditableMap::getColumnas() {
+    return columns;
 }
 
-int MapaEditable::getFilas() {
-    return filas;
+int EditableMap::getFilas() {
+    return rows;
 }
 
-void MapaEditable::limpiar() {
+void EditableMap::limpiar() {
     mapa.clear();
 }
 
-void MapaEditable::agregarFila() {
-    filas += 1;
+void EditableMap::agregarFila() {
+    rows += 1;
 }
 
-void MapaEditable::eliminarFila() {
-    filas -= 1;
+void EditableMap::eliminarFila() {
+    rows -= 1;
 }
 
-void MapaEditable::eliminarColumna() {
-    columnas -= 1;
+void EditableMap::eliminarColumna() {
+    columns -= 1;
 }
 
-void MapaEditable::agregarColumna() {
-    columnas += 1;
+void EditableMap::agregarColumna() {
+    columns += 1;
 }
 
-MapaEditable::~MapaEditable() {
+EditableMap::~EditableMap() {
     limpiar();
 }

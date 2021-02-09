@@ -7,15 +7,15 @@
 
 ResourcesWidget::ResourcesWidget(QWidget *parent,
                                 const std::map<std::string, std::string>&
-                                    recursos_del_juego, MapWidget* map)
-    : QFrame(parent), map(map), recursos_del_juego(recursos_del_juego) {
-    this->setObjectName(QStringLiteral("widgetRecursos"));
+                                    gameResources, MapWidget* map)
+    : QFrame(parent), map(map), gameResources(gameResources) {
+    this->setObjectName(QStringLiteral("resourcesWidget"));
     verticalLayout = new QVBoxLayout(this);
     verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
     verticalLayout->setContentsMargins(0, 0, 0, 0);
 
     // Recorro los recursos y por cada uno genero un label.
-    for (auto const& element : recursos_del_juego) {
+    for (auto const& element : gameResources) {
         QLabel* label = new QLabel(this);
         label->setObjectName(QString::fromStdString(element.first));
         label->setPixmap(QPixmap(QString::fromStdString(element.second)));

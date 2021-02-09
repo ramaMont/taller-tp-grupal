@@ -1,6 +1,6 @@
 
-#ifndef MAPAEDITABLE_H
-#define MAPAEDITABLE_H
+#ifndef EditableMap_H
+#define EditableMap_H
 
 #include <iostream>
 #include <string>
@@ -8,18 +8,18 @@
 #include <fstream>
 #include "map_exceptions.h"
 
-#define MAX_FC 40
-#define MIN_FC 10
-#define CARGAR_DESDE_ARCHIVO 1
-#define NUEVO_MAPA 0
+#define MAX_RC 40
+#define MIN_Rc 10
+#define LOAD_FROM_FILE 1
+#define NEW_MAP 0
 
-class MapaEditable {
+class EditableMap {
  public:
-    MapaEditable(const int& flag,
-                 const std::string& nombre,
-                 const std::string& archivo_mapa,
-                 const int& filas, const int& columnas);
-    ~MapaEditable();
+    EditableMap(const int& flag,
+                 const std::string& name,
+                 const std::string& mapfile,
+                 const int& rows, const int& columns);
+    ~EditableMap();
     void iniciarNuevoMapa(const int& rows, const int& columns);
     void cargarMapaExistente();
     void cargarElemento(const std::string& posicion,
@@ -28,7 +28,7 @@ class MapaEditable {
                             const std::string& elemento);
     void obtenerElemento(const std::string& posicion,
                          std::string& elemento);
-    void guardarMapa();
+    void saveMap();
     void agregarFila();
     void agregarColumna();
     void eliminarFila();
@@ -43,10 +43,10 @@ class MapaEditable {
 
  private:
     std::map<std::string, std::string> mapa;
-    std::string archivo_mapa;
-    std::string nombre;
-    int filas;
-    int columnas;
+    std::string mapfile;
+    std::string name;
+    int rows;
+    int columns;
 };
 
-#endif // MAPAEDITABLE_H
+#endif // EditableMap_H
