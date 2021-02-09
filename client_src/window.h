@@ -18,6 +18,12 @@ private:
 
 public:
     Window(int width, int height, int resolution_width, int resolution_high);
+
+    Window(const Window&) = delete;
+    Window(Window&& other) = delete;
+    Window& operator=(const Window&) = delete;
+    Window& operator=(Window&& other);
+
     void setNoColor();
     void setColor(int r, int g, int b, int alpha);
     int getWidth() const;

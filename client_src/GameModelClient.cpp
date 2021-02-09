@@ -494,37 +494,33 @@ void GameModelClient::processGunSwitch(Protocol& protocol){
 }
 
 void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con un solo rocket
-    Coordinates position(protocol.getFloatPosition());
-    printf("proceso rocket\n");
-    //if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
-    //posicion.increment_on_direction(direction, 0.25);
-    if(rockets.size()>0){
-      printf("x cambiarle la posicion\n");
-      rockets[0]->changePosition(position);
-      printf("le cambie la posicion\n");
-    }
-    else{ //Creo el Rocket
-      printf("creo uno nuevo\n");
-      Rocket* rocket = new Rocket(position, map, player,0);
+  Coordinates position(protocol.getFloatPosition());
+  if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
+      //printf("x cambiarle la posicion, supuestamente está en: (%f,%f)\n",position.x,position.y);
+      bool found = false;
+      unsigned int i = 0;
+      Rocket* rocket;
+      while(i<rockets.size() and !found){
+        rocket = rockets[i];
+        //printf("Pero en realidad está en: (%f,%f)\n",rocket->getPosicion().x,rocket->getPosicion().y );
+        if(position==rocket->getPosicion()){
+          found = true;
+          rocket->move();
+          //printf("le cambie la posicion, ahora es: (%f,%f)\n\n",rocket->getPosicion().x,rocket->getPosicion().y);
+        }
+        i++;
+      }
+  }else{ //Creo el misil
+      Rocket* rocket = new Rocket(position,player.getDirection() ,map, player);
       rocket->set_texture(&texture);
       rockets.push_back(rocket);
       map.addPositionable(rocket,position);  
-      printf("cree uno nuevo\n");
-
-    }
-    /*if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
-        map.removeAllPositionables(position);
-        return;
-    }
-    SpriteHolder *posicionable = new SpriteHolder(position, 12, player);
-    posicionable->set_texture(&texture);
-    sprites.push_back(posicionable);
-    try {
-        map.addPositionable(posicionable, position);
-    } catch(...) {}*/
+      //printf("cree uno nuevo en: (%f,%f)\n\n", position.x,position.y);
+  }
 }
 
 void GameModelClient::processExplosion(Protocol& protocol){
+	map.removePositionable(rockets[0]->get_position());
 }
 
 void GameModelClient::processKey(Protocol& protocol){

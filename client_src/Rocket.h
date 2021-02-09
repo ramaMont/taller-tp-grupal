@@ -23,14 +23,14 @@ private:
 	//int moved_frames_continued;
 
 public:
-	explicit Rocket(Coordinates posicion, ClMap& map, Player &player ,int id);
+	explicit Rocket(Coordinates posicion,Coordinates direction ,ClMap& map, Player &player);
 
     //Pre:-
     // Le indico al rayo que colisionó con un enemigo y setea al 
     // enemigo como 'avistado' para que luego sea dibujado
     void colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle);
 
-    void changePosition(Coordinates new_position);
+    void move();
 
     //Pre:-
     // Llamo a su dibujador de texturas

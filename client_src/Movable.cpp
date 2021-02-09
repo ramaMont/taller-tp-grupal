@@ -1,14 +1,10 @@
 #include "Movable.h"
 #include <stdio.h>
 
-Movable::Movable(Coordinates position, ClMap& map, int id):
-        Posicionable(position), map(map), id(id){
+Movable::Movable(Coordinates position,Coordinates direction, ClMap& map):
+        Posicionable(position), direction(direction), map(map){
 }
 
-
-int Movable::getId(){
-    return id;
-}
 
 Movable::~Movable(){
 }
