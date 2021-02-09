@@ -77,7 +77,7 @@ void GameModelClient::initMap(std::string map_filename){
                   Wall *posicionable = new WallGreystone(position);
                   posicionable->set_texture(&texture);
                   walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
+                  map.addPositionable(posicionable,position);
             }else if (elemento == "wall_bluestone"){
                   Wall *posicionable = new WallBluestone(position);
                   posicionable->set_texture(&texture);
@@ -238,6 +238,13 @@ void GameModelClient::removePlayer(int id){
     Character* removableEnemy = characters[id];
     map.removePositionable(removableEnemy->get_position());
     characters.erase(id);
+    int cant_enemies = enemies.size();
+    for(int i=0; i<cant_enemies; i++){
+    	if(enemies[i]->get_position()==removableEnemy->get_position()){
+    		enemies.erase(enemies.begin()+i);
+    	}
+    }
+	delete removableEnemy;
     //Y me falta eliminarlos tambien del vector sprites y del vector enemies
 
 }
@@ -335,29 +342,7 @@ void GameModelClient::addDeadSprite(Coordinates position, CharacterType characte
 void GameModelClient::removeCharacterFromMap(int id){
     Character* removableCharacter = characters[id];
     Coordinates removablePosition = removableCharacter->get_position();
-    unsigned int i=0;
-    bool done = false;
-    while(i<sprites.size() and !done){     //Me fijo si hay un sprite en esa posicion
-    	SpriteHolder* sprite = sprites[i];
-    	Coordinates sprite_position = sprite->get_position();
-    	if(sprite_position == removablePosition){
-    		done = true;
-    		sprite->remove();
-    	}
-    	i++;
-    }
-    i=0;
-    while(i<doors.size() and !done){     //Me fijo si hay una puerta en esa posicion
-    	Coordinates door_position = doors[i]->getPosicion();
-    	if(door_position == removablePosition){
-    		done = true;
-    		doors[i]->remove();
-    	}
-    	i++;
-    }
-    if(!done){
-    	map.removePositionable(removablePosition);
-    }
+    map.removePositionable(removablePosition);
 }
 
 void GameModelClient::processProtocol(Protocol& protocol){
@@ -672,5 +657,12 @@ GameModelClient::~GameModelClient(){
 	for(auto& wall : walls){
 		delete wall;
 	}
+	for(auto& door : doors){
+		delete door;
+	}
+	for(auto& enemie : enemies){
+		delete enemie;
+	}
+
 
 }

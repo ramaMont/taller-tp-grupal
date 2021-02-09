@@ -46,6 +46,11 @@ class Screen{
 	public:
 		Screen(std::vector<Rocket*> &rockets, std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window);
 
+    	Screen(const Screen&) = delete;
+    	Screen(Screen&& other) = delete;
+    	Screen& operator=(const Screen&) = delete;
+    	Screen& operator=(Screen&& other);
+
 		// Llama a los metodos correspondientes para la correcta visualizacion
 		void show();
 
