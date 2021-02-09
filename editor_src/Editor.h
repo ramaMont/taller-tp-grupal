@@ -43,7 +43,6 @@ private:
     void saveMap();
     void keyPressEvent(QKeyEvent* event) override;
     bool eventFilter(QObject *obj, QEvent *event);
-    void closeEvent(QCloseEvent *bar);
     bool showFileDialog();
     void setScrollBarStyle(QScrollArea* scrollArea);
     void insertInResourcesMap(std::map<std::string, std::string>& map,
