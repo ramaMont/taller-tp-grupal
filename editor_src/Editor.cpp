@@ -345,8 +345,8 @@ std::map<std::string, std::string> Editor::getResourcesMap() {
     insertInResourcesMap(map, "passage_bluestone", "../data/textures/passage_bluestone.png");
     insertInResourcesMap(map, "passage_colorstone", "../data/textures/passage_colorstone.png");
     insertInResourcesMap(map, "passage_greystone", "../data/textures/passage_greystone.png");
-    insertInResourcesMap(map, "passage_purplestone", "../data/textures/passage_purplestone.png");
-    insertInResourcesMap(map, "passage_redbrick", "../data/textures/passage_redbrick.png");
+    insertInResourcesMap(map, "passage_purplestone", "../data/textures/passage_purplestone.jpg");
+    insertInResourcesMap(map, "passage_redbrick", "../data/textures/passage_redbrick.jpg");
     insertInResourcesMap(map, "v_door", "../data/textures/door_editor.png");
     insertInResourcesMap(map, "v_key_door", "../data/textures/key_door.png");
     return map;
