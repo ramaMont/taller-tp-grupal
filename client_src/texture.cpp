@@ -653,13 +653,13 @@ void Texture::showRanking(std::vector<std::pair<int,int>> &ordered_players_kills
 
     int position = 0;
     for (auto& player : ordered_players_kills){
-    	showText( black, std::to_string(player.second).c_str(),40 , 40, 80 , 163 + position*50);
+    	showText( black, std::to_string((int16_t)player.second).c_str(),40 , 40, 80 , 163 + position*50);
     	showText( black, std::to_string(player.first).c_str(),40 , 40, 150, 163 + position*50);
         ++position;
     }
     position = 0;
     for (auto& player : ordered_players_points){
-    	showText( black, std::to_string(player.second).c_str(),40 , 40, 280 , 163 + position*50);
+    	showText( black, std::to_string((int16_t)player.second).c_str(),40 , 40, 280 , 163 + position*50);
 
     	int points = player.first;
     	if(points>=100){ //Tiene 3 digitos
@@ -671,7 +671,7 @@ void Texture::showRanking(std::vector<std::pair<int,int>> &ordered_players_kills
     }
     position = 0;
     for (auto& player : ordered_players_bullets){
-    	showText( black, std::to_string(player.second).c_str(),40 , 40, 510 , 163 + position*50);
+    	showText( black, std::to_string((int16_t)player.second).c_str(),40 , 40, 510 , 163 + position*50);
     	int bullets = player.first;
     	if(bullets>=100){ //Tiene 3 digitos    	
 	    	showText( black, std::to_string(player.first).c_str(),25 , 40, 620, 163 + position*50);
@@ -718,7 +718,7 @@ void Texture::showLoosingScreen(int winner_id, std::vector<std::pair<int,int>> &
 	int lenght_y = height + INFO_BAR_HEIGHT;
 
 	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
-	std::string winner_letter= "Winner id: " + std::to_string(winner_id);
+	std::string winner_letter= "Winner id: " + std::to_string((int16_t)winner_id);
 	showText( black, winner_letter.c_str(),20 , 40, width/2 + 130, 40);
 
 	showRanking(ordered_players_kills,ordered_players_points,ordered_players_bullets);
