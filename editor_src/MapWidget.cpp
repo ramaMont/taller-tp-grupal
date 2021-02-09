@@ -573,3 +573,9 @@ void MapWidget::limpiarHighlightedLabel() {
         highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
     }
 }
+
+
+MapWidget::~MapWidget() {
+    if (hayMapaCreado())
+        delete mapa;
+}

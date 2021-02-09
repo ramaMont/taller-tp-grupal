@@ -118,6 +118,7 @@ void LoginWindow::crearPartidaScreen() {
     labelId = new QLabel(partidaScreen);
     labelId->setStyleSheet("background-color: brown;");
     labelId->setFixedHeight(25);
+    labelId->setAlignment(Qt::AlignCenter);
 
     hlayout->addWidget(labelId);
     hlayout->addWidget(botonCrear);

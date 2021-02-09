@@ -23,6 +23,7 @@ class MapWidget : public QFrame
  public:
     explicit MapWidget(QWidget *parent,
                        const std::map<std::string, std::string>& mapa_recursos);
+    ~MapWidget();
     bool hayMapaCreado();
     void fabricarMapa(const int& flag);
     void guardarMapa();
