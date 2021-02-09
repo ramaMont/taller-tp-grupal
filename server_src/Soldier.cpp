@@ -106,10 +106,6 @@ void SoldierState::rechargeBullets(){
 
 // Soldado
 
-int radiansToDegrees(double radians){
-	return radians * GRADOS_180 / PI;
-}
-
 void Soldier::getCloserEnemies(std::map<int, Player*>& enemies,
     Player* player, std::set<std::pair<int, Player*>>& players){
     for (auto it = enemies.begin(); it != enemies.end(); ++it){
@@ -117,7 +113,7 @@ void Soldier::getCloserEnemies(std::map<int, Player*>& enemies,
 		if (enemy == player)
 			continue;
 		float angle = player->calculateAngle(enemy);
-		int degrees = radiansToDegrees(angle);
+		int degrees = angle * GRADOS_180 / PI;
 		if (degrees <= configs[CONFIG::rango_de_disparo])
 		    players.insert(std::pair<int,Player*>(degrees, enemy));
 	}

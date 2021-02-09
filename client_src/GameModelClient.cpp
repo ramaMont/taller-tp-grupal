@@ -9,6 +9,7 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,\
             int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
     std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
     std::vector<std::pair<int,int>> &_ordered_players_bullets) : 
+    	wallGreystone(Coordinates(7,7)),
         window(640,480,320,200) ,
         texture(window), map(), 
         added_player(false),player(map),
@@ -45,6 +46,40 @@ void GameModelClient::initDirections(){
     directions[Protocol::direction::ROTATE_RIGHT] = rotRight;
 }
 
+void GameModelClient::addWall(std::string elemento, Coordinates position){
+			if (elemento == "_greystone"){
+                  Wall *posicionable = new WallGreystone(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);
+            }else if (elemento == "_bluestone"){
+                  Wall *posicionable = new WallBluestone(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+            }else if (elemento == "_colorstone"){
+                  Wall *posicionable = new WallColorstone(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+            }else if (elemento == "_pruplestone"){
+                  Wall *posicionable = new WallPurplestone(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+            }else if (elemento == "_redbrick"){
+                  Wall *posicionable = new WallRedbrick(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+            }else{
+                  Wall *posicionable = new WallWood(position);
+                  posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
+                  map.addPositionable(posicionable,position);   
+              }
+}
+
 void GameModelClient::initMap(std::string map_filename){
 	std::string MAPS_PATH = "../data/maps/";
     YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
@@ -53,41 +88,35 @@ void GameModelClient::initMap(std::string map_filename){
     map.resize(ancho, alto);
     YAML::Node map_elements = map_node["elementos"];
     std::string position="pos_";
+
+
+    /*wallGreystone.set_texture(&texture);
+    map.addPositionable(&wallGreystone,Coordinates(7,7));
+
+    wallsGreystone.push_back(WallGreystone(Coordinates(7,8)));
+    wallsGreystone[0].set_texture(&texture);
+    map.addPositionable(&wallsGreystone[0],Coordinates(7,8));
+
+    wallsGreystone.push_back(WallGreystone(Coordinates(7,9)));
+    wallsGreystone[1].set_texture(&texture);
+    map.addPositionable(&wallsGreystone[1],Coordinates(7,9));*/
+
     for (int i=0; i<alto; i++){
         for (int j=0; j<ancho; j++){
             std::string actual_position = position + std::to_string(i) + "_" +
                 std::to_string(j);
             std::string elemento = map_elements[actual_position].as<std::string>();
             Coordinates position((float)i,(float)j);
-            if (elemento == "wall_greystone"){
-                  Posicionable *posicionable = new WallGreystone(position);
-                  posicionable->set_texture(&texture);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "wall_bluestone"){
-                  Posicionable *posicionable = new WallBluestone(position);
-                  posicionable->set_texture(&texture);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "wall_colorstone"){
-                  Posicionable *posicionable = new WallColorstone(position);
-                  posicionable->set_texture(&texture);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "wall_pruplestone"){
-                  Posicionable *posicionable = new WallPurplestone(position);
-                  posicionable->set_texture(&texture);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "wall_redbrick"){
-                  Posicionable *posicionable = new WallRedbrick(position);
-                  posicionable->set_texture(&texture);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "wall_wood"){
-                  Posicionable *posicionable = new WallWood(position);
-                  posicionable->set_texture(&texture);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "passage"){
-                Posicionable *posicionable = new WallEagle(position);
-                posicionable->set_texture(&texture);
-                map.addPositionable(posicionable,position);  
+            if("wall" == elemento.substr(0,4)){
+            	addWall(elemento.substr(4), position);
+            }else if ("passage" == elemento.substr(0,7)){
+            	addWall(elemento.substr(7), position);
             }else if (elemento == "door"){
+                Door *posicionable = new Door(position);
+                posicionable->set_texture(&texture);
+                doors.push_back(posicionable);
+                map.addPositionable(posicionable,position);   
+            }else if (elemento == "key_door"){//Cambiarle la textura
                 Door *posicionable = new Door(position);
                 posicionable->set_texture(&texture);
                 doors.push_back(posicionable);
@@ -217,6 +246,13 @@ void GameModelClient::removePlayer(int id){
     Character* removableEnemy = characters[id];
     map.removePositionable(removableEnemy->get_position());
     characters.erase(id);
+    int cant_enemies = enemies.size();
+    for(int i=0; i<cant_enemies; i++){
+    	if(enemies[i]->get_position()==removableEnemy->get_position()){
+    		enemies.erase(enemies.begin()+i);
+    	}
+    }
+	delete removableEnemy;
     //Y me falta eliminarlos tambien del vector sprites y del vector enemies
 
 }
@@ -314,29 +350,7 @@ void GameModelClient::addDeadSprite(Coordinates position, CharacterType characte
 void GameModelClient::removeCharacterFromMap(int id){
     Character* removableCharacter = characters[id];
     Coordinates removablePosition = removableCharacter->get_position();
-    unsigned int i=0;
-    bool done = false;
-    while(i<sprites.size() and !done){     //Me fijo si hay un sprite en esa posicion
-    	SpriteHolder* sprite = sprites[i];
-    	Coordinates sprite_position = sprite->get_position();
-    	if(sprite_position == removablePosition){
-    		done = true;
-    		sprite->remove();
-    	}
-    	i++;
-    }
-    i=0;
-    while(i<doors.size() and !done){     //Me fijo si hay una puerta en esa posicion
-    	Coordinates door_position = doors[i]->getPosicion();
-    	if(door_position == removablePosition){
-    		done = true;
-    		doors[i]->remove();
-    	}
-    	i++;
-    }
-    if(!done){
-    	map.removePositionable(removablePosition);
-    }
+    map.removePositionable(removablePosition);
 }
 
 void GameModelClient::processProtocol(Protocol& protocol){
@@ -510,7 +524,13 @@ void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con 
         i++;
       }
   }else{ //Creo el misil
-      Rocket* rocket = new Rocket(position,player.getDirection() ,map, player);
+      Coordinates direction;
+      if (protagonist_id == protocol.getId()){
+          direction = player.getDirection();
+      } else {
+          direction =characters[protocol.getId()]->getDirection();
+      }
+      Rocket* rocket = new Rocket(position, direction, map, player);
       rocket->set_texture(&texture);
       rockets.push_back(rocket);
       map.addPositionable(rocket,position);  
@@ -638,6 +658,19 @@ void GameModelClient::waitForAction(Protocol::action desired_action){
     }
 }
 
+
 GameModelClient::~GameModelClient(){
     cleanDirections();
+
+	for(auto& wall : walls){
+		delete wall;
+	}
+	for(auto& door : doors){
+		delete door;
+	}
+	for(auto& enemie : enemies){
+		delete enemie;
+	}
+
+
 }

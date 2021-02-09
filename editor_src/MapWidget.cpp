@@ -9,9 +9,9 @@
 
 
 MapWidget::MapWidget(QWidget *parent,
-                     const std::map<std::string, std::string>& mapa_recursos)
-    : QFrame(parent), mapa_recursos(mapa_recursos) {
-    mapa_creado = false;
+                     const std::map<std::string, std::string>& resourcesMap)
+    : QFrame(parent), resourcesMap(resourcesMap) {
+    mapCreated = false;
     this->setObjectName(QStringLiteral("mapWidget"));
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     gridLayout = new QGridLayout(this);
@@ -19,14 +19,14 @@ MapWidget::MapWidget(QWidget *parent,
     gridLayout->setContentsMargins(0, 0, 0, 0);
     gridLayout->setHorizontalSpacing(0);
     gridLayout->setVerticalSpacing(0);
-    highlighted_label = nullptr;
+    highlightedLabel = nullptr;
     this->setLayout(gridLayout);
     setAcceptDrops(true);
-    mapa = nullptr;
+    map = nullptr;
 }
 
-bool MapWidget::hayMapaCreado() {
-    return mapa_creado;
+bool MapWidget::createdMap() {
+    return mapCreated;
 }
 
 void MapWidget::dragEnterEvent(QDragEnterEvent *event) {
@@ -48,12 +48,12 @@ void MapWidget::dragMoveEvent(QDragMoveEvent *event) {
             QPoint pt = this->mapFromGlobal(QCursor::pos());
             QWidget* child = childAt(pt);
             QLabel* child_label = qobject_cast<QLabel *>(child);
-            if (child_label == origin_label) return;
-            if (highlighted_label != nullptr) {
-                highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+            if (child_label == originLabel) return;
+            if (highlightedLabel != nullptr) {
+                highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
             }
-            highlighted_label = child_label;
-            highlighted_label->setStyleSheet("QWidget { background-color : #D9FAC5; }");
+            highlightedLabel = child_label;
+            highlightedLabel->setStyleSheet("QWidget { background-color : #D9FAC5; }");
             event->setDropAction(Qt::MoveAction);
             event->accept();
         } else {
@@ -89,8 +89,8 @@ void MapWidget::dropEvent(QDropEvent *event) {
             hidden_label->setText(event->mimeData()->text());
         }
 
-        if (highlighted_label != nullptr) {
-            highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+        if (highlightedLabel != nullptr) {
+            highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
         }
 
         if (event->source() == this) {
@@ -105,7 +105,7 @@ void MapWidget::dropEvent(QDropEvent *event) {
     }
 }
 
-void MapWidget::intercambiarLabels(const std::string& pos_1,
+void MapWidget::swapLabels(const std::string& pos_1,
                                    const std::string& pos_2) {
     // Traigo los labels.
     QLabel* label_visual_1 = findChild<QLabel*> (QString::fromStdString(pos_1));
@@ -139,10 +139,10 @@ void MapWidget::intercambiarLabels(const std::string& pos_1,
     label_elemento_1->setText(element_2);
 }
 
-void MapWidget::crearCeldaVacia(const std::string& pos,
-                                const int& fila,
-                                const int& columna) {
-    // Genero el label visual y el elemento empty.
+void MapWidget::createEmptyCell(const std::string& pos,
+                                const int& row,
+                                const int& column) {
+    // Genero el label visual y el element empty.
     QLabel* label = new QLabel(this);
     QLabel* hidden_label = new QLabel(this);
     hidden_label->setVisible(false);
@@ -154,185 +154,185 @@ void MapWidget::crearCeldaVacia(const std::string& pos,
     label->setFixedHeight(MIN_HEIGHT_SIZE);
     label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
     // Agrego al layout.
-    gridLayout->addWidget(label, fila, columna);
+    gridLayout->addWidget(label, row, column);
     gridLayout->addWidget(hidden_label);
-    mapa->cargarElemento(pos, "empty");
+    map->loadElement(pos, "empty");
 }
 
-void MapWidget::actualizarLabelFyC() {
-    // Busco el label correspondiente a filas y columnas.
+void MapWidget::updateLabelRC() {
+    // Busco el label correspondiente a rows y columns.
     QLabel* fyc = parent()->parent()->parent()
-                    ->findChild<QLabel*> ("filasColumnasLabel");
-    int filas = mapa->getFilas();
-    int columnas = mapa->getColumnas();
-    std::string text = "Filas: " + std::to_string(filas)
-        + "   Columnas: " + std::to_string(columnas);
+                    ->findChild<QLabel*> ("filascolumnsLabel");
+    int rows = map->getRows();
+    int columns = map->getColumns();
+    std::string text = "Filas: " + std::to_string(rows)
+        + "   Columnas: " + std::to_string(columns);
     fyc->setText(QString::fromStdString(text));
 }
 
-void MapWidget::agregarColumnaAPartirDe(int columna) {
-    int nueva_columna = mapa->getColumnas();
-    if (nueva_columna >= MAX_FC) {
-        std::string message = "El máximo de columnas es de "
-            + std::to_string(MAX_FC);
-        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
+void MapWidget::addCoumnFrom(int column) {
+    int nueva_columna = map->getColumns();
+    if (nueva_columna >= MAX_RC) {
+        std::string message = "El máximo de columns es de "
+            + std::to_string(MAX_RC);
+        showWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
-    // Agrego una nueva columna con emptys
-    for (int i=0; i < mapa->getFilas(); i++) {
+    // Agrego una nueva column con emptys
+    for (int i=0; i < map->getRows(); i++) {
         std::string pos = "pos_" + std::to_string(i)
             + "_" + std::to_string(nueva_columna);
-        crearCeldaVacia(pos, i, nueva_columna);
+        createEmptyCell(pos, i, nueva_columna);
     }
     // Intercambio el contenido de los labels hasta llegar al actual.
-    for (int i=nueva_columna; i > columna; i--) {
-        for (int k=0; k < mapa->getFilas(); k++) {
+    for (int i=nueva_columna; i > column; i--) {
+        for (int k=0; k < map->getRows(); k++) {
             std::string pos_1 = "pos_" + std::to_string(k)
                 + "_" + std::to_string(i);
             std::string pos_2 = "pos_" + std::to_string(k)
                 + "_" + std::to_string(i-1);
-            intercambiarLabels(pos_1, pos_2);
+            swapLabels(pos_1, pos_2);
         }
     }
-    mapa->agregarColumna();
-    actualizarLabelFyC();
+    map->addColumn();
+    updateLabelRC();
 }
 
-void MapWidget::agregarFilaAPartirDe(int fila) {
-    int nueva_fila = mapa->getFilas();
-    if (nueva_fila >= MAX_FC) {
-        std::string message = "El máximo de filas es de "
-            + std::to_string(MAX_FC);
-        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
+void MapWidget::addRowFrom(int row) {
+    int nueva_fila = map->getRows();
+    if (nueva_fila >= MAX_RC) {
+        std::string message = "El máximo de rows es de "
+            + std::to_string(MAX_RC);
+        showWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
-    // Agrego una nueva fila con emptys
-    for (int i=0; i < mapa->getColumnas(); i++) {
+    // Agrego una nueva row con emptys
+    for (int i=0; i < map->getColumns(); i++) {
         std::string pos = "pos_" + std::to_string(nueva_fila)
             + "_" + std::to_string(i);
-        crearCeldaVacia(pos, nueva_fila, i);
+        createEmptyCell(pos, nueva_fila, i);
     }
     // Intercambio el contenido de los labels hasta llegar al actual.
-    for (int i=nueva_fila; i > fila; i--) {
-        for (int k=0; k < mapa->getColumnas(); k++) {
+    for (int i=nueva_fila; i > row; i--) {
+        for (int k=0; k < map->getColumns(); k++) {
             std::string pos_1 = "pos_" + std::to_string(i)
                 + "_" + std::to_string(k);
             std::string pos_2 = "pos_" + std::to_string(i-1)
                 + "_" + std::to_string(k);
-            intercambiarLabels(pos_1, pos_2);
+            swapLabels(pos_1, pos_2);
         }
     }
-    mapa->agregarFila();
-    actualizarLabelFyC();
+    map->addRow();
+    updateLabelRC();
 }
 
-void MapWidget::eliminarFila(int fila) {
-    int ultima_fila = mapa->getFilas()-1;
-    if (ultima_fila < MIN_FC) {
+void MapWidget::deleteRow(int row) {
+    int ultima_fila = map->getRows()-1;
+    if (ultima_fila < MIN_Rc) {
         std::string message = "El minimo de filas es de "
-            + std::to_string(MIN_FC);
-        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
+            + std::to_string(MIN_Rc);
+        showWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
 
     // Intercambio el contenido de los labels hasta llegar al actual.
-    for (int i=fila; i <= ultima_fila; i++) {
-        for (int k=0; k < mapa->getColumnas(); k++) {
+    for (int i=row; i <= ultima_fila; i++) {
+        for (int k=0; k < map->getColumns(); k++) {
             std::string pos_1 = "pos_" + std::to_string(i)
                 + "_" + std::to_string(k);
             std::string pos_2 = "pos_" + std::to_string(i-1)
                 + "_" + std::to_string(k);
-            intercambiarLabels(pos_1, pos_2);
+            swapLabels(pos_1, pos_2);
         }
     }
-    // Elimino todos los elementos de la ultima fila
-    for (int i=0; i < mapa->getColumnas(); i++) {
+    // Elimino todos los elementos de la ultima row
+    for (int i=0; i < map->getColumns(); i++) {
         std::string pos = "pos_" + std::to_string(ultima_fila)
             + "_" + std::to_string(i);
-        QLabel* label_visual = findChild<QLabel*> (QString::fromStdString(pos));
-        QLabel* label_elemento = findChild<QLabel*>
+        QLabel* visual_label = findChild<QLabel*> (QString::fromStdString(pos));
+        QLabel* element_label = findChild<QLabel*>
             (QString::fromStdString(pos) + "_element");
-        label_visual->deleteLater();
-        label_elemento->deleteLater();
+        visual_label->deleteLater();
+        element_label->deleteLater();
     }
 
-    mapa->eliminarFila();
-    actualizarLabelFyC();
+    map->deleteRow();
+    updateLabelRC();
 }
 
-void MapWidget::eliminarColumna(int columna) {
+void MapWidget::deleteColumn(int column) {
     // Elimino todos los elementos de la celda
-    int ultima_columna = mapa->getColumnas()-1;
-    if (ultima_columna < MIN_FC) {
+    int ultima_columna = map->getColumns()-1;
+    if (ultima_columna < MIN_Rc) {
         std::string message = "El minimo de columnas es de "
-            + std::to_string(MIN_FC);
-        mostrarWarning(QString::fromStdString(message), QMessageBox::Warning);
+            + std::to_string(MIN_Rc);
+        showWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
     }
 
     // Intercambio el contenido de los labels hasta llegar al ultimo.
-    for (int i=columna; i <= ultima_columna; i++) {
-        for (int k=0; k < mapa->getFilas(); k++) {
+    for (int i=column; i <= ultima_columna; i++) {
+        for (int k=0; k < map->getRows(); k++) {
             std::string pos_1 = "pos_" + std::to_string(k)
                 + "_" + std::to_string(i);
             std::string pos_2 = "pos_" + std::to_string(k)
                 + "_" + std::to_string(i-1);
-            intercambiarLabels(pos_1, pos_2);
+            swapLabels(pos_1, pos_2);
         }
     }
-    // Elimino todos los elementos de la ultima columna
-    for (int i=0; i < mapa->getFilas(); i++) {
+    // Elimino todos los elementos de la ultima column
+    for (int i=0; i < map->getRows(); i++) {
         std::string pos = "pos_" + std::to_string(i)
             + "_" + std::to_string(ultima_columna);
-        QLabel* label_visual = findChild<QLabel*> (QString::fromStdString(pos));
-        QLabel* label_elemento = findChild<QLabel*>
+        QLabel* visual_label = findChild<QLabel*> (QString::fromStdString(pos));
+        QLabel* element_label = findChild<QLabel*>
             (QString::fromStdString(pos) + "_element");
-        label_visual->deleteLater();
-        label_elemento->deleteLater();
+        visual_label->deleteLater();
+        element_label->deleteLater();
     }
 
-    mapa->eliminarColumna();
-    actualizarLabelFyC();
+    map->deleteColumn();
+    updateLabelRC();
 }
 
-void MapWidget::desplegarMenuOpciones(QMouseEvent *event, QLabel* label_visual,
-                                      QLabel* label_elemento) {
+void MapWidget::showOptionsMenu(QMouseEvent *event, QLabel* visual_label,
+                                      QLabel* element_label) {
     QMenu contextMenu;
-    std::string current_pos = label_visual->objectName().toStdString();
+    std::string current_pos = visual_label->objectName().toStdString();
     std::istringstream ss(current_pos);
     std::string token;
     std::getline(ss, token, '_');
     std::getline(ss, token, '_');
-    int fila = std::stoi(token);
+    int row = std::stoi(token);
     std::getline(ss, token, '_');
-    int columna = std::stoi(token);
+    int column = std::stoi(token);
     contextMenu.addAction("Insertar columna a la izquierda", this, [=] {
-        agregarColumnaAPartirDe(columna);
+        addCoumnFrom(column);
     });
     contextMenu.addAction("Insertar columna a la derecha", this, [=] {
-        agregarColumnaAPartirDe(columna+1);
+        addCoumnFrom(column+1);
     });
     contextMenu.addAction("Insertar fila arriba", this, [=] {
-        agregarFilaAPartirDe(fila);
+        addRowFrom(row);
     });
     contextMenu.addAction("Insertar fila abajo", this, [=] {
-        agregarFilaAPartirDe(fila+1);
+        addRowFrom(row+1);
     });
     contextMenu.addAction("Eliminar fila", this, [=] {
-        eliminarFila(fila+1);
+        deleteRow(row+1);
     });
     contextMenu.addAction("Eliminar columna", this, [=] {
-        eliminarColumna(columna+1);
+        deleteColumn(column+1);
     });
     QPoint globalPos = mapToGlobal(event->pos());
     contextMenu.exec(globalPos);
 
-    if (highlighted_label != nullptr) {
-        highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+    if (highlightedLabel != nullptr) {
+        highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
     }
 }
 
-void MapWidget::pointAndClick(QLabel* label_visual, QLabel* label_elemento) {
+void MapWidget::pointAndClick(QLabel* visual_label, QLabel* element_label) {
     QByteArray itemData = QApplication::clipboard()->mimeData()
                             ->data("application/x-dnditemdata");
     QDataStream dataStream(&itemData, QIODevice::ReadOnly);
@@ -340,25 +340,25 @@ void MapWidget::pointAndClick(QLabel* label_visual, QLabel* label_elemento) {
     QPoint offset;
     dataStream >> pixmap >> offset;
     pixmap.scaled(180, 180, Qt::IgnoreAspectRatio, Qt::FastTransformation);
-    label_visual->setPixmap(pixmap);
-    label_elemento->setText(QApplication::clipboard()->mimeData()->text());
+    visual_label->setPixmap(pixmap);
+    element_label->setText(QApplication::clipboard()->mimeData()->text());
 }
 
-void MapWidget::ejecutarDrag(QMouseEvent *event, QLabel* label_visual,
-                             QLabel* label_elemento) {
-    // Si es un elemento empty, no tiene sentido drag & drop a partir de este.
-    if (label_elemento->text().toStdString() == "empty") return;
+void MapWidget::executeDrag(QMouseEvent *event, QLabel* visual_label,
+                             QLabel* element_label) {
+    // Si es un element empty, no tiene sentido drag & drop a partir de este.
+    if (element_label->text().toStdString() == "empty") return;
 
-    const QPixmap* pixmap = label_visual->pixmap();
+    const QPixmap* pixmap = visual_label->pixmap();
 
     // Leo lo clickeado
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << *pixmap << QPoint(event->pos() - label_visual->pos());
+    dataStream << *pixmap << QPoint(event->pos() - visual_label->pos());
 
     // Preparo la data a mover en el drag
     QMimeData *mimeData = new QMimeData;
-    QString text = label_elemento->text();
+    QString text = element_label->text();
     mimeData->setData("application/x-dnditemdata", itemData);
     mimeData->setText(text);
 
@@ -366,52 +366,52 @@ void MapWidget::ejecutarDrag(QMouseEvent *event, QLabel* label_visual,
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
     drag->setPixmap(*pixmap);
-    drag->setHotSpot(event->pos() - label_visual->pos());
+    drag->setHotSpot(event->pos() - visual_label->pos());
 
     // Ejecuto el drag, y al terminar, limpio el correspondiente.
     drag->exec(Qt::CopyAction | Qt::MoveAction,
             Qt::CopyAction);
-    label_visual->setPixmap(QPixmap());
-    label_elemento->setText("empty");
+    visual_label->setPixmap(QPixmap());
+    element_label->setText("empty");
 }
 
 void MapWidget::mousePressEvent(QMouseEvent *event) {
-    if (!hayMapaCreado()) return;
-    // Obtengo el label grafico, y el oculto que tiene el elemento.
-    QLabel* label_visual = static_cast<QLabel*>(childAt(event->pos()));
-    QLabel* label_elemento = findChild<QLabel*>
-                                (label_visual->objectName() + "_element");
-    if (!label_visual)
+    if (!createdMap()) return;
+    // Obtengo el label grafico, y el oculto que tiene el element.
+    QLabel* visual_label = static_cast<QLabel*>(childAt(event->pos()));
+    QLabel* element_label = findChild<QLabel*>
+                                (visual_label->objectName() + "_element");
+    if (!visual_label)
         return;
 
-    highlighted_label = label_visual;
-    origin_label = label_visual;
+    highlightedLabel = visual_label;
+    originLabel = visual_label;
 
     // Si es click derecho, despliego el menu de opciones
     if (event->button() == Qt::RightButton) {
-        desplegarMenuOpciones(event, label_visual, label_elemento);
+        showOptionsMenu(event, visual_label, element_label);
         return;
     } else {
         // Si es click izquierdo, se intentara mover elementos.
         if (QApplication::clipboard()->mimeData()->hasText()) {
             // Si habia algo en el clipboard, quiere decir que este click
             // tiene como objetivo pintar, y no hacer el drag & drop.
-            pointAndClick(label_visual, label_elemento);
+            pointAndClick(visual_label, element_label);
             return;
         }
         // iniciar drag & drop
-        ejecutarDrag(event, label_visual, label_elemento);
+        executeDrag(event, visual_label, element_label);
     }
 }
 
-void MapWidget::fabricarMapa(const int& flag) {
-    int filas = mapa->getFilas();
-    int columnas = mapa->getColumnas();
+void MapWidget::constructMap(const int& flag) {
+    int rows = map->getRows();
+    int columns = map->getColumns();
 
-    for (int i=0; i < filas; i++) {
-        for (int k=0; k < columnas; k++) {
+    for (int i=0; i < rows; i++) {
+        for (int k=0; k < columns; k++) {
             // Creo un label visual, que guarda la imagen del recurso
-            // y un label oculto, que guarda el nombre del elemento.
+            // y un label oculto, que guarda el name del element.
             bool error = false;
             QLabel* label = new QLabel(this);
             QLabel* hidden_label = new QLabel(this);
@@ -421,21 +421,21 @@ void MapWidget::fabricarMapa(const int& flag) {
             QString label_name = QString::fromStdString(pos);
             label->setObjectName(label_name);
             hidden_label->setObjectName(label_name + "_element");
-            if (flag == CARGAR_DESDE_ARCHIVO) {
-                // Si se carga un mapa existente, obtengo el elemento y dibujo
-                std::string elemento, imagen;
-                mapa->obtenerElemento(pos, elemento);
-                if (elemento != "empty") {
+            if (flag == LOAD_FROM_FILE) {
+                // Si se carga un mapa existente, obtengo el element y dibujo
+                std::string element, imagen;
+                map->getElement(pos, element);
+                if (element != "empty") {
                     try {
-                        imagen = mapa_recursos.at(elemento);
+                        imagen = resourcesMap.at(element);
                     } catch(...) {
                         error = true;
-                        mostrarWarning("Elemento desconocido detectado!"
+                        showWarning("Elemento desconocido detectado!"
                             " El mismo se reemplazará por vacio",
                             QMessageBox::Warning);
                     }
                     if (!error) {
-                        hidden_label->setText(QString::fromStdString(elemento));
+                        hidden_label->setText(QString::fromStdString(element));
                         label->setPixmap(QPixmap(QString::fromStdString(imagen)));
                     } else {
                         hidden_label->setText(QString::fromStdString("empty"));
@@ -443,9 +443,9 @@ void MapWidget::fabricarMapa(const int& flag) {
                 } else {
                     hidden_label->setText(QString::fromStdString("empty"));
                 }
-                elemento.clear();
+                element.clear();
             } else {
-                mapa->cargarElemento(pos, "empty");
+                map->loadElement(pos, "empty");
                 hidden_label->setText(QString::fromStdString("empty"));
             }
             label->setFixedWidth(MIN_WIDTH_SIZE);
@@ -457,66 +457,67 @@ void MapWidget::fabricarMapa(const int& flag) {
             pos.clear();
         }
     }
-    mapa_creado = true;
+    mapCreated = true;
 }
 
-void MapWidget::crearMapaNuevo(const std::string& nombre,
-                               const int& filas, const int& columnas) {
-    limpiarGridYMapa();
-    mapa = new MapaEditable(NUEVO_MAPA, nombre, "", filas, columnas);
-    fabricarMapa(NUEVO_MAPA);
+void MapWidget::createNewMap(const std::string& name,
+                               const int& rows, const int& columns) {
+    cleanGridAndMap();
+    map = new EditableMap(NEW_MAP, name, "", rows, columns);
+    constructMap(NEW_MAP);
 }
 
-void MapWidget::cargarMapaDesdeArchivo(const std::string& map_file) {
-    limpiarGridYMapa();
-    mapa = new MapaEditable(CARGAR_DESDE_ARCHIVO, "", map_file, 0, 0);
-    fabricarMapa(CARGAR_DESDE_ARCHIVO);
+void MapWidget::loadMapFromFile(const std::string& map_file) {
+    cleanGridAndMap();
+    map = new EditableMap(LOAD_FROM_FILE, "", map_file, 0, 0);
+    constructMap(LOAD_FROM_FILE);
 }
 
-void MapWidget::actualizarNombreVentana() {
+void MapWidget::updateWindowName() {
     QWidget* window = static_cast<QWidget*> (this->parent()->parent()->parent());
-    window->setWindowTitle(QString::fromStdString(mapa->getNombre()));
+    window->setWindowTitle(QString::fromStdString(map->getName()));
 }
 
-void MapWidget::guardarMapa() {
-    sincronizarMapaYVista();
+void MapWidget::saveMap() {
+    synchronizeMapAndView();
     try {
-        mapa->validarMapa();
+        map->validateMap();
     } catch (MapException& exc) {
-        mostrarWarning(QString::fromStdString(exc.what()),
+        showWarning(QString::fromStdString(exc.what()),
                        QMessageBox::Warning);
         return;
     }
-    mapa->guardarMapa();
+    map->saveMap();
     std::string message = "Mapa guardado con éxito!";
-    mostrarWarning(QString::fromStdString(message), QMessageBox::Information);
+    showWarning(QString::fromStdString(message), QMessageBox::Information);
 }
 
-void MapWidget::sincronizarMapaYVista() {
-    mapa->limpiar();
+void MapWidget::synchronizeMapAndView() {
+    map->clean();
     // Recorro el mapa y en base al contenido de la grafica, actualizo.
     for (int i = 0; i < gridLayout->count(); i++) {
         QLabel* label = static_cast<QLabel*> (gridLayout->itemAt(i)->widget());
         if (label->objectName().endsWith("_element")) continue;
         QLabel* hidden_label = findChild<QLabel*>(label->objectName()
                                + "_element");
-        mapa->actualizarElemento(label->objectName().toStdString(),
+        map->updateElement(label->objectName().toStdString(),
                                  hidden_label->text().toStdString());
     }
 }
 
-void MapWidget::limpiarGridYMapa() {
-    if (mapa_creado) {
-        delete mapa;
+void MapWidget::cleanGridAndMap() {
+    if (mapCreated) {
+        delete map;
         QGridLayout* gridLayout = findChild<QGridLayout*>("gridLayout");
         for (int i = 0; i < gridLayout->count(); i++) {
             gridLayout->itemAt(i)->widget()->deleteLater();
         }
-        mapa_creado = false;
+        mapCreated = false;
+        highlightedLabel = nullptr;
     }
 }
 
-void MapWidget::mostrarWarning(QString message, QMessageBox::Icon icon) {
+void MapWidget::showWarning(QString message, QMessageBox::Icon icon) {
     QMessageBox messageBox(this);
     messageBox.setStyleSheet(
         "QWidget {background-image: url(imgs/fondo3.png) }"
@@ -534,13 +535,13 @@ void MapWidget::mostrarWarning(QString message, QMessageBox::Icon icon) {
     messageBox.exec();
 }
 
-void MapWidget::pintarParedes(QString object_name) {
-    std::string imagen = mapa_recursos.at(object_name.toStdString());
-    int filas = mapa->getFilas();
-    int columnas = mapa->getColumnas();
-    for (int c=0; c < columnas; c++) {
+void MapWidget::paintWalls(QString object_name) {
+    std::string imagen = resourcesMap.at(object_name.toStdString());
+    int rows = map->getRows();
+    int columns = map->getColumns();
+    for (int c=0; c < columns; c++) {
         std::string pos_primera_fila = "pos_0_" + std::to_string(c);
-        std::string pos_ultima_fila = "pos_" + std::to_string(filas-1)
+        std::string pos_ultima_fila = "pos_" + std::to_string(rows-1)
             + "_" + std::to_string(c);
         QLabel* label_primera_fila = findChild<QLabel*>(QString::fromStdString(pos_primera_fila));
         QLabel* label_ultima_fila = findChild<QLabel*>(QString::fromStdString(pos_ultima_fila));
@@ -552,10 +553,10 @@ void MapWidget::pintarParedes(QString object_name) {
         label_ultima_fila_e->setText(object_name);
     }
 
-    for (int f=0; f < filas; f++) {
+    for (int f=0; f < rows; f++) {
         std::string pos_primera_columna = "pos_" + std::to_string(f) + "_0";
         std::string pos_ultima_columna = "pos_" + std::to_string(f)
-            + "_" + std::to_string(columnas-1);
+            + "_" + std::to_string(columns-1);
         QLabel* label_primera_fila = findChild<QLabel*>(QString::fromStdString(pos_primera_columna));
         QLabel* label_ultima_fila = findChild<QLabel*>(QString::fromStdString(pos_ultima_columna));
         QLabel* label_primera_fila_e = findChild<QLabel*>(QString::fromStdString(pos_primera_columna + "_element"));
@@ -567,15 +568,15 @@ void MapWidget::pintarParedes(QString object_name) {
     }
 }
 
-void MapWidget::limpiarHighlightedLabel() {
-    if (highlighted_label != nullptr) {
-        highlighted_label->setStyleSheet("QWidget { background-color : transparent; }");
-        highlighted_label->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+void MapWidget::cleanHighlightedLabel() {
+    if (highlightedLabel != nullptr) {
+        highlightedLabel->setStyleSheet("QWidget { background-color : transparent; }");
+        highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
     }
 }
 
 
 MapWidget::~MapWidget() {
-    if (hayMapaCreado())
-        delete mapa;
+    if (createdMap())
+        delete map;
 }

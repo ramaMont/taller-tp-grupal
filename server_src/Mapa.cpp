@@ -50,7 +50,7 @@ void Mapa::initMap(Mapa& map, YAML::Node map_node){
                 Coordinates position((float)i,(float)j);
                 KeyDoor* posicionable = new KeyDoor(position);
                 map.addPassage(posicionable);
-            } else if (elemento == "passage"){
+            } else if (elemento.substr(0,7) == "passage"){
                 Coordinates position((float)i,(float)j);
                 Passage* posicionable = new Passage(position);
                 map.addPassage(posicionable);

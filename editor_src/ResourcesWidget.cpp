@@ -7,15 +7,15 @@
 
 ResourcesWidget::ResourcesWidget(QWidget *parent,
                                 const std::map<std::string, std::string>&
-                                    recursos_del_juego, MapWidget* map)
-    : QFrame(parent), map(map), recursos_del_juego(recursos_del_juego) {
-    this->setObjectName(QStringLiteral("widgetRecursos"));
+                                    gameResources, MapWidget* map)
+    : QFrame(parent), map(map), gameResources(gameResources) {
+    this->setObjectName(QStringLiteral("resourcesWidget"));
     verticalLayout = new QVBoxLayout(this);
     verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
     verticalLayout->setContentsMargins(0, 0, 0, 0);
 
     // Recorro los recursos y por cada uno genero un label.
-    for (auto const& element : recursos_del_juego) {
+    for (auto const& element : gameResources) {
         QLabel* label = new QLabel(this);
         label->setObjectName(QString::fromStdString(element.first));
         label->setPixmap(QPixmap(QString::fromStdString(element.second)));
@@ -30,8 +30,8 @@ ResourcesWidget::ResourcesWidget(QWidget *parent,
 }
 
 void ResourcesWidget::mousePressEvent(QMouseEvent *event) {
-    // Obtengo el elemento clickeado
-    if (!map->hayMapaCreado()) return;
+    // Obtengo el element clickeado
+    if (!map->createdMap()) return;
 
     QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
     if (!child)
@@ -43,14 +43,14 @@ void ResourcesWidget::mousePressEvent(QMouseEvent *event) {
         // Si es click derecho y era una pared tengo que mostrar la opt de pintar bordes.
         QMenu contextMenu;
         contextMenu.addAction("Pared principal", this, [=] {
-            map->pintarParedes(object_name);
+            map->paintWalls(object_name);
         });
         QPoint globalPos = mapToGlobal(event->pos());
         contextMenu.exec(globalPos);
         return;
     }
 
-    // Preparo la data a guardar en el clipboard (imagen y elemento)
+    // Preparo la data a guardar en el clipboard (imagen y element)
     const QPixmap* pixmap = child->pixmap();
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);

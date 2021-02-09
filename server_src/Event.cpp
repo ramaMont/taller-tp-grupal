@@ -96,8 +96,6 @@ void DoorOpeningEvent::process(BlockingQueue<Protocol>& game_model_queue){
     if (diff < 0)
         diff += 1000;
     if (diff > 600){
-        // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
-
         Coordinates door_pos = door->get_position();
         Protocol protocol(Protocol::action::OPENING, 0,
             Protocol::direction::STAY, 0, door_pos.x, door_pos.y);    

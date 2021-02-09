@@ -27,38 +27,27 @@ public:
     explicit Editor(QWidget *parent = 0);
 
 private:
-    // Creo los widgets asignandole un padre
     QMessageBox* messageBox;
-    QWidget *widgetEditarMapa;
-    QHBoxLayout *horizontalLayoutCrearMapa;
-    QHBoxLayout *horizontalLayoutSave;
-    QHBoxLayout *horizontalLayoutEditarMapa;
-    QPushButton *botonCrearMapa;
-    QPushButton *botonEditarMapa;
-    QPushButton* botonGuardarMapa;
-    QWidget *widgetCrearMapa;
-    QWidget *widgetMapaGuardar;
-    QWidget *widgetRecursos;
+    QHBoxLayout *createMapHLayout;
+    QWidget *createMapWidget;
+    QWidget *resourcesWidget;
     QScrollArea *scrollMapArea;
     QScrollArea *scrollResourcesArea;
-    QLabel* nombreLabel;
-    QLabel* filasLabel;
-    QLabel* columnasLabel;
-    QLineEdit *inputNombreMapa;
-    QLineEdit *inputCantidadFilas;
-    QLineEdit *inputCantidadColumnas;
+    QLabel* rowLabel;
+    QLabel* columnsLabel;
     MapWidget *mapWidget;
-    QPushButton *botonSonido;
-    std::map<std::string, std::string> recursos_del_juego;
-    void crearMapaNuevo();
-    void cargarArchivoMapa();
-    void fabricarMenu();
-    void guardarMapa();
+    std::map<std::string, std::string> gameResources;
+    void createNewMap();
+    void loadMapFile();
+    void createMenu();
+    void saveMap();
     void keyPressEvent(QKeyEvent* event) override;
     bool eventFilter(QObject *obj, QEvent *event);
-    bool desplegarFileDialog();
+    bool showFileDialog();
     void setScrollBarStyle(QScrollArea* scrollArea);
-    std::map<std::string, std::string> obtenerMapaRecursos();
+    void insertInResourcesMap(std::map<std::string, std::string>& map,
+                              std::string key, std::string value);
+    std::map<std::string, std::string> getResourcesMap();
 };
 
 #endif // EDITOR_H

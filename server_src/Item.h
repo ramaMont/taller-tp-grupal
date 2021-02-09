@@ -8,6 +8,9 @@ class Player;
 class Item: public Posicionable {
 	public:
 	explicit Item(Coordinates p);
+    
+    // Permite al jugador utilizar el item
+    // Retorna true en caso de que el jugador lo use, sino false
 	virtual bool use(Player* player) = 0;
 };
 

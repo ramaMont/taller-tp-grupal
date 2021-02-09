@@ -23,7 +23,7 @@ precision_ametralladora: 0.8
 precision_canion: 0.8
 balas_por_rafaga_ametralladora: 5
 balas_gastadas_lanzacohetes: 5
-distancia_explosion_cohete: 10
+distancia_explosion_cohete: 5
 rango_de_disparo: 30    # grados
 baja_de_precision_por_distancia: 0.01
 maximo_danio: 10

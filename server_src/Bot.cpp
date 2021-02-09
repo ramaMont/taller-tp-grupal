@@ -15,7 +15,7 @@ enum MapSpot{
 	Door
 };
 
-
+// Chequea que lua no haya fallado, en ese caso lanza un error
 void checkLua(lua_State *L, int r){
 	if (r != LUA_OK){
 		std::string errormsg = lua_tostring(L, -1);

@@ -56,7 +56,6 @@ void Character::setInitialPosition(Coordinates initial_position){
 }
 
 void Character::resurrect(){
-	//TODO: Resetear vida y demas atributos
     posicion = initial_position;
     direction = initial_direction;
 	map.addPositionable(this, this->initial_position);

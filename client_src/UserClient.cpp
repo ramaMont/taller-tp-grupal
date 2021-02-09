@@ -17,35 +17,12 @@ UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model,int &_wi
 
 // Hacer todo para empezar a jugar la partida.
 void UserClient::play(){
-    gameLoop();
-    endGame();
+    Screen &screen(_game_model.getScreen());
+    gameLoop(screen);
+    endGame(screen);
 }
 
-void UserClient::endGame(){
-    printf("TOY EN EL ENDGAME WACHINNNNN\n");
-
-    int position = 1;
-    if (_winner_id != -1){
-        std::cout << "The winner is Player ID: " << _winner_id << std::endl;
-    } else {
-        std::cout << "TIME IS OVER\n";
-    }
-    for (auto& player : _ordered_players_kills){
-        std::cout << "Position " << position << " Player_ID: " << player.second << " Kills: " << player.first << std::endl;
-        ++position;
-    }
-    position = 1;
-    for (auto& player : _ordered_players_points){
-        std::cout << "Position " << position << " Player_ID: " << player.second << " Points: " << player.first << std::endl;
-        ++position;
-    }
-    position = 1;
-    for (auto& player : _ordered_players_bullets){
-        std::cout << "Position " << position << " Player_ID: " << player.second << " Bullets: " << player.first << std::endl;
-        ++position;
-    }
-
-    Screen screen(_game_model.getScreen());
+void UserClient::endGame(Screen& screen){
 
     bool player_won = (_game_model.getPlayer().getId() == _winner_id);
 
@@ -151,9 +128,8 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol
     }
 }
 
-void UserClient::gameLoop(){
+void UserClient::gameLoop(Screen& screen){
     _game_model.showWindow();
-    Screen screen(_game_model.getScreen());
     int id = th_sender.getId();
     Protocol protocol(id);
     SDL_Event event;

@@ -32,10 +32,9 @@ void Door::remove(){
 
 void Door::setState(State new_state){
 	state = new_state;
-	//Tirar excepciones si no es ninguno de los estados admisibles? nah, cambiar x enum
 }
 
-void Door::updateFrame(){ //Me tardo 20 frames en abrirla
+void Door::updateFrame(){ //Me tardo 20 frames en abrirla (aprox, me llega el protocolo del servidor)
 	if(state==opening or state ==open){
 		if(current_frame<CANT_FRAMES_ANIMATION)
 			current_frame++;

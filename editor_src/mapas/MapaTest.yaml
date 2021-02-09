@@ -1,6 +1,6 @@
-nombre: MapaTest
-filas: 10
-columnas: 10
+name: MapaTest
+rows: 10
+columns: 10
 elementos:
   pos_0_0: pared
   pos_0_1: pared
