@@ -90,6 +90,8 @@ void LoginWindow::crearLogInScreen() {
 
 void LoginWindow::login() {
     if (!validarCampos()) return;
+    std::string msg = "Tu ID: " + std::to_string(_user_id);
+    labelId->setText(QString::fromStdString(msg));
     loginScreen->hide();
     partidaScreen->show();
 }
@@ -113,10 +115,9 @@ void LoginWindow::crearPartidaScreen() {
     botonUnirse->setText("Unirse a Partida");
     botonUnirse->setObjectName(QStringLiteral("botonUnirse"));
 
-    QLabel* labelId = new QLabel(partidaScreen);
-    std::string msg = "Tu ID: " + std::to_string(_user_id);
-    labelId->setText(QString::fromStdString(msg));
+    labelId = new QLabel(partidaScreen);
     labelId->setStyleSheet("background-color: brown;");
+    labelId->setFixedWidth(25);
 
     hlayout->addWidget(labelId);
     hlayout->addWidget(botonCrear);

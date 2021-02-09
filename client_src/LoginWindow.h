@@ -43,6 +43,7 @@ private:
     QBoxLayout* layout;
     QWidget* loginScreen;
     QWidget* partidaScreen;
+    QLabel* labelId;
     ClientHolder& client_holder;
     int _user_id;
 };
