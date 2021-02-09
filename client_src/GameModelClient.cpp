@@ -166,10 +166,9 @@ void GameModelClient::initMap(std::string map_filename){
 }
 
 void GameModelClient::cleanDirections(){
-    /*for (auto it = directions.begin(); it != directions.end(); ++it){
-        Direccion* dir = it->second;
-        delete(dir);
-    }*/
+    for (auto& dir : directions){
+        delete(dir.second);
+    }
 }
 
 void GameModelClient::processMove(Protocol& protocol){
@@ -618,4 +617,5 @@ void GameModelClient::waitForAction(Protocol::action desired_action){
 }
 
 GameModelClient::~GameModelClient(){
+    cleanDirections();
 }

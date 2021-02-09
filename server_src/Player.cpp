@@ -124,7 +124,10 @@ double Player::calculateDistance(const Coordinates& posicion){
 }
 
 bool Player::hurt(int damage){
-	health = std::max(health - damage, 0);
+    if (this->health <= 0){
+        return false;
+    }
+    this->health = std::max(health - damage, 0);
 	Protocol protocol(player_id, health, Protocol::action::SHOOTED);
 	_game_model_queue.push(protocol);
 	if (health <= 0){

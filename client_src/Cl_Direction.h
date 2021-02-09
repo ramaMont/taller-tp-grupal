@@ -7,48 +7,49 @@ class Character;
 class Direction{
 public:
     virtual Coordinates move(Character* character, Coordinates direction) = 0;
+    virtual  ~Direction() {};
 };
 
-class DirAhead : public Direction{
+class DirAhead final : public Direction{
 public:
     DirAhead();
     virtual Coordinates move(Character* character, Coordinates direction) override;
-    ~DirAhead();
+    virtual  ~DirAhead() override;
 };
 
-class DirBehind : public Direction{
+class DirBehind final : public Direction{
 public:
     DirBehind();
     virtual Coordinates move(Character* character, Coordinates direction) override;
-    ~DirBehind();
+    virtual  ~DirBehind() override;
 };
 
-class DirLeft : public Direction{
+class DirLeft final : public Direction{
 public:
     DirLeft();
     virtual Coordinates move(Character* character, Coordinates direction) override;
-    ~DirLeft();
+    virtual  ~DirLeft() override;
 };
 
-class DirRight : public Direction{
+class DirRight final : public Direction{
 public:
     DirRight();
     virtual Coordinates move(Character* character, Coordinates direction) override;
-    ~DirRight();
+    virtual  ~DirRight() override;
 };
 
-class DirRotRight : public Direction{
+class DirRotRight final : public Direction{
 public:
     DirRotRight();
     virtual Coordinates move(Character* character, Coordinates direction) override;
-    ~DirRotRight();
+    virtual  ~DirRotRight() override;
 };
 
-class DirRotLeft : public Direction{
+class DirRotLeft final : public Direction{
 public:
     DirRotLeft();
     virtual Coordinates move(Character* character, Coordinates direction) override;
-    ~DirRotLeft();
+    virtual  ~DirRotLeft() override;
 };
 
 #endif
