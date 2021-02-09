@@ -99,7 +99,8 @@ void Rocket::move(ThGameModelServer& game_model){
         return explode();
     }
     map.addPosicionable(this, posicion);
-    Protocol p(Protocol::action::MOVE_ROCKET, 0, position_aux.x, position_aux.y);
+    Protocol p(Protocol::action::MOVE_ROCKET, 0, 
+        std::floor(position_aux.x), std::floor(position_aux.y));
     game_model.echoProtocol(p);
 }
 
