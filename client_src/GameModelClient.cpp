@@ -519,9 +519,29 @@ void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con 
 }
 
 void GameModelClient::processExplosion(Protocol& protocol){
-    auto rocket_pos = rockets[0]->get_position();
-    playSound(SoundPlayer::sound_type::ROCKET_EXPLOTION, rocket_pos);
-	map.removePositionable(rockets[0]->get_position());
+	Coordinates position(protocol.getFloatPosition());
+    bool found = false;
+    unsigned int i = 0;
+    Rocket* rocket;
+    printf("posicion recibida: (%f,%f)\n",position.x,position.y );
+    while(i<rockets.size() and !found){
+        rocket = rockets[i];
+        printf("posicion de mi rockett: (%f,%f)\n",rocket->getPosicion().x,rocket->getPosicion().y );
+        //printf("Pero en realidad está en: (%f,%f)\n",rocket->getPosicion().x,rocket->getPosicion().y );
+        if(position==rocket->getPosicion()){
+          printf("aa\n");
+          found = true;
+          playSound(SoundPlayer::sound_type::ROCKET_EXPLOTION, rocket);
+          map.removePositionable(position);
+          rockets.erase(rockets.begin() + i);
+          //printf("le cambie la posicion, ahora es: (%f,%f)\n\n",rocket->getPosicion().x,rocket->getPosicion().y);
+        }
+        i++;
+    }
+
+
+    //auto rocket_pos = rockets[0]->get_position();
+	//map.removePositionable(rockets[0]->get_position());
 }
 
 void GameModelClient::processKey(Protocol& protocol){
