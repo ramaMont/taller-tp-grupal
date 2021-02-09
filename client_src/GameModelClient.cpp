@@ -510,7 +510,13 @@ void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con 
         i++;
       }
   }else{ //Creo el misil
-      Rocket* rocket = new Rocket(position,player.getDirection() ,map, player);
+      Coordinates direction;
+      if (protagonist_id == protocol.getId()){
+          direction = player.getDirection();
+      } else {
+          direction =characters[protocol.getId()]->getDirection();
+      }
+      Rocket* rocket = new Rocket(position, direction, map, player);
       rocket->set_texture(&texture);
       rockets.push_back(rocket);
       map.addPositionable(rocket,position);  

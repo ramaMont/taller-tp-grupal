@@ -7,6 +7,7 @@ class Mapa;
 #include <iostream>
 
 #define STEP 1
+#define DECIMALS 100
 
 // Passage
 
@@ -68,6 +69,11 @@ bool KeyDoor::open(Player *player){
 }
 	
     
+float roundTwoDecimals(double x){
+    return (std::floor(x * DECIMALS)) / DECIMALS;
+}
+
+
 // Rocket
 
 Rocket::Rocket(Coordinates position, Coordinates dir,
@@ -76,16 +82,20 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
     Object(position), direction(dir), player(player), enemies(enemies),
     map(player->getMap()){
     exploded = false;
+    Coordinates position_aux = posicion;
     posicion.increment_on_direction(direction, 1.1);
     try {
         map.addPosicionable(this, posicion);
     } catch (...) {
-        Protocol protocol(Protocol::action::EXPLOSION, 0, posicion.x, posicion.y);
+        Protocol protocol(Protocol::action::EXPLOSION, player->getId(), 
+            position_aux.x, position_aux.y);
         game_model.echoProtocol(protocol);
         explode();
         return;
     }
-    Protocol protocol(Protocol::action::ROCKET, 0, posicion.x, posicion.y);
+    posicion.x = roundTwoDecimals(posicion.x);
+    posicion.y = roundTwoDecimals(posicion.y);
+    Protocol protocol(Protocol::action::ROCKET, player->getId(), posicion.x, posicion.y);
     game_model.echoProtocol(protocol);
 }
 
@@ -94,13 +104,13 @@ void Rocket::move(ThGameModelServer& game_model){
     Coordinates position_aux = posicion;
     posicion.increment_on_direction(direction, ROCKET_STEP);
     if (map.obstacleIn(posicion) || map.playerIn(posicion)){
-        Protocol protocol(Protocol::action::EXPLOSION, 0, 
+        Protocol protocol(Protocol::action::EXPLOSION, player->getId(), 
             std::floor(position_aux.x), std::floor(position_aux.y));
         game_model.echoProtocol(protocol);
         return explode();
     }
     map.addPosicionable(this, posicion);
-    Protocol p(Protocol::action::MOVE_ROCKET, 0, 
+    Protocol p(Protocol::action::MOVE_ROCKET, player->getId(), 
         std::floor(position_aux.x), std::floor(position_aux.y));
     game_model.echoProtocol(p);
 }
