@@ -29,7 +29,13 @@ void UserClient::endGame(Screen& screen){
     screen.showEndgame(player_won,_winner_id, game_done, _ordered_players_kills,_ordered_players_points,_ordered_players_bullets);
     SDL_Event event;
     game_done = false;
+    const Uint8 *keys = SDL_GetKeyboardState(NULL);
     while(!game_done){
+
+        if(keys[SDL_SCANCODE_ESCAPE]){
+            game_done = SDL_TRUE;
+        }
+
         while (SDL_PollEvent(&event)) { 
             switch(event.type) {
                 case SDL_QUIT: {
@@ -117,6 +123,10 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(4);
         th_sender.push(protocol);
+    }
+
+    if(keys[SDL_SCANCODE_ESCAPE]){
+        game_done = SDL_TRUE;
     }
 
     while (SDL_PollEvent(&event)) { 
