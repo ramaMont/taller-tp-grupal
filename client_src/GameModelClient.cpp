@@ -519,6 +519,8 @@ void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con 
 }
 
 void GameModelClient::processExplosion(Protocol& protocol){
+    auto rocket_pos = rockets[0]->get_position();
+    playSound(SoundPlayer::sound_type::ROCKET_EXPLOTION, rocket_pos);
 	map.removePositionable(rockets[0]->get_position());
 }
 
