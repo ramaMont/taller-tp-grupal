@@ -39,6 +39,9 @@
 
 class GameModelClient {
 private:
+        WallGreystone wallGreystone;
+        std::vector<WallGreystone> wallsGreystone;
+
     Window window;	
     Texture texture;
     ClMap map; 	
@@ -51,6 +54,7 @@ private:
     Screen screen;
     int protagonist_id;
 
+    std::vector<Wall*> walls;
     std::vector<Door*> doors;
     std::vector<SpriteHolder*> sprites;
     std::vector<Enemy*> enemies;

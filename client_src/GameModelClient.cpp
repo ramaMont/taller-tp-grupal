@@ -9,6 +9,7 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,\
             int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
     std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
     std::vector<std::pair<int,int>> &_ordered_players_bullets) : 
+    	wallGreystone(Coordinates(7,7)),
         window(640,480,320,200) ,
         texture(window), map(), 
         added_player(false),player(map),
@@ -53,6 +54,19 @@ void GameModelClient::initMap(std::string map_filename){
     map.resize(ancho, alto);
     YAML::Node map_elements = map_node["elementos"];
     std::string position="pos_";
+
+
+    /*wallGreystone.set_texture(&texture);
+    map.addPositionable(&wallGreystone,Coordinates(7,7));
+
+    wallsGreystone.push_back(WallGreystone(Coordinates(7,8)));
+    wallsGreystone[0].set_texture(&texture);
+    map.addPositionable(&wallsGreystone[0],Coordinates(7,8));
+
+    wallsGreystone.push_back(WallGreystone(Coordinates(7,9)));
+    wallsGreystone[1].set_texture(&texture);
+    map.addPositionable(&wallsGreystone[1],Coordinates(7,9));*/
+
     for (int i=0; i<alto; i++){
         for (int j=0; j<ancho; j++){
             std::string actual_position = position + std::to_string(i) + "_" +
@@ -60,32 +74,39 @@ void GameModelClient::initMap(std::string map_filename){
             std::string elemento = map_elements[actual_position].as<std::string>();
             Coordinates position((float)i,(float)j);
             if (elemento == "wall_greystone"){
-                  Posicionable *posicionable = new WallGreystone(position);
+                  Wall *posicionable = new WallGreystone(position);
                   posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
                   map.addPositionable(posicionable,position);   
             }else if (elemento == "wall_bluestone"){
-                  Posicionable *posicionable = new WallBluestone(position);
+                  Wall *posicionable = new WallBluestone(position);
                   posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
                   map.addPositionable(posicionable,position);   
             }else if (elemento == "wall_colorstone"){
-                  Posicionable *posicionable = new WallColorstone(position);
+                  Wall *posicionable = new WallColorstone(position);
                   posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
                   map.addPositionable(posicionable,position);   
             }else if (elemento == "wall_pruplestone"){
-                  Posicionable *posicionable = new WallPurplestone(position);
+                  Wall *posicionable = new WallPurplestone(position);
                   posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
                   map.addPositionable(posicionable,position);   
             }else if (elemento == "wall_redbrick"){
-                  Posicionable *posicionable = new WallRedbrick(position);
+                  Wall *posicionable = new WallRedbrick(position);
                   posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
                   map.addPositionable(posicionable,position);   
             }else if (elemento == "wall_wood"){
-                  Posicionable *posicionable = new WallWood(position);
+                  Wall *posicionable = new WallWood(position);
                   posicionable->set_texture(&texture);
+                  walls.push_back(posicionable);
                   map.addPositionable(posicionable,position);   
             }else if (elemento == "passage"){
-                Posicionable *posicionable = new WallEagle(position);
+                Wall *posicionable = new WallEagle(position);
                 posicionable->set_texture(&texture);
+                walls.push_back(posicionable);
                 map.addPositionable(posicionable,position);  
             }else if (elemento == "door"){
                 Door *posicionable = new Door(position);
@@ -644,6 +665,12 @@ void GameModelClient::waitForAction(Protocol::action desired_action){
     }
 }
 
+
 GameModelClient::~GameModelClient(){
     cleanDirections();
+
+	for(auto& wall : walls){
+		delete wall;
+	}
+
 }

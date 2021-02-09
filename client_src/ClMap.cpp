@@ -97,12 +97,4 @@ void ClMap::resize(int ancho, int alto){
 
 //Problema: intento borrar tambien la position donde almaceno el jugador..."solucion": lo saco manualmente...
 ClMap::~ClMap(){
-    removePositionable(player->get_position());//Ojo si el jugador esta sobre un sprite y borro todo así
-    for(int i=0; i<alto; i++){
-         for(int j=0; j<ancho; j++){
-            if(mapGame[i][j]!=nullptr){
-                delete mapGame[i][j];
-            }
-        }   
-    }
 }
