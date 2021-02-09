@@ -80,7 +80,7 @@ void Player::updateShots(){
 
 void Player::draw(){
     float portion_health =  ((float)health*8.0)/(float)max_health ; //Cual de las 8 caras muestro en la barra de vida
-    texture_drawer->showLifeBar(score, lives,health, ceil(portion_health), ammo, has_key_1, has_key_2);
+    texture_drawer->showLifeBar(id, score, lives,health, ceil(portion_health), ammo, has_key_1, has_key_2);
     gun_type->callDrawer(current_shoot_frame);
 }
 
