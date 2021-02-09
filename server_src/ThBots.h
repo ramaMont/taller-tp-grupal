@@ -18,6 +18,7 @@ class ThBots : public Thread{
     ThGameModelServer* th_game_model;
     const Mapa& map;
 
+    // Envia el protocolo del evento
     void makeEvent(int player_id, Bot::Event event);
     
     public:
@@ -26,8 +27,14 @@ class ThBots : public Thread{
                     std::map<int,Player*>& players,
                     const Mapa& map,
                     int number_of_bots);
+    
+    // Procesa los bots y sus eventos
     virtual void run() override;
+    
+    // Agrega los bots y sus correspondientes jugadores
     void addBots();
+    
+    // Para el hilo
     virtual void stop() override;
     ~ThBots();
 };

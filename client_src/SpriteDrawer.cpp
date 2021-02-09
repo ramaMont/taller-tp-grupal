@@ -34,7 +34,7 @@ void SpriteDrawer::setDistance(int half_pixels,Coordinates camera_plane){
 	if(player_distance<0.5)
 		player_distance=0.5;
 	//360 si tengo 640 de resolucion, 180 si tengo 320-> resolucion/2?
-	cant_rays = half_pixels/player_distance; //La cantidad de rayos es irrelevante al tema de la "vibracion" de los sprites
+	cant_rays = half_pixels/player_distance;
 }
 
 void SpriteDrawer::spottedSprite(){

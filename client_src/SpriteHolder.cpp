@@ -20,6 +20,10 @@ void SpriteHolder::colisioned(Ray* ray,Coordinates coordinates_map,bool first_tr
     ray->spriteColided(coordinates_map);
 }    
 
+
+/*Puedo realizar este casteo porque si estoy en este
+ metodo, fui tocado por un rayo, por lo que no almaceno 
+ al Jugador, y sí a un enemigo, o un misil*/
 void SpriteHolder::spotted(){
     spottedSprite();
     if(character!=nullptr and player.get_position()!=posicion){

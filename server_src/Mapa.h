@@ -31,28 +31,66 @@ private:
 public:
     explicit Mapa(std::string map_filename);
     explicit Mapa(int alto, int ancho);
+    
+    // Agrega un jugador al mapa
     void addPlayer(Player* player);
+    
+    // Reestablece al jugador en su posicion
     void respawnPlayer(Player* player);
+    
+    // Agrga un objeto en la posicion indicada
     void addPosicionable(Posicionable* posicionable, Coordinates posicion);
+    
+    // Agrega un item al mapa
     void addItem(Item* item, Coordinates posicion);
+    
+    // Agrega un pasaje al mapa
     void addPassage(Object* passage);
+    
+    // Elimina el ultimo objeto agregado el la posicion del mapa
     void removePosicionable(const Coordinates& posicion);
+    
+    // Elimina el item de la posicion
     void removeItem(const Coordinates& posicion);
+    
+    // Elimina el pasaje de la posicion
     void removePassage(const Coordinates& position);
+    
+    // Retorna el ultimo posicionable agregado en la posicion
     Posicionable* getPosicionableIn(Coordinates posicion) const;
+    
+    // Retorna el pasaje mas cercano a la posicion
     Object* getNearestPassage(Coordinates& position);
-    Door* getDoor(Coordinates& position);    
+    
+    // Retorna la puerta ubicada en la posicion 
+    Door* getDoor(Coordinates& position);
+    
+    // Mueve al jugador de una posicion del mapa a otra
     void moveme(Player* player, const Coordinates& posicion);
+    
 //    Mapa(const Mapa&) = delete;
     Mapa(Mapa&& other);
 //    Mapa& operator=(const Mapa&) = delete;
     Mapa& operator=(Mapa&& other);
     
+    // Retorna la posicion vacia del mapa mas cercana a 'posicion'
     Coordinates getEmptyPosition(const Coordinates& posicion);
+    
+    // Retorna true si en la posicion hay un objeto que impida cruzarlo
     bool obstacleIn(const Coordinates& posicion) const;
+    
+    // Retorna true si en la posicion hay un jugador
     bool playerIn(const Coordinates& posicion) const;
+    
+    // Retorna true si en la posicion hay una puerta
+    
+    // Retorna true si en la posicion x,y hay una puerta
     bool doorIn(float x, float y) const;
+    
+    // Retorna el alto del mapa
     int getAlto() const;
+    
+    // Retorna el ancho del mapa
     int getAncho() const;
     ~Mapa();
 };

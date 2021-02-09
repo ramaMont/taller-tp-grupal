@@ -27,7 +27,7 @@ private:
     SDL_Texture* ending_background;
     int height;
     int width;
-    SDL_Rect imgPartRect;
+    SDL_Rect showableTexture;
     int x_lenght_ray; //Prox: ancho pixel: ancho_pantalla/cant_pixeles_x
 
     TTF_Font* wolfensteinFont;
@@ -79,7 +79,7 @@ private:
     void showWall(SDL_Texture* texture,int x_pixel,float distance_player_plane, int number_line_texture);
 
     //configura los parametros y llama al generic_show para graficar la parte visible del enemigo
-    void showEnemy(SDL_Texture* texture, int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture);
+    void showEnemy(int num_enemy,int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
 
     void showFaceHealth(int portion_health);
     
@@ -87,6 +87,8 @@ private:
 
     void showRanking(std::vector<std::pair<int,int>> &ordered_players_kills, \
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
+
+    void destoyVectorTextures(std::vector<SDL_Texture*> &texture_vector);
 
 public:
 

@@ -19,21 +19,33 @@ class Object: public Posicionable {
 class Passage: public Object {
 	public:
 	Passage(Coordinates coordinates);
+    
+    // Retorna true si el jugador puede abrir el pasadizo, sino false
 	bool open(Player *player);
 };
 
 
 class Door: public Object {
 	private:
-	bool has_event;
+	bool has_event; 
 	std::atomic<bool> reopen;
 	
 	public:
 	Door(Coordinates coordinates);
+    
+    // Retorna true si el jugador puede abir la puerta
 	virtual bool open(Player *player);
+    
+    // Retorna true si el jugador puede abrir la puerta
 	bool openDoor(Player *player);
+    
+    // Retorna true en caso de que un jugador haya vuelto a abrir la puerta
 	std::atomic<bool>& getReopen();
+    
+    // Abre la puerta, permite a los jugadores pasarla
 	void letPass();
+    
+    // Cierra la puerta
 	void close();
 };
 
@@ -44,6 +56,8 @@ class KeyDoor: public Door {
 	
 	public:
 	KeyDoor(Coordinates coordinates): Door(coordinates) { }
+    
+    // Retorna true si el jugador puede abir la puerta
 	bool open(Player *player) override;
 };
 
@@ -59,10 +73,20 @@ class Rocket: public Object{
     public:
     Rocket(Coordinates position, Coordinates dir,Player* player,
         std::map<int, Player*>& enemies, ThGameModelServer& game_model);
+        
+    // Mueve el cohete hacia adelante
     void move(ThGameModelServer& game_model);
+    
+    // Hace explotar el cohete
     void explode();
+    
+    // Retorna true en caso de que haya explotado el cohete
     bool hasExploded();
+    
+    // Retorna true si hay un objeto entre las posiciones start y end del mapa
     bool crashes(const Coordinates& start, const Coordinates& end);
+    
+    // Retorna su direccion
     Coordinates getDirection();
     ~Rocket();
 };

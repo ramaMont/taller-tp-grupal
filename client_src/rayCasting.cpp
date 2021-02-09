@@ -15,7 +15,6 @@ Raycasting::Raycasting(Player &a_player,ClMap &a_map, int n_rays)
 
 void Raycasting::calculateRayCasting(Camera &camera,std::vector<float> &distances){
 
-	//Desactivo todos los sprites que fueron vistos el anterior frame
     Coordinates player_position = player.get_position();
     Coordinates player_direction = player.getDirection();
 	for(int i=-n_rays; i<=n_rays; i++){

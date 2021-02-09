@@ -39,6 +39,9 @@
 
 class GameModelClient {
 private:
+        WallGreystone wallGreystone;
+        std::vector<WallGreystone> wallsGreystone;
+
     Window window;	
     Texture texture;
     ClMap map; 	
@@ -51,6 +54,7 @@ private:
     Screen screen;
     int protagonist_id;
 
+    std::vector<Wall*> walls;
     std::vector<Door*> doors;
     std::vector<SpriteHolder*> sprites;
     std::vector<Enemy*> enemies;
@@ -65,6 +69,8 @@ private:
     std::vector<std::pair<int,int>> &_ordered_players_kills;
     std::vector<std::pair<int,int>> &_ordered_players_points;
     std::vector<std::pair<int,int>> &_ordered_players_bullets;
+
+    void addWall(std::string type, Coordinates position);
 
     void updateEvent();
     void move(int player_id);

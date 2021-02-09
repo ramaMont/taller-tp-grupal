@@ -176,17 +176,12 @@ Texture::Texture(const Window& window):
 	addEndingBackground();
 
 	this->x_lenght_ray = ceil((float)this->width/(window.getResolutionWidth()));//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
-
-
 	if (TTF_Init() < 0) {
 	    printf("error inicializacionnnn\n");
 	}
-
-
-	this->wolfensteinFont = TTF_OpenFont("../data/wolfenstein_font.ttf", 24); //this opens a font style and sets a size
-
+	this->wolfensteinFont = TTF_OpenFont("../data/wolfenstein_font.ttf", 24);
 	if(!wolfensteinFont){
-		printf("no encuentro la fooont\n");
+		printf("Font no encontrada\n");
 	}
 }
 
@@ -256,10 +251,10 @@ void Texture::showKeys(bool has_key_1, bool has_key_2){
 }
 
 void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_health, int ammo, bool has_key_1, bool has_key_2){
-		imgPartRect.x = 0; //Desde qué pixel en X quiero
-		imgPartRect.y = 0;	//Desde qué pixel en Y quiero
-		imgPartRect.w = 1097; //Cantidad de pixeles en X que tomo
-		imgPartRect.h = 127; //Cantidad de pixeles en Y que tomo
+		showableTexture.x = 0; //Desde qué pixel en X quiero
+		showableTexture.y = 0;	//Desde qué pixel en Y quiero
+		showableTexture.w = 1097; //Cantidad de pixeles en X que tomo
+		showableTexture.h = 127; //Cantidad de pixeles en Y que tomo
 
 	    const SDL_Rect sdlDst = {
 	        0, //Posicion inicial de X donde voy a mostrar el pixel
@@ -267,7 +262,7 @@ void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_
 	        width, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
 	        112//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
 	    };   
-	    SDL_RenderCopy(this->renderer, life_bar, &imgPartRect, &sdlDst);	
+	    SDL_RenderCopy(this->renderer, life_bar, &showableTexture, &sdlDst);	
 
 	    showText( white, std::to_string(score).c_str(),20,80,170,height+35);
 	    showText( white, std::to_string(lives).c_str(),40,80,250,height+35);	    
@@ -405,163 +400,65 @@ void Texture::showRocketLauncher(int frame_gun){
 void Texture::genericShow(SDL_Texture* texture, int first_x_pixel, int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\
 		int windows_x_pos, int length_x, int windows_y_pos, int length_y){
 
-		imgPartRect.x = first_x_pixel; //Desde qué pixel en X quiero
-		imgPartRect.w = cant_x_pixels; //Cantidad de pixeles en X que tomo
-		imgPartRect.y = first_y_pixel;	//Desde qué pixel en Y quiero
-		imgPartRect.h = cant_y_pixel; //Cantidad de pixeles en Y que tomo
+		showableTexture.x = first_x_pixel; //Desde qué pixel en X quiero
+		showableTexture.w = cant_x_pixels; //Cantidad de pixeles en X que tomo
+		showableTexture.y = first_y_pixel;	//Desde qué pixel en Y quiero
+		showableTexture.h = cant_y_pixel; //Cantidad de pixeles en Y que tomo
 	     const SDL_Rect sdlDst = {
 	        windows_x_pos, //Posicion inicial de X donde voy a mostrar el pixel
 	        windows_y_pos, //Posicion inicial de Y donde voy a mostrar el pixel
 	        length_x, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
 	        length_y//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
 	    };     
-	    SDL_RenderCopy(this->renderer, texture, &imgPartRect, &sdlDst);
+	    SDL_RenderCopy(this->renderer, texture, &showableTexture, &sdlDst);
 
 }
 
-void Texture::showEnemy(SDL_Texture* texture, int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
+void Texture::showEnemy(int num_enemy,int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
+	sortValues(first_x_pixel,last_x_pixel);
+	sortValues(first_number_line_texture,last_number_line_texture);
+
+
 	float lineHeight = (this->height / distance_player_plane);
-	int initial_position_y =  -lineHeight/2 + this->height/2;
+	int initial_position_y =  -lineHeight/2 + height/2;
 	float pixel_length = lineHeight/64;
-	int x_initial_pos = x_lenght_ray*x_pixel;
+	int x_initial_pos = x_lenght_ray*first_x_pixel;
 	int height_ray = (int)ceil((pixel_length)*64);
 
 
-	int first_x_pixel = 65*state + number_line_texture;
-	int cant_x_pixels = 1;
-	int first_y_pixel = frame*65;
-	int cant_y_pixels = 64;
+	int first_x_pixel_ = 65*frame + first_number_line_texture;
+	int cant_x_pixels_ = last_number_line_texture - first_number_line_texture;
+	int first_y_pixel_ = state*65;
+	int cant_y_pixels_ = 64;
 
-	int windows_x_pos = x_initial_pos;
-	int windows_y_pos = initial_position_y;
-	int length_x = x_lenght_ray;
-	int lenght_y = height_ray;
+	genericShow(this->enemies[num_enemy],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
+		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 
-	genericShow(texture,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
+	if(shooting)
+		genericShow(this->shooting_effect[num_enemy],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
+		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 }
 
 
 void Texture::showGuard(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
-	sortValues(first_x_pixel,last_x_pixel);
-	sortValues(first_number_line_texture,last_number_line_texture);
-
-
-	float lineHeight = (this->height / distance_player_plane);
-	int initial_position_y =  -lineHeight/2 + height/2;
-	float pixel_length = lineHeight/64;
-	int x_initial_pos = x_lenght_ray*first_x_pixel;
-	int height_ray = (int)ceil((pixel_length)*64);
-
-
-	int first_x_pixel_ = 65*frame + first_number_line_texture;
-	int cant_x_pixels_ = last_number_line_texture - first_number_line_texture;
-	int first_y_pixel_ = state*65;
-	int cant_y_pixels_ = 64;
-
-	genericShow(this->enemies[0],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
-		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
-
-	//if(is_shooting)
-	//	showEnemy(this->shooting_effect[0],state,0,x_pixel,distance_player_plane, number_line_texture);
+	showEnemy(0,first_x_pixel,first_number_line_texture,last_x_pixel,last_number_line_texture,distance_player_plane,frame,state,shooting);
 }
 
 void Texture::showOfficer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
-	sortValues(first_x_pixel,last_x_pixel);
-	sortValues(first_number_line_texture,last_number_line_texture);
-
-
-	float lineHeight = (this->height / distance_player_plane);
-	int initial_position_y =  -lineHeight/2 + height/2;
-	float pixel_length = lineHeight/64;
-	int x_initial_pos = x_lenght_ray*first_x_pixel;
-	int height_ray = (int)ceil((pixel_length)*64);
-
-
-	int first_x_pixel_ = 65*frame + first_number_line_texture;
-	int cant_x_pixels_ = last_number_line_texture - first_number_line_texture;
-	int first_y_pixel_ = state*65;
-	int cant_y_pixels_ = 64;
-
-	genericShow(this->enemies[1],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
-		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
-
-
-
-//	if(is_shooting)
-//		showEnemy(this->shooting_effect[1],state,0,x_pixel,distance_player_plane, number_line_texture);
+	showEnemy(1,first_x_pixel,first_number_line_texture,last_x_pixel,last_number_line_texture,distance_player_plane,frame,state,shooting);
 }
 
 void Texture::showSs(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
-	sortValues(first_x_pixel,last_x_pixel);
-	sortValues(first_number_line_texture,last_number_line_texture);
-
-
-	float lineHeight = (this->height / distance_player_plane);
-	int initial_position_y =  -lineHeight/2 + height/2;
-	float pixel_length = lineHeight/64;
-	int x_initial_pos = x_lenght_ray*first_x_pixel;
-	int height_ray = (int)ceil((pixel_length)*64);
-
-
-	int first_x_pixel_ = 65*frame + first_number_line_texture;
-	int cant_x_pixels_ = last_number_line_texture - first_number_line_texture;
-	int first_y_pixel_ = state*65;
-	int cant_y_pixels_ = 64;
-
-	genericShow(this->enemies[2],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
-		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
-
-
-
-	//if(is_shooting)
-	//	showEnemy(this->shooting_effect[2],state,0,x_pixel,distance_player_plane, number_line_texture);
+	showEnemy(2,first_x_pixel,first_number_line_texture,last_x_pixel,last_number_line_texture,distance_player_plane,frame,state,shooting);
 }
 
 void Texture::showMutant(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
-	sortValues(first_x_pixel,last_x_pixel);
-	sortValues(first_number_line_texture,last_number_line_texture);
-
-
-	float lineHeight = (this->height / distance_player_plane);
-	int initial_position_y =  -lineHeight/2 + height/2;
-	float pixel_length = lineHeight/64;
-	int x_initial_pos = x_lenght_ray*first_x_pixel;
-	int height_ray = (int)ceil((pixel_length)*64);
-
-
-	int first_x_pixel_ = 65*frame + first_number_line_texture;
-	int cant_x_pixels_ = last_number_line_texture - first_number_line_texture;
-	int first_y_pixel_ = state*65;
-	int cant_y_pixels_ = 64;
-
-	genericShow(this->enemies[3],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
-		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
-	
-
-	//if(is_shooting)
-	//	showEnemy(this->shooting_effect[3],state,0,x_pixel,distance_player_plane, number_line_texture);
+	showEnemy(3,first_x_pixel,first_number_line_texture,last_x_pixel,last_number_line_texture,distance_player_plane,frame,state,shooting);
 }
 
 
 void Texture::showDog(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
-	sortValues(first_x_pixel,last_x_pixel);
-	sortValues(first_number_line_texture,last_number_line_texture);
-
-
-	float lineHeight = (this->height / distance_player_plane);
-	int initial_position_y =  -lineHeight/2 + height/2;
-	float pixel_length = lineHeight/64;
-	int x_initial_pos = x_lenght_ray*first_x_pixel;
-	int height_ray = (int)ceil((pixel_length)*64);
-
-
-	int first_x_pixel_ = 65*frame + first_number_line_texture;
-	int cant_x_pixels_ = last_number_line_texture - first_number_line_texture;
-	int first_y_pixel_ = state*65;
-	int cant_y_pixels_ = 64;
-
-	genericShow(this->enemies[4],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
-		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
+	showEnemy(4,first_x_pixel,first_number_line_texture,last_x_pixel,last_number_line_texture,distance_player_plane,frame,state,false);
 
 }
 
@@ -653,13 +550,13 @@ void Texture::showRanking(std::vector<std::pair<int,int>> &ordered_players_kills
 
     int position = 0;
     for (auto& player : ordered_players_kills){
-    	showText( black, std::to_string(player.second).c_str(),40 , 40, 80 , 163 + position*50);
+    	showText( black, std::to_string((int16_t)player.second).c_str(),40 , 40, 80 , 163 + position*50);
     	showText( black, std::to_string(player.first).c_str(),40 , 40, 150, 163 + position*50);
         ++position;
     }
     position = 0;
     for (auto& player : ordered_players_points){
-    	showText( black, std::to_string(player.second).c_str(),40 , 40, 280 , 163 + position*50);
+    	showText( black, std::to_string((int16_t)player.second).c_str(),40 , 40, 280 , 163 + position*50);
 
     	int points = player.first;
     	if(points>=100){ //Tiene 3 digitos
@@ -671,7 +568,7 @@ void Texture::showRanking(std::vector<std::pair<int,int>> &ordered_players_kills
     }
     position = 0;
     for (auto& player : ordered_players_bullets){
-    	showText( black, std::to_string(player.second).c_str(),40 , 40, 510 , 163 + position*50);
+    	showText( black, std::to_string((int16_t)player.second).c_str(),40 , 40, 510 , 163 + position*50);
     	int bullets = player.first;
     	if(bullets>=100){ //Tiene 3 digitos    	
 	    	showText( black, std::to_string(player.first).c_str(),25 , 40, 620, 163 + position*50);
@@ -718,7 +615,7 @@ void Texture::showLoosingScreen(int winner_id, std::vector<std::pair<int,int>> &
 	int lenght_y = height + INFO_BAR_HEIGHT;
 
 	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
-	std::string winner_letter= "Winner id: " + std::to_string(winner_id);
+	std::string winner_letter= "Winner id: " + std::to_string((int16_t)winner_id);
 	showText( black, winner_letter.c_str(),20 , 40, width/2 + 130, 40);
 
 	showRanking(ordered_players_kills,ordered_players_points,ordered_players_bullets);
@@ -729,21 +626,29 @@ void Texture::showDisconnectedScreen(){
 	showText( white, "Interrupted match",30 , 80, width/2 + 230, height/2 );	
 }
 
-Texture::~Texture() {
-	int cant_textures = wall_textures.size();
-	for(int i=0; i<cant_textures;i++){
-		SDL_DestroyTexture(wall_textures[i]);
+void Texture::destoyVectorTextures(std::vector<SDL_Texture*> &texture_vector){
+	for(auto& texture : texture_vector){
+		SDL_DestroyTexture(texture);
 	}
+}
 
-	cant_textures = sprites.size();
+Texture::~Texture() {
+	destoyVectorTextures(wall_textures);
+	destoyVectorTextures(enemies);
+	destoyVectorTextures(shooting_effect);
+	destoyVectorTextures(bar_guns);
+
+	int cant_textures = sprites.size();
 	for(int i=0; i<cant_textures;i++){
 		SDL_DestroyTexture(sprites[i]);
 	}
 
-	cant_textures = enemies.size();
-	for(int i=0; i<cant_textures;i++){
-		SDL_DestroyTexture(enemies[i]);
-	}	
-
+	SDL_DestroyTexture(face_health);
 	SDL_DestroyTexture(guns);
+	SDL_DestroyTexture(door);
+	SDL_DestroyTexture(life_bar);
+	SDL_DestroyTexture(key);
+	SDL_DestroyTexture(ending_background);
+
+	TTF_CloseFont(wolfensteinFont);
 }
