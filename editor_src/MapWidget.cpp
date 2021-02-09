@@ -229,7 +229,7 @@ void MapWidget::addRowFrom(int row) {
 void MapWidget::deleteRow(int row) {
     int ultima_fila = map->getRows()-1;
     if (ultima_fila < MIN_Rc) {
-        std::string message = "El minimo de rows es de "
+        std::string message = "El minimo de filas es de "
             + std::to_string(MIN_Rc);
         showWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
@@ -264,7 +264,7 @@ void MapWidget::deleteColumn(int column) {
     // Elimino todos los elementos de la celda
     int ultima_columna = map->getColumns()-1;
     if (ultima_columna < MIN_Rc) {
-        std::string message = "El minimo de columns es de "
+        std::string message = "El minimo de columnas es de "
             + std::to_string(MIN_Rc);
         showWarning(QString::fromStdString(message), QMessageBox::Warning);
         return;
@@ -306,22 +306,22 @@ void MapWidget::showOptionsMenu(QMouseEvent *event, QLabel* visual_label,
     int row = std::stoi(token);
     std::getline(ss, token, '_');
     int column = std::stoi(token);
-    contextMenu.addAction("Insertar column a la izquierda", this, [=] {
+    contextMenu.addAction("Insertar columna a la izquierda", this, [=] {
         addCoumnFrom(column);
     });
-    contextMenu.addAction("Insertar column a la derecha", this, [=] {
+    contextMenu.addAction("Insertar columna a la derecha", this, [=] {
         addCoumnFrom(column+1);
     });
-    contextMenu.addAction("Insertar row arriba", this, [=] {
+    contextMenu.addAction("Insertar fila arriba", this, [=] {
         addRowFrom(row);
     });
-    contextMenu.addAction("Insertar row abajo", this, [=] {
+    contextMenu.addAction("Insertar fila abajo", this, [=] {
         addRowFrom(row+1);
     });
-    contextMenu.addAction("Eliminar row", this, [=] {
+    contextMenu.addAction("Eliminar fila", this, [=] {
         deleteRow(row+1);
     });
-    contextMenu.addAction("Eliminar column", this, [=] {
+    contextMenu.addAction("Eliminar columna", this, [=] {
         deleteColumn(column+1);
     });
     QPoint globalPos = mapToGlobal(event->pos());

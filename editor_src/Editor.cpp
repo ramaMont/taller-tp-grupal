@@ -332,9 +332,9 @@ std::map<std::string, std::string> Editor::getResourcesMap() {
     // Decoraciones
     insertInResourcesMap(map, "m_water", "../data/textures/water.png");
     insertInResourcesMap(map, "m_barrel", "../data/textures/barrel.png");
-    insertInResourcesMap(map, "m_pillar", "../data/textures/pillar.png");
+    insertInResourcesMap(map, "m_pillar", "../data/textures/pillar_editor.png");
     insertInResourcesMap(map, "m_table", "../data/textures/table.png");
-    insertInResourcesMap(map, "m_greenlight", "../data/textures/greenlight.png");
+    insertInResourcesMap(map, "m_greenlight", "../data/textures/greenlight_editor.png");
 
     // Paredes y puertas
     insertInResourcesMap(map, "wall_bluestone", "../data/textures/wall_bluestone_editor.png");

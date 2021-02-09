@@ -94,7 +94,7 @@ void EditableMap::getElement(const std::string& position,
 void EditableMap::addCategory(std::string& element) {
     // Algunos elementos, corresponden a categorias especificas.
     std::string guns[3] = {"machine_gun", "fire_canon", "rocket_launcher"};
-    std::string mapable[5] = {"water", "barrel", "pilar", "table", "greenlight"};
+    std::string mapable[5] = {"water", "barrel", "pillar", "table", "greenlight"};
     std::string vis[2] = {"door", "key_door"};
     std::string items[5] = {"key", "medicine", "trophie", "bullets", "food"};
     if (std::find(guns, guns + 3, element) != guns + 3)
