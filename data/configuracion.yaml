@@ -41,3 +41,7 @@ puntos_copa: 50
 puntos_cofre: 100
 puntos_corona: 200
 
+#Pantalla
+fullScreen: 0
+anchoPantalla: 
+

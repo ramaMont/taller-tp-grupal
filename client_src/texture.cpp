@@ -250,7 +250,7 @@ void Texture::showKeys(bool has_key_1, bool has_key_2){
     }
 }
 
-void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_health, int ammo, bool has_key_1, bool has_key_2){
+void Texture::showLifeBar(int id, unsigned int score, int lives,int health ,int portion_health, int ammo, bool has_key_1, bool has_key_2){
 		showableTexture.x = 0; //Desde qué pixel en X quiero
 		showableTexture.y = 0;	//Desde qué pixel en Y quiero
 		showableTexture.w = 1097; //Cantidad de pixeles en X que tomo
@@ -264,6 +264,7 @@ void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_
 	    };   
 	    SDL_RenderCopy(this->renderer, life_bar, &showableTexture, &sdlDst);	
 
+		showText( white, std::to_string(id).c_str(),20,80,60,height+35);
 	    showText( white, std::to_string(score).c_str(),20,80,170,height+35);
 	    showText( white, std::to_string(lives).c_str(),40,80,250,height+35);	    
 
