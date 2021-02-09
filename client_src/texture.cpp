@@ -176,17 +176,12 @@ Texture::Texture(const Window& window):
 	addEndingBackground();
 
 	this->x_lenght_ray = ceil((float)this->width/(window.getResolutionWidth()));//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
-
-
 	if (TTF_Init() < 0) {
 	    printf("error inicializacionnnn\n");
 	}
-
-
-	this->wolfensteinFont = TTF_OpenFont("../data/wolfenstein_font.ttf", 24); //this opens a font style and sets a size
-
+	this->wolfensteinFont = TTF_OpenFont("../data/wolfenstein_font.ttf", 24);
 	if(!wolfensteinFont){
-		printf("no encuentro la fooont\n");
+		printf("Font no encontrada\n");
 	}
 }
 
@@ -256,10 +251,10 @@ void Texture::showKeys(bool has_key_1, bool has_key_2){
 }
 
 void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_health, int ammo, bool has_key_1, bool has_key_2){
-		imgPartRect.x = 0; //Desde qué pixel en X quiero
-		imgPartRect.y = 0;	//Desde qué pixel en Y quiero
-		imgPartRect.w = 1097; //Cantidad de pixeles en X que tomo
-		imgPartRect.h = 127; //Cantidad de pixeles en Y que tomo
+		showableTexture.x = 0; //Desde qué pixel en X quiero
+		showableTexture.y = 0;	//Desde qué pixel en Y quiero
+		showableTexture.w = 1097; //Cantidad de pixeles en X que tomo
+		showableTexture.h = 127; //Cantidad de pixeles en Y que tomo
 
 	    const SDL_Rect sdlDst = {
 	        0, //Posicion inicial de X donde voy a mostrar el pixel
@@ -267,7 +262,7 @@ void Texture::showLifeBar(unsigned int score, int lives,int health ,int portion_
 	        width, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
 	        112//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
 	    };   
-	    SDL_RenderCopy(this->renderer, life_bar, &imgPartRect, &sdlDst);	
+	    SDL_RenderCopy(this->renderer, life_bar, &showableTexture, &sdlDst);	
 
 	    showText( white, std::to_string(score).c_str(),20,80,170,height+35);
 	    showText( white, std::to_string(lives).c_str(),40,80,250,height+35);	    
@@ -405,17 +400,17 @@ void Texture::showRocketLauncher(int frame_gun){
 void Texture::genericShow(SDL_Texture* texture, int first_x_pixel, int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\
 		int windows_x_pos, int length_x, int windows_y_pos, int length_y){
 
-		imgPartRect.x = first_x_pixel; //Desde qué pixel en X quiero
-		imgPartRect.w = cant_x_pixels; //Cantidad de pixeles en X que tomo
-		imgPartRect.y = first_y_pixel;	//Desde qué pixel en Y quiero
-		imgPartRect.h = cant_y_pixel; //Cantidad de pixeles en Y que tomo
+		showableTexture.x = first_x_pixel; //Desde qué pixel en X quiero
+		showableTexture.w = cant_x_pixels; //Cantidad de pixeles en X que tomo
+		showableTexture.y = first_y_pixel;	//Desde qué pixel en Y quiero
+		showableTexture.h = cant_y_pixel; //Cantidad de pixeles en Y que tomo
 	     const SDL_Rect sdlDst = {
 	        windows_x_pos, //Posicion inicial de X donde voy a mostrar el pixel
 	        windows_y_pos, //Posicion inicial de Y donde voy a mostrar el pixel
 	        length_x, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
 	        length_y//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
 	    };     
-	    SDL_RenderCopy(this->renderer, texture, &imgPartRect, &sdlDst);
+	    SDL_RenderCopy(this->renderer, texture, &showableTexture, &sdlDst);
 
 }
 
@@ -729,21 +724,29 @@ void Texture::showDisconnectedScreen(){
 	showText( white, "Interrupted match",30 , 80, width/2 + 230, height/2 );	
 }
 
-Texture::~Texture() {
-	int cant_textures = wall_textures.size();
-	for(int i=0; i<cant_textures;i++){
-		SDL_DestroyTexture(wall_textures[i]);
+void Texture::destoyVectorTextures(std::vector<SDL_Texture*> &texture_vector){
+	for(auto& texture : texture_vector){
+		SDL_DestroyTexture(texture);
 	}
+}
 
-	cant_textures = sprites.size();
+Texture::~Texture() {
+	destoyVectorTextures(wall_textures);
+	destoyVectorTextures(enemies);
+	destoyVectorTextures(shooting_effect);
+	destoyVectorTextures(bar_guns);
+
+	int cant_textures = sprites.size();
 	for(int i=0; i<cant_textures;i++){
 		SDL_DestroyTexture(sprites[i]);
 	}
 
-	cant_textures = enemies.size();
-	for(int i=0; i<cant_textures;i++){
-		SDL_DestroyTexture(enemies[i]);
-	}	
-
+	SDL_DestroyTexture(face_health);
 	SDL_DestroyTexture(guns);
+	SDL_DestroyTexture(door);
+	SDL_DestroyTexture(life_bar);
+	SDL_DestroyTexture(key);
+	SDL_DestroyTexture(ending_background);
+
+	TTF_CloseFont(wolfensteinFont);
 }

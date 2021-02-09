@@ -27,7 +27,7 @@ private:
     SDL_Texture* ending_background;
     int height;
     int width;
-    SDL_Rect imgPartRect;
+    SDL_Rect showableTexture;
     int x_lenght_ray; //Prox: ancho pixel: ancho_pantalla/cant_pixeles_x
 
     TTF_Font* wolfensteinFont;
@@ -87,6 +87,8 @@ private:
 
     void showRanking(std::vector<std::pair<int,int>> &ordered_players_kills, \
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
+
+    void destoyVectorTextures(std::vector<SDL_Texture*> &texture_vector);
 
 public:
 
