@@ -27,7 +27,6 @@ public:
     explicit Editor(QWidget *parent = 0);
 
 private:
-    // Creo los widgets asignandole un padre
     QMessageBox* messageBox;
     QHBoxLayout *createMapHLayout;
     QWidget *createMapWidget;

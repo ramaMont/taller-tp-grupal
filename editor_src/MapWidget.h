@@ -22,21 +22,20 @@ class MapWidget : public QFrame
 {
  public:
     explicit MapWidget(QWidget *parent,
-                       const std::map<std::string, std::string>& mapa_recursos);
+                       const std::map<std::string, std::string>& resourcesMap);
     ~MapWidget();
-    bool hayMapaCreado();
-    void fabricarMapa(const int& flag);
+    bool createdMap();
+    void constructMap(const int& flag);
     void saveMap();
     void createNewMap(const std::string& name,
                         const int& rows, const int& columns);
-    void cargarMapaDesdeArchivo(const std::string& map_file);
-    void actualizarNombreVentana();
-    void actualizarLabelFyC();
-    void pintarParedes(QString object_name);
-    void limpiarGridYMapa();
-    void mostrarWarning(QString message, QMessageBox::Icon icon);
-    void limpiarHighlightedLabel();
-    void cleanHighlightedLabels();
+    void loadMapFromFile(const std::string& map_file);
+    void updateWindowName();
+    void updateLabelRC();
+    void paintWalls(QString object_name);
+    void cleanGridAndMap();
+    void showWarning(QString message, QMessageBox::Icon icon);
+    void cleanHighlightedLabel();
 
  protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -45,26 +44,26 @@ class MapWidget : public QFrame
     void mousePressEvent(QMouseEvent *event) override;
 
  private:
-    EditableMap* mapa;
+    EditableMap* map;
     QGridLayout* gridLayout;
-    std::map<std::string, std::string> mapa_recursos;
-    QLabel* highlighted_label;
-    QLabel* origin_label;
-    bool mapa_creado;
-    void pointAndClick(QLabel* label_visual, QLabel* label_elemento);
-    void desplegarMenuOpciones(QMouseEvent *event, QLabel* label_visual,
-                               QLabel* label_elemento);
-    void ejecutarDrag(QMouseEvent *event, QLabel* label_visual,
-                      QLabel* label_elemento);
-    void sincronizarMapaYVista();
-    void agregarColumnaAPartirDe(int columna);
-    void agregarFilaAPartirDe(int fila);
-    void eliminarFila(int fila);
-    void eliminarColumna(int fila);
-    void intercambiarLabels(const std::string& pos_1,
+    std::map<std::string, std::string> resourcesMap;
+    QLabel* highlightedLabel;
+    QLabel* originLabel;
+    bool mapCreated;
+    void pointAndClick(QLabel* visual_label, QLabel* element_label);
+    void showOptionsMenu(QMouseEvent *event, QLabel* visual_label,
+                               QLabel* element_label);
+    void executeDrag(QMouseEvent *event, QLabel* visual_label,
+                      QLabel* element_label);
+    void synchronizeMapAndView();
+    void addCoumnFrom(int column);
+    void addRowFrom(int row);
+    void deleteRow(int row);
+    void deleteColumn(int row);
+    void swapLabels(const std::string& pos_1,
                             const std::string& pos_2);
-    void crearCeldaVacia(const std::string& pos, const int& fila,
-                         const int& columna);
+    void createEmptyCell(const std::string& pos, const int& row,
+                         const int& column);
 };
 
 #endif  // MAPWIDGET_H

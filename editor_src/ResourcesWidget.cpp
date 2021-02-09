@@ -30,8 +30,8 @@ ResourcesWidget::ResourcesWidget(QWidget *parent,
 }
 
 void ResourcesWidget::mousePressEvent(QMouseEvent *event) {
-    // Obtengo el elemento clickeado
-    if (!map->hayMapaCreado()) return;
+    // Obtengo el element clickeado
+    if (!map->createdMap()) return;
 
     QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
     if (!child)
@@ -43,14 +43,14 @@ void ResourcesWidget::mousePressEvent(QMouseEvent *event) {
         // Si es click derecho y era una pared tengo que mostrar la opt de pintar bordes.
         QMenu contextMenu;
         contextMenu.addAction("Pared principal", this, [=] {
-            map->pintarParedes(object_name);
+            map->paintWalls(object_name);
         });
         QPoint globalPos = mapToGlobal(event->pos());
         contextMenu.exec(globalPos);
         return;
     }
 
-    // Preparo la data a guardar en el clipboard (imagen y elemento)
+    // Preparo la data a guardar en el clipboard (imagen y element)
     const QPixmap* pixmap = child->pixmap();
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);

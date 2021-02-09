@@ -190,9 +190,9 @@ void Editor::createNewMap() {
     QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
     QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
 
-    // Show the dialog as modal
+    // Esperar accion del usuario
     if (dialog.exec() == QDialog::Accepted) {
-        // If the user didn't dismiss the dialog, do something with the fields
+        // Si acepta
         QString nombre_qstring = lineEditNombre->text();
         nombre_qstring.replace(".", "_");
         QString filas_qstring = lineEditFilas->text();
@@ -216,14 +216,14 @@ void Editor::createNewMap() {
         try {
             mapWidget->createNewMap(nombre_map, rows, columns);
         } catch (std::exception& exc) {
-            mapWidget->mostrarWarning(QString::fromStdString(exc.what()),
+            mapWidget->showWarning(QString::fromStdString(exc.what()),
                         QMessageBox::Warning);
             //mapWidget->deleteMap();
             return;
         }
         scrollMapArea->show();
         this->setWindowTitle(nombre_qstring);
-        mapWidget->actualizarLabelFyC();
+        mapWidget->updateLabelRC();
     }
 }
 
@@ -240,11 +240,11 @@ bool Editor::showFileDialog() {
     if (!map_file.empty()) {
         // Cargo un nuevo mapa.
         try {
-            mapWidget->cargarMapaDesdeArchivo(map_file);
+            mapWidget->loadMapFromFile(map_file);
         } catch (std::exception& exc) {
-            mapWidget->mostrarWarning(QString::fromStdString(exc.what()),
+            mapWidget->showWarning(QString::fromStdString(exc.what()),
                         QMessageBox::Warning);
-            mapWidget->limpiarGridYMapa();
+            mapWidget->cleanGridAndMap();
             return false;
         }
         return true;
@@ -253,7 +253,7 @@ bool Editor::showFileDialog() {
 }
 
 void Editor::loadMapFile() {
-    if (mapWidget->hayMapaCreado()) {
+    if (mapWidget->createdMap()) {
         // Mensaje de confirmación.
         QMessageBox messageBox(QMessageBox::Question, "Alerta",
                                     "El mapa actual se limpiará. "
@@ -265,22 +265,22 @@ void Editor::loadMapFile() {
 
         if (messageBox.exec() == QMessageBox::Yes) {
             if (showFileDialog()) {
-                mapWidget->actualizarNombreVentana();
-                mapWidget->actualizarLabelFyC();
+                mapWidget->updateWindowName();
+                mapWidget->updateLabelRC();
             }
         } else {
             return;
         }
     } else {
         if (showFileDialog()) {
-            mapWidget->actualizarNombreVentana();
-            mapWidget->actualizarLabelFyC();
+            mapWidget->updateWindowName();
+            mapWidget->updateLabelRC();
         }
     }
 }
 
 void Editor::saveMap() {
-    if (!mapWidget->hayMapaCreado()) return;
+    if (!mapWidget->createdMap()) return;
     mapWidget->saveMap();
 }
 
@@ -313,23 +313,29 @@ std::map<std::string, std::string> Editor::getResourcesMap() {
     // Genero un mapa con todos los recursos.
     std::map<std::string, std::string> map;
 
+    // Aprovechando que map ordena por las keys, agrego iniciales
+    // que caracterizen el tipo de objeto.
     // Armas y jugadores.
     insertInResourcesMap(map, "player_front", "../data/textures/player_front.png");
     insertInResourcesMap(map, "player_left", "../data/textures/player_left.png");
     insertInResourcesMap(map, "player_right", "../data/textures/player_right.png");
     insertInResourcesMap(map, "player_back", "../data/textures/player_back.png");
-    insertInResourcesMap(map, "machine_gun", "../data/textures/machine_gun.png");
-    insertInResourcesMap(map, "fire_canon", "../data/textures/fire_canon.png");
-    insertInResourcesMap(map, "rocket_launcher", "../data/textures/rocket_launcher.png");
+    insertInResourcesMap(map, "g_machine_gun", "../data/textures/machine_gun.png");
+    insertInResourcesMap(map, "g_fire_canon", "../data/textures/fire_canon.png");
+    insertInResourcesMap(map, "g_rocket_launcher", "../data/textures/rocket_launcher.png");
     // Pickeables
-    insertInResourcesMap(map, "key", "../data/textures/key.png");
-    insertInResourcesMap(map, "medicine", "../data/textures/medicine.png");
-    insertInResourcesMap(map, "trophie", "../data/textures/trophie.png");
-    insertInResourcesMap(map, "bullets", "../data/textures/bullets.png");
-    insertInResourcesMap(map, "food", "../data/textures/food.png");
+    insertInResourcesMap(map, "i_key", "../data/textures/key.png");
+    insertInResourcesMap(map, "i_medicine", "../data/textures/medicine.png");
+    insertInResourcesMap(map, "i_trophie", "../data/textures/trophie.png");
+    insertInResourcesMap(map, "i_bullets", "../data/textures/bullets.png");
+    insertInResourcesMap(map, "i_food", "../data/textures/food.png");
     // Decoraciones
-    insertInResourcesMap(map, "water", "../data/textures/water.png");
-    insertInResourcesMap(map, "barrel", "../data/textures/barrel.png");
+    insertInResourcesMap(map, "m_water", "../data/textures/water.png");
+    insertInResourcesMap(map, "m_barrel", "../data/textures/barrel.png");
+    insertInResourcesMap(map, "m_pillar", "../data/textures/pillar.png");
+    insertInResourcesMap(map, "m_table", "../data/textures/table.png");
+    insertInResourcesMap(map, "m_greenlight", "../data/textures/greenlight.png");
+
     // Paredes y puertas
     insertInResourcesMap(map, "wall_bluestone", "../data/textures/wall_bluestone_editor.png");
     insertInResourcesMap(map, "wall_greystone", "../data/textures/wall_greystone_editor.png");
@@ -341,11 +347,8 @@ std::map<std::string, std::string> Editor::getResourcesMap() {
     insertInResourcesMap(map, "passage_greystone", "../data/textures/passage_greystone.png");
     insertInResourcesMap(map, "passage_purplestone", "../data/textures/passage_purplestone.png");
     insertInResourcesMap(map, "passage_redbrick", "../data/textures/passage_redbrick.png");
-    insertInResourcesMap(map, "door", "../data/textures/door_editor.png");
-    insertInResourcesMap(map, "key_door", "../data/textures/key_door.png");
-    insertInResourcesMap(map, "pillar", "../data/textures/pillar.png");
-    insertInResourcesMap(map, "table", "../data/textures/table.png");
-    insertInResourcesMap(map, "greenlight", "../data/textures/greenlight.png");
+    insertInResourcesMap(map, "v_door", "../data/textures/door_editor.png");
+    insertInResourcesMap(map, "v_key_door", "../data/textures/key_door.png");
     return map;
 }
 
@@ -356,8 +359,8 @@ void Editor::insertInResourcesMap(std::map<std::string, std::string>& map,
 
 bool Editor::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::MouseMove) {
-        if (mapWidget->hayMapaCreado())
-            mapWidget->limpiarHighlightedLabel();
+        if (mapWidget->createdMap())
+            mapWidget->cleanHighlightedLabel();
     }
     return false;
 }

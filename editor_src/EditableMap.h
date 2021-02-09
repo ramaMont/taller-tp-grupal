@@ -1,6 +1,6 @@
 
-#ifndef EditableMap_H
-#define EditableMap_H
+#ifndef EDITABLEMAP_H
+#define EDITABLEMAP_H
 
 #include <iostream>
 #include <string>
@@ -20,33 +20,34 @@ class EditableMap {
                  const std::string& mapfile,
                  const int& rows, const int& columns);
     ~EditableMap();
-    void iniciarNuevoMapa(const int& rows, const int& columns);
-    void cargarMapaExistente();
-    void cargarElemento(const std::string& posicion,
-                        const std::string& elemento);
-    void actualizarElemento(const std::string& posicion,
-                            const std::string& elemento);
-    void obtenerElemento(const std::string& posicion,
-                         std::string& elemento);
+    void loadExistentMap();
+    void loadElement(const std::string& position,
+                        const std::string& element);
+    void updateElement(const std::string& position,
+                            const std::string& element);
+    void getElement(const std::string& position,
+                         std::string& element);
     void saveMap();
-    void agregarFila();
-    void agregarColumna();
-    void eliminarFila();
-    void eliminarColumna();
-    void validarMapa();
-    void validarParedes();
-    void validarPuertas();
-    int getColumnas();
-    int getFilas();
-    void limpiar();
-    std::string getNombre();
+    void addRow();
+    void addColumn();
+    void deleteRow();
+    void deleteColumn();
+    void validateMap();
+    void validateWalls();
+    void validateDoors();
+    void validatePlayers();
+    void addCategory(std::string& element);
+    int getColumns();
+    int getRows();
+    void clean();
+    std::string getName();
 
  private:
-    std::map<std::string, std::string> mapa;
+    std::map<std::string, std::string> map;
     std::string mapfile;
     std::string name;
     int rows;
     int columns;
 };
 
-#endif // EditableMap_H
+#endif // EDITABLEMAP_H
