@@ -94,12 +94,14 @@ void Rocket::move(ThGameModelServer& game_model){
     Coordinates position_aux = posicion;
     posicion.increment_on_direction(direction, ROCKET_STEP);
     if (map.obstacleIn(posicion) || map.playerIn(posicion)){
-        Protocol protocol(Protocol::action::EXPLOSION, 0, posicion.x, posicion.y);
+        Protocol protocol(Protocol::action::EXPLOSION, 0, 
+            std::floor(position_aux.x), std::floor(position_aux.y));
         game_model.echoProtocol(protocol);
         return explode();
     }
     map.addPosicionable(this, posicion);
-    Protocol p(Protocol::action::MOVE_ROCKET, 0, position_aux.x, position_aux.y);
+    Protocol p(Protocol::action::MOVE_ROCKET, 0, 
+        std::floor(position_aux.x), std::floor(position_aux.y));
     game_model.echoProtocol(p);
 }
 

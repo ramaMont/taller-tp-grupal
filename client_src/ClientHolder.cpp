@@ -179,8 +179,8 @@ void ClientHolder::connectionLost(){
     if (_user_client != nullptr)
         _user_client->stop();
     if (socket != nullptr){
-        socket->close();
-        socket->shutdown();
+//      TODO: Hacer un stop
+//        socket->stop();
     }
 }
 
