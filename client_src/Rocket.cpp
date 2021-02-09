@@ -40,8 +40,8 @@
 }*/
 
 
-Rocket::Rocket(Coordinates posicion,ClMap& map, Player &player ,int id):
-    Movable(posicion,map,id),SpriteDrawer(this,player),
+Rocket::Rocket(Coordinates posicion, Coordinates direction,ClMap& map, Player &player):
+    Movable(posicion,direction,map),SpriteDrawer(this,player),
    	player(player){	
     }
 
@@ -51,10 +51,15 @@ void Rocket::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle
     ray->spriteColided(coordinates_map);
 }
 
-void Rocket::changePosition(Coordinates new_position){
+#define ROCKET_STEP 0.25
+
+void Rocket::move(){
+	Coordinates nuevaPos = posicion;
+	nuevaPos.increment_on_direction(direction,ROCKET_STEP);
+    //Coordinates nuevaPos = direccion->move(this,direction);
     try{
-        map.moveme(this, new_position);
-        this->posicion = new_position;
+        map.moveme(this, nuevaPos);
+        this->posicion = nuevaPos;
     } catch(...){
     }
 }

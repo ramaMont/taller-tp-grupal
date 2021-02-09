@@ -18,7 +18,7 @@ class Ray;
 //Jugadores o enemigos
 class Character : public Movable{
 protected:
-	Coordinates direction;
+    int id;
     Coordinates initial_position;
     Coordinates initial_direction;
 public:
