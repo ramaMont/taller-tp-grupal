@@ -414,7 +414,7 @@ void Texture::genericShow(SDL_Texture* texture, int first_x_pixel, int cant_x_pi
 
 }
 
-void Texture::showEnemy(SDL_Texture* texture, int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture){
+void Texture::showEnemy(SDL_Texture* texture, int state, int frame, int x_pixel, float distance_player_plane, int number_line_texture){
 	float lineHeight = (this->height / distance_player_plane);
 	int initial_position_y =  -lineHeight/2 + this->height/2;
 	float pixel_length = lineHeight/64;
@@ -424,7 +424,7 @@ void Texture::showEnemy(SDL_Texture* texture, int state, int frame,int x_pixel, 
 
 	int first_x_pixel = 65*state + number_line_texture;
 	int cant_x_pixels = 1;
-	int first_y_pixel = frame*65;
+	int first_y_pixel = 0;
 	int cant_y_pixels = 64;
 
 	int windows_x_pos = x_initial_pos;
@@ -456,8 +456,9 @@ void Texture::showGuard(int first_x_pixel,int first_number_line_texture,int last
 	genericShow(this->enemies[0],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
 		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 
-	//if(is_shooting)
-	//	showEnemy(this->shooting_effect[0],state,0,x_pixel,distance_player_plane, number_line_texture);
+	if(shooting)
+		genericShow(this->shooting_effect[0],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
+		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 }
 
 void Texture::showOfficer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
@@ -480,10 +481,9 @@ void Texture::showOfficer(int first_x_pixel,int first_number_line_texture,int la
 	genericShow(this->enemies[1],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
 		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 
-
-
-//	if(is_shooting)
-//		showEnemy(this->shooting_effect[1],state,0,x_pixel,distance_player_plane, number_line_texture);
+	if(shooting)
+		genericShow(this->shooting_effect[1],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
+		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 }
 
 void Texture::showSs(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
@@ -506,10 +506,9 @@ void Texture::showSs(int first_x_pixel,int first_number_line_texture,int last_x_
 	genericShow(this->enemies[2],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
 		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 
-
-
-	//if(is_shooting)
-	//	showEnemy(this->shooting_effect[2],state,0,x_pixel,distance_player_plane, number_line_texture);
+	if(shooting)
+		genericShow(this->shooting_effect[2],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
+		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 }
 
 void Texture::showMutant(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting){
@@ -532,9 +531,9 @@ void Texture::showMutant(int first_x_pixel,int first_number_line_texture,int las
 	genericShow(this->enemies[3],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
 		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 	
-
-	//if(is_shooting)
-	//	showEnemy(this->shooting_effect[3],state,0,x_pixel,distance_player_plane, number_line_texture);
+	if(shooting)
+		genericShow(this->shooting_effect[3],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
+		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 }
 
 
