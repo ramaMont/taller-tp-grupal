@@ -53,7 +53,8 @@ void ClientHolder::logged(std::string& puerto, std::string& servidor, int& user_
     socket = new SocketClient(_host_dns, _port);
     socket->recive(protocol);
     setId(protocol);
-    std::cout << "Id del jugador: " << std::to_string(user_id);
+    user_id = this->user_id;
+    std::cout << "Id del jugador: " << std::to_string(this->user_id);
     receiveConfiguration();
 }
 
@@ -82,7 +83,7 @@ void ClientHolder::run(){
 void ClientHolder::setId(Protocol& protocol){
     if (protocol.getAction() != Protocol::action::SET_ID)
         throw -1;
-    user_id = protocol.getId();
+    this->user_id = protocol.getId();
 }
 
 void ClientHolder::launchGame() {
