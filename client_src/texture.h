@@ -92,6 +92,11 @@ public:
 
     Texture(const Window& window);
 
+    Texture(const Texture&) = delete;
+    Texture(Texture&& other) = delete;
+    Texture& operator=(const Texture&) = delete;
+    Texture& operator=(Texture&& other);
+
     //Muestra la barra de vida
     void showLifeBar(unsigned int score, int lives, int health, int portion_health, int ammo, bool has_key_1, bool has_key_2);
 

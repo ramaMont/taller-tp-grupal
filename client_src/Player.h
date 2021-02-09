@@ -37,9 +37,13 @@ private:
     bool has_key_2;
 
 public:
-    explicit Player(Coordinates posicion,Coordinates direction ,ClMap& map, int id);
 
     explicit Player(ClMap& map);
+
+    Player(const Player&) = delete;
+    Player(Player&& other) = delete;
+    Player& operator=(const Player&) = delete;
+    Player& operator=(Player&& other);
 
     //Pre:-
     // Completo los datos iniciales del jugador
