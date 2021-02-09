@@ -79,7 +79,7 @@ private:
     void showWall(SDL_Texture* texture,int x_pixel,float distance_player_plane, int number_line_texture);
 
     //configura los parametros y llama al generic_show para graficar la parte visible del enemigo
-    void showEnemy(SDL_Texture* texture, int state, int frame,int x_pixel, float distance_player_plane, int number_line_texture);
+    void showEnemy(int num_enemy,int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
 
     void showFaceHealth(int portion_health);
     
