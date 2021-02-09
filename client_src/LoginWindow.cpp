@@ -101,9 +101,6 @@ void LoginWindow::crearPartidaScreen() {
     "background-image: url(invalid);");
 
     // Creo un dialog con un form
-    QHBoxLayout* labelLayout = new QHBoxLayout(partidaScreen);
-
-    // Creo un dialog con un form
     QHBoxLayout* hlayout = new QHBoxLayout(partidaScreen);
 
     QPushButton* botonCrear = new QPushButton(partidaScreen);
@@ -117,16 +114,15 @@ void LoginWindow::crearPartidaScreen() {
     botonUnirse->setObjectName(QStringLiteral("botonUnirse"));
 
     QLabel* labelId = new QLabel(partidaScreen);
-    std::string msg = "Tu ID de jugador es: " + std::to_string(_user_id);
+    std::string msg = "Tu ID: " + std::to_string(_user_id);
     labelId->setText(QString::fromStdString(msg));
     labelId->setStyleSheet("background-color: brown;");
-    labelLayout->addWidget(labelId);
 
+    hlayout->addWidget(labelId);
     hlayout->addWidget(botonCrear);
     hlayout->addWidget(botonUnirse);
     hlayout->setAlignment(botonCrear, Qt::AlignHCenter);
 
-    labelLayout->addWidget(partidaScreen, Qt::AlignCenter);
     layout->addWidget(partidaScreen, Qt::AlignCenter);
 
     partidaScreen->setFixedWidth(300);
