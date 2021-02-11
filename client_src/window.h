@@ -4,20 +4,17 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-const int INFO_BAR_HEIGHT = 112;
-
 class Window{
 
 private:
-    int width;
-    int height;
-    int resolution_width;
-    int resolution_high;
+    int width; //Resolucion de ancho 
+    int height; //Resolucion de alto
+    int info_bar_height;
     SDL_Window* window;
     SDL_Renderer* renderer;
 
 public:
-    Window(int width, int height, int resolution_width, int resolution_high);
+    Window();
 
     Window(const Window&) = delete;
     Window(Window&& other) = delete;
@@ -28,9 +25,12 @@ public:
     void setColor(int r, int g, int b, int alpha);
     int getWidth() const;
     int getHeight() const;
-    int getResolutionWidth() const{
-        return resolution_width;
-    }
+
+    void disableResizable();
+
+    void resizeWindow(int newWidth, int newHeight);
+
+    int getInfoBarHeight() const;
     void showWindow();
     void hideWindow();
     void render();

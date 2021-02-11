@@ -15,38 +15,47 @@ UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model,int &_wi
     game_done = false;
 }
 
-// Hacer todo para empezar a jugar la partida.
-void UserClient::play(){
-    Screen &screen(_game_model.getScreen());
-    gameLoop(screen);
-    endGame(screen);
-}
-
-void UserClient::endGame(Screen& screen){
-
-    bool player_won = (_game_model.getPlayer().getId() == _winner_id);
-
-    screen.showEndgame(player_won,_winner_id, game_done, _ordered_players_kills,_ordered_players_points,_ordered_players_bullets);
-    SDL_Event event;
-    game_done = false;
-    const Uint8 *keys = SDL_GetKeyboardState(NULL);
-    while(!game_done){
-
-        if(keys[SDL_SCANCODE_ESCAPE]){
-            game_done = SDL_TRUE;
-        }
-
-        while (SDL_PollEvent(&event)) { 
-            switch(event.type) {
-                case SDL_QUIT: {
-                    game_done = SDL_TRUE;
+void UserClient::pollEvents(SDL_Event& event, Window& window){
+    while (SDL_PollEvent(&event)) { 
+        switch(event.type) {
+            case SDL_QUIT: {
+                game_done = SDL_TRUE;
+            }
+            case SDL_WINDOWEVENT:{
+                if(event.window.event == SDL_WINDOWEVENT_RESIZED){
+                    window.resizeWindow(event.window.data1, event.window.data2);
                 }
             }
         }
     }
 }
 
-void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay){
+// Hacer todo para empezar a jugar la partida.
+void UserClient::play(){
+    Player& player = _game_model.getPlayer();
+    Window& window = _game_model.getWindow();
+    Screen &screen(_game_model.getScreen());
+    SDL_Event event;
+    gameLoop(event,screen, player, window);
+    endGame(event,screen, player, window);
+}
+
+void UserClient::endGame(SDL_Event& event, Screen& screen, Player& player, Window& window){
+
+    bool player_won = (player.getId() == _winner_id);
+    window.disableResizable();
+    screen.showEndgame(player_won,_winner_id, game_done, _ordered_players_kills,_ordered_players_points,_ordered_players_bullets);
+    game_done = false;
+    const Uint8 *keys = SDL_GetKeyboardState(NULL);
+    while(!game_done){
+        if(keys[SDL_SCANCODE_ESCAPE]){
+            game_done = SDL_TRUE;
+        }
+        pollEvents(event,window);
+    }
+}
+
+void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay,Window& window){
     if(keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
@@ -124,25 +133,18 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol
         protocol.setDamage(4);
         th_sender.push(protocol);
     }
-
     if(keys[SDL_SCANCODE_ESCAPE]){
         game_done = SDL_TRUE;
     }
 
-    while (SDL_PollEvent(&event)) { 
-        switch(event.type) {
-            case SDL_QUIT: {
-                game_done = SDL_TRUE;
-            }
-        }
-    }
+    pollEvents(event, window);
+
 }
 
-void UserClient::gameLoop(Screen& screen){
+void UserClient::gameLoop(SDL_Event& event, Screen& screen, Player& player, Window& window){
     _game_model.showWindow();
     int id = th_sender.getId();
     Protocol protocol(id);
-    SDL_Event event;
 
     time_t rate = 1000/30;
 
@@ -151,8 +153,6 @@ void UserClient::gameLoop(Screen& screen){
     time_t total_time = 0;
     time_t counter = 0;
     time_t max_time = 0;
-
-    Player& player = _game_model.getPlayer();
 
     const Uint8 *keys = SDL_GetKeyboardState(NULL);    
 
@@ -164,7 +164,7 @@ void UserClient::gameLoop(Screen& screen){
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        getKeys(keys, event, protocol, player, frames_till_next_shot, shoot_key_pressed, repetition_key_delay);
+        getKeys(keys, event, protocol, player, frames_till_next_shot, shoot_key_pressed, repetition_key_delay, window);
 
         _game_model.run();//Proceso los protocolos
 

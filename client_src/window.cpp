@@ -6,15 +6,22 @@
 #include "window.h"
 #include <iostream>
 
+#include <ConfigVariable.h>
 
-Window::Window(int width, int height, int resolution_width, int resolution_high) :
-        width(width), height(height),resolution_width(resolution_width),resolution_high(resolution_high) {
+static const int INITIAL_WIDTH_SIZE = 640;
+static const int INITIAL_HEIGHT_SIZE = 400;
+
+//anchoPantalla
+Window::Window() :
+        width(640), height(400), //Resolucion()
+        info_bar_height(height/5) {
     int state = SDL_CreateWindowAndRenderer(
-        width, height, SDL_RENDERER_ACCELERATED | SDL_WINDOW_HIDDEN,
+        INITIAL_WIDTH_SIZE, INITIAL_HEIGHT_SIZE, SDL_RENDERER_ACCELERATED  | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN, //Tamaño de la ventana
         &this->window, &this->renderer);
     if (state) {
         throw Exception("Error al crear ventana\n");
     }
+    resizeWindow(INITIAL_WIDTH_SIZE,INITIAL_HEIGHT_SIZE);
     // Inicializacion de audio
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
         throw Exception("Error al inicializar audio\n");
@@ -26,6 +33,15 @@ Window::Window(int width, int height, int resolution_width, int resolution_high)
 
 void Window::showWindow(){
     SDL_ShowWindow(this->window);
+}
+
+void Window::disableResizable(){
+    SDL_SetWindowResizable(this->window,SDL_FALSE);
+
+}
+
+void Window::resizeWindow(int new_width_size, int new_height_size){
+    SDL_RenderSetScale(this->renderer,new_width_size/(float)width ,new_height_size/(float)height);
 }
 
 void Window::hideWindow(){
@@ -40,6 +56,10 @@ void Window::setColor(int r, int g, int b, int alpha) {
 
 void Window::setNoColor() {
     this->setColor(0x33,0x33,0x33,0xFF);
+}
+
+int Window::getInfoBarHeight() const{
+    return info_bar_height;
 }
 
 int Window::getWidth()const {

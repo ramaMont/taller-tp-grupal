@@ -25,10 +25,10 @@ private:
     SDL_Texture* life_bar;
     SDL_Texture* key;
     SDL_Texture* ending_background;
+    int info_bar_height;
     int height;
     int width;
     SDL_Rect showableTexture;
-    int x_lenght_ray; //Prox: ancho pixel: ancho_pantalla/cant_pixeles_x
 
     TTF_Font* wolfensteinFont;
 

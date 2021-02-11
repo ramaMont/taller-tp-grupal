@@ -114,7 +114,8 @@ void Texture::addEndingBackground(){
 }
 
 Texture::Texture(const Window& window):
-	renderer(window.getRenderer()),height(window.getHeight()-112),
+	renderer(window.getRenderer()), info_bar_height(window.getInfoBarHeight()),
+	height(window.getHeight()-info_bar_height),
 	width(window.getWidth()){
 
 	addWallTexture("greystone");
@@ -174,8 +175,6 @@ Texture::Texture(const Window& window):
     addKeyTexture();
 
 	addEndingBackground();
-
-	this->x_lenght_ray = ceil((float)this->width/(window.getResolutionWidth()));//No sé como llamar ésto, es simplemente un calculo q hago acá para no hacer muchas veces despues
 	if (TTF_Init() < 0) {
 	    printf("error inicializacionnnn\n");
 	}
@@ -193,10 +192,10 @@ void Texture::showFaceHealth(int portion_health){
 	int first_y_pixel = 0;
 	int cant_y_pixels = 190;
 
-	int windows_x_pos = width/2 - 55;//Posicion inicial de X donde voy a mostrar el pixel
-	int windows_y_pos = height + 5;//		
-	int length_x = 63;
-	int lenght_y = 100;
+	int windows_x_pos = (float)width*(float)0.42;//Posicion inicial de X donde voy a mostrar el pixel
+	int windows_y_pos = height + (float)info_bar_height*(float)0.1;//		
+	int length_x = (float)width/(float)12;
+	int lenght_y = (float)info_bar_height*(float)0.8;
 
 	if(portion_health==1){
 		first_x_pixel = 433;
@@ -233,48 +232,38 @@ void Texture::showKeys(bool has_key_1, bool has_key_2){
 	int cant_y_pixels = 30;
 
     if (has_key_1){
-        int windows_x_pos = width - 150;//Posicion inicial de X donde voy a mostrar el pixel
-        int windows_y_pos = height + 5;		
-        int length_x = 13;
-        int lenght_y = 45;
+		int windows_x_pos = width*0.768;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height*1.02;//		
+		int length_x = width*0.02;
+		int lenght_y = height*0.09;
 
         genericShow(key,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
     }
     if (has_key_2){
-        int windows_x_pos = width - 150;//Posicion inicial de X donde voy a mostrar el pixel
-        int windows_y_pos = height + 55;		
-        int length_x = 13;
-        int lenght_y = 45;
+		int windows_x_pos = width*0.768;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height*1.14;//		
+		int length_x = width*0.02;
+		int lenght_y = height*0.09;
         
         genericShow(key,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
     }
 }
 
 void Texture::showLifeBar(int id, unsigned int score, int lives,int health ,int portion_health, int ammo, bool has_key_1, bool has_key_2){
-		showableTexture.x = 0; //Desde qué pixel en X quiero
-		showableTexture.y = 0;	//Desde qué pixel en Y quiero
-		showableTexture.w = 1097; //Cantidad de pixeles en X que tomo
-		showableTexture.h = 127; //Cantidad de pixeles en Y que tomo
-
-	    const SDL_Rect sdlDst = {
-	        0, //Posicion inicial de X donde voy a mostrar el pixel
-	        height, //Posicion inicial de Y donde voy a mostrar el pixel
-	        width, //Cantidad de pixeles en X donde voy a mostrar lo pedido (ancho)
-	        112//Cantidad de pixeles en Y donde voy a mostrar lo pedido (alto)
-	    };   
-	    SDL_RenderCopy(this->renderer, life_bar, &showableTexture, &sdlDst);	
-
-		showText( white, std::to_string(id).c_str(),20,80,60,height+35);
-	    showText( white, std::to_string(score).c_str(),20,80,170,height+35);
-	    showText( white, std::to_string(lives).c_str(),40,80,250,height+35);	    
+	    genericShow(life_bar,0,1097,0,127,0,width,height,info_bar_height);
+	    //Ancho,alto,pos_x,pos_y
+	    int distante_to_bar = (float)height+(float)info_bar_height*(float)0.28;
+		showText( white, std::to_string(id).c_str(),width/16,(float)distante_to_bar*(float)0.2,(float)width*0.1,distante_to_bar);
+	    showText( white, std::to_string(score).c_str(),width/16,(float)distante_to_bar*(float)0.2,(float)width*(float)0.3,distante_to_bar);
+	    showText( white, std::to_string(lives).c_str(),width/16,(float)distante_to_bar*(float)0.2,(float)width*(float)0.39,distante_to_bar);
 
 	    std::string text_health = std::to_string(health).c_str();
 	    if(strlen(text_health.c_str())>2){
-	    	showText( white, text_health,17,80,390,height+35);	    
+	    	showText( white, text_health,(float)width*(float)0.028,height/5,(float)width*(float)0.6,distante_to_bar);	    
 	    }else{
-	    	showText( white, text_health,20,80,390,height+35);	    	    	
+	    	showText( white, text_health,(float)width*(float)0.037,height/5,(float)width*(float)0.6,distante_to_bar);	    	    	
 	    }
-	    showText( white, std::to_string(ammo).c_str(),20,80,480,height+35);	    
+	    showText( white, std::to_string(ammo).c_str(),(float)width*(float)0.035,height/5,(float)width*(float)0.75,distante_to_bar);	    
 
 	    showFaceHealth(portion_health);
         
@@ -314,10 +303,10 @@ void Texture::showWeapon(int frame_gun, int current_gun){
 	int first_y_pixel = current_gun*129;
 	int cant_y_pixels = 128;
 
-	int windows_x_pos = width/2 - 65;
-	int windows_y_pos = height - 160;
-	int length_x = 65*2;
-	int lenght_y = 160;
+	int windows_x_pos = width*0.39;//Posicion inicial de X donde voy a mostrar el pixel
+	int windows_y_pos = height*0.595;//		
+	int length_x = width*0.23;
+	int lenght_y = height*0.41;
 
 	genericShow(guns,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
@@ -331,10 +320,10 @@ void Texture::showKnife(int frame_gun){
 		int first_y_pixel = 0;
 		int cant_y_pixels = 150;
 
-		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
-		int windows_y_pos = height + 15;//		
-		int length_x = 120;
-		int lenght_y = 80;
+		int windows_x_pos = width*0.8;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height*1.04;//		
+		int length_x = width*0.19;
+		int lenght_y = height*0.17;
 		genericShow(this->bar_guns[0],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showGun(int frame_gun){
@@ -345,10 +334,10 @@ void Texture::showGun(int frame_gun){
 		int first_y_pixel = 0;
 		int cant_y_pixels = 190;
 
-		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
-		int windows_y_pos = height + 15;//		
-		int length_x = 120;
-		int lenght_y = 80;
+		int windows_x_pos = width*0.8;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height*1.04;//		
+		int length_x = width*0.19;
+		int lenght_y = height*0.17;
 		genericShow(this->bar_guns[1],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showMachineGun(int frame_gun){
@@ -360,10 +349,10 @@ void Texture::showMachineGun(int frame_gun){
 		int first_y_pixel = 0;
 		int cant_y_pixels = 170;
 
-		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
-		int windows_y_pos = height + 15;//		
-		int length_x = 120;
-		int lenght_y = 80;
+	int windows_x_pos = width*0.8;//Posicion inicial de X donde voy a mostrar el pixel
+	int windows_y_pos = height*1.03;//		
+	int length_x = width*0.19;
+	int lenght_y = height*0.19;
 		genericShow(this->bar_guns[2],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showChainGun(int frame_gun){
@@ -375,10 +364,10 @@ void Texture::showChainGun(int frame_gun){
 		int first_y_pixel = 0;
 		int cant_y_pixels = 220;
 
-		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
-		int windows_y_pos = height + 15;//		
-		int length_x = 120;
-		int lenght_y = 80;
+		int windows_x_pos = width*0.8;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height*1.03;//		
+		int length_x = width*0.19;
+		int lenght_y = height*0.19;
 		genericShow(this->bar_guns[3],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 void Texture::showRocketLauncher(int frame_gun){
@@ -390,10 +379,10 @@ void Texture::showRocketLauncher(int frame_gun){
 		int first_y_pixel = 0;
 		int cant_y_pixels = 220;
 
-		int windows_x_pos = width - 130;//Posicion inicial de X donde voy a mostrar el pixel
-		int windows_y_pos = height + 15;//		
-		int length_x = 120;
-		int lenght_y = 80;
+		int windows_x_pos = width*0.8;//Posicion inicial de X donde voy a mostrar el pixel
+		int windows_y_pos = height*1.02;//		
+		int length_x = width*0.19;
+		int lenght_y = height*0.21;
 		genericShow(this->bar_guns[4],first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 }
 
@@ -423,7 +412,7 @@ void Texture::showEnemy(int num_enemy,int first_x_pixel,int first_number_line_te
 	float lineHeight = (this->height / distance_player_plane);
 	int initial_position_y =  -lineHeight/2 + height/2;
 	float pixel_length = lineHeight/64;
-	int x_initial_pos = x_lenght_ray*first_x_pixel;
+	int x_initial_pos = first_x_pixel;
 	int height_ray = (int)ceil((pixel_length)*64);
 
 
@@ -433,11 +422,11 @@ void Texture::showEnemy(int num_enemy,int first_x_pixel,int first_number_line_te
 	int cant_y_pixels_ = 64;
 
 	genericShow(this->enemies[num_enemy],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
-		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
+		x_initial_pos,(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 
 	if(shooting)
 		genericShow(this->shooting_effect[num_enemy],first_x_pixel_, cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
-		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
+		x_initial_pos,(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 }
 
 
@@ -469,8 +458,6 @@ void Texture::showWall(SDL_Texture* texture,int x_pixel,float distance_player_pl
 
 	float pixel_length = lineHeight/64;
 
-	int x_initial_pos = x_lenght_ray*x_pixel;
-
 	int height_ray = (int)ceil(pixel_length*64);	
 
 	int first_x_pixel = number_line_texture;
@@ -478,9 +465,9 @@ void Texture::showWall(SDL_Texture* texture,int x_pixel,float distance_player_pl
 	int first_y_pixel = 0;
 	int cant_y_pixels = 64;
 
-	int windows_x_pos = x_initial_pos;
+	int windows_x_pos = x_pixel;
 	int windows_y_pos = initial_position_y;
-	int length_x = x_lenght_ray;
+	int length_x = 1;
 	int lenght_y = height_ray;
 
 	genericShow(texture,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
@@ -539,42 +526,43 @@ void Texture::showSprite(int first_x_pixel,int first_number_line_texture,int las
 	float lineHeight = (this->height / distance_player_plane);
 	int initial_position_y =  -lineHeight/2 + height/2;
 	float pixel_length = lineHeight/64;
-	int x_initial_pos = x_lenght_ray*first_x_pixel;
+	int x_initial_pos = first_x_pixel;
 	int height_ray = (int)ceil((pixel_length)*64);
 	
 	genericShow(this->sprites[texture],first_number_line_texture, last_number_line_texture - first_number_line_texture,0,64,\
-		x_initial_pos,(int)x_lenght_ray*(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
+		x_initial_pos,(last_x_pixel - first_x_pixel),initial_position_y,height_ray);
 }
-
+//void Texture::showText(Colors selected_color, std::string text, int letter_width, int letter_height, int x_pos, int y_pos){
 void Texture::showRanking(std::vector<std::pair<int,int>> &ordered_players_kills, \
     std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets){
-
+    
+    int distante_to_bar = (float)height+(float)info_bar_height*(float)0.28;
     int position = 0;
     for (auto& player : ordered_players_kills){
-    	showText( black, std::to_string((int16_t)player.second).c_str(),40 , 40, 80 , 163 + position*50);
-    	showText( black, std::to_string(player.first).c_str(),40 , 40, 150, 163 + position*50);
+		showText( black, std::to_string((int16_t)player.second).c_str(),width/16,(float)distante_to_bar*(float)0.17,(float)width*(float)0.13, (float)height*(float)0.39 + (float)position*(float)height*(float)0.14);
+	    showText( black, std::to_string((int16_t)player.second).c_str(),width/16,(float)distante_to_bar*(float)0.17,(float)width*(float)0.23, (float)height*(float)0.39 + (float)position*(float)height*(float)0.14);
         ++position;
     }
     position = 0;
     for (auto& player : ordered_players_points){
-    	showText( black, std::to_string((int16_t)player.second).c_str(),40 , 40, 280 , 163 + position*50);
+    	showText( black, std::to_string((int16_t)player.second).c_str(),width/16,(float)distante_to_bar*(float)0.17,(float)width*(float)0.45, (float)height*(float)0.39 + (float)position*(float)height*(float)0.14);
 
     	int points = player.first;
     	if(points>=100){ //Tiene 3 digitos
-	    	showText( black, std::to_string(points).c_str(),25 , 40, 380, 163 + position*50);
+	    	showText( black, std::to_string(points).c_str(),width*3/64,(float)distante_to_bar*(float)0.17,(float)width*(float)0.60, (float)height*(float)0.39 + (float)position*(float)height*(float)0.14);
 	    }else{
-	    	showText( black, std::to_string(player.first).c_str(),40 , 40, 380, 163 + position*50);
+	    	showText( black, std::to_string(player.first).c_str(),width/16,(float)distante_to_bar*(float)0.17,(float)width*(float)0.60, (float)height*(float)0.39 + (float)position*(float)height*(float)0.14);
 	    }
         ++position;
     }
     position = 0;
     for (auto& player : ordered_players_bullets){
-    	showText( black, std::to_string((int16_t)player.second).c_str(),40 , 40, 510 , 163 + position*50);
+    	showText( black, std::to_string((int16_t)player.second).c_str(),width/16,(float)distante_to_bar*(float)0.17,(float)width*(float)0.80, (float)height*(float)0.39 + (float)position*(float)height*(float)0.14);
     	int bullets = player.first;
     	if(bullets>=100){ //Tiene 3 digitos    	
-	    	showText( black, std::to_string(player.first).c_str(),25 , 40, 620, 163 + position*50);
+	    	showText( black, std::to_string(player.first).c_str(),width*3/64,(float)distante_to_bar*(float)0.17,(float)width*(float)0.97, (float)height*(float)0.39 + (float)position*(float)height*(float)0.14);
 	    }else{
-	    	showText( black, std::to_string(player.first).c_str(),40 , 40, 620, 163 + position*50);
+	    	showText( black, std::to_string(player.first).c_str(),width/16,(float)distante_to_bar*(float)0.17,(float)width*(float)0.97, (float)height*(float)0.39 + (float)position*(float)height*(float)0.14);
 	    }
         ++position;
     }
@@ -592,11 +580,11 @@ void Texture::showWinningScreen(std::vector<std::pair<int,int>> &ordered_players
 	int windows_x_pos = 0;
 	int windows_y_pos = 0;
 	int length_x = width;
-	int lenght_y = height + INFO_BAR_HEIGHT;
+	int lenght_y = height + info_bar_height;
 
 	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
 
-	showText( black, "You won!!",30 , 40, width/2 + 150, 40);
+	showText( black, "You won!!",width*3/64,height/8, width*0.735, height/10);
 
 	showRanking(ordered_players_kills,ordered_players_points,ordered_players_bullets);
 
@@ -613,18 +601,18 @@ void Texture::showLoosingScreen(int winner_id, std::vector<std::pair<int,int>> &
 	int windows_x_pos = 0;
 	int windows_y_pos = 0;
 	int length_x = width;
-	int lenght_y = height + INFO_BAR_HEIGHT;
+	int lenght_y = height + info_bar_height;
 
 	genericShow(ending_background,first_x_pixel,cant_x_pixels,first_y_pixel,cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);	
 	std::string winner_letter= "Winner id: " + std::to_string((int16_t)winner_id);
-	showText( black, winner_letter.c_str(),20 , 40, width/2 + 130, 40);
+	showText( black, winner_letter.c_str(),width*2/64,height/8, width*0.72, height/10);
 
 	showRanking(ordered_players_kills,ordered_players_points,ordered_players_bullets);
 
 }
 
 void Texture::showDisconnectedScreen(){
-	showText( white, "Interrupted match",30 , 80, width/2 + 230, height/2 );	
+	showText( white, "Interrupted match",width/32,height/8, width*7/10, height/2 );	
 }
 
 void Texture::destoyVectorTextures(std::vector<SDL_Texture*> &texture_vector){

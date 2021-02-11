@@ -10,7 +10,7 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,\
     std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
     std::vector<std::pair<int,int>> &_ordered_players_bullets) : 
     	wallGreystone(Coordinates(7,7)),
-        window(640,480,320,200) ,
+        window() ,
         texture(window), map(), 
         added_player(false),player(map),
         operations(), game_id(game_id),
