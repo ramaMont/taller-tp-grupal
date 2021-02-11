@@ -22,7 +22,7 @@ Player::Player(Mapa& map, int id, BlockingQueue<Protocol>& game_model_queue):
 
 Player::Player(Coordinates position,Coordinates direction ,Mapa& map, 
 	BlockingQueue<Protocol>& game_model_queue):
-		Posicionable(position),direction(direction), map(map), player_id(0),
+		Posicionable(position, direction), map(map), player_id(0),
 		soldier(this, bullets, game_model_queue), 
 		posicion_inicial(posicion),	_game_model_queue(game_model_queue){
     map.addPlayer(this);
@@ -40,7 +40,7 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& map,
 
 Player::Player(Coordinates position,Coordinates direction ,Mapa& map, int id,
 	BlockingQueue<Protocol>& game_model_queue):
-		Posicionable(position),direction(direction), map(map), player_id(id),
+		Posicionable(position, direction), map(map), player_id(id),
 		soldier(this, bullets, game_model_queue),
 		posicion_inicial(posicion),
 		_game_model_queue(game_model_queue){

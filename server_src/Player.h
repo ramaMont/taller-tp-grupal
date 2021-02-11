@@ -19,7 +19,6 @@ class SoldierState;
 
 class Player final : public Posicionable{
 private:
-    Coordinates direction;
     Mapa &map;
     int player_id;
     int lives;
