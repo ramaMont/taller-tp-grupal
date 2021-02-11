@@ -10,7 +10,7 @@
 class ClMap;
 #include "ClMap.h"
 class Direction;
-#include "Cl_Direction.h"
+#include <Direction.h>
 
 class Character;
 #include <Character.h>

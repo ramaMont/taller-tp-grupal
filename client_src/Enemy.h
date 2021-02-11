@@ -7,7 +7,7 @@
 class ClMap;
 #include "ClMap.h"
 class Direccion;
-#include "Cl_Direction.h"
+#include <Direction.h>
 
 class Character;
 #include <Character.h>

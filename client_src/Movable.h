@@ -7,7 +7,7 @@
 class ClMap;
 #include "ClMap.h"
 class Direction;
-#include "Cl_Direction.h"
+#include <Direction.h>
 
 class Ray;
 #include "ray.h"
@@ -15,7 +15,7 @@ class Ray;
 //Jugadores o enemigos
 class Movable : public Posicionable{
 protected:
-	Coordinates direction;
+
     ClMap &map;
 public:
     explicit Movable(Coordinates posicion, Coordinates direction ,ClMap& map);

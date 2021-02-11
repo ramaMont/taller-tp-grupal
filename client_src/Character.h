@@ -8,7 +8,7 @@ class Movable;
 class ClMap;
 #include "ClMap.h"
 class Direction;
-#include "Cl_Direction.h"
+#include <Direction.h>
 
 class Ray;
 #include "ray.h"

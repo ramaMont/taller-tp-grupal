@@ -27,7 +27,7 @@
 #include <coordinates.h>
 #include <Character.h>
 #include <Player.h>
-#include <Cl_Direction.h>
+#include <Direction.h>
 #include <Wall.h>
 #include <Door.h>
 #include <SpriteHolder.h>

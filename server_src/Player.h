@@ -9,8 +9,8 @@
 
 #include "Mapa.h"
 class Mapa;
-#include "Direccion.h"
-class Direccion;
+#include <Direction.h>
+class Direction;
 class SoldierState;
 #include "Soldier.h"
 #include "Item.h"
@@ -51,13 +51,13 @@ public:
         int id, BlockingQueue<Protocol>& game_model_queue);
         
     // Mueve al jugador  en el mapa
-    void mover(Direccion* direccion);
+    void mover(Direction* direccion);
     
     // Setea la direccion
     void set_direction(Coordinates direction);
     void set_direction(std::string direction);
-    Coordinates get_coordinates() const;
-    Coordinates get_direction() const;
+    virtual Coordinates get_coordinates() override;
+    virtual Coordinates get_direction() override;
     int getId();
 
     // Retorna el angulo que forma el jugador con 'player'

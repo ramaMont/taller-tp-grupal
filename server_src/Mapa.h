@@ -7,6 +7,7 @@
 #include "Player.h"
 class Player;
 #include "Item.h"
+class Item;
 class Object;
 class Door;
 #include "Object.h"

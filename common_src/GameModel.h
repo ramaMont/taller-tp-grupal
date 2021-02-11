@@ -9,6 +9,7 @@ class ThSender;
 #include "ThSender.h"
 #include "Mapa.h"
 #include "BlockingQueue.h"
+#include <Direction.h>
 
 #include <atomic>
 #include <map>
@@ -21,7 +22,7 @@ protected:
     BlockingQueue<Protocol> operations;
     std::vector<int> id_insertion_order;
     std::map<int,Player*> players;
-    std::map<Protocol::direction, Direccion* > directions;
+    std::map<Protocol::direction, Direction* > directions;
     int game_id;
     std::mutex m;
 

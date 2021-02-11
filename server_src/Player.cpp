@@ -57,8 +57,8 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& map, int id,
     atomic_pos(posicion);
 }
 
-void Player::mover(Direccion* _direction){
-    Coordinates new_pos = _direction->mover(this,direction);
+void Player::mover(Direction* _direction){
+    Coordinates new_pos = _direction->move(this,direction);
     try{
         map.moveme(this, new_pos);
         this->posicion = new_pos;
@@ -83,11 +83,11 @@ void Player::mover(Direccion* _direction){
     atomic_pos(posicion);
 }
 
-Coordinates Player::get_coordinates() const{
+Coordinates Player::get_coordinates(){
     return posicion;
 }
 
-Coordinates Player::get_direction() const{
+Coordinates Player::get_direction(){
     return direction;
 }
 

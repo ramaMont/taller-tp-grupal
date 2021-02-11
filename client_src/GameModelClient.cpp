@@ -32,8 +32,8 @@ Inicializo el diccionario directions para acceder a cada direccion
 en tiempo O(1)
  */
 void GameModelClient::initDirections(){
-    DirAhead* forward = new DirAhead();
-    DirBehind* backward = new DirBehind();
+    DirForward* forward = new DirForward();
+    DirBackward* backward = new DirBackward();
     DirLeft* left = new DirLeft();
     DirRight* right = new DirRight();
     DirRotLeft* rotLeft = new DirRotLeft();

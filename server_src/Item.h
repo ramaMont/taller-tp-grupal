@@ -1,8 +1,8 @@
 #ifndef __ITEM__
 #define __ITEM__
 
-#include "Posicionable.h"
-class Player;
+#include <Posicionable.h>
+#include "Player.h"
 
 
 class Item: public Posicionable {
