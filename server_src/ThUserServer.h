@@ -5,8 +5,8 @@
 #include <Protocol.h>
 #include <BlockingQueue.h>
 #include <ThSender.h>
-class ThReceiver;
-#include <ThReceiver.h>
+class ThReceiverServer;
+#include "ThReceiverServer.h"
 class GamesAdmin;
 #include "GamesAdmin.h"
 class ThGameModelServer;
@@ -16,7 +16,7 @@ class ThGameModelServer;
 class ThUserServer : public ThUser{
 private:
     Socket socket_peer;
-    ThReceiver* th_receiver;
+    ThReceiverServer* th_receiver_server;
     ThSender* th_sender;
     GamesAdmin& games_admin;
     int game_id;

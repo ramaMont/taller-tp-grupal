@@ -2,7 +2,7 @@
 
 #include "Posicionable.h"
 
-#include "ClThReceiver.h"
+#include "ThReceiverClient.h"
 #include <ThSender.h>
 #include <UserClient.h>
 #include <QApplication>
@@ -34,7 +34,7 @@ void ClientHolder::crearPartida(const std::string& map_filename,
     game_id = _game_id;
     socket->recive(protocol_response);
     processReception(protocol_response);
-    _cl_th_receiver = new ClThReceiver(socket, *this, _game_model);
+    _cl_th_receiver = new ThReceiverClient(socket, *this, _game_model);
     _cl_th_receiver->start();
 }
 
@@ -156,7 +156,7 @@ void ClientHolder::addLoggedUsers(){
     }
     socket->recive(protocol_response);
     processReception(protocol_response);
-    _cl_th_receiver = new ClThReceiver(socket, *this, _game_model);
+    _cl_th_receiver = new ThReceiverClient(socket, *this, _game_model);
     _cl_th_receiver->start();
     _th_sender = new ThSender(user_id, socket);
     _th_sender->start();

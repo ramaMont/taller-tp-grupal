@@ -36,11 +36,12 @@
 #include "SoundPlayer.h"
 
 #include "CharacterValues.h"
+#include <GameModel.h>
 
-class GameModelClient {
+class GameModelClient : public GameModel {
 private:
-        WallGreystone wallGreystone;
-        std::vector<WallGreystone> wallsGreystone;
+    WallGreystone wallGreystone;
+    std::vector<WallGreystone> wallsGreystone;
 
     Window window;	
     Texture texture;
@@ -49,8 +50,6 @@ private:
     Player player;	
 	std::queue<Protocol> operations;
     std::map<int,Character*> characters;
-    std::map<Protocol::direction, Direction* > directions;
-    int game_id;
     Screen screen;
     int protagonist_id;
 
@@ -103,9 +102,9 @@ public:
     std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
     std::vector<std::pair<int,int>> &_ordered_players_bullets);
 
-    virtual void processProtocol(Protocol& protocol);
+    void processProtocol(Protocol& protocol);
     void run();
-    virtual void push(Protocol protocol);
+    virtual void push(Protocol protocol) override;
     void removePlayer(int user_id);
     
     void stop();
@@ -119,7 +118,9 @@ public:
 
     void hideWindow();
 
-    void addPlayer(Protocol& protocol);
+    virtual void addPlayer(Protocol& protocol) override;
+    virtual void addPlayer(int player_id) override;
+
     Player& getPlayer();
     Window& getWindow();
     Screen& getScreen();

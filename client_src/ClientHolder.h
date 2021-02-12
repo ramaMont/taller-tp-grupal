@@ -4,8 +4,8 @@
 #include <string>
 #include <Protocol.h>
 #include "Socket.h"
-class ClThReceiver;
-#include "ClThReceiver.h"
+class ThReceiverClient;
+#include "ThReceiverClient.h"
 #include "GameModelClient.h"
 
 class ClientHolder{
@@ -15,7 +15,7 @@ private:
     int user_id;
     SocketClient* socket;
     GameModelClient* _game_model;
-    ClThReceiver* _cl_th_receiver;
+    ThReceiverClient* _cl_th_receiver;
     ThSender* _th_sender;
     std::string _map_filename;
     bool ready_to_play;

@@ -12,8 +12,13 @@ class ThBots;
 #include <atomic>
 #include <map>
 
-class ThGameModelServer : public GameModel{
+class ThGameModelServer : public GameModel, public Thread{
 private:
+    Mapa map;
+    BlockingQueue<Protocol> operations;
+    std::vector<int> id_insertion_order;
+    std::map<int,Player*> players;
+
     std::map<int,ThSender *> users_sender;
     std::atomic<bool> launched;
     ThGameEvents th_game_events;
@@ -21,6 +26,9 @@ private:
     int map_id_checksum;
     int _bots_cty;
 
+    std::mutex m;
+
+    void processMove(Protocol& protocol);
     void processShoot(Protocol protocol);
     void processShooted(Protocol protocol);
     void processDie(Protocol protocol);
@@ -39,13 +47,15 @@ private:
         const std::vector<std::pair<int,int>>& ordered_players_bullets);
     void endGame(bool isAWinner = false);
     void processWinnerEnd();
+    void processProtocol(Protocol& protocol);
 
 public:
     explicit ThGameModelServer(ThUserServer& th_user_server, std::string map_filename,
         int game_id, int map_id_checksum, int bots_cty);
-    virtual void processProtocol(Protocol& protocol) override;
+
     virtual void run() override;
     virtual void stop() override;
+    virtual void push(Protocol protocol) override;
     void addThSender(ThSender* th_sender);
     void echoProtocol(Protocol protocol);
     void removePlayer(int user_id);
@@ -54,6 +64,15 @@ public:
     int getMapIdChecksum();
     int getBotsCty();
     void showPlayersInfo();
+
+    virtual void addPlayer(int player_id) override;
+    virtual void addPlayer(Protocol& protocol) override;
+    Player& getPlayer(int user_id);
+    Mapa& getMap();
+    int getId();
+
+    std::vector<int>& getIdsVector();
+
     ~ThGameModelServer();
 };
 

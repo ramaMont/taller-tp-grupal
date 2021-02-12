@@ -10,7 +10,7 @@
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
         std::string map_filename, int game_id, int map_id_checksum, int bots_cty):
-            GameModel(map_filename, game_id), launched(false),
+            GameModel(game_id), Thread(), map(map_filename),launched(false),
             th_game_events(operations),
             th_bots(this, operations, players, map, bots_cty),
             map_id_checksum(map_id_checksum), _bots_cty(bots_cty){
@@ -343,6 +343,46 @@ void ThGameModelServer::endGame(bool isAWinner){
     Protocol protocol_end;
     protocol_end.setAction(Protocol::action::ENDGAME);
     echoProtocol(protocol_end);
+}
+
+void ThGameModelServer::processMove(Protocol& protocol){
+    Player* player = players.at(protocol.getId());
+    Direction* dir = directions.at(protocol.getDirection());
+    player->mover(dir);
+}
+
+void ThGameModelServer::push(Protocol protocol){
+    std::lock_guard<std::mutex> lck(m);
+    operations.push(protocol);
+}
+
+void ThGameModelServer::addPlayer(int player_id){
+    try{
+        Player* player = new Player(map, player_id, operations);
+        players.insert(std::pair<int, Player*>(player_id, player));
+        id_insertion_order.push_back(player_id);
+    } catch(...){
+    }
+}
+
+void ThGameModelServer::addPlayer(Protocol& protocol){
+    throw -1;
+}
+
+Player& ThGameModelServer::getPlayer(int user_id){
+    return *players.at(user_id);
+}
+
+Mapa& ThGameModelServer::getMap(){
+    return map;
+}
+
+int ThGameModelServer::getId(){
+    return game_id;
+}
+
+std::vector<int>& ThGameModelServer::getIdsVector(){
+    return id_insertion_order;
 }
 
 ThGameModelServer::~ThGameModelServer(){

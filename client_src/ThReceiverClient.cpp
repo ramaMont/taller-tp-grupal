@@ -1,15 +1,15 @@
-#include "ClThReceiver.h"
+#include "ThReceiverClient.h"
 #include <iostream>
 
 #include "GameModelClient.h"
 #include <SocketException.hpp>
 
-ClThReceiver::ClThReceiver(Socket* socket, ClientHolder& client_holder,
+ThReceiverClient::ThReceiverClient(Socket* socket, ClientHolder& client_holder,
         GameModelClient* game_model_client):
-        socket(socket), _client_holder(client_holder), _gameModel(game_model_client){
+        ThReceiver(socket), _client_holder(client_holder), _gameModel(game_model_client){
 }
 
-void ClThReceiver::run(){
+void ThReceiverClient::run(){
     Protocol protocol;
     try{
         while (is_running){
@@ -26,11 +26,11 @@ void ClThReceiver::run(){
     }
 }
 
-void ClThReceiver::stop(){
+void ThReceiverClient::stop(){
     is_running = false;
 }
 
-void ClThReceiver::processReception(Protocol& protocol){
+void ThReceiverClient::processReception(Protocol& protocol){
     switch (protocol.getAction()){
         case Protocol::action::BEGIN:
             _client_holder.startGame();
@@ -118,13 +118,13 @@ void ClThReceiver::processReception(Protocol& protocol){
     }
 }
 
-void ClThReceiver::setGameModel(GameModelClient* gameModel){
+void ThReceiverClient::setGameModel(GameModelClient* gameModel){
     _gameModel = gameModel;
 }
 
-GameModelClient* ClThReceiver::getGameModel(){
+GameModelClient* ThReceiverClient::getGameModel(){
     return _gameModel;
 }
 
-ClThReceiver::~ClThReceiver(){
+ThReceiverClient::~ThReceiverClient(){
 }

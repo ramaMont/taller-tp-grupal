@@ -10,7 +10,7 @@ ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
         GamesAdmin& games_admin):
     ThUser(user_id),
     socket_peer(std::move(socket_peer)),
-    th_receiver(nullptr),
+    th_receiver_server(nullptr),
     th_sender(nullptr),
     games_admin(games_admin),
     game_id(-1){
@@ -49,10 +49,10 @@ void ThUserServer::initCommunication(){
     protocol.setAction(Protocol::action::SET_ID);
     socket_peer.send(protocol);
     sendConfiguration();
-    th_receiver = new ThReceiver(&socket_peer);
-    th_receiver->setThUser(this);
+    th_receiver_server = new ThReceiverServer(&socket_peer);
+    th_receiver_server->setThUser(this);
     th_sender = new ThSender(user_id, &socket_peer);
-    th_receiver->start();
+    th_receiver_server->start();
     th_sender->start();
 }
 
@@ -122,7 +122,7 @@ ThSender* ThUserServer::getSender(){
 }
 
 void ThUserServer::setGameModel(ThGameModelServer* th_game_model){
-    th_receiver->setGameModel(th_game_model);
+    th_receiver_server->setGameModel(th_game_model);
 }
 
 void ThUserServer::setGameId(int game_id){
@@ -171,10 +171,10 @@ void ThUserServer::sendBotsPositions(){
 ThUserServer::~ThUserServer(){
     socket_peer.shutdown();
     socket_peer.close();
-    if (th_receiver != nullptr){
-        th_receiver->stop();
-        th_receiver->join();
-        delete(th_receiver);
+    if (th_receiver_server != nullptr){
+        th_receiver_server->stop();
+        th_receiver_server->join();
+        delete(th_receiver_server);
     }
     if (th_sender != nullptr){
         th_sender->stop();

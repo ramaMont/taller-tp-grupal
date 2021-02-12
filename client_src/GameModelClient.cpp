@@ -9,41 +9,21 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,\
             int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
     std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
     std::vector<std::pair<int,int>> &_ordered_players_bullets) : 
-    	wallGreystone(Coordinates(7,7)),
+    	GameModel(game_id),
+        wallGreystone(Coordinates(7,7)),
         window() ,
         texture(window), map(), 
         added_player(false),player(map),
-        operations(), game_id(game_id),
         screen(rockets,enemies,sprites,player,map,texture,window),
         protagonist_id(protagonist_id),is_running(true),
         _sound_player(), _has_ended(false), _winner_id(_winner_id),
         game_done(game_done),_ordered_players_kills(_ordered_players_kills),
-        _ordered_players_points(_ordered_players_points),_ordered_players_bullets(_ordered_players_bullets)   {
+        _ordered_players_points(_ordered_players_points),_ordered_players_bullets(_ordered_players_bullets){
 
     _winner_id = -1;
     player.set_texture(&texture);
     player.newGunType(1);
-    initDirections();
     initMap(map_filename);
-}
-
-/* 
-Inicializo el diccionario directions para acceder a cada direccion 
-en tiempo O(1)
- */
-void GameModelClient::initDirections(){
-    DirForward* forward = new DirForward();
-    DirBackward* backward = new DirBackward();
-    DirLeft* left = new DirLeft();
-    DirRight* right = new DirRight();
-    DirRotLeft* rotLeft = new DirRotLeft();
-    DirRotRight* rotRight = new DirRotRight();
-    directions[Protocol::direction::FORWARD] = forward;
-    directions[Protocol::direction::BACKWARD] = backward;
-    directions[Protocol::direction::LEFT] = left;
-    directions[Protocol::direction::RIGHT] = right;
-    directions[Protocol::direction::ROTATE_LEFT] = rotLeft;
-    directions[Protocol::direction::ROTATE_RIGHT] = rotRight;
 }
 
 void GameModelClient::addWall(std::string elemento, Coordinates position){
@@ -194,12 +174,6 @@ void GameModelClient::initMap(std::string map_filename){
     map.addPlayer(&player);
 }
 
-void GameModelClient::cleanDirections(){
-    for (auto& dir : directions){
-        delete(dir.second);
-    }
-}
-
 void GameModelClient::processMove(Protocol& protocol){
     Character* character = characters.at(protocol.getId());
     Direction* dir = directions.at(protocol.getDirection());
@@ -239,6 +213,10 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
         } catch(...){
         }        
     }
+}
+
+void GameModelClient::addPlayer(int player_id){
+    throw -1;
 }
 
 
@@ -658,10 +636,7 @@ void GameModelClient::waitForAction(Protocol::action desired_action){
     }
 }
 
-
 GameModelClient::~GameModelClient(){
-    cleanDirections();
-
 	for(auto& wall : walls){
 		delete wall;
 	}
@@ -671,6 +646,4 @@ GameModelClient::~GameModelClient(){
 	for(auto& enemie : enemies){
 		delete enemie;
 	}
-
-
 }

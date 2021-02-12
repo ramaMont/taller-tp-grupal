@@ -1,10 +1,9 @@
 #include "GameModel.h"
 
-#include <vector>
-#include <utility>
+#include <map>
 
-GameModel::GameModel(std::string map_filename, int game_id):
-        Thread(), map(map_filename), operations(), game_id(game_id){
+GameModel::GameModel(int game_id):
+        game_id(game_id){
     initDirections();
 } 
 
@@ -34,53 +33,17 @@ void GameModel::cleanDirections(){
     }
 }
 
-void GameModel::processMove(Protocol& protocol){
-    Player* player = players.at(protocol.getId());
-    Direction* dir = directions.at(protocol.getDirection());
-    player->mover(dir);
-}
-
-void GameModel::push(Protocol protocol){
-    std::lock_guard<std::mutex> lck(m);
-    operations.push(protocol);
-}
-
-void GameModel::addPlayer(int player_id){
-    try{
-        Player* player = new Player(map, player_id, operations);
-        players.insert(std::pair<int, Player*>(player_id, player));
-        id_insertion_order.push_back(player_id);
-    } catch(...){
-    }
-}
-
-Player& GameModel::getPlayer(int user_id){
-    return *players.at(user_id);
-}
-
-Mapa& GameModel::getMap(){
-    return map;
-}
-
-int GameModel::getId(){
-    return game_id;
-}
-
-std::vector<int>& GameModel::getIdsVector(){
-    return id_insertion_order;
-}
-
-GameModel& GameModel::operator=(GameModel&& other){
-    if (this == &other){
-        return *this;        // other is myself!
-    }
-    this->map = std::move(other.map);
-    this->is_running = true;
-    this->players = std::move(other.players);
-    this->directions = std::move(other.directions);
-    this->game_id = std::move(other.game_id);
-    return *this;
-}
+// GameModel& GameModel::operator=(GameModel&& other){
+//     if (this == &other){
+//         return *this;        // other is myself!
+//     }
+//     this->map = std::move(other.map);
+//     this->is_running = true;
+//     this->players = std::move(other.players);
+//     this->directions = std::move(other.directions);
+//     this->game_id = std::move(other.game_id);
+//     return *this;
+// }
 
 GameModel::~GameModel(){
     cleanDirections();
