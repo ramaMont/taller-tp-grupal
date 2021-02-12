@@ -30,7 +30,7 @@ void Player::resurrect(){
     health = max_health;
     has_key_1 = false;
     has_key_2 = false;
-    map.addPositionable(this, this->initial_position);
+    map.addMovable(this, this->initial_position);
 }
 
 void Player::newGunType(int new_gun_type){

@@ -34,11 +34,14 @@ public:
 
     //Pre:-
     // Asigna una nueva posicion al personaje
-    void relocate(Movable* _character, Coordinates posicion);
+    void addMovable(Movable* _character, Coordinates posicion);
+
+
+    void removePositionable(Coordinates position);
 
     //Pre:-
     // Remueve a un personaje de su posicion
-    void removePositionable(Coordinates position);
+    void removeMovable(Coordinates position);
 
     //Pre:-
     // Remueve todos los punteros de su posicion
@@ -53,7 +56,7 @@ public:
     Posicionable* getPositionableIn(Coordinates position);
 
     //Pre:-
-    // Mueve al jugador (llama al relocate y al removePositionable)    
+    // Mueve al jugador (llama al addMovable y al removeMovable)    
     void moveme(Movable* character, const Coordinates& position);
 
     //Pre:-

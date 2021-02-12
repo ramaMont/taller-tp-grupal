@@ -37,7 +37,7 @@ void ClientMap::addPositionable(Posicionable* positionable,
     }
 }
 
-void ClientMap::relocate(Movable* _player, Coordinates position){
+void ClientMap::addMovable(Movable* _player, Coordinates position){
         if(mapGame[floor(position.x)][floor(position.y)]==nullptr){
             mapGame[floor(position.x)][floor(position.y)]=_player;
         }else{
@@ -46,13 +46,17 @@ void ClientMap::relocate(Movable* _player, Coordinates position){
         }
 }
 
-
 void ClientMap::removePositionable(Coordinates position){
+    mapGame[floor(position.x)][floor(position.y)]=nullptr;
+}
+
+
+void ClientMap::removeMovable(Coordinates position){
     if(mapGame[floor(position.x)][floor(position.y)]!=nullptr){
         try{
             mapGame[floor(position.x)][floor(position.y)]->remove();
         }catch (int e){
-            mapGame[floor(position.x)][floor(position.y)]=nullptr;
+            removePositionable(position);
         }
     }
 }
@@ -80,8 +84,8 @@ void ClientMap::moveme(Movable* _player, const Coordinates& position){
         return;
     }
     try {
-        relocate(_player,position);
-        removePositionable(posPlayer);
+        addMovable(_player,position);
+        removeMovable(posPlayer);
     } catch(int e){
         throw;
     }
