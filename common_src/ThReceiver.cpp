@@ -9,6 +9,5 @@ void ThReceiver::stop(){
     is_running = false;
 }
 
-
 ThReceiver::~ThReceiver(){
 }
