@@ -10,7 +10,7 @@
 ThBots::ThBots(ThGameModelServer* th_game_model,
                BlockingQueue<Protocol>& game_model_queue,
                std::map<int,Player*>& players,
-               const Mapa& map,
+               const ServerMap& map,
                int number_of_bots):
     Thread(),
     players(players),

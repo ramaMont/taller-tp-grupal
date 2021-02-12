@@ -9,7 +9,7 @@ static void sortVector(std::vector<SpriteDrawer*> &spotted_sprites){
 	});	
 }
 
-Screen::Screen(std::vector<Rocket*> &rockets,std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window):
+Screen::Screen(std::vector<Rocket*> &rockets,std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClientMap &map,Texture &texture, Window &window):
 	n_rays(window.getWidth()/2), rockets(rockets), enemies(enemies) ,sprites(sprites), player(player),
 	map(map),
 	texture(texture),

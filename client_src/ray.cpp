@@ -8,7 +8,7 @@ static const int Y_SIDE = 2;
 
 Ray::Ray(const double &ray_angle,const Coordinates &ray_direction,\
 	std::vector<float> &distances,const Coordinates &player_position,const Coordinates &player_direction,\
-	ClMap &map, int num_ray, int _n_rays):
+	ClientMap &map, int num_ray, int _n_rays):
 	player_direction(player_direction),
 	player_position(player_position), 
 	ray_direction(ray_direction), 

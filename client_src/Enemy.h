@@ -4,8 +4,8 @@
 #include "Posicionable.h"
 
 #include "coordinates.h"
-class ClMap;
-#include "ClMap.h"
+class ClientMap;
+#include "ClientMap.h"
 class Direccion;
 #include <Direction.h>
 
@@ -25,7 +25,7 @@ private:
 	EnemyType* enemy_type;
 
 public:
-	explicit Enemy(Coordinates posicion, Coordinates direction ,ClMap& map, Player &player ,int id);
+	explicit Enemy(Coordinates posicion, Coordinates direction ,ClientMap& map, Player &player ,int id);
 
     //Pre:-
     // Le indico al rayo que colisionó con un enemigo y setea al 

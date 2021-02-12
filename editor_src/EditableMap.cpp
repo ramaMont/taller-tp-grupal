@@ -26,7 +26,7 @@ void EditableMap::loadExistentMap() {
 
     if ((!map["nombre"] || !map["filas"]) |
         (!map["columnas"] || !map["elementos"])) {
-        throw MapException("Mapa inválido!");
+        throw MapException("ServerMap inválido!");
         return;
     }
 

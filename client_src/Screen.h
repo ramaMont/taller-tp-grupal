@@ -15,7 +15,7 @@ class Rocket;
 class Enemy;
 #include <Enemy.h>
 #include <Player.h>
-#include <ClMap.h>
+#include <ClientMap.h>
 
 
 // Administra la visualizacion de todos los objetos visibles: sprites, enemigos, paredes, armas y raycasting
@@ -28,7 +28,7 @@ class Screen{
 		std::vector<Enemy*> &enemies;
 		std::vector<SpriteHolder*> &sprites;
 		Player &player;
-		ClMap &map;
+		ClientMap &map;
 		Texture &texture;
 		Window &window;
 		Background background;
@@ -44,7 +44,7 @@ class Screen{
 		// Realiza los calculos necesarios para la correcta visualizacion de los sprites: distancia al jugador, etc
 		void initialiceSpottedSprites(std::vector<SpriteDrawer*> &spotted_sprites,Camera &camera);
 	public:
-		Screen(std::vector<Rocket*> &rockets, std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClMap &map,Texture &texture, Window &window);
+		Screen(std::vector<Rocket*> &rockets, std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClientMap &map,Texture &texture, Window &window);
 
     	Screen(const Screen&) = delete;
     	Screen(Screen&& other) = delete;

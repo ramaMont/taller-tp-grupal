@@ -1,6 +1,6 @@
 #include "ThUser.h"
 #include <iostream>
-//#include <Mapa.h>
+//#include <ServerMap.h>
 #include <vector>
 #include <map>
 //#include <GameModel.h>

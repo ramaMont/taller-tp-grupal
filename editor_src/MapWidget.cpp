@@ -488,7 +488,7 @@ void MapWidget::saveMap() {
         return;
     }
     map->saveMap();
-    std::string message = "Mapa guardado con éxito!";
+    std::string message = "ServerMap guardado con éxito!";
     showWarning(QString::fromStdString(message), QMessageBox::Information);
 }
 

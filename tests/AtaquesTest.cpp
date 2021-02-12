@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "Mapa.h"
+#include "ServerMap.h"
 #include "Player.h"
 #include "Item.h"
 #include "Posicionable.h"
@@ -15,7 +15,7 @@
 /*
 TEST(AtaquesTests, cuchilloAtacaDistancia1Adelante) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Player jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Player enemigo(Coordinates(6, 5), Coordinates(1, 0),  mapa);
     std::vector<Player*> vec;
@@ -34,7 +34,7 @@ TEST(AtaquesTests, cuchilloAtacaDistancia1Adelante) {
 
 TEST(AtaquesTests, cuchilloAtacaDistancia1Izquierda) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Player jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Player enemigo(Coordinates(6, 6), Coordinates(1, 0),  mapa);
     std::vector<Player*> vec;
@@ -53,7 +53,7 @@ TEST(AtaquesTests, cuchilloAtacaDistancia1Izquierda) {
 
 TEST(AtaquesTests, cuchilloAtacaDistancia1Derecha) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Player jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Player enemigo(Coordinates(6, 4), Coordinates(1, 0),  mapa);
     std::vector<Player*> vec;
@@ -72,7 +72,7 @@ TEST(AtaquesTests, cuchilloAtacaDistancia1Derecha) {
 
 TEST(AtaquesTests, cuchilloNoAtacaDistanciaMasDe2) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(7, 5), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -91,7 +91,7 @@ TEST(AtaquesTests, cuchilloNoAtacaDistanciaMasDe2) {
 
 TEST(AtaquesTests, cuchilloNoAtacaAtras) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(5, 4), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -110,7 +110,7 @@ TEST(AtaquesTests, cuchilloNoAtacaAtras) {
 
 TEST(AtaquesTests, pistolaAtacaEnemigoEnfrente) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(10,5), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -129,7 +129,7 @@ TEST(AtaquesTests, pistolaAtacaEnemigoEnfrente) {
 
 TEST(AtaquesTests, pistolaAtacaEnemigoEnSuRangoDeVision) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(10,6), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -148,7 +148,7 @@ TEST(AtaquesTests, pistolaAtacaEnemigoEnSuRangoDeVision) {
 
 TEST(AtaquesTests, pistolaNoAtacaEmemigoAlCostado) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(5, 8), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -167,7 +167,7 @@ TEST(AtaquesTests, pistolaNoAtacaEmemigoAlCostado) {
 
 TEST(AtaquesTests, pistolaNoAtacaEmemigoAtras) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(3, 5), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -186,7 +186,7 @@ TEST(AtaquesTests, pistolaNoAtacaEmemigoAtras) {
 
 TEST(AtaquesTests, pistolaNoAtacaSiHayObjetoEnElMedio) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(10,5), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -208,7 +208,7 @@ TEST(AtaquesTests, pistolaNoAtacaSiHayObjetoEnElMedio) {
 
 TEST(AtaquesTests, pistolaAtacaAlEnemigoEnfrentadoEnElMenorAngulo) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo1(Coordinates(15,6), Coordinates(1, 0),  mapa);
     Jugador enemigo2(Coordinates(15,7), Coordinates(1, 0),  mapa);
@@ -231,7 +231,7 @@ TEST(AtaquesTests, pistolaAtacaAlEnemigoEnfrentadoEnElMenorAngulo) {
 
 TEST(AtaquesTests, ametralladoraAtacaEnemigoEnfrente) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(10,5), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -253,7 +253,7 @@ TEST(AtaquesTests, ametralladoraAtacaEnemigoEnfrente) {
 
 TEST(AtaquesTests, ametralladoraNoAtacaEnemigoAtras) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(10,5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -275,7 +275,7 @@ TEST(AtaquesTests, ametralladoraNoAtacaEnemigoAtras) {
 
 TEST(AtaquesTests, canionAtacaEnemigoEnfrente) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(10,5), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -297,7 +297,7 @@ TEST(AtaquesTests, canionAtacaEnemigoEnfrente) {
 
 TEST(AtaquesTests, canionNoAtacaEnemigoAtras) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(10,5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(5, 5), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -319,7 +319,7 @@ TEST(AtaquesTests, canionNoAtacaEnemigoAtras) {
 
 TEST(AtaquesTests, lanzacohetesAtacaTodosLosEnemigosCercanos) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(7, 10), Coordinates(1, 0),  mapa);
     Jugador enemigo1(Coordinates(10,10), Coordinates(1, 0),  mapa);
     Jugador enemigo2(Coordinates(10,12), Coordinates(1, 0),  mapa);
@@ -355,7 +355,7 @@ TEST(AtaquesTests, lanzacohetesAtacaTodosLosEnemigosCercanos) {
 
 TEST(AtaquesTests, lanzacohetesNoAtacaEnemigosLejanos) {
     //arrange
-    Mapa mapa(40,40);
+    ServerMap mapa(40,40);
     Jugador jugador(Coordinates(7, 10), Coordinates(1, 0),  mapa);
     Jugador enemigo1(Coordinates(10,10), Coordinates(1, 0),  mapa);
     Jugador enemigo2(Coordinates(35,35), Coordinates(1, 0),  mapa);
@@ -383,7 +383,7 @@ TEST(AtaquesTests, lanzacohetesNoAtacaEnemigosLejanos) {
 
 TEST(AtaquesTests, lanzacohetesNoAtacaSiUnObjetoSeInterpone) {
     //arrange
-    Mapa mapa(40,40);
+    ServerMap mapa(40,40);
     Jugador jugador(Coordinates(7, 10), Coordinates(1, 0),  mapa);
     Jugador enemigo1(Coordinates(10,10), Coordinates(1, 0),  mapa);
     Jugador enemigo2(Coordinates(12,10), Coordinates(1, 0),  mapa);
@@ -413,7 +413,7 @@ TEST(AtaquesTests, lanzacohetesNoAtacaSiUnObjetoSeInterpone) {
 
 TEST(AtaquesTests, lanzacohetesMasDanioMasCerca) {
     //arrange
-    Mapa mapa(20,20);
+    ServerMap mapa(20,20);
     Jugador jugador(Coordinates(7, 10), Coordinates(1, 0),  mapa);
     Jugador enemigo1(Coordinates(10,10), Coordinates(1, 0),  mapa);
     Jugador enemigo2(Coordinates(10, 8), Coordinates(1, 0),  mapa);

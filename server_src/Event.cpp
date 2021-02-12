@@ -25,7 +25,7 @@ Event::~Event(){
 
 
 // Open 
-OpenEvent::OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e):
+OpenEvent::OpenEvent(Player* player, ServerMap& map, ThGameEvents& game_e):
     player(player), map(map), th_game_events(game_e){
 }
 

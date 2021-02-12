@@ -7,8 +7,8 @@
 #include "AtomicCoordinates.h"
 #include <BlockingQueue.h>
 
-#include "Mapa.h"
-class Mapa;
+#include "ServerMap.h"
+class ServerMap;
 #include <Direction.h>
 class Direction;
 class SoldierState;
@@ -19,7 +19,7 @@ class SoldierState;
 
 class Player final : public Posicionable{
 private:
-    Mapa &map;
+    ServerMap &map;
     int player_id;
     int lives;
     int health;
@@ -42,11 +42,11 @@ private:
     
 public:
 
-    explicit Player(Mapa& mapa, int id, 
+    explicit Player(ServerMap& mapa, int id, 
         BlockingQueue<Protocol>& game_model_queue);
-    explicit Player(Coordinates position,Coordinates direction ,Mapa& map,
+    explicit Player(Coordinates position,Coordinates direction ,ServerMap& map,
         BlockingQueue<Protocol>& game_model_queue);
-    explicit Player(Coordinates position,Coordinates direction ,Mapa& map,
+    explicit Player(Coordinates position,Coordinates direction ,ServerMap& map,
         int id, BlockingQueue<Protocol>& game_model_queue);
         
     // Mueve al jugador  en el mapa
@@ -124,7 +124,7 @@ public:
     bool isAlive();
     
     // Retorna su mapa
-    Mapa& getMap();
+    ServerMap& getMap();
     
     // Retorna el numero de arma actual
     int actualGun();

@@ -16,7 +16,7 @@ class ThBots : public Thread{
     BlockingQueue<Protocol>& _game_model_queue;
     int number_of_bots;
     ThGameModelServer* th_game_model;
-    const Mapa& map;
+    const ServerMap& map;
 
     // Envia el protocolo del evento
     void makeEvent(int player_id, Bot::Event event);
@@ -25,7 +25,7 @@ class ThBots : public Thread{
     explicit ThBots(ThGameModelServer* th_game_model,
                     BlockingQueue<Protocol>& game_model_queue,
                     std::map<int,Player*>& players,
-                    const Mapa& map,
+                    const ServerMap& map,
                     int number_of_bots);
     
     // Procesa los bots y sus eventos

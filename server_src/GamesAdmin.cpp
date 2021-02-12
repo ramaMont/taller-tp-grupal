@@ -1,7 +1,7 @@
 #include "GamesAdmin.h"
 
 #include "ThGameModelServer.h"
-#include "Mapa.h"
+#include "ServerMap.h"
 #include <ThUser.h>
 #include <coordinates.h>
 #include <Player.h>

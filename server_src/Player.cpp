@@ -5,7 +5,7 @@
 #include <algorithm>
 
 
-Player::Player(Mapa& map, int id, BlockingQueue<Protocol>& game_model_queue):
+Player::Player(ServerMap& map, int id, BlockingQueue<Protocol>& game_model_queue):
 		map(map), player_id(id), 
 		soldier(this, bullets, game_model_queue),
 		_game_model_queue(game_model_queue){
@@ -20,7 +20,7 @@ Player::Player(Mapa& map, int id, BlockingQueue<Protocol>& game_model_queue):
     is_alive = true;
 }
 
-Player::Player(Coordinates position,Coordinates direction ,Mapa& map, 
+Player::Player(Coordinates position,Coordinates direction ,ServerMap& map, 
 	BlockingQueue<Protocol>& game_model_queue):
 		Posicionable(position, direction), map(map), player_id(0),
 		soldier(this, bullets, game_model_queue), 
@@ -38,7 +38,7 @@ Player::Player(Coordinates position,Coordinates direction ,Mapa& map,
     atomic_pos(posicion);
 }
 
-Player::Player(Coordinates position,Coordinates direction ,Mapa& map, int id,
+Player::Player(Coordinates position,Coordinates direction ,ServerMap& map, int id,
 	BlockingQueue<Protocol>& game_model_queue):
 		Posicionable(position, direction), map(map), player_id(id),
 		soldier(this, bullets, game_model_queue),
@@ -248,7 +248,7 @@ bool Player::isAlive(){
 	return is_alive;
 }
 
-Mapa& Player::getMap(){
+ServerMap& Player::getMap(){
 	return map;
 }
 

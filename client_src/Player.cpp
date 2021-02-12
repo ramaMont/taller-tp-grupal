@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-Player::Player(ClMap& map):
+Player::Player(ClientMap& map):
         Character(Coordinates(4,4),Coordinates(1,0),map,0), 
         max_health(configs[CONFIG::vida_maxima]), init_bullets(configs[CONFIG::balas_iniciales]), 
         shot_frame(0), gun_type(nullptr),shooting(false),

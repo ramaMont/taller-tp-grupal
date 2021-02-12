@@ -14,7 +14,7 @@ class ThBots;
 
 class ThGameModelServer : public GameModel, public Thread{
 private:
-    Mapa map;
+    ServerMap map;
     BlockingQueue<Protocol> operations;
     std::vector<int> id_insertion_order;
     std::map<int,Player*> players;
@@ -68,7 +68,7 @@ public:
     virtual void addPlayer(int player_id) override;
     virtual void addPlayer(Protocol& protocol) override;
     Player& getPlayer(int user_id);
-    Mapa& getMap();
+    ServerMap& getMap();
     int getId();
 
     std::vector<int>& getIdsVector();

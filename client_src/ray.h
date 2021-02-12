@@ -13,8 +13,8 @@
 #include "coordinates.h"
 //#include "sprite.h"
 
-class ClMap;
-#include <ClMap.h>
+class ClientMap;
+#include <ClientMap.h>
 class Posicionable;
 #include <Posicionable.h>
 
@@ -33,7 +33,7 @@ class Ray {
 
 		std::vector<float> &distances;
 
-		ClMap &map;
+		ClientMap &map;
 		int num_ray;
 		int n_rays;
 
@@ -69,7 +69,7 @@ class Ray {
 
 	public:
 		//Ray angle y ray_direction NO es lo mismo, la primera es relativa al plano de la camara y la segunda NO
-		Ray(const double &ray_angle,const Coordinates &ray_direction,std::vector<float> &distances,const Coordinates &player_position,const Coordinates &player_direction, ClMap &map, int num_ray, int _n_rays);
+		Ray(const double &ray_angle,const Coordinates &ray_direction,std::vector<float> &distances,const Coordinates &player_position,const Coordinates &player_direction, ClientMap &map, int num_ray, int _n_rays);
 
 		/*Llama a la funcion recursiva que encuentra al objeto con 
 		el que choca el rayo, partiendo de la posicion inicial, player_position*/

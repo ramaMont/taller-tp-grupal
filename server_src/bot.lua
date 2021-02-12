@@ -19,7 +19,7 @@ local ABRIR_PUERTA = 5
 local NADA = 6
 
 
--- Mapa
+-- ServerMap
 local VACIO  = 0
 local OCUPADO = 1
 local PUERTA = 2

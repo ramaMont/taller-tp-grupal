@@ -1,10 +1,10 @@
 // #include "gtest/gtest.h"
 // #include <Player.h>
-// #include <Mapa.h>
+// #include <ServerMap.h>
 // #include <coordinates.h>
 // TEST(CreacionPlayeresTests, creacionExitosa) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     Coordinates pos(2,5);
 //     Coordinates dir(0,0);
 //     Player jugador(pos, dir, mapa);

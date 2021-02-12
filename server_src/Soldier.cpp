@@ -1,6 +1,6 @@
 #include "Soldier.h"
 
-#include "Mapa.h"
+#include "ServerMap.h"
 #include "Player.h"
 #include <ConfigVariable.h>
 
@@ -138,7 +138,7 @@ bool Soldier::fireBullet(Player *player, float precision, int angle, Player* ene
     return true;
 }
 
-bool Soldier::crashes(Mapa& map, const Coordinates& start, const Coordinates& end){
+bool Soldier::crashes(ServerMap& map, const Coordinates& start, const Coordinates& end){
 	if (start == end) return false;
 	Coordinates direction(std::floor(end.x) + 0.5 - start.x,
                         std::floor(end.y) + 0.5 - start.y);
@@ -198,7 +198,7 @@ void Dog::bite(Player *player, std::set<std::pair<int, Player*>>& enemies){
 	}
 }
 
-int Dog::throwGun(Mapa& map, const Coordinates& position){
+int Dog::throwGun(ServerMap& map, const Coordinates& position){
 	return 0;
 }
 
@@ -224,7 +224,7 @@ int Guard::shoot(Player *player, std::map<int, Player*>& enemies){
 	return 0;
 }
 
-int Guard::throwGun(Mapa& map, const Coordinates& position){
+int Guard::throwGun(ServerMap& map, const Coordinates& position){
 	return 0;
 }
 
@@ -255,7 +255,7 @@ int SS::shoot(Player *player, std::map<int, Player*>& enemies){
 	return 0;
 }
 
-int SS::throwGun(Mapa& map, const Coordinates& position){
+int SS::throwGun(ServerMap& map, const Coordinates& position){
     Item* new_gun = new MachineGun(position);
     map.addItem(new_gun, position);
     gun = false;
@@ -285,7 +285,7 @@ int Officer::shoot(Player *player, std::map<int, Player*>& enemies){
 	return 0;
 }
 
-int Officer::throwGun(Mapa& map, const Coordinates& position){
+int Officer::throwGun(ServerMap& map, const Coordinates& position){
     Item* new_gun = new FireCanon(position);
     map.addItem(new_gun, position);
     gun = false;
@@ -312,7 +312,7 @@ int Mutant::shoot(Player *player, std::map<int, Player*>& enemies){
 	return 1;
 }
 
-int Mutant::throwGun(Mapa& map, const Coordinates& position){
+int Mutant::throwGun(ServerMap& map, const Coordinates& position){
     Item* new_gun = new RocketLauncher(position);
     map.addItem(new_gun, position);
     gun = false;

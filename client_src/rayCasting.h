@@ -16,7 +16,7 @@ class Texture;
 #include "texture.h"
 
 #include <Player.h>
-#include <ClMap.h>
+#include <ClientMap.h>
 #include <coordinates.h>
 
 //Implementa el raycasting
@@ -25,11 +25,11 @@ class Raycasting {
 private:
 
 	Player &player;
-	ClMap &map;
+	ClientMap &map;
 	int n_rays;
 
 public:
-    Raycasting(Player &a_player, ClMap &map, int n_rays);
+    Raycasting(Player &a_player, ClientMap &map, int n_rays);
 
 
     //Llama a Ray por cada rayo nuevo, y una vez obtenido, lo dibuja

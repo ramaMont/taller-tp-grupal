@@ -4,8 +4,8 @@
 #include <Posicionable.h>
 
 #include "coordinates.h"
-class ClMap;
-#include "ClMap.h"
+class ClientMap;
+#include "ClientMap.h"
 class Direction;
 #include <Direction.h>
 
@@ -16,9 +16,9 @@ class Ray;
 class Movable : public Posicionable{
 protected:
 
-    ClMap &map;
+    ClientMap &map;
 public:
-    explicit Movable(Coordinates posicion, Coordinates direction ,ClMap& map);
+    explicit Movable(Coordinates posicion, Coordinates direction ,ClientMap& map);
 
     ~Movable();  
 };

@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "Mapa.h"
+#include "ServerMap.h"
 #include "Player.h"
 #include "Bot.h"
 #include "Posicionable.h"
@@ -9,7 +9,7 @@
 /*
 TEST(LuaTests, siTieneOtraArmaCambiaACuchillo) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(2,2), Coordinates(1, 0),  mapa);
     std::vector<Jugador*> vec;
@@ -24,7 +24,7 @@ TEST(LuaTests, siTieneOtraArmaCambiaACuchillo) {
 
 TEST(LuaTests, siEstaCruzandoUnaPueraAvanza) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Puerta puerta(Coordinates(2,2));
     mapa.agregarPosicionable(&puerta, Coordinates(2,2));
     Bot bot(mapa);
@@ -42,7 +42,7 @@ TEST(LuaTests, siEstaCruzandoUnaPueraAvanza) {
 
 TEST(LuaTests, siTieneUnaPuertaAdelanteLaAbreUnaSolaVez) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Puerta puerta(Coordinates(2,2));
     mapa.agregarPosicionable(&puerta, Coordinates(3,2));
     Bot bot(mapa);
@@ -64,7 +64,7 @@ TEST(LuaTests, siTieneUnaPuertaAdelanteLaAbreUnaSolaVez) {
 
 TEST(LuaTests, siTieneUnEnemigoAdelanteAtaca) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(3,3), Coordinates(-0.7, 0.7),  mapa);
     Jugador enemigo(Coordinates(2,4), Coordinates(1, 0),  mapa);
@@ -81,7 +81,7 @@ TEST(LuaTests, siTieneUnEnemigoAdelanteAtaca) {
 }
 
 TEST(LuaTests, atacaADistancia1) {
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(0.99, 0),  mapa);
     Jugador enemigo1(Coordinates(7,5), Coordinates(1, 0),  mapa); // Distancia 2
@@ -100,7 +100,7 @@ TEST(LuaTests, atacaADistancia1) {
 
 TEST(LuaTests, siTieneUnEnemigoMasAdelanteAvanza) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(2,2), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(5,2), Coordinates(1, 0),  mapa);
@@ -118,7 +118,7 @@ TEST(LuaTests, siTieneUnEnemigoMasAdelanteAvanza) {
 
 TEST(LuaTests, siTieneUnEnemigoEnElCostadoGira) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(2,2), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(1,2), Coordinates(1, 0),  mapa);
@@ -137,7 +137,7 @@ TEST(LuaTests, siTieneUnEnemigoEnElCostadoGira) {
 
 TEST(LuaTests, siNoPuedeAvanzarGira) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Objeto pared(Coordinates(3,3));
     mapa.agregarPosicionable(&pared, Coordinates(3,2));
     Bot bot(mapa);
@@ -158,7 +158,7 @@ TEST(LuaTests, siNoPuedeAvanzarGira) {
 
 TEST(LuaTests, giraCorrectoADerechaMirandoADerecha) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(5,3), Coordinates(1, 0),  mapa);
@@ -176,7 +176,7 @@ TEST(LuaTests, giraCorrectoADerechaMirandoADerecha) {
 
 TEST(LuaTests, giraCorrectoADerechaMirandoAIzquierda) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(-1, 0),  mapa);
     Jugador enemigo(Coordinates(5,7), Coordinates(1, 0),  mapa);
@@ -194,7 +194,7 @@ TEST(LuaTests, giraCorrectoADerechaMirandoAIzquierda) {
 
 TEST(LuaTests, giraCorrectoADerechaMirandoAArriba) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(0, 1),  mapa);
     Jugador enemigo(Coordinates(7,5), Coordinates(1, 0),  mapa);
@@ -212,7 +212,7 @@ TEST(LuaTests, giraCorrectoADerechaMirandoAArriba) {
 
 TEST(LuaTests, giraCorrectoADerechaMirandoAAbajo) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(0, -1),  mapa);
     Jugador enemigo(Coordinates(3,5), Coordinates(1, 0),  mapa);
@@ -230,7 +230,7 @@ TEST(LuaTests, giraCorrectoADerechaMirandoAAbajo) {
 
 TEST(LuaTests, giraCorrectoAIzquierdaMirandoADerecha) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(1, 0),  mapa);
     Jugador enemigo(Coordinates(5,7), Coordinates(1, 0),  mapa);
@@ -248,7 +248,7 @@ TEST(LuaTests, giraCorrectoAIzquierdaMirandoADerecha) {
 
 TEST(LuaTests, giraCorrectoAIzquierdaMirandoAIzquierda) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(-1, 0),  mapa);
     Jugador enemigo(Coordinates(5,3), Coordinates(1, 0),  mapa);
@@ -266,7 +266,7 @@ TEST(LuaTests, giraCorrectoAIzquierdaMirandoAIzquierda) {
 
 TEST(LuaTests, giraCorrectoAIzquierdaMirandoAArriba) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(0, 1),  mapa);
     Jugador enemigo(Coordinates(3,5), Coordinates(1, 0),  mapa);
@@ -284,7 +284,7 @@ TEST(LuaTests, giraCorrectoAIzquierdaMirandoAArriba) {
 
 TEST(LuaTests, giraCorrectoAIzquierdaMirandoAAbajo) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(0, -1),  mapa);
     Jugador enemigo(Coordinates(7,5), Coordinates(1, 0),  mapa);
@@ -302,7 +302,7 @@ TEST(LuaTests, giraCorrectoAIzquierdaMirandoAAbajo) {
 
 TEST(LuaTests, persigueAlEnemigoMasCercano) {
     //arrange
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(1, 0),  mapa);
     Jugador enemigo1(Coordinates(5,9), Coordinates(1, 0),  mapa); // Distancia 4
@@ -321,7 +321,7 @@ TEST(LuaTests, persigueAlEnemigoMasCercano) {
 }
 
 TEST(LuaTests, persigueAlMismoEnemigoVariosCiclos) {
-    Mapa mapa(10, 10);
+    ServerMap mapa(10, 10);
     Bot bot(mapa);
     Jugador jugador(Coordinates(5,5), Coordinates(1, 0),  mapa);
     Jugador enemigo1(Coordinates(5,9), Coordinates(1, 0),  mapa); // Distancia 4

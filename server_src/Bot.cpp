@@ -1,7 +1,7 @@
 #include "Bot.h"
 
 #include "Object.h"
-#include "Mapa.h"
+#include "ServerMap.h"
 #include "Player.h"
 #include "AtomicCoordinates.h"
 #include <string>
@@ -41,7 +41,7 @@ int Bot::luaGetMapObject(lua_State *L){
 }
 
 
-Bot::Bot(const Mapa& map): map(map){
+Bot::Bot(const ServerMap& map): map(map){
 	this->script = luaL_newstate();
 	luaL_openlibs(this->script);
 	lua_register(this->script, "getMapObject", luaGetMapObject);

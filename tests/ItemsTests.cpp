@@ -1,5 +1,5 @@
 // #include "gtest/gtest.h"
-// #include "Mapa.h"
+// #include "ServerMap.h"
 // #include "Player.h"
 // #include "Item.h"
 // #include "Posicionable.h"
@@ -8,7 +8,7 @@
 
 // TEST(ItemsTests, comidaRecupera10puntosDeVida) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     BlockingQueue<Protocol> bq;
 //     Player* jugador = new Player(Coordinates(5,5), Coordinates(1,0), mapa, bq);
 //     Food* comida = new Food(Coordinates(6,5));
@@ -32,7 +32,7 @@
 // /*
 // TEST(ItemsTests, kitMedicoRecupera20puntosDeVida) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     Coordinates posicion(11, 15);
 //     Coordinates direccion(1, 0);
 //     Jugador jugador(posicion, direccion,  mapa);
@@ -55,7 +55,7 @@
 
 // TEST(ItemsTests, sangreRecupera1PuntoDeVidaSiEstaBaja) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     Coordinates posicion(11, 15);
 //     Coordinates direccion(1, 0);
 //     Jugador jugador(posicion, direccion,  mapa);
@@ -81,7 +81,7 @@
 
 // TEST(ItemsTests, noUsaSangreSiTieneMuchaVida) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     Coordinates posicion(11, 15);
 //     Coordinates direccion(1, 0);
 //     Jugador jugador(posicion, direccion,  mapa);
@@ -112,7 +112,7 @@
 
 // TEST(ItemsTests, noPuedeRecuperarMasDelMaximoDeVida) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     Coordinates posicion(11, 15);
 //     Coordinates direccion(1, 0);
 //     Jugador jugador(posicion, direccion,  mapa);
@@ -131,7 +131,7 @@
 
 // TEST(ItemsTests, agarrarBalasAumentaEn5laCantidad) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     Coordinates posicion(11, 15);
 //     Coordinates direccion(1, 0);
 //     Jugador jugador(posicion, direccion,  mapa);
@@ -148,7 +148,7 @@
 
 // TEST(ItemsTests, tesorosAumentanLaPuntuacionCorrectamente) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     Coordinates posicion(11, 15);
 //     Coordinates direccion(1, 0);
 //     Jugador jugador(posicion, direccion,  mapa);

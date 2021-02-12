@@ -7,8 +7,8 @@
 #include <Posicionable.h>
 
 #include "coordinates.h"
-class ClMap;
-#include "ClMap.h"
+class ClientMap;
+#include "ClientMap.h"
 class Direction;
 #include <Direction.h>
 
@@ -38,7 +38,7 @@ private:
 
 public:
 
-    explicit Player(ClMap& map);
+    explicit Player(ClientMap& map);
 
     Player(const Player&) = delete;
     Player(Player&& other) = delete;

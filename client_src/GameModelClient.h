@@ -7,7 +7,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "ClMap.h"
+#include "ClientMap.h"
 #include "Protocol.h"
 #include "Player.h"
 #include "BlockingQueue.h"
@@ -23,7 +23,7 @@
 #include "Screen.h"
 #include "texture.h"
 
-#include <ClMap.h>
+#include <ClientMap.h>
 #include <coordinates.h>
 #include <Character.h>
 #include <Player.h>
@@ -45,7 +45,7 @@ private:
 
     Window window;	
     Texture texture;
-    ClMap map; 	
+    ClientMap map; 	
 	bool added_player;
     Player player;	
 	std::queue<Protocol> operations;
@@ -128,7 +128,7 @@ public:
     void updateFrameAnimations();
 
 
-    ClMap& getMap();
+    ClientMap& getMap();
     int getId();
     std::map<int,Character*> getCharacters();
 

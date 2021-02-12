@@ -1,7 +1,7 @@
 #ifndef __BOT_H__
 #define __BOT_H__
 
-class Mapa;
+class ServerMap;
 class Player;
 #include <map>
 
@@ -16,7 +16,7 @@ extern "C"{
 class Bot{
 	private:
 	lua_State* script;
-	const Mapa& map;
+	const ServerMap& map;
 	
 	public:
         enum Event{
@@ -29,7 +29,7 @@ class Bot{
 		Nothing
         };
 
-    Bot(const Mapa& map);
+    Bot(const ServerMap& map);
     
     // Invoca la funcion para cargar el mapa en el script de lua
     void loadMap();

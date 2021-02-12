@@ -6,7 +6,7 @@
 class Player;
 #include "Player.h"
 class ThGameModelServer;
-class Mapa;
+class ServerMap;
 #include <map>
 #define ROCKET_STEP 0.25
 
@@ -67,7 +67,7 @@ class Rocket: public Object{
     Coordinates direction;
     Player* player;
     std::map<int, Player*>& enemies;
-    Mapa& map;
+    ServerMap& map;
     std::atomic<bool> exploded;
 
     public:

@@ -1,7 +1,7 @@
 #include "Character.h"
 #include <stdio.h>
 
-Character::Character(Coordinates position,Coordinates direction ,ClMap& map, int id):
+Character::Character(Coordinates position,Coordinates direction ,ClientMap& map, int id):
         Movable(position,direction,map), id(id){
 }
 

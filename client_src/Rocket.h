@@ -4,8 +4,8 @@
 #include <Posicionable.h>
 
 #include "coordinates.h"
-class ClMap;
-#include "ClMap.h"
+class ClientMap;
+#include "ClientMap.h"
 class Direccion;
 #include <Direction.h>
 
@@ -23,7 +23,7 @@ private:
 	//int moved_frames_continued;
 
 public:
-	explicit Rocket(Coordinates posicion,Coordinates direction ,ClMap& map, Player &player);
+	explicit Rocket(Coordinates posicion,Coordinates direction ,ClientMap& map, Player &player);
 
     //Pre:-
     // Le indico al rayo que colisionó con un enemigo y setea al 

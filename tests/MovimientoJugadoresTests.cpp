@@ -1,6 +1,6 @@
 // #include "gtest/gtest.h"
 // #include <Player.h>
-// #include <Mapa.h>
+// #include <ServerMap.h>
 // #include <Direccion.h>
 // #include <coordinates.h>
 // #include <Posicionable.h>
@@ -12,7 +12,7 @@
 // //-------------------- Hacia adelante ------------------------------------
 // TEST(MovimientoPlayeresTests, adelanteExitosoDesdeDerecha) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     bool lugar_vacio = false;
 //     //Mirando hacia la derecha
@@ -35,7 +35,7 @@
 // }
 // TEST(MovimientoPlayeresTests, adelanteExitosoDesdeArriba) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     bool lugar_vacio = false;
 //     //Mirando hacia la arriba
@@ -56,7 +56,7 @@
 // }
 // TEST(MovimientoPlayeresTests, adelanteExitosoDesdeIzquierda) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     bool lugar_vacio = false;
 //     //Mirando hacia la izquierda
@@ -78,7 +78,7 @@
 // }
 // TEST(MovimientoPlayeresTests, adelanteExitosoDesdeAbajo) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     bool lugar_vacio = false;
 //     //Mirando hacia abajo
@@ -100,7 +100,7 @@
 // }
 // TEST(MovimientoPlayeresTests, adelanteExitosoDesdeDerechaArriba) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     bool lugar_vacio = false;
 //     //Mirando hacia arriba y a la derecha
@@ -122,7 +122,7 @@
 // }
 // TEST(MovimientoPlayeresTests, adelanteExitosoDesdeDerechaAbajo) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     bool lugar_vacio = false;
 //     //Mirando hacia abajo y hacia la derecha
@@ -144,7 +144,7 @@
 // }
 // TEST(MovimientoPlayeresTests, adelanteExitosoDesdeIzquierdaArriba) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     bool lugar_vacio = false;
 //     //Mirando hacia arriba y hacia la izquierda
@@ -166,7 +166,7 @@
 // }
 // TEST(MovimientoPlayeresTests, adelanteExitosoDesdeIzquierdaAbajo) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     bool lugar_vacio = false;
 //     //Mirando hacia abajo y hacia la izquierda
@@ -193,7 +193,7 @@
 
 // TEST(MovimientoPlayeresTests, atrasExitosoDesdeDerecha) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia la derecha
 //     Coordinates angulo(1,0);
@@ -209,7 +209,7 @@
 // }
 // TEST(MovimientoPlayeresTests, atrasExitosoDesdeArriba) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia la arriba
 //     Coordinates angulo(0,1);
@@ -225,7 +225,7 @@
 // }
 // TEST(MovimientoPlayeresTests, atrasExitosoDesdeIzquierda) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia la izquierda
 //     //Poner 00 despues de la coma
@@ -242,7 +242,7 @@
 // }
 // TEST(MovimientoPlayeresTests, atrasExitosoDesdeAbajo) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia abajo
 //     //Poner 00 despues de la coma
@@ -259,7 +259,7 @@
 // }
 // TEST(MovimientoPlayeresTests, atrasExitosoDesdeDerechaArriba) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia arriba y a la derecha
 //     //Poner 00 despues de la coma
@@ -276,7 +276,7 @@
 // }
 // TEST(MovimientoPlayeresTests, atrasExitosoDesdeDerechaAbajo) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia abajo y hacia la derecha
 //     //Poner 00 despues de la coma
@@ -293,7 +293,7 @@
 // }
 // TEST(MovimientoPlayeresTests, atrasExitosoDesdeIzquierdaArriba) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia arriba y hacia la izquierda
 //     //Poner 00 despues de la coma
@@ -310,7 +310,7 @@
 // }
 // TEST(MovimientoPlayeresTests, atrasExitosoDesdeIzquierdaAbajo) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia abajo y hacia la izquierda
 //     //Poner 00 despues de la coma
@@ -332,7 +332,7 @@
 
 // TEST(MovimientoPlayeresTests, adelanteFallaIrDerechaFuera) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia derecha
 //     //Poner 00 despues de la coma
@@ -354,7 +354,7 @@
 
 // TEST(MovimientoPlayeresTests, adelanteFallaIrArribaFuera) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia arriba
 //     //Poner 00 despues de la coma
@@ -377,7 +377,7 @@
 
 // TEST(MovimientoPlayeresTests, adelanteFallaIrIzquierdaFuera) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia izquierda
 //     //Poner 00 despues de la coma
@@ -399,7 +399,7 @@
 
 // TEST(MovimientoPlayeresTests, adelanteFallaIrAbajoFuera) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia abajo
 //     //Poner 00 despues de la coma
@@ -425,7 +425,7 @@
 
 // TEST(MovimientoPlayeresTests, adelanteFallaIrDerechaEncimaDeOtroPlayer) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia derecha
 //     //Poner 00 despues de la coma
@@ -460,7 +460,7 @@
 
 // TEST(MovimientoPlayeresTests, giroAIzquierdaExitosoDesdeDerecha) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia derecha
 //     //Poner 00 despues de la coma
@@ -489,7 +489,7 @@
 
 // TEST(MovimientoPlayeresTests, giroAIzquierdaExitosoDesdeArriba) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia arriba
 //     //Poner 00 despues de la coma
@@ -516,7 +516,7 @@
 
 // TEST(MovimientoPlayeresTests, giroAIzquierdaExitosoDesdeIzquierda) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia izquierda
 //     //Poner 00 despues de la coma
@@ -543,7 +543,7 @@
 
 // TEST(MovimientoPlayeresTests, giroAIzquierdaExitosoDesdeAbajo) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia derecha
 //     //Poner 00 despues de la coma
@@ -576,7 +576,7 @@
 
 // TEST(MovimientoPlayeresTests, giroADerechaExitoso) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia derecha
 //     //Poner 00 despues de la coma
@@ -603,7 +603,7 @@
 
 // TEST(MovimientoPlayeresTests, giroADerechaExitosoDesdeArriba) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia arriba
 //     //Poner 00 despues de la coma
@@ -630,7 +630,7 @@
 
 // TEST(MovimientoPlayeresTests, giroADerechaExitosoDesdeIzquierda) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia izquierda
 //     //Poner 00 despues de la coma
@@ -657,7 +657,7 @@
 
 // TEST(MovimientoPlayeresTests, giroADerechaExitosoDesdeAbajo) {
 //     //arrange
-//     Mapa mapa(20,20);
+//     ServerMap mapa(20,20);
 //     float i;
 //     //Mirando hacia derecha
 //     //Poner 00 despues de la coma

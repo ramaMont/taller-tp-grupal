@@ -22,11 +22,11 @@ class Event{
 class OpenEvent{
     private:
     Player* player;
-    Mapa& map;
+    ServerMap& map;
     ThGameEvents& th_game_events;
     
     public:
-    OpenEvent(Player* player, Mapa& map, ThGameEvents& game_e);
+    OpenEvent(Player* player, ServerMap& map, ThGameEvents& game_e);
     void process(ThGameModelServer& game_model);
     ~OpenEvent();
 };

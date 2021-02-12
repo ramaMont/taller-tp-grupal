@@ -8,7 +8,7 @@
 #include "coordinates.h"
 #include "BlockingQueue.h"
 #include "Protocol.h"
-class Mapa;
+class ServerMap;
 class Player;
 
 enum GunNumber{
@@ -34,7 +34,7 @@ class Soldier {
     void tryShoot(Player* player, std::set<std::pair<int, Player*>>& enemies, float precision);
     
     // Retorna true en caso de que haya algun objeto entre start y end en el mapa
-    bool crashes(Mapa& map, const Coordinates& start, const Coordinates& end);
+    bool crashes(ServerMap& map, const Coordinates& start, const Coordinates& end);
     
     // El jugador ataca al enemigo, el danio depende de los parametros 
     void atack(Player* player, Player* enemy, float precision, int angle);
@@ -51,7 +51,7 @@ class Soldier {
     
     // El soldado deja su arma en la posicion del mapa
     // En caso de que pueda retorna la textura del arma, sino retorna 0
-	virtual int throwGun(Mapa& map, const Coordinates& position) = 0;
+	virtual int throwGun(ServerMap& map, const Coordinates& position) = 0;
     
     // Retorna true en caso de que el soldado este listo para disparar
 	virtual bool ready() = 0;
@@ -73,7 +73,7 @@ class Dog: public Soldier {
     // El perro ataca a algun enemigo
 	void bite(Player* player, std::set<std::pair<int, Player*>>& enemies);
     
-	int throwGun(Mapa& map, const Coordinates& position) override;
+	int throwGun(ServerMap& map, const Coordinates& position) override;
 	bool ready() override;
 	int gunNumber() const;
 };
@@ -83,7 +83,7 @@ class Guard: public Soldier {
 	public:
 	Guard(int& bullets);
 	int shoot(Player *player, std::map<int, Player*>&) override;
-	int throwGun(Mapa& map, const Coordinates& position) override;
+	int throwGun(ServerMap& map, const Coordinates& position) override;
 	bool ready() override;
 	int gunNumber() const;
 };
@@ -93,7 +93,7 @@ class SS: public Soldier {
 	public:
 	SS(int &bullets);
 	int shoot(Player *player, std::map<int, Player*>&) override;	
-	int throwGun(Mapa& map, const Coordinates& position) override;
+	int throwGun(ServerMap& map, const Coordinates& position) override;
 	bool ready() override;
 	int gunNumber() const;
 };
@@ -103,7 +103,7 @@ class Officer: public Soldier {
 	public:
 	Officer(int &bullets);
 	int shoot(Player *player, std::map<int, Player*>&) override;
-	int throwGun(Mapa& map, const Coordinates& position) override;
+	int throwGun(ServerMap& map, const Coordinates& position) override;
 	bool ready() override;
 	int gunNumber() const;
 };
@@ -113,7 +113,7 @@ class Mutant: public Soldier {
 	public:
 	Mutant(int &bullets);
 	int shoot(Player *player, std::map<int, Player*>&) override;	
-	int throwGun(Mapa& map, const Coordinates& position) override;
+	int throwGun(ServerMap& map, const Coordinates& position) override;
 	bool ready() override;
 	int gunNumber() const;
 };

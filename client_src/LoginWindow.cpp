@@ -218,7 +218,7 @@ void LoginWindow::crearPartida(){
 
     // Nombre del mapa
     QComboBox combo_mapa;
-    QString label_mapa = QString("Mapa");
+    QString label_mapa = QString("ServerMap");
     form.addRow(label_mapa, &combo_mapa);
     cargarMapasDisponibles(combo_mapa, mapas);
 

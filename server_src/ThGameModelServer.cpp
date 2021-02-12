@@ -373,7 +373,7 @@ Player& ThGameModelServer::getPlayer(int user_id){
     return *players.at(user_id);
 }
 
-Mapa& ThGameModelServer::getMap(){
+ServerMap& ThGameModelServer::getMap(){
     return map;
 }
 

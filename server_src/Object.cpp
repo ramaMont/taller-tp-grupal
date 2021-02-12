@@ -1,8 +1,8 @@
 #include "Object.h"
 
 #include <ConfigVariable.h>
-class Mapa;
-#include "Mapa.h"
+class ServerMap;
+#include "ServerMap.h"
 #include "ThGameModelServer.h"
 #include <iostream>
 

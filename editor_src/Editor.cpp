@@ -229,7 +229,7 @@ void Editor::createNewMap() {
 
 bool Editor::showFileDialog() {
     QString file_name = QFileDialog::getOpenFileName(this,
-            tr("Editar Mapa"), "",
+            tr("Editar ServerMap"), "",
             tr("Mapas (*.yaml)"));
 
     std::string map_file = file_name.toUtf8().constData();
@@ -285,8 +285,8 @@ void Editor::saveMap() {
 }
 
 void Editor::createMenu() {
-    auto* new_map = new QAction("&Nuevo Mapa...", this);
-    auto* load_map = new QAction("&Cargar Mapa...", this);
+    auto* new_map = new QAction("&Nuevo ServerMap...", this);
+    auto* load_map = new QAction("&Cargar ServerMap...", this);
     auto* save_map = new QAction("&Guardar", this);
 
     QMenuBar* menuBar = new QMenuBar(this);

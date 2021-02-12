@@ -274,7 +274,7 @@ void GameModelClient::hideWindow(){
     window.hideWindow();
 }
 
-ClMap& GameModelClient::getMap(){
+ClientMap& GameModelClient::getMap(){
     return map;
 }
 

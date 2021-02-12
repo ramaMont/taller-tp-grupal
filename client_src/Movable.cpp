@@ -1,7 +1,7 @@
 #include "Movable.h"
 #include <stdio.h>
 
-Movable::Movable(Coordinates position,Coordinates direction, ClMap& map):
+Movable::Movable(Coordinates position,Coordinates direction, ClientMap& map):
         Posicionable(position, direction), map(map){
 }
 
