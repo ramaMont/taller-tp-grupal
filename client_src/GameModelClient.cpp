@@ -197,7 +197,7 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
             Coordinates initial_position = player_position;
             player.complete(initial_position, initial_direction,player_id);
             characters.insert(std::pair<int, Player*>(player_id, &player));
-            map.addPositionable(&player,initial_position);  
+            map.addMovable(&player,initial_position);  
             player.setInitialPosition(initial_position);
         } catch(...){
         }
@@ -208,7 +208,7 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
             enemy->set_texture(&texture);
             enemy->newEnemyType(1);
             enemies.push_back(enemy);
-            map.addPositionable(enemy,initial_position);    
+            map.addMovable(enemy,initial_position);    
             characters.insert(std::pair<int, Character*>(player_id, enemy));
         } catch(...){
         }        
@@ -220,7 +220,7 @@ void GameModelClient::addPlayer(int player_id){
 }
 
 
-void GameModelClient::removePlayer(int id){
+void GameModelClient::removeEnemy(int id){
     Character* removableEnemy = characters[id];
     map.removePositionable(removableEnemy->get_position());
     characters.erase(id);
@@ -294,41 +294,45 @@ GameModelClient& GameModelClient::operator=(GameModelClient&& other){
     return *this;
 }
 
+void GameModelClient::addSpriteOn(Coordinates position, int sprite_value){
+  bool position_has_sprite_already = false;
+  int cant_sprites = sprites.size();
+  int i=0;
+  while(i<cant_sprites and !position_has_sprite_already){
+    if(sprites[i]->get_position()==position){
+      position_has_sprite_already=true;
+      sprites[i]->addSprite(sprite_value);
+    }
+    i++;
+  }
+  if(!position_has_sprite_already){
+    SpriteHolder *posicionable = new SpriteHolder(position,sprite_value,player);
+    posicionable->set_texture(&texture);
+    sprites.push_back(posicionable);  
+    map.addPositionable(posicionable,position);  
+  }
+}
+
 void GameModelClient::addDeadSprite(Coordinates position, CharacterType character_type){
   //printf("El personaje muerto es: %i \n", a_character_type);
   if(character_type==dog){
-    SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at("dead_dog"),player);
-    posicionable->set_texture(&texture);
-    sprites.push_back(posicionable);  
-    map.addPositionable(posicionable,position);  
+    addSpriteOn(position,texture_values.at("dead_dog")); 
   }else if(character_type==guard){
-    SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at("dead_guard"),player);
-    posicionable->set_texture(&texture);
-    sprites.push_back(posicionable);  
-    map.addPositionable(posicionable,position);  
-  }/*else if(character_type==2){
-    SpriteHolder *posicionable = new SpriteHolder(position,15,player);
-    posicionable->set_texture(&texture);
-    sprites.push_back(posicionable);  
-    map.addPositionable(posicionable,position);  
-  }else if(character_type==3){
-    SpriteHolder *posicionable = new SpriteHolder(position,16,player);
-    posicionable->set_texture(&texture);
-    sprites.push_back(posicionable);  
-    map.addPositionable(posicionable,position);  
-  }else if(character_type==4){
-    SpriteHolder *posicionable = new SpriteHolder(position,17,player);
-    posicionable->set_texture(&texture);
-    sprites.push_back(posicionable);  
-    map.addPositionable(posicionable,position);  
-  }*/
+    addSpriteOn(position,texture_values.at("dead_guard"));
+  }else if(character_type==officer){
+    addSpriteOn(position,texture_values.at("dead_officer"));
+  }else if(character_type==ss){
+    addSpriteOn(position,texture_values.at("dead_ss"));
+  }else{
+    addSpriteOn(position,texture_values.at("dead_mutant"));
+  }
 }
 
 
 void GameModelClient::removeCharacterFromMap(int id){
     Character* removableCharacter = characters[id];
     Coordinates removablePosition = removableCharacter->get_position();
-    map.removePositionable(removablePosition);
+    map.removeMovable(removablePosition);
 }
 
 void GameModelClient::processProtocol(Protocol& protocol){
@@ -344,11 +348,10 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::DIE:{
             auto character = characters.at(protocol.getId());
-            //CharacterType character_type = character->getType();
-            //Coordinates position = character->getPosicion();
-            //character->die();
-            //addDeadSprite(position,character_type);
+            CharacterType character_type = character->getType();
+            Coordinates position = character->getPosicion();
             removeCharacterFromMap(protocol.getId());
+            addDeadSprite(position,character_type);
             playSound(SoundPlayer::sound_type::DYING, character);
             break;
         }
@@ -358,7 +361,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
             break;
         }
         case Protocol::action::REMOVE:
-            removePlayer(protocol.getUserId());
+            removeEnemy(protocol.getUserId());
             break;
         case Protocol::action::OPEN:
             openDoor(protocol);
@@ -453,7 +456,7 @@ void GameModelClient::processShooted(Protocol protocol){
     player.updateHealth(protocol.getDamage());
 }
 
-void GameModelClient::processPickup(Protocol& protocol){
+void GameModelClient::processPickup(Protocol& protocol){ //Ver bien este
     Coordinates position(protocol.getPosition());
     SpriteHolder* sprite = static_cast<SpriteHolder*>
         (map.getPositionableIn(position));

@@ -39,7 +39,7 @@ void ThReceiverClient::processReception(Protocol& protocol){
             _gameModel->addPlayer(protocol);
             break;
         case Protocol::action::REMOVE:
-            _gameModel->removePlayer(protocol.getUserId());
+            _gameModel->removeEnemy(protocol.getUserId());
             break;
         case Protocol::action::MOVE:
             _gameModel->push(protocol);

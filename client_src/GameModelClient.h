@@ -97,6 +97,9 @@ private:
     void addDeadSprite(Coordinates position, CharacterType a_character_type);
 
     void removeCharacterFromMap(int id);
+
+    void addSpriteOn(Coordinates position, int sprite_value);
+
 public:
     explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
     std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
@@ -105,7 +108,7 @@ public:
     void processProtocol(Protocol& protocol);
     void run();
     virtual void push(Protocol protocol) override;
-    void removePlayer(int user_id);
+    void removeEnemy(int user_id);
     
     void stop();
     //void push(Protocol protocol);

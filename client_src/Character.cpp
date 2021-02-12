@@ -58,7 +58,7 @@ void Character::setInitialPosition(Coordinates initial_position){
 void Character::resurrect(){
     posicion = initial_position;
     direction = initial_direction;
-	map.addPositionable(this, this->initial_position);
+	map.addMovable(this, this->initial_position);
 }
 
 Character::~Character(){
