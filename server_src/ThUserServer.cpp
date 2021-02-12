@@ -8,12 +8,12 @@
 
 ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
         GamesAdmin& games_admin):
-    ThUser(user_id),
+    Thread(),
     socket_peer(std::move(socket_peer)),
     th_receiver_server(nullptr),
     th_sender(nullptr),
     games_admin(games_admin),
-    game_id(-1){
+    game_id(-1), user_id(user_id){
 }
 
 void ThUserServer::sendConfiguration(){
@@ -117,6 +117,11 @@ void ThUserServer::run(){
         games_admin.removePlayer(game_id, user_id);
 }
 
+void ThUserServer::stop(){
+    is_running = false;
+    operations.stop();
+}
+
 ThSender* ThUserServer::getSender(){
     return th_sender;
 }
@@ -166,6 +171,17 @@ void ThUserServer::sendBotsPositions(){
             player_position.x, player_position.y);      
         th_sender->push(protocol_response);
     }
+}
+
+void ThUserServer::push(Protocol protocol){
+    operations.push(protocol);
+}
+
+int ThUserServer::getId(){
+    return user_id;
+}
+
+void ThUserServer::removePlayer(int user_id){
 }
 
 ThUserServer::~ThUserServer(){
