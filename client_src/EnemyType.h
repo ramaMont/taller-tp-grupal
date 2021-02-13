@@ -33,7 +33,7 @@ public:
 	virtual void callDrawer(int first_x_pixel, int first_number_line_texture,
 		int last_x_pixel, int last_number_line_texture, 
 		float distance_player_plane, int texture, int state) = 0;
-    virtual ~EnemyType(){};
+    virtual ~EnemyType(){}
 };
 
 class Dog : public EnemyType{

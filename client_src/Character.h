@@ -21,12 +21,14 @@ protected:
     int id;
     Coordinates initial_position;
     Coordinates initial_direction;
+
 public:
     explicit Character(Coordinates posicion, Coordinates direction, 
         ClientMap& map, int id);
 
-    //Pre: el personaje intentó moverse directamente y chocó contra un objeto
-    // separa la direccion de movimiento en sus ejes X e Y e intenta moverse individualmente por cada uno
+    /*Pre: el personaje intentó moverse directamente y chocó contra un objeto
+     separa la direccion de movimiento en sus ejes X e Y ,
+     e intenta moverse individualmente por cada uno*/
     void moveInOneDirection(Direction* direccion);
 
     //Pre:-
@@ -43,8 +45,8 @@ public:
 
     virtual CharacterType getType() = 0;
 
-    //Pre:-
-    // Se agrega a si mismo al mapa y vuelve a setear su posicion y direccion a las iniciales
+    /* Se agrega a si mismo al mapa y vuelve a 
+    setear su posicion y direccion a las iniciales */
     virtual void resurrect();
 
     Coordinates getDirection() const;

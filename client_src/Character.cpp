@@ -1,6 +1,7 @@
 #include "Character.h"
 
-Character::Character(Coordinates position,Coordinates direction ,ClientMap& map, int id):
+Character::Character(Coordinates position,\
+				Coordinates direction ,ClientMap& map, int id):
         Movable(position,direction,map), id(id){
 }
 
@@ -25,7 +26,6 @@ void Character::moveInOneDirection(Direction* direccion){
         this->posicion = movimiento_unidireccional;
     } catch(...){
     }
-
 }
 
 void Character::move(Direction* direccion){

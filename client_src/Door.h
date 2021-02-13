@@ -21,8 +21,9 @@ private:
 public:
     explicit Door(Coordinates posicion);
 
-    //Pre:-
-    // Almacena a un personaje mientras este se encuentra en el casillero de la puerta
+    /*Pre:-
+    Almacena a un personaje mientras este 
+    se encuentra en el casillero de la puerta*/
     void add(Movable* character) override;
 
     //Pre:-
@@ -41,18 +42,20 @@ public:
     // Setea su estado(abriendo, abierto, o cerrado)
 	void setState(State new_state);
 
-    //Pre:-
-    // Actualiza el actual frame de la puerta
+    /*Pre:-
+    Actualiza el actual frame de la puerta, deberia tardar 
+    20 frames pero depende de la llegada de protocolos*/
 	void updateFrame(); 
 
-    //Pre:-
-    // Devuelve el maximo pixel que puede ser dibujado de la puerta según el frame en el que se encuentra
+    /*Pre:-
+    Devuelve el maximo pixel que puede ser dibujado de
+     la puerta según el frame en el que se encuentra*/
 	int getLimitWall();
 
     //Pre:-
     // Llama a su respectivo dibujador de texturas
-	void draw(int ray, float distance, int number_line_texture,bool wall_side_y);
-
+	void draw(int ray, float distance, \
+        int number_line_texture,bool wall_side_y);
 };
 
 #endif

@@ -18,7 +18,7 @@ BackgroundMusic::BackgroundMusic(): paused(false){
     if (reserved_count != 2) {
         std::cout << "2 channels were not reserved!\n"; 
         // this might be a critical error... 
-        throw ("Critical error initializing sound\n");
+        throw("Critical error initializing sound\n");
     } 
     dr = opendir(BACK_MUSIC_PATH.c_str());
     if (dr == NULL){

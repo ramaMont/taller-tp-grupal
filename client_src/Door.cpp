@@ -5,7 +5,8 @@
 #include "Enemy.h"
 
 Door::Door(Coordinates posicion): 
-    Posicionable(posicion), current_frame(0), state(closed), character(nullptr){}
+    Posicionable(posicion), current_frame(0),
+    		 state(closed), character(nullptr){}
 
 void Door::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
 	ray->doorColided(coordinates_map,first_triangle,this);
@@ -34,11 +35,11 @@ void Door::setState(State new_state){
 	state = new_state;
 }
 
-void Door::updateFrame(){ //Me tardo 20 frames en abrirla (aprox, me llega el protocolo del servidor)
+void Door::updateFrame(){
 	if(state==opening or state ==open){
 		if(current_frame<CANT_FRAMES_ANIMATION)
 			current_frame++;
-	}else if(state==closed){
+	}else if (state==closed){
 		if(current_frame>0)
 			current_frame--;
 	}
@@ -48,6 +49,7 @@ int Door::getLimitWall(){
 	return TEXTURE_LENGTH-(current_frame*TEXTURE_LENGTH/CANT_FRAMES_ANIMATION);
 }
 
-void Door::draw(int ray, float distance, int number_line_texture,bool wall_side_y){
+void Door::draw(int ray, float distance,\
+				 int number_line_texture,bool wall_side_y){
 	texture_drawer->showDoor(ray,distance,number_line_texture,wall_side_y);
 }

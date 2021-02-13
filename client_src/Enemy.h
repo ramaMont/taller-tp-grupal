@@ -14,7 +14,8 @@ class Character;
 #include "SpriteDrawer.h"
 #include "EnemyType.h"
 
-// Es tanto un Movible como un sprite, dado que su metodo para dibujar es el mismo que el de los sprites
+/* Es tanto un Movible como un sprite, dado que su 
+metodo para dibujar es el mismo que el de los sprites*/
 class Enemy : public Character, public SpriteDrawer{
 private:
 	Player &player;	
@@ -23,7 +24,8 @@ private:
 	EnemyType* enemy_type;
 
 public:
-	explicit Enemy(Coordinates posicion, Coordinates direction ,ClientMap& map, Player &player ,int id);
+	explicit Enemy(Coordinates posicion,\
+		Coordinates direction ,ClientMap& map, Player &player ,int id);
 
     //Pre:-
     // Le indico al rayo que colisionó con un enemigo y setea al 
@@ -50,12 +52,12 @@ public:
 
     //Pre:-
     // Llamo a su dibujador de texturas
-	void callDrawer(int first_sigted_ray,int first_num_pixel,int last_sigted_ray,int last_num_pixel,float player_distance) override;
+	void callDrawer(int first_sigted_ray,int first_num_pixel,\
+				 int last_sigted_ray,int last_num_pixel,float player_distance) override;
 
     //Pre:-
     // Libero la memoria del tipo de enemigo
 	~Enemy();
-
 };
 
 #endif
