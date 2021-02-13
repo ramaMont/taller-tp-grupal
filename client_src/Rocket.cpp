@@ -2,12 +2,10 @@
 
 #include <math.h>
 
-
-
 Rocket::Rocket(Coordinates posicion, Coordinates direction,ClientMap& map, Player &player):
     Movable(posicion,direction,map),SpriteDrawer(this,player),
    	player(player){	
-    }
+}
 
 
 void Rocket::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){

@@ -15,6 +15,7 @@ public:
     void playSound(SoundPlayer::sound_type sound_type, int volume);
     void playSoundAtDistance(SoundPlayer::sound_type sound_type, 
         float distance);
+    // Calcula el volumen usando una funcion exponencial
     int calculateVolume(float distance);
     ~SoundPlayer();
 private:

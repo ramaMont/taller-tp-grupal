@@ -14,7 +14,6 @@
 #include "background.h"
 class Texture;
 #include "texture.h"
-
 #include "Player.h"
 #include "ClientMap.h"
 

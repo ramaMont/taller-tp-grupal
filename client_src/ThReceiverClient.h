@@ -5,10 +5,9 @@
 #include <Posicionable.h>
 #include <Protocol.h>
 #include <Socket.h>
+
 class GameModelClient;
 #include "GameModelClient.h"
-
-
 class ClientHolder;
 #include "ClientHolder.h"
 
