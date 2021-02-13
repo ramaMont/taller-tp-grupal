@@ -11,7 +11,6 @@ class Object;
 class Door;
 #include "Object.h"
 
-
 #include <yaml-cpp/yaml.h>
 #include <map>
 #include <tuple>

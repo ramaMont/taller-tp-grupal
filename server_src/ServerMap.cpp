@@ -1,11 +1,12 @@
 #include "ServerMap.h"
+
+#include "Event.h"
+#include <ConfigVariable.h>
+
 #include <iostream>
 #include <utility>
 #include <cmath>
 #include <typeinfo>
-#include "Event.h"
-#include <ConfigVariable.h>
-
 #include <yaml-cpp/yaml.h>
 #include <string>
 #include <vector>
