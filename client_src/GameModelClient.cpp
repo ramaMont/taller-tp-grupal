@@ -10,7 +10,6 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,\
     std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
     std::vector<std::pair<int,int>> &_ordered_players_bullets) : 
     	GameModel(game_id),
-        wallGreystone(Coordinates(7,7)),
         window() ,
         texture(window), map(), 
         added_player(false),player(map),
@@ -25,39 +24,66 @@ GameModelClient::GameModelClient(int user_id, std::string map_filename,\
     player.newGunType(1);
     initMap(map_filename);
 }
+void GameModelClient::addPositionableToMap(Posicionable& posicionable){
+  posicionable.set_texture(&texture);
+  map.addPositionable(&posicionable,posicionable.get_position());
+}
 
-void GameModelClient::addWall(std::string elemento, Coordinates position){
-			if (elemento == "_greystone"){
-                  Wall *posicionable = new WallGreystone(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);
-            }else if (elemento == "_bluestone"){
-                  Wall *posicionable = new WallBluestone(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "_colorstone"){
-                  Wall *posicionable = new WallColorstone(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "_pruplestone"){
-                  Wall *posicionable = new WallPurplestone(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-            }else if (elemento == "_redbrick"){
-                  Wall *posicionable = new WallRedbrick(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-            }else{
-                  Wall *posicionable = new WallWood(position);
-                  posicionable->set_texture(&texture);
-                  walls.push_back(posicionable);
-                  map.addPositionable(posicionable,position);   
-              }
+void GameModelClient::addWallsToMap(){
+
+    int cant_walls = wallsGreystone.size();
+    for(int i=0; i<cant_walls;i++){
+      addPositionableToMap(wallsGreystone[i]);
+    }
+  
+    cant_walls = wallsBluestone.size();
+    for(int i=0; i<cant_walls;i++){
+      addPositionableToMap(wallsBluestone[i]);
+    }
+
+    cant_walls = wallsColorstone.size();
+    for(int i=0; i<cant_walls;i++){
+      addPositionableToMap(wallsColorstone[i]);
+    }
+
+    cant_walls = wallsPurplestone.size();
+    for(int i=0; i<cant_walls;i++){
+      addPositionableToMap(wallsPurplestone[i]);
+    }
+
+    cant_walls = wallsRedbrick.size();
+    for(int i=0; i<cant_walls;i++){
+      addPositionableToMap(wallsRedbrick[i]);
+    }
+
+    cant_walls = wallsWood.size();
+    for(int i=0; i<cant_walls;i++){
+      addPositionableToMap(wallsWood[i]);
+    }
+}
+
+void GameModelClient::createWall(std::string elemento, Coordinates position){
+
+  if (elemento == "_greystone"){ 
+    wallsGreystone.push_back(WallGreystone(position));
+  }else if (elemento == "_bluestone"){
+    wallsBluestone.push_back(WallBluestone(position)); 
+  }else if (elemento == "_colorstone"){
+    wallsColorstone.push_back(WallColorstone(position)); 
+  }else if (elemento == "_pruplestone"){
+    wallsPurplestone.push_back(WallPurplestone(position));    
+  }else if (elemento == "_redbrick"){
+    wallsRedbrick.push_back(WallRedbrick(position));    
+  }else{
+    wallsWood.push_back(WallWood(position));
+  }
+}
+
+static bool is_sprite(std::string elemento){
+  return ((elemento == "barrel") or (elemento == "pillar") or (elemento == "greenlight") or 
+(elemento == "trophie") or (elemento == "rocket_launcher") or (elemento == "medicine") or 
+(elemento == "machine_gun") or (elemento == "key") or (elemento == "food") or 
+(elemento == "fire_canon") or (elemento == "bullets") or (elemento == "table"));
 }
 
 void GameModelClient::initMap(std::string map_filename){
@@ -68,19 +94,6 @@ void GameModelClient::initMap(std::string map_filename){
     map.resize(ancho, alto);
     YAML::Node map_elements = map_node["elementos"];
     std::string position="pos_";
-
-
-    /*wallGreystone.set_texture(&texture);
-    map.addPositionable(&wallGreystone,Coordinates(7,7));
-
-    wallsGreystone.push_back(WallGreystone(Coordinates(7,8)));
-    wallsGreystone[0].set_texture(&texture);
-    map.addPositionable(&wallsGreystone[0],Coordinates(7,8));
-
-    wallsGreystone.push_back(WallGreystone(Coordinates(7,9)));
-    wallsGreystone[1].set_texture(&texture);
-    map.addPositionable(&wallsGreystone[1],Coordinates(7,9));*/
-
     for (int i=0; i<alto; i++){
         for (int j=0; j<ancho; j++){
             std::string actual_position = position + std::to_string(i) + "_" +
@@ -88,89 +101,34 @@ void GameModelClient::initMap(std::string map_filename){
             std::string elemento = map_elements[actual_position].as<std::string>();
             Coordinates position((float)i,(float)j);
             if("wall" == elemento.substr(0,4)){
-            	addWall(elemento.substr(4), position);
+            	createWall(elemento.substr(4), position);
             }else if ("passage" == elemento.substr(0,7)){
-            	addWall(elemento.substr(7), position);
+            	createWall(elemento.substr(4), position);
             }else if (elemento == "door"){
-                Door *posicionable = new Door(position);
-                posicionable->set_texture(&texture);
-                doors.push_back(posicionable);
-                map.addPositionable(posicionable,position);   
+              doors.push_back(Door(position));  
             }else if (elemento == "key_door"){//Cambiarle la textura
-                Door *posicionable = new Door(position);
-                posicionable->set_texture(&texture);
-                doors.push_back(posicionable);
-                map.addPositionable(posicionable,position);   
-            }else{
+              doors.push_back(Door(position));  
+            }else if (is_sprite(elemento)){
               position.x+=0.5;
               position.y+=0.5;
-            }
-            if (elemento == "barrel"){
                SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
                posicionable->set_texture(&texture);
-               posicionable->isColidable();
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "pillar"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               posicionable->isColidable();
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "greenlight"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position); 
-            }else if (elemento == "trophie"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "rocket_launcher"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "medicine"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "machine_gun"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "key"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "food"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "fire_canon"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "bullets"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
-            }else if (elemento == "table"){
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               posicionable->isColidable();
+               if((elemento == "barrel") or (elemento == "pillar") or (elemento == "table")){
+                posicionable->isColidable();
+              }
                sprites.push_back(posicionable);
                map.addPositionable(posicionable,position);
             }
         }
     }
+
+    addWallsToMap();
+
+    int cant_elements = doors.size();
+    for(int i=0; i<cant_elements;i++){
+      addPositionableToMap(doors[i]);
+    }
+
     map.addPlayer(&player);
 }
 
@@ -262,7 +220,7 @@ void  GameModelClient::updateFrameAnimations(){
     player.updateShots();
     // TODO: agregar vector de puertas
     for(auto& door : doors){
-        door->updateFrame();
+        door.updateFrame();
     }
 }
 
@@ -558,22 +516,32 @@ void GameModelClient::push(Protocol protocol){
 
 void GameModelClient::openDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
-    Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
-    door->setState(open);
+    setDoorState(door_pos,open);
+}
+
+void GameModelClient::setDoorState(Coordinates door_pos, State new_state){
+    int cant_doors = doors.size();
+    int i=0;
+    bool founded = false;
+    while(i<cant_doors and !founded){
+      if(door_pos == doors[i].get_position()){
+        founded = true;
+        doors[i].setState(new_state);
+      }
+      i++;
+    }
 }
 
 void GameModelClient::openingDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
-    Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
-    door->setState(opening);
+    setDoorState(door_pos,opening);
     playSound(SoundPlayer::sound_type::DOOR_OPENING, 
         map.getPositionableIn(door_pos));
 }
 
 void GameModelClient::closeDoor(const Protocol& protocol){
     Coordinates door_pos(protocol.getPosition());
-    Door* door = static_cast<Door*>(map.getPositionableIn(door_pos));
-    door->setState(closed);
+    setDoorState(door_pos,closed);
     playSound(SoundPlayer::sound_type::DOOR_CLOSING, 
         map.getPositionableIn(door_pos));
 }
@@ -640,12 +608,6 @@ void GameModelClient::waitForAction(Protocol::action desired_action){
 }
 
 GameModelClient::~GameModelClient(){
-	for(auto& wall : walls){
-		delete wall;
-	}
-	for(auto& door : doors){
-		delete door;
-	}
 	for(auto& enemie : enemies){
 		delete enemie;
 	}

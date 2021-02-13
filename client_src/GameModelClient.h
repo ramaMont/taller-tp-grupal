@@ -40,8 +40,17 @@
 
 class GameModelClient : public GameModel {
 private:
-    WallGreystone wallGreystone;
+
     std::vector<WallGreystone> wallsGreystone;
+    std::vector<WallBluestone> wallsBluestone;
+    std::vector<WallPurplestone> wallsPurplestone;
+    std::vector<WallColorstone> wallsColorstone;
+    std::vector<WallEagle> wallsEagle;
+    std::vector<WallMossy> wallsMossy;
+    std::vector<WallRedbrick> wallsRedbrick;
+    std::vector<WallWood> wallsWood;
+
+    std::vector<Door> doors;
 
     Window window;	
     Texture texture;
@@ -53,8 +62,6 @@ private:
     Screen screen;
     int protagonist_id;
 
-    std::vector<Wall*> walls;
-    std::vector<Door*> doors;
     std::vector<SpriteHolder*> sprites;
     std::vector<Enemy*> enemies;
     std::vector<Rocket*> rockets;
@@ -68,6 +75,12 @@ private:
     std::vector<std::pair<int,int>> &_ordered_players_kills;
     std::vector<std::pair<int,int>> &_ordered_players_points;
     std::vector<std::pair<int,int>> &_ordered_players_bullets;
+
+    void addPositionableToMap(Posicionable& posicionable);
+
+    void addWallsToMap();
+
+    void createWall(std::string type, Coordinates position);
 
     void addWall(std::string type, Coordinates position);
 
@@ -99,6 +112,8 @@ private:
     void removeCharacterFromMap(int id);
 
     void addSpriteOn(Coordinates position, int sprite_value);
+
+	void setDoorState(Coordinates door_pos, State new_state);
 
 public:
     explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
