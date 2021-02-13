@@ -10,6 +10,9 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <map>
+#include <utility>
+#include <set>
 
 #define GRADOS_180 180
 #define PI 3.14159265358979323846
@@ -97,7 +100,7 @@ int SoldierState::shoot(std::map<int, Player*>& enemies){
 
 void SoldierState::rechargeBullets(){
 	if (last_soldier){
-        Protocol protocol(player->getId(), last_soldier->gunNumber(), 
+        Protocol protocol(player->getId(), last_soldier->gunNumber(),
             Protocol::action::SWITCH_GUN);
         game_model_queue.push(protocol);
 		last_soldier = nullptr;
@@ -120,26 +123,29 @@ void Soldier::getCloserEnemies(std::map<int, Player*>& enemies,
 	}
 }
 
-void Soldier::tryShoot(Player* player,  std::set<std::pair<int, Player*>>& enemies, float precision){
+void Soldier::tryShoot(Player* player,  
+		std::set<std::pair<int, Player*>>& enemies, float precision){
 	for (std::pair<int, Player*> e: enemies){
 		if (fireBullet(player, precision, e.first, e.second))
 			return;
 	}
 }
 
-bool Soldier::fireBullet(Player *player, float precision, int angle, Player* enemy){
+bool Soldier::fireBullet(Player *player, float precision, int angle, 
+		Player* enemy){
 	int n_rand = rand() % PORCENTAJE;
 	if ((n_rand / PORCENTAJE) > precision)	// Falla el tiro
 		return true;
 
-	if (crashes(player->getMap(), player->getPosicion(), enemy->getPosicion()))   
+	if (crashes(player->getMap(), player->getPosicion(), enemy->getPosicion()))
 	    return false;   // Hay un objeto en el medio   
 
     atack(player, enemy, precision, angle);
     return true;
 }
 
-bool Soldier::crashes(ServerMap& map, const Coordinates& start, const Coordinates& end){
+bool Soldier::crashes(ServerMap& map, const Coordinates& start, 
+		const Coordinates& end){
 	if (start == end) return false;
 	Coordinates direction(std::floor(end.x) + 0.5 - start.x,
                         std::floor(end.y) + 0.5 - start.y);
@@ -327,4 +333,3 @@ bool Mutant::ready(){
 int Mutant::gunNumber() const{
 	return GunNumber::ROCKET_GUN;
 }
-

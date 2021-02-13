@@ -12,6 +12,9 @@ class ThBots;
 
 #include <atomic>
 #include <map>
+#include <utility>
+#include <string>
+#include <vector>
 
 class ThGameModelServer : public GameModel, public Thread{
 private:
@@ -51,8 +54,8 @@ private:
     void processProtocol(Protocol& protocol);
 
 public:
-    explicit ThGameModelServer(ThUserServer& th_user_server, std::string map_filename,
-        int game_id, int map_id_checksum, int bots_cty);
+    explicit ThGameModelServer(ThUserServer& th_user_server, std::string
+        map_filename, int game_id, int map_id_checksum, int bots_cty);
 
     virtual void run() override;
     virtual void stop() override;

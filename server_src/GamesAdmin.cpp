@@ -37,8 +37,8 @@ void GamesAdmin::createGame(ThUserServer& th_user_server,
         int bots_cty){
     std::lock_guard<std::mutex> lck(mutex);
     cleanZombies();
-    ThGameModelServer* th_game = new ThGameModelServer(th_user_server, map_filename,
-        current_game_id, map_id_checksum, bots_cty);
+    ThGameModelServer* th_game = new ThGameModelServer(th_user_server, 
+        map_filename, current_game_id, map_id_checksum, bots_cty);
     games.insert(std::pair<int, ThGameModelServer*>(th_game->getId(), th_game));
     th_user_server.setGameId(current_game_id);
     ++current_game_id;

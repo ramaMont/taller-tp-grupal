@@ -17,7 +17,8 @@ private:
     GameModelClient* _gameModel;
 
 public:
-    explicit ThReceiverClient(Socket *socket, ClientHolder& client_holder, GameModelClient* game_model_client);
+    explicit ThReceiverClient(Socket *socket, ClientHolder& client_holder,
+        GameModelClient* game_model_client);
     virtual void run() override;
     virtual void stop() override;
     void setGameModel(GameModelClient* gameModel);

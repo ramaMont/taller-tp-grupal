@@ -3,23 +3,26 @@
 #include <tuple>
 #include <yaml-cpp/yaml.h>
 #include <cmath>
+#include <utility>
+#include <map>
+#include <string>
+#include <vector>
 
 #include "SpriteValues.h"
 
 GameModelClient::GameModelClient(int user_id, std::string map_filename,\
             int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
-    std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
-    std::vector<std::pair<int,int>> &_ordered_players_bullets) : 
-    	GameModel(game_id),
-        window() ,
-        texture(window), map(), 
-        added_player(false),player(map),
-        screen(rockets,enemies,sprites,player,map,texture,window),
-        protagonist_id(protagonist_id),is_running(true),
-        _sound_player(), _has_ended(false), _winner_id(_winner_id),
-        game_done(game_done),_ordered_players_kills(_ordered_players_kills),
-        _ordered_players_points(_ordered_players_points),_ordered_players_bullets(_ordered_players_bullets){
-
+            std::vector<std::pair<int,int>> &_ordered_players_kills,\
+            std::vector<std::pair<int,int>> &_ordered_players_points,\
+            std::vector<std::pair<int,int>> &_ordered_players_bullets) : 
+    	GameModel(game_id), window(), texture(window), map(),\
+        added_player(false),player(map),\
+        screen(rockets,enemies,sprites,player,map,texture,window),\
+        protagonist_id(protagonist_id),is_running(true),\
+        _sound_player(), _has_ended(false), _winner_id(_winner_id),\
+        game_done(game_done),_ordered_players_kills(_ordered_players_kills),\
+        _ordered_players_points(_ordered_players_points),\
+        _ordered_players_bullets(_ordered_players_bullets){
     _winner_id = -1;
     player.set_texture(&texture);
     player.newGunType(1);
@@ -31,60 +34,60 @@ void GameModelClient::addPositionableToMap(Posicionable& posicionable){
 }
 
 void GameModelClient::addWallsToMap(){
-
     int cant_walls = wallsGreystone.size();
-    for(int i=0; i<cant_walls;i++){
+    for (int i=0; i<cant_walls; i++){
       addPositionableToMap(wallsGreystone[i]);
     }
   
     cant_walls = wallsBluestone.size();
-    for(int i=0; i<cant_walls;i++){
+    for (int i=0; i<cant_walls; i++){
       addPositionableToMap(wallsBluestone[i]);
     }
 
     cant_walls = wallsColorstone.size();
-    for(int i=0; i<cant_walls;i++){
+    for (int i=0; i<cant_walls; i++){
       addPositionableToMap(wallsColorstone[i]);
     }
 
     cant_walls = wallsPurplestone.size();
-    for(int i=0; i<cant_walls;i++){
+    for (int i=0; i<cant_walls; i++){
       addPositionableToMap(wallsPurplestone[i]);
     }
 
     cant_walls = wallsRedbrick.size();
-    for(int i=0; i<cant_walls;i++){
+    for (int i=0; i<cant_walls; i++){
       addPositionableToMap(wallsRedbrick[i]);
     }
 
     cant_walls = wallsWood.size();
-    for(int i=0; i<cant_walls;i++){
+    for (int i=0; i<cant_walls; i++){
       addPositionableToMap(wallsWood[i]);
     }
 }
 
 void GameModelClient::createWall(std::string elemento, Coordinates position){
-
-  if (elemento == "_greystone"){ 
-    wallsGreystone.push_back(WallGreystone(position));
-  }else if (elemento == "_bluestone"){
-    wallsBluestone.push_back(WallBluestone(position)); 
-  }else if (elemento == "_colorstone"){
-    wallsColorstone.push_back(WallColorstone(position)); 
-  }else if (elemento == "_pruplestone"){
-    wallsPurplestone.push_back(WallPurplestone(position));    
-  }else if (elemento == "_redbrick"){
-    wallsRedbrick.push_back(WallRedbrick(position));    
-  }else{
-    wallsWood.push_back(WallWood(position));
-  }
+    if (elemento == "_greystone"){ 
+        wallsGreystone.push_back(WallGreystone(position));
+    } else if (elemento == "_bluestone"){
+        wallsBluestone.push_back(WallBluestone(position)); 
+    } else if (elemento == "_colorstone"){
+        wallsColorstone.push_back(WallColorstone(position)); 
+    } else if (elemento == "_pruplestone"){
+        wallsPurplestone.push_back(WallPurplestone(position));    
+    } else if (elemento == "_redbrick"){
+        wallsRedbrick.push_back(WallRedbrick(position));    
+    } else {
+        wallsWood.push_back(WallWood(position));
+    }
 }
 
 static bool is_sprite(std::string elemento){
-  return ((elemento == "barrel") or (elemento == "pillar") or (elemento == "greenlight") or 
-(elemento == "trophie") or (elemento == "rocket_launcher") or (elemento == "medicine") or 
-(elemento == "machine_gun") or (elemento == "key") or (elemento == "food") or 
-(elemento == "fire_canon") or (elemento == "bullets") or (elemento == "table"));
+    return ((elemento == "barrel") or(elemento == "pillar") or\
+        (elemento == "greenlight") or(elemento == "trophie") or\
+        (elemento == "rocket_launcher") or(elemento == "medicine") or\
+        (elemento == "machine_gun") or(elemento == "key") or\
+        (elemento == "food") or(elemento == "fire_canon") or\
+        (elemento == "bullets") or(elemento == "table"));
 }
 
 void GameModelClient::initMap(std::string map_filename){
@@ -99,37 +102,37 @@ void GameModelClient::initMap(std::string map_filename){
         for (int j=0; j<ancho; j++){
             std::string actual_position = position + std::to_string(i) + "_" +
                 std::to_string(j);
-            std::string elemento = map_elements[actual_position].as<std::string>();
+            std::string elemento = map_elements[actual_position].\
+                as<std::string>();
             Coordinates position((float)i,(float)j);
-            if("wall" == elemento.substr(0,4)){
-            	createWall(elemento.substr(4), position);
-            }else if ("passage" == elemento.substr(0,7)){
-            	createWall(elemento.substr(4), position);
-            }else if (elemento == "door"){
-              doors.push_back(Door(position));  
-            }else if (elemento == "key_door"){//Cambiarle la textura
-              doors.push_back(Door(position));  
-            }else if (is_sprite(elemento)){
-              position.x+=0.5;
-              position.y+=0.5;
-               SpriteHolder *posicionable = new SpriteHolder(position,texture_values.at(elemento),player);
-               posicionable->set_texture(&texture);
-               if((elemento == "barrel") or (elemento == "pillar") or (elemento == "table")){
-                posicionable->isColidable();
-              }
-               sprites.push_back(posicionable);
-               map.addPositionable(posicionable,position);
+            if ("wall" == elemento.substr(0,4)){
+                createWall(elemento.substr(4), position);
+            } else if ("passage" == elemento.substr(0,7)){
+                createWall(elemento.substr(4), position);
+            } else if (elemento == "door"){
+                doors.push_back(Door(position));  
+            } else if (elemento == "key_door"){//Cambiarle la textura
+                doors.push_back(Door(position));  
+            } else if (is_sprite(elemento)){
+                position.x+=0.5;
+                position.y+=0.5;
+                SpriteHolder *posicionable = new 
+                    SpriteHolder(position,texture_values.at(elemento),player);
+                posicionable->set_texture(&texture);
+                if ((elemento == "barrel") or (elemento == "pillar") or\
+                        (elemento == "table")){
+                    posicionable->isColidable();
+                }
+                sprites.push_back(posicionable);
+                map.addPositionable(posicionable,position);
             }
         }
     }
-
     addWallsToMap();
-
     int cant_elements = doors.size();
-    for(int i=0; i<cant_elements;i++){
-      addPositionableToMap(doors[i]);
+    for (int i=0; i<cant_elements; i++){
+        addPositionableToMap(doors[i]);
     }
-
     map.addPlayer(&player);
 }
 
@@ -137,20 +140,21 @@ void GameModelClient::processMove(Protocol& protocol){
     Character* character = characters.at(protocol.getId());
     Direction* dir = directions.at(protocol.getDirection());
     character->move(dir);
-    if(protocol.getId()!=protagonist_id){
-      Enemy* enemy = dynamic_cast<Enemy*>(character);
+    if (protocol.getId()!=protagonist_id){
+      Enemy* enemy = static_cast<Enemy*>(character);
       enemy->moving();
     }
 }
 
 void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
     auto protocol_position = protocol.getPosition();
-    Coordinates player_position((double)std::get<0>(protocol_position), (double)std::get<1>(protocol_position));
+    Coordinates player_position((double)std::get<0>(protocol_position),\
+        (double)std::get<1>(protocol_position));
     Protocol::direction player_direction = protocol.getDirection();
     Coordinates initial_direction(player_direction);
     int player_id = protocol.getUserId();
 
-    if(player_id == protagonist_id){
+    if (player_id == protagonist_id){
         try{
             added_player = true;
             Coordinates initial_position = player_position;
@@ -160,10 +164,11 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
             player.setInitialPosition(initial_position);
         } catch(...){
         }
-    }else{
+    } else{
         try{
             Coordinates initial_position = player_position;
-            Enemy* enemy = new Enemy(initial_position, initial_direction, map, player,player_id);
+            Enemy* enemy = new Enemy(initial_position, initial_direction, map,
+                player,player_id);
             enemy->set_texture(&texture);
             enemy->newEnemyType(1);
             enemies.push_back(enemy);
@@ -178,20 +183,18 @@ void GameModelClient::addPlayer(int player_id){
     throw -1;
 }
 
-
 void GameModelClient::removeEnemy(int id){
     Character* removableEnemy = characters[id];
     map.removePositionable(removableEnemy->get_position());
     characters.erase(id);
     int cant_enemies = enemies.size();
-    for(int i=0; i<cant_enemies; i++){
-    	if(enemies[i]->get_position()==removableEnemy->get_position()){
+    for (int i=0; i<cant_enemies; i++){
+    	if (enemies[i]->get_position()==removableEnemy->get_position()){
     		enemies.erase(enemies.begin()+i);
     	}
     }
 	delete removableEnemy;
     //Y me falta eliminarlos tambien del vector sprites y del vector enemies
-
 }
 
 // void GameModelClient::player_shoot(){
@@ -203,11 +206,11 @@ Player& GameModelClient::getPlayer(){
 }
 
 Window& GameModelClient::getWindow(){
-  return window;
+    return window;
 }
     
 Screen& GameModelClient::getScreen(){
-  return screen;
+    return screen;
 }
 
 Character& GameModelClient::getEnemy(int user_id){
@@ -215,12 +218,11 @@ Character& GameModelClient::getEnemy(int user_id){
 }
 
 void  GameModelClient::updateFrameAnimations(){
-    for(unsigned int i=0; i<enemies.size(); i++){
+    for (unsigned int i=0; i<enemies.size(); i++){
         enemies[i]->updateFrame();
     }
     player.updateShots();
-    // TODO: agregar vector de puertas
-    for(auto& door : doors){
+    for (auto& door : doors){
         door.updateFrame();
     }
 }
@@ -257,36 +259,37 @@ void GameModelClient::addSpriteOn(Coordinates position, int sprite_value){
   bool position_has_sprite_already = false;
   int cant_sprites = sprites.size();
   int i=0;
-  while(i<cant_sprites and !position_has_sprite_already){
-    if(sprites[i]->get_position()==position){
-      position_has_sprite_already=true;
-      sprites[i]->addSprite(sprite_value);
+    while (i<cant_sprites and !position_has_sprite_already){
+        if (sprites[i]->get_position()==position){
+            position_has_sprite_already=true;
+            sprites[i]->addSprite(sprite_value);
+        }
+        i++;
     }
-    i++;
-  }
-  if(!position_has_sprite_already){
-    SpriteHolder *posicionable = new SpriteHolder(position,sprite_value,player);
-    posicionable->set_texture(&texture);
-    sprites.push_back(posicionable);  
-    map.addPositionable(posicionable,position);  
-  }
+    if (!position_has_sprite_already){
+        SpriteHolder *posicionable = 
+            new SpriteHolder(position,sprite_value,player);
+        posicionable->set_texture(&texture);
+        sprites.push_back(posicionable);  
+        map.addPositionable(posicionable,position);  
+    }
 }
 
-void GameModelClient::addDeadSprite(Coordinates position, CharacterType character_type){
+void GameModelClient::addDeadSprite(Coordinates position, 
+        CharacterType character_type){
   //printf("El personaje muerto es: %i \n", a_character_type);
-  if(character_type==dog){
-    addSpriteOn(position,texture_values.at("dead_dog")); 
-  }else if(character_type==guard){
-    addSpriteOn(position,texture_values.at("dead_guard"));
-  }else if(character_type==officer){
-    addSpriteOn(position,texture_values.at("dead_officer"));
-  }else if(character_type==ss){
-    addSpriteOn(position,texture_values.at("dead_ss"));
-  }else{
-    addSpriteOn(position,texture_values.at("dead_mutant"));
-  }
+    if (character_type==dog){
+        addSpriteOn(position,texture_values.at("dead_dog")); 
+    } else if (character_type==guard){
+        addSpriteOn(position,texture_values.at("dead_guard"));
+    } else if (character_type==officer){
+        addSpriteOn(position,texture_values.at("dead_officer"));
+    } else if (character_type==ss){
+        addSpriteOn(position,texture_values.at("dead_ss"));
+    } else {
+        addSpriteOn(position,texture_values.at("dead_mutant"));
+    }
 }
-
 
 void GameModelClient::removeCharacterFromMap(int id){
     Character* removableCharacter = characters[id];
@@ -401,13 +404,11 @@ void GameModelClient::run(){
 void GameModelClient::processShoot(Protocol protocol){
     if (protagonist_id == protocol.getId()){
         player.shoot(_sound_player, 0);
-        // _sound_player.playSound(SoundPlayer::sound_type::PISTOL_SHOOT, 100);
-    }else{
+    } else{
         Character* character= characters[protocol.getId()];
-        Enemy* enemy = dynamic_cast<Enemy*>(character);
+        Enemy* enemy = static_cast<Enemy*>(character);
         float distance = calculateDistanceBetween(enemy);
         enemy->shoot(_sound_player, distance);
-        // playSound(SoundPlayer::sound_type::PISTOL_SHOOT, character);
     }
 }
 
@@ -419,10 +420,10 @@ void GameModelClient::processPickup(Protocol& protocol){ //Ver bien este
     Coordinates position(protocol.getPosition());
     SpriteHolder* sprite = static_cast<SpriteHolder*>
         (map.getPositionableIn(position));
-    if(sprite->hasCharacter()){
+    if (sprite->hasCharacter()){
       Movable* character = sprite->getCharacter();
       map.removeSpriteWithCharacter(position,character);
-    }else{
+    } else{
       map.removePositionable(position);
     }
 }
@@ -439,43 +440,48 @@ void GameModelClient::processThrow(Protocol& protocol){
 void GameModelClient::processGunSwitch(Protocol& protocol){
     if (protagonist_id == protocol.getId()){
         player.newGunType(protocol.getDamage());
-    }else{
+    } else{
         Character* character= characters[protocol.getId()];
-        Enemy* enemy = dynamic_cast<Enemy*>(character);
+        Enemy* enemy = static_cast<Enemy*>(character);
         enemy->newEnemyType(protocol.getDamage());
     }
 }
 
-void GameModelClient::processRocket(Protocol& protocol){ //Por ahora pruebo con un solo rocket
-  Coordinates position(protocol.getFloatPosition());
-  if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
-      //printf("x cambiarle la posicion, supuestamente está en: (%f,%f)\n",position.x,position.y);
-      bool found = false;
-      unsigned int i = 0;
-      Rocket* rocket;
-      while(i<rockets.size() and !found){
-        rocket = rockets[i];
-        //printf("Pero en realidad está en: (%f,%f)\n",rocket->getPosicion().x,rocket->getPosicion().y );
-        if(position==rocket->getPosicion()){
-          found = true;
-          rocket->move();
-          //printf("le cambie la posicion, ahora es: (%f,%f)\n\n",rocket->getPosicion().x,rocket->getPosicion().y);
+void GameModelClient::processRocket(Protocol& protocol){
+    //Por ahora pruebo con un solo rocket
+    Coordinates position(protocol.getFloatPosition());
+    if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
+        //printf("x cambiarle la posicion, supuestamente está en: 
+        // (%f,%f)\n",position.x,position.y);
+        bool found = false;
+        unsigned int i = 0;
+        Rocket* rocket;
+        while (i<rockets.size() and !found){
+            rocket = rockets[i];
+            //printf("Pero en realidad está en: (%f,%f)\n",
+            // rocket->getPosicion().x,rocket->getPosicion().y );
+            if (position==rocket->getPosicion()){
+                found = true;
+                rocket->move();
+                //printf("le cambie la posicion, ahora es: 
+                // (%f,%f)\n\n",rocket->getPosicion().x,
+                // rocket->getPosicion().y);
+            }
+            i++;
         }
-        i++;
-      }
-  }else{ //Creo el misil
-      Coordinates direction;
-      if (protagonist_id == protocol.getId()){
-          direction = player.getDirection();
-      } else {
-          direction =characters[protocol.getId()]->getDirection();
-      }
-      Rocket* rocket = new Rocket(position, direction, map, player);
-      rocket->set_texture(&texture);
-      rockets.push_back(rocket);
-      map.addPositionable(rocket,position);  
-      //printf("cree uno nuevo en: (%f,%f)\n\n", position.x,position.y);
-  }
+    } else{ //Creo el misil
+        Coordinates direction;
+        if (protagonist_id == protocol.getId()){
+            direction = player.getDirection();
+        } else {
+            direction =characters[protocol.getId()]->getDirection();
+        }
+        Rocket* rocket = new Rocket(position, direction, map, player);
+        rocket->set_texture(&texture);
+        rockets.push_back(rocket);
+        map.addPositionable(rocket,position);  
+        //printf("cree uno nuevo en: (%f,%f)\n\n", position.x,position.y);
+    }
 }
 
 void GameModelClient::processExplosion(Protocol& protocol){
@@ -483,18 +489,21 @@ void GameModelClient::processExplosion(Protocol& protocol){
     bool found = false;
     unsigned int i = 0;
     Rocket* rocket;
-    printf("posicion recibida: (%f,%f)\n",position.x,position.y );
-    while(i<rockets.size() and !found){
+    printf("posicion recibida: (%f,%f)\n",position.x,position.y);
+    while (i<rockets.size() and !found){
         rocket = rockets[i];
-        printf("posicion de mi rockett: (%f,%f)\n",rocket->getPosicion().x,rocket->getPosicion().y );
-        //printf("Pero en realidad está en: (%f,%f)\n",rocket->getPosicion().x,rocket->getPosicion().y );
-        if(position==rocket->getPosicion()){
-          printf("aa\n");
-          found = true;
-          playSound(SoundPlayer::sound_type::ROCKET_EXPLOTION, rocket);
-          map.removePositionable(position);
-          rockets.erase(rockets.begin() + i);
-          //printf("le cambie la posicion, ahora es: (%f,%f)\n\n",rocket->getPosicion().x,rocket->getPosicion().y);
+        printf("posicion de mi rockett: (%f,%f)\n",rocket->getPosicion().x,
+            rocket->getPosicion().y);
+        //printf("Pero en realidad está en: (%f,%f)\n",rocket->getPosicion().
+        //x,rocket->getPosicion().y );
+        if (position==rocket->getPosicion()){
+            printf("aa\n");
+            found = true;
+            playSound(SoundPlayer::sound_type::ROCKET_EXPLOTION, rocket);
+            map.removePositionable(position);
+            rockets.erase(rockets.begin() + i);
+            //printf("le cambie la posicion, ahora es: (%f,%f)\n\n",
+                //rocket->getPosicion().x,rocket->getPosicion().y);
         }
         i++;
     }
@@ -524,12 +533,12 @@ void GameModelClient::setDoorState(Coordinates door_pos, State new_state){
     int cant_doors = doors.size();
     int i=0;
     bool founded = false;
-    while(i<cant_doors and !founded){
-      if(door_pos == doors[i].get_position()){
-        founded = true;
-        doors[i].setState(new_state);
-      }
-      i++;
+    while (i<cant_doors and !founded){
+        if (door_pos == doors[i].get_position()){
+            founded = true;
+            doors[i].setState(new_state);
+        }
+        i++;
     }
 }
 
@@ -558,7 +567,8 @@ float GameModelClient::calculateDistanceBetween(Posicionable* positionable){
         + std::pow(player_position.y - positionable_position.y, 2));
 }
 
-void GameModelClient::playSound(SoundPlayer::sound_type sound_type, Posicionable* positionable){
+void GameModelClient::playSound(SoundPlayer::sound_type sound_type, 
+        Posicionable* positionable){
     float distance = calculateDistanceBetween(positionable);
     int volume = _sound_player.calculateVolume(distance);
     _sound_player.playSound(sound_type, volume);   
@@ -572,25 +582,6 @@ void GameModelClient::endGame(){
         _has_ended = true;
         waitForAction(Protocol::action::ENDGAME);
         game_done = true;
-        /*if (_winner_id != -1){
-            std::cout << "The winner is Player ID: " << _winner_id << std::endl;
-        } else {
-            std::cout << "TIME IS OVER\n";
-        }
-        for (auto& player : _ordered_players_kills){
-            std::cout << "Position " << position << " Player_ID: " << player.second << " Kills: " << player.first << std::endl;
-            ++position;
-        }
-        position = 1;
-        for (auto& player : _ordered_players_points){
-            std::cout << "Position " << position << " Player_ID: " << player.second << " Points: " << player.first << std::endl;
-            ++position;
-        }
-        position = 1;
-        for (auto& player : _ordered_players_bullets){
-            std::cout << "Position " << position << " Player_ID: " << player.second << " Bullets: " << player.first << std::endl;
-            ++position;
-        }*/
     }
 }
 
@@ -609,7 +600,7 @@ void GameModelClient::waitForAction(Protocol::action desired_action){
 }
 
 GameModelClient::~GameModelClient(){
-	for(auto& enemie : enemies){
+	for (auto& enemie : enemies){
 		delete enemie;
 	}
 }

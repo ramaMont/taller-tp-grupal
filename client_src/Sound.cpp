@@ -1,9 +1,11 @@
 #include "Sound.h"
 
+#include <string>
+
 Sound::Sound(const std::string& file_path) : 
         mix_chunk(Mix_LoadWAV(file_path.c_str()), Mix_FreeChunk){
     if (!mix_chunk.get()){
-        throw ("Couldn't open file: "+ file_path + "\n");
+        throw("Couldn't open file: "+ file_path + "\n");
     }
 }
 

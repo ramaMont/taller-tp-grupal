@@ -4,7 +4,7 @@
 #include <dirent.h>
 #include <vector>
 #include <iostream>
-//#include "string.h"
+#include <string>
 #include "SDL2/SDL_mixer.h"
 
 const int BACK_MUSIC_CHANNEL = 1;
@@ -14,17 +14,18 @@ BackgroundMusic::BackgroundMusic(): paused(false){
     struct dirent *d;
     DIR *dr;
     int reserved_count = Mix_ReserveChannels(2);
-    if(reserved_count != 2) {
-        std::cout << "8 channels were not reserved!\n"; // this might be a critical error... 
-        throw -1;
+    if (reserved_count != 2) {
+        std::cout << "8 channels were not reserved!\n"; 
+        // this might be a critical error... 
+        throw ("Critical error initializing sound");
     } 
     dr = opendir(BACK_MUSIC_PATH.c_str());
-    if(dr == NULL){
+    if (dr == NULL){
         std::cout<<"Error Occurred!\n";
         throw -1;
     }
 
-    for(d=readdir(dr); d!=NULL; d=readdir(dr)){
+    for (d=readdir(dr); d!=NULL; d=readdir(dr)){
         if (strcmp(d->d_name, ".") == 0 || strcmp(d->d_name, "..") == 0){
             continue;
         } else {

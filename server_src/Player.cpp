@@ -3,9 +3,12 @@
 
 #include <iostream>
 #include <algorithm>
+#include <string>
+#include <map>
 
 
-Player::Player(ServerMap& map, int id, BlockingQueue<Protocol>& game_model_queue):
+Player::Player(ServerMap& map, int id, BlockingQueue<Protocol>& 
+    game_model_queue):
 		map(map), player_id(id), 
 		soldier(this, bullets, game_model_queue),
 		_game_model_queue(game_model_queue){
@@ -38,8 +41,8 @@ Player::Player(Coordinates position,Coordinates direction ,ServerMap& map,
     atomic_pos(posicion);
 }
 
-Player::Player(Coordinates position,Coordinates direction ,ServerMap& map, int id,
-	BlockingQueue<Protocol>& game_model_queue):
+Player::Player(Coordinates position,Coordinates direction ,ServerMap& map, 
+    int id,	BlockingQueue<Protocol>& game_model_queue):
 		Posicionable(position, direction), map(map), player_id(id),
 		soldier(this, bullets, game_model_queue),
 		posicion_inicial(posicion),
@@ -111,7 +114,8 @@ double Player::calculateAngle(Player* player){
 	return player->calculateAngle(this->direction, this->posicion);
 }
 
-double Player::calculateAngle(const Coordinates& direccion, const Coordinates& other_pos){
+double Player::calculateAngle(const Coordinates& direccion, 
+        const Coordinates& other_pos){
 	return other_pos.calculate_angle(direccion, this->posicion);
 }
 

@@ -8,7 +8,6 @@
 
 class GameModel{
 protected:
-
     std::map<Protocol::direction, Direction* > directions;
     int game_id;
     

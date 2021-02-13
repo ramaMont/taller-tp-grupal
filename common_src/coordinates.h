@@ -60,7 +60,8 @@ public:
 
     double get_distance_to_higher_side_y()const;
 
-    double calculate_distance_to_vector(const Coordinates vector_direction, const Coordinates vector_position);
+    double calculate_distance_to_vector(const Coordinates vector_direction, 
+        const Coordinates vector_position);
 
     double calculate_distance(const Coordinates &a_position) const;
 
@@ -72,7 +73,8 @@ public:
     int get_increase_y()const;
 
     // Devuelve el angulo entre la direccion y la posicion desde mis coordenadas
-    double calculate_angle(const Coordinates& direction, const Coordinates& position) const;
+    double calculate_angle(const Coordinates& direction, 
+        const Coordinates& position) const;
 
     // void set_x(double a_x);
 
@@ -86,11 +88,11 @@ public:
     
     //Compara nomas la parte "entera" de las coordenadas
     bool operator!=(const Coordinates& t) const{ 
-        return (floor(this->x) != floor(t.x) || floor(this->y) != floor(t.y)); 
+        return (floor(this->x) != floor(t.x) || floor(this->y) != floor(t.y));
     } 
 
     bool operator<(const Coordinates& t) const{ 
-        return (floor(this->x) < floor(t.x) && floor(this->y) < floor(t.y)); 
+        return (floor(this->x) < floor(t.x) && floor(this->y) < floor(t.y));
     }
 
     struct Hash{

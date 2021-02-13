@@ -4,7 +4,9 @@
 class ServerMap;
 #include "ServerMap.h"
 #include "ThGameModelServer.h"
+
 #include <iostream>
+#include <map>
 
 #define STEP 1
 #define DECIMALS 100
@@ -86,7 +88,7 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
     posicion.increment_on_direction(direction, 1.1);
     try {
         map.addPosicionable(this, posicion);
-    } catch (...) {
+    } catch(...) {
         Protocol protocol(Protocol::action::EXPLOSION, player->getId(), 
             position_aux.x, position_aux.y);
         game_model.echoProtocol(protocol);
@@ -95,7 +97,8 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
     }
     posicion.x = roundTwoDecimals(posicion.x);
     posicion.y = roundTwoDecimals(posicion.y);
-    Protocol protocol(Protocol::action::ROCKET, player->getId(), posicion.x, posicion.y);
+    Protocol protocol(Protocol::action::ROCKET, player->getId(), 
+        posicion.x, posicion.y);
     game_model.echoProtocol(protocol);
 }
 

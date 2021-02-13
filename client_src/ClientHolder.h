@@ -2,6 +2,8 @@
 #define __CLIENT__HOLDER__
 
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <Protocol.h>
 #include <Socket.h>
@@ -33,10 +35,12 @@ private:
     
     void setId(Protocol& protocol);
     void processReception(Protocol& protocol);
-    void createGameModel(std::string map_filename, int id_user_protocol, int game_id);
+    void createGameModel(std::string map_filename, int id_user_protocol,
+        int game_id);
     void addLoggedUsers();
     void logginScreen();
     void receiveConfiguration();
+
 public:
     ClientHolder();
     void run();
@@ -44,7 +48,8 @@ public:
         int bots_cty, int& game_id);
     void unirseAPartida(std::string& id_partida);
     void logged(std::string& puerto, std::string& servidor, int& user_id);
-    // Se cierra todo lo correspondiente a qt y se setea en true el booleano ready to play
+    // Se cierra todo lo correspondiente a qt y se setea en true el 
+    // booleano ready to play
     void startGame();
     void launchGame();
     void connectionLost();

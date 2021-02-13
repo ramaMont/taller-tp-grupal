@@ -8,6 +8,7 @@ class ThUserServer;
 
 #include <map>
 #include <mutex>
+#include <string>
 
 class GamesAdmin{
 private:

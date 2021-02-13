@@ -11,7 +11,7 @@ struct AtomicCoordinates{
     std::atomic<double> y;
 
     AtomicCoordinates(): x(0), y(0) {}
-    AtomicCoordinates(Coordinates& c): x(c.x), y(c.y) {
+    explicit AtomicCoordinates(Coordinates& c): x(c.x), y(c.y) {
     }
     void operator()(Coordinates& c) {
         x = c.x;

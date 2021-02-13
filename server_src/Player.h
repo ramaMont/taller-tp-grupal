@@ -14,7 +14,9 @@ class Direction;
 class SoldierState;
 #include "Soldier.h"
 #include "Item.h"
+
 #include <map>
+#include <string>
 
 
 class Player final : public Posicionable{
@@ -41,7 +43,6 @@ private:
     void throwKey();
     
 public:
-
     explicit Player(ServerMap& mapa, int id, 
         BlockingQueue<Protocol>& game_model_queue);
     explicit Player(Coordinates position,Coordinates direction ,ServerMap& map,

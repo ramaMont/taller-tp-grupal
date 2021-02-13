@@ -5,25 +5,32 @@
 #include <chrono>
 #include <iostream>
 #include <sys/time.h>
+#include <utility>
+#include <vector>
 
-UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model,int &_winner_id, bool& game_done,\
-    std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
+UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model,\
+    int &_winner_id, bool& game_done,\
+    std::vector<std::pair<int,int>> &_ordered_players_kills,\
+    std::vector<std::pair<int,int>> &_ordered_players_points,\
     std::vector<std::pair<int,int>> &_ordered_players_bullets):
         th_sender(th_sender), _game_model(game_model), _background_music(),
-        _winner_id(_winner_id), game_done(game_done),_ordered_players_kills(_ordered_players_kills),
-        _ordered_players_points(_ordered_players_points),_ordered_players_bullets(_ordered_players_bullets){
+        _winner_id(_winner_id), game_done(game_done),
+        _ordered_players_kills(_ordered_players_kills),
+        _ordered_players_points(_ordered_players_points),
+        _ordered_players_bullets(_ordered_players_bullets){
     game_done = false;
 }
 
 void UserClient::pollEvents(SDL_Event& event, Window& window){
     while (SDL_PollEvent(&event)) { 
-        switch(event.type) {
+        switch (event.type) {
             case SDL_QUIT: {
                 game_done = SDL_TRUE;
             }
             case SDL_WINDOWEVENT:{
-                if(event.window.event == SDL_WINDOWEVENT_RESIZED){
-                    window.resizeWindow(event.window.data1, event.window.data2);
+                if (event.window.event == SDL_WINDOWEVENT_RESIZED){
+                    window.resizeWindow(event.window.data1, 
+                        event.window.data2);
                 }
             }
         }
@@ -40,108 +47,111 @@ void UserClient::play(){
     endGame(event,screen, player, window);
 }
 
-void UserClient::endGame(SDL_Event& event, Screen& screen, Player& player, Window& window){
-
+void UserClient::endGame(SDL_Event& event, Screen& screen, Player& player, 
+        Window& window){
     bool player_won = (player.getId() == _winner_id);
     window.disableResizable();
-    screen.showEndgame(player_won,_winner_id, game_done, _ordered_players_kills,_ordered_players_points,_ordered_players_bullets);
+    screen.showEndgame(player_won,_winner_id, game_done, 
+        _ordered_players_kills, _ordered_players_points, 
+        _ordered_players_bullets);
     game_done = false;
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
-    while(!game_done){
-        if(keys[SDL_SCANCODE_ESCAPE]){
+    while (!game_done){
+        if (keys[SDL_SCANCODE_ESCAPE]){
             game_done = SDL_TRUE;
         }
         pollEvents(event,window);
     }
 }
 
-void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, Player& player, int &frames_till_next_shot, bool &shoot_key_pressed, int &repetition_key_delay,Window& window){
-    if(keys[SDL_SCANCODE_RIGHT]){
+void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, 
+        Protocol &protocol, Player& player, int &frames_till_next_shot,
+        bool &shoot_key_pressed, int &repetition_key_delay,Window& window){
+    if (keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_LEFT]){
+    if (keys[SDL_SCANCODE_LEFT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_LEFT);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_UP]){
+    if (keys[SDL_SCANCODE_UP]){
         protocol.moveInDirection(
             Protocol::direction::FORWARD);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_DOWN]){
+    if (keys[SDL_SCANCODE_DOWN]){
         protocol.moveInDirection(
             Protocol::direction::BACKWARD);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_M] and !repetition_key_delay){
+    if (keys[SDL_SCANCODE_M] and !repetition_key_delay){
         _background_music.togglePause();
         repetition_key_delay = 5;
-    }else{
-    	if(repetition_key_delay>0)
+    } else {
+    	if (repetition_key_delay>0)
     	repetition_key_delay--;
     }
 
-    if(keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
-        if(frames_till_next_shot==0){
-        	if(!shoot_key_pressed or (shoot_key_pressed and player.gunAllowsContinuousShooting())){
+    if (keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
+        if (frames_till_next_shot==0){
+        	if (!shoot_key_pressed or (shoot_key_pressed and 
+                    player.gunAllowsContinuousShooting())){
 	        	frames_till_next_shot = player.getFramesPerShot();
-	            protocol.setAction(
-	                Protocol::action::SHOOT);
+	            protocol.setAction(Protocol::action::SHOOT);
 	            th_sender.push(protocol);
 	        }
         }
         shoot_key_pressed = true;
-    }else{
+    } else {
     	shoot_key_pressed = false;
     }
-    if(keys[SDL_SCANCODE_SPACE]){
+    if (keys[SDL_SCANCODE_SPACE]){
         protocol.setAction(
             Protocol::action::OPEN);
         th_sender.push(protocol);
         showPlayersInfo(player);
     }
-    if(keys[SDL_SCANCODE_0] || keys[SDL_SCANCODE_KP_0]){
+    if (keys[SDL_SCANCODE_0] || keys[SDL_SCANCODE_KP_0]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(0);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_1] || keys[SDL_SCANCODE_KP_1]){
+    if (keys[SDL_SCANCODE_1] || keys[SDL_SCANCODE_KP_1]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(1);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_2] || keys[SDL_SCANCODE_KP_2]){
+    if (keys[SDL_SCANCODE_2] || keys[SDL_SCANCODE_KP_2]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(2);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_3] || keys[SDL_SCANCODE_KP_3]){
+    if (keys[SDL_SCANCODE_3] || keys[SDL_SCANCODE_KP_3]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(3);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_4] || keys[SDL_SCANCODE_KP_4]){
+    if (keys[SDL_SCANCODE_4] || keys[SDL_SCANCODE_KP_4]){
         protocol.setAction(
             Protocol::action::SWITCH_GUN);
         protocol.setDamage(4);
         th_sender.push(protocol);
     }
-    if(keys[SDL_SCANCODE_ESCAPE]){
+    if (keys[SDL_SCANCODE_ESCAPE]){
         game_done = SDL_TRUE;
     }
-
     pollEvents(event, window);
-
 }
 
-void UserClient::gameLoop(SDL_Event& event, Screen& screen, Player& player, Window& window){
+void UserClient::gameLoop(SDL_Event& event, Screen& screen, 
+        Player& player, Window& window){
     _game_model.showWindow();
     int id = th_sender.getId();
     Protocol protocol(id);
@@ -164,12 +174,13 @@ void UserClient::gameLoop(SDL_Event& event, Screen& screen, Player& player, Wind
         gettimeofday(&time_now, nullptr);
         time_t time = (time_now.tv_usec / 1000);
 
-        getKeys(keys, event, protocol, player, frames_till_next_shot, shoot_key_pressed, repetition_key_delay, window);
+        getKeys(keys, event, protocol, player, frames_till_next_shot,
+            shoot_key_pressed, repetition_key_delay, window);
 
         _game_model.run();//Proceso los protocolos
 
         _game_model.updateFrameAnimations();
-        if(frames_till_next_shot>0)
+        if (frames_till_next_shot>0)
         	frames_till_next_shot--;
 
         screen.show();
@@ -177,29 +188,30 @@ void UserClient::gameLoop(SDL_Event& event, Screen& screen, Player& player, Wind
         gettimeofday(&time_now, nullptr);
         time_t new_time = (time_now.tv_usec / 1000);
         time_t rest;
-        if(new_time>time)
+        if (new_time>time)
             rest = new_time - time;
         else
             rest = new_time - time + 1000;
-        if(rest>max_time)
+        if (rest>max_time)
             max_time = rest;
         total_time+=rest;
         counter++;
         std::this_thread::sleep_for(std::chrono::milliseconds(rate - rest));
     }
-//    _game_model.hideWindow();
     std::cout<<"El maximo fue: "<<max_time<<std::endl;
     std::cout<<"El tiempo promedio fue:"<<total_time/counter<<std::endl;
 }
 
 void UserClient::showPlayersInfo(Player& player){
     auto players = _game_model.getCharacters();
-    for(auto& it : players){
+    for (auto& it : players){
         auto player = it.second;
         std::cout << "Player:   " << player->getId() << std::endl;
-        std::cout << "Posicion:  X: " << player->get_position().x << " Y: " << player->get_position().y  << std::endl;
-        std::cout << "Direccion: X: " << player->getDirection().x << " Y: " << player->getDirection().y << std::endl;
-        std::cout << "\n-------------------------------------------------------------------\n";
+        std::cout << "Posicion:  X: " << player->get_position().x << " Y: "
+            << player->get_position().y  << std::endl;
+        std::cout << "Direccion: X: " << player->getDirection().x << " Y: "
+            << player->getDirection().y << std::endl;
+        std::cout << "\n---------------------------------------------------\n";
     }
 }
 

@@ -4,8 +4,10 @@
 #include "ServerMap.h"
 #include "Player.h"
 #include "AtomicCoordinates.h"
+
 #include <string>
-#include <iostream> //
+#include <iostream>
+#include <map>
 
 #define PLAYER_ARGS 5
 

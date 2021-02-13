@@ -26,7 +26,7 @@ class OpenEvent{
     ThGameEvents& th_game_events;
     
     public:
-    OpenEvent(Player* player, ServerMap& map, ThGameEvents& game_e);
+    explicit OpenEvent(Player* player, ServerMap& map, ThGameEvents& game_e);
     void process(ThGameModelServer& game_model);
     ~OpenEvent();
 };
@@ -44,7 +44,7 @@ class DoorOpeningEvent: public Event{
     Door* door;
 
     public:
-    DoorOpeningEvent(Door *door);
+    explicit DoorOpeningEvent(Door *door);
     virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
     ~DoorOpeningEvent();
 };
@@ -55,7 +55,7 @@ class DoorEvent: public Event{
     std::atomic<bool>& reopen;
 
     public:
-    DoorEvent(Door *door);
+    explicit DoorEvent(Door *door);
     virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
     void resetTime();
     ~DoorEvent();
@@ -69,7 +69,7 @@ class RocketEvent: public Event{
     Coordinates rocket_dir;
 
     public:
-    RocketEvent(Rocket* rocket);
+    explicit RocketEvent(Rocket* rocket);
     virtual void process(BlockingQueue<Protocol>& game_model_queue) override;
     ~RocketEvent();
 };

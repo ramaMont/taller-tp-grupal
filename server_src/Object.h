@@ -12,13 +12,13 @@ class ServerMap;
 
 class Object: public Posicionable {
 	public:
-	Object(Coordinates coordinates): Posicionable(coordinates) { }
+	explicit Object(Coordinates coordinates): Posicionable(coordinates) { }
 };
 
 
 class Passage: public Object {
 	public:
-	Passage(Coordinates coordinates);
+	explicit Passage(Coordinates coordinates);
     
     // Retorna true si el jugador puede abrir el pasadizo, sino false
 	bool open(Player *player);
@@ -31,7 +31,7 @@ class Door: public Object {
 	std::atomic<bool> reopen;
 	
 	public:
-	Door(Coordinates coordinates);
+	explicit Door(Coordinates coordinates);
     
     // Retorna true si el jugador puede abir la puerta
 	virtual bool open(Player *player);
@@ -55,7 +55,7 @@ class KeyDoor: public Door {
 	bool opened = false;
 	
 	public:
-	KeyDoor(Coordinates coordinates): Door(coordinates) { }
+	explicit KeyDoor(Coordinates coordinates): Door(coordinates) { }
     
     // Retorna true si el jugador puede abir la puerta
 	bool open(Player *player) override;
@@ -71,7 +71,7 @@ class Rocket: public Object{
     std::atomic<bool> exploded;
 
     public:
-    Rocket(Coordinates position, Coordinates dir,Player* player,
+    explicit Rocket(Coordinates position, Coordinates dir,Player* player,
         std::map<int, Player*>& enemies, ThGameModelServer& game_model);
         
     // Mueve el cohete hacia adelante

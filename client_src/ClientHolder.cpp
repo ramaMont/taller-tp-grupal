@@ -3,6 +3,7 @@
 #include <Posicionable.h>
 #include <ThSender.h>
 #include <ConfigVariable.h>
+#include <MapLoader.h>
 
 #include "ThReceiverClient.h"
 #include "UserClient.h"
@@ -10,11 +11,15 @@
 #include <QApplication>
 #include "LoginWindow.h"
 
+#include <iostream>
+#include <string>
+#include <map>
+#include <utility>
 
 std::map<int, float> configs;
 
-#include <iostream>
-#include <MapLoader.h>
+
+
 
 ClientHolder::ClientHolder(): 
     user_id(-1), socket(nullptr), _game_model(nullptr), 
@@ -48,7 +53,8 @@ void ClientHolder::unirseAPartida(std::string& id_partida) {
     addLoggedUsers();
 }
 
-void ClientHolder::logged(std::string& puerto, std::string& servidor, int& user_id){
+void ClientHolder::logged(std::string& puerto, std::string& servidor, 
+        int& user_id){
     _port = puerto;
     _host_dns = servidor;
     Protocol protocol;
@@ -77,7 +83,9 @@ void ClientHolder::run(){
     if (!ready_to_play) 
         return;
     // Comienzo el juego luego del setup inicial   
-    _user_client = new UserClient(*_th_sender, *_game_model,_winner_id, game_done, _ordered_players_kills, _ordered_players_points, _ordered_players_bullets);
+    _user_client = new UserClient(*_th_sender, *_game_model,_winner_id,\
+        game_done, _ordered_players_kills, _ordered_players_points,\
+        _ordered_players_bullets);
     _user_client->play();   
     std::cout << "Finalizada\n";
 }
@@ -119,8 +127,7 @@ void ClientHolder::processReception(Protocol& protocol){
                 createGameModel(_map_filename, protocol.getUserId(), 
                     _game_id);
                 _game_model->addPlayer(protocol);
-            }
-            else{
+            } else {
                 _game_model->addPlayer(protocol);
             }
             break;
@@ -138,8 +145,11 @@ void ClientHolder::processReception(Protocol& protocol){
     }
 }
 
-void ClientHolder::createGameModel(std::string map_filename, int id_user_protocol, int game_id){
-    _game_model = new GameModelClient(id_user_protocol, map_filename, game_id, user_id, _winner_id, game_done, _ordered_players_kills, _ordered_players_points, _ordered_players_bullets);
+void ClientHolder::createGameModel(std::string map_filename,\
+        int id_user_protocol, int game_id){
+    _game_model = new GameModelClient(id_user_protocol, map_filename,\
+        game_id, user_id, _winner_id, game_done, _ordered_players_kills,\
+        _ordered_players_points, _ordered_players_bullets);
 }
 
 void ClientHolder::startGame(){

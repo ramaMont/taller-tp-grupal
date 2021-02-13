@@ -7,9 +7,11 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <string>
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
-        std::string map_filename, int game_id, int map_id_checksum, int bots_cty):
+        std::string map_filename, int game_id, int map_id_checksum, 
+        int bots_cty):
             GameModel(game_id), Thread(), map(map_filename),launched(false),
             th_game_events(operations),
             th_bots(this, operations, players, map, bots_cty),
@@ -191,7 +193,7 @@ void ThGameModelServer::processRocket(Protocol& protocol){
     try {
         Rocket* rocket = static_cast<Rocket*>(map.getPosicionableIn(pos));
         rocket->move(*this);
-    } catch (...) {}
+    } catch(...) {}
 }
 
 void ThGameModelServer::run(){
@@ -251,12 +253,14 @@ int ThGameModelServer::getBotsCty(){
 }
 
 void ThGameModelServer::showPlayersInfo(){
-    for(auto& it : players){
+    for (auto& it : players){
         auto player = it.second;
         std::cout << "Jugador:   " << player->getId() << std::endl;
-        std::cout << "Posicion:  X: " << player->get_position().x << " Y: " << player->get_position().y  << std::endl;
-        std::cout << "Direccion: X: " << player->get_direction().x << " Y: " << player->get_direction().y << std::endl;
-        std::cout << "\n-------------------------------------------------------------------\n";
+        std::cout << "Posicion:  X: " << player->get_position().x <<
+            " Y: " << player->get_position().y  << std::endl;
+        std::cout << "Direccion: X: " << player->get_direction().x <<
+             " Y: " << player->get_direction().y << std::endl;
+        std::cout << "\n-------------------------------------\n";
     }
 }
 
@@ -264,16 +268,16 @@ void ThGameModelServer::processTopFiveEnd(){
     std::vector<std::pair<int,int>> ordered_players_kills;
     std::vector<std::pair<int,int>> ordered_players_points;
     std::vector<std::pair<int,int>> ordered_players_bullets;
-    for(auto& player: players){
+    for (auto& player: players){
         int player_id = player.second->getId();
         int player_kills = player.second->getKilledEnemies();
         int player_points = player.second->getScore();
         int player_bullets = player.second->getFiredBullets();
-        ordered_players_kills.push_back(std::pair<int, int>(player_kills, 
+        ordered_players_kills.push_back(std::pair<int, int>(player_kills,
             player_id));
-        ordered_players_points.push_back(std::pair<int, int>(player_points, 
+        ordered_players_points.push_back(std::pair<int, int>(player_points,
             player_id));
-        ordered_players_bullets.push_back(std::pair<int, int>(player_bullets, 
+        ordered_players_bullets.push_back(std::pair<int, int>(player_bullets,
             player_id));
     }
     // Ordeno los vectores de menor a mayor
@@ -288,10 +292,12 @@ void ThGameModelServer::processTopFiveEnd(){
         ordered_players_bullets);
 }
 
-void ThGameModelServer::convertToTopFive(std::vector<std::pair<int,int>>& perks_vector){
+void ThGameModelServer::convertToTopFive(std::vector<std::pair<int,int>>& 
+        perks_vector){
     int vector_size = 0;
     std::vector<std::pair<int,int>> aux_vect;
-    for (auto it = perks_vector.end() - 1; it != perks_vector.begin() - 1; --it){
+    for (auto it = perks_vector.end() - 1; it != perks_vector.begin() - 1; 
+            --it){
         if (vector_size >= 5)
             break;
         aux_vect.push_back(*it);
@@ -306,17 +312,20 @@ void ThGameModelServer::sendTopFiveToPlayers(
         const std::vector<std::pair<int,int>>& ordered_players_bullets){
     //explicit Protocol(int user_id, int danio, Protocol::action action);
     for (auto& kils : ordered_players_kills){
-        Protocol protocol(kils.second, kils.first, Protocol::action::END_GAME_KILLS);
+        Protocol protocol(kils.second, kils.first, 
+            Protocol::action::END_GAME_KILLS);
         echoProtocol(protocol);
     }
 
     for (auto& points : ordered_players_points){
-        Protocol protocol(points.second, points.first, Protocol::action::END_GAME_POINTS);
+        Protocol protocol(points.second, points.first, 
+            Protocol::action::END_GAME_POINTS);
         echoProtocol(protocol);
     }
 
     for (auto& bullets : ordered_players_bullets){
-        Protocol protocol(bullets.second, bullets.first, Protocol::action::END_GAME_BULLETS);
+        Protocol protocol(bullets.second, bullets.first, 
+            Protocol::action::END_GAME_BULLETS);
         echoProtocol(protocol);
     }
 }

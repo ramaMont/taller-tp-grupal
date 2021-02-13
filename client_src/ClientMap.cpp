@@ -17,8 +17,8 @@
 ClientMap::ClientMap(): alto(0), ancho(0){
 }
 
-ClientMap::ClientMap(int alto, int ancho):alto(alto), ancho(ancho),mapGame(ancho,
-        std::vector<Posicionable*>(alto)){
+ClientMap::ClientMap(int alto, int ancho):alto(alto), ancho(ancho),
+        mapGame(ancho, std::vector<Posicionable*>(alto)){
     for (int i=0; i<ancho; i++){
         for (int j=0; j<alto; j++){
             mapGame[i][j]=nullptr;
@@ -32,17 +32,17 @@ void ClientMap::addPlayer(Character* _player){
 
 void ClientMap::addPositionable(Posicionable* positionable, 
         Coordinates position){
-    if(mapGame[floor(position.x)][floor(position.y)]==nullptr){
+    if (mapGame[floor(position.x)][floor(position.y)]==nullptr){
         mapGame[floor(position.x)][floor(position.y)]=positionable;
-    }else{
+    } else {
         throw -2;//Quiero guardar algo donde ya hay otra cosa
     }
 }
 
 void ClientMap::addMovable(Movable* _player, Coordinates position){
-        if(mapGame[floor(position.x)][floor(position.y)]==nullptr){
+        if (mapGame[floor(position.x)][floor(position.y)]==nullptr){
             mapGame[floor(position.x)][floor(position.y)]=_player;
-        }else{
+        } else {
             mapGame[floor(position.x)][floor(position.y)]->add(_player);
             //throw -2;//Quiero guardar algo donde ya hay otra cosa
         }
@@ -54,10 +54,10 @@ void ClientMap::removePositionable(Coordinates position){
 
 
 void ClientMap::removeMovable(Coordinates position){
-    if(mapGame[floor(position.x)][floor(position.y)]!=nullptr){
+    if (mapGame[floor(position.x)][floor(position.y)]!=nullptr){
         try{
             mapGame[floor(position.x)][floor(position.y)]->remove();
-        }catch (int e){
+        } catch(int e){
             removePositionable(position);
         }
     }
@@ -67,7 +67,8 @@ void ClientMap::removeAllPositionables(Coordinates position){
     mapGame[floor(position.x)][floor(position.y)]=nullptr;
 }
 
-void ClientMap::removeSpriteWithCharacter(Coordinates position, Movable* character){
+void ClientMap::removeSpriteWithCharacter(Coordinates position,
+        Movable* character){
     mapGame[floor(position.x)][floor(position.y)]=character;
 }
 
@@ -76,7 +77,6 @@ Posicionable* ClientMap::getPositionableIn(Coordinates position){
 }
 
 void ClientMap::moveme(Movable* _player, const Coordinates& position){
-	
     if (position.x > alto || position.y > ancho)
         throw -1;
     if (position.x < 0 || position.y < 0)

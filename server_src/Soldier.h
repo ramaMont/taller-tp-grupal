@@ -9,6 +9,7 @@
 #include <vector>
 #include <atomic>
 #include <map>
+#include <utility>
 
 class ServerMap;
 class Player;
@@ -23,7 +24,7 @@ enum GunNumber{
 
 
 class Soldier {
-	protected:
+protected:
 	int &bullets;
     bool gun;
    
@@ -32,11 +33,15 @@ class Soldier {
     void getCloserEnemies(std::map<int, Player*>& enemies,
        Player* player, std::set<std::pair<int, Player*>>& players);
        
-    // Intenta dispar a sus enemigos, lo logra si no los intercepta ningun objeto
-    void tryShoot(Player* player, std::set<std::pair<int, Player*>>& enemies, float precision);
+    // Intenta dispar a sus enemigos, lo logra si no los intercepta ningun
+	// objeto
+    void tryShoot(Player* player, std::set<std::pair<int, Player*>>& enemies,
+		float precision);
     
-    // Retorna true en caso de que haya algun objeto entre start y end en el mapa
-    bool crashes(ServerMap& map, const Coordinates& start, const Coordinates& end);
+    // Retorna true en caso de que haya algun objeto entre start y end en el 
+	// mapa
+    bool crashes(ServerMap& map, const Coordinates& start, 
+		const Coordinates& end);
     
     // El jugador ataca al enemigo, el danio depende de los parametros 
     void atack(Player* player, Player* enemy, float precision, int angle);
@@ -46,7 +51,7 @@ class Soldier {
     
     
     public:
-    Soldier(int &bullets): bullets(bullets), gun(true) { }
+    explicit Soldier(int &bullets): bullets(bullets), gun(true) { }
     
     // El soldado intenta disparar a sus enemigos
 	virtual int shoot(Player *player, std::map<int, Player*>& enemies) = 0;
@@ -68,8 +73,8 @@ class Soldier {
 
 
 class Dog: public Soldier {
-	public:
-	Dog(int& n);
+public:
+	explicit Dog(int& n);
 	int shoot(Player *player, std::map<int, Player*>&) override;
     
     // El perro ataca a algun enemigo
@@ -82,8 +87,8 @@ class Dog: public Soldier {
 
 
 class Guard: public Soldier {
-	public:
-	Guard(int& bullets);
+public:
+	explicit Guard(int& bullets);
 	int shoot(Player *player, std::map<int, Player*>&) override;
 	int throwGun(ServerMap& map, const Coordinates& position) override;
 	bool ready() override;
@@ -92,8 +97,8 @@ class Guard: public Soldier {
 
 
 class SS: public Soldier {
-	public:
-	SS(int &bullets);
+public:
+	explicit SS(int &bullets);
 	int shoot(Player *player, std::map<int, Player*>&) override;	
 	int throwGun(ServerMap& map, const Coordinates& position) override;
 	bool ready() override;
@@ -102,8 +107,8 @@ class SS: public Soldier {
 
 
 class Officer: public Soldier {
-	public:
-	Officer(int &bullets);
+public:
+	explicit Officer(int &bullets);
 	int shoot(Player *player, std::map<int, Player*>&) override;
 	int throwGun(ServerMap& map, const Coordinates& position) override;
 	bool ready() override;
@@ -112,8 +117,8 @@ class Officer: public Soldier {
 
 
 class Mutant: public Soldier {
-	public:
-	Mutant(int &bullets);
+public:
+	explicit Mutant(int &bullets);
 	int shoot(Player *player, std::map<int, Player*>&) override;	
 	int throwGun(ServerMap& map, const Coordinates& position) override;
 	bool ready() override;
@@ -121,9 +126,8 @@ class Mutant: public Soldier {
 };
 
 
-
 class SoldierState {
-	private:
+private:
 	Player *player;
 	Soldier *soldier;
 	Dog dog;
@@ -135,7 +139,7 @@ class SoldierState {
 	std::atomic<int> actual_gun;
     BlockingQueue<Protocol>& game_model_queue;
 	
-	public:
+public:
 	explicit SoldierState(Player *player, int& bullets,
         BlockingQueue<Protocol>& game_model_queue);
     
@@ -159,6 +163,5 @@ class SoldierState {
     // Notifica que se recargaron balas
 	void rechargeBullets();
 };
-
 
 #endif

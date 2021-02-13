@@ -9,6 +9,7 @@ class BackgroundMusic{
 private:
     std::vector<Sound*> _music_sound_files;
     bool paused;
+
 public:
     BackgroundMusic();
     void playMusic();

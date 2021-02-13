@@ -11,8 +11,6 @@ extern "C"{
 	#include "lua/include/lualib.h"
 }
 
-
-
 class Bot{
 	private:
 	lua_State* script;
@@ -29,7 +27,7 @@ class Bot{
 		Nothing
         };
 
-    Bot(const ServerMap& map);
+    explicit Bot(const ServerMap& map);
     
     // Invoca la funcion para cargar el mapa en el script de lua
     void loadMap();

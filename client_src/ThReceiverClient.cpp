@@ -6,7 +6,8 @@
 
 ThReceiverClient::ThReceiverClient(Socket* socket, ClientHolder& client_holder,
         GameModelClient* game_model_client):
-        ThReceiver(socket), _client_holder(client_holder), _gameModel(game_model_client){
+        ThReceiver(socket), _client_holder(client_holder), 
+        _gameModel(game_model_client){
 }
 
 void ThReceiverClient::run(){

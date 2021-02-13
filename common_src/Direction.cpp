@@ -24,7 +24,8 @@ DirForward::~DirForward(){
 DirBackward::DirBackward(){
 }
 
-Coordinates DirBackward::move(Posicionable* posicionable, Coordinates direction){
+Coordinates DirBackward::move(Posicionable* posicionable, 
+        Coordinates direction){
     Coordinates current_pos = posicionable->getPosicion();
     current_pos.increment_on_direction(direction,-step_size);
     return current_pos;
@@ -72,7 +73,8 @@ DirRight::~DirRight(){
 DirRotRight::DirRotRight(){
 }
 
-Coordinates DirRotRight::move(Posicionable* posicionable, Coordinates direction){
+Coordinates DirRotRight::move(Posicionable* posicionable, 
+        Coordinates direction){
     Coordinates dirActual = posicionable->get_direction();
     dirActual.rotate(-inc);
     posicionable->setDirection(dirActual);
@@ -87,7 +89,8 @@ DirRotRight::~DirRotRight(){
 DirRotLeft::DirRotLeft(){
 }
 
-Coordinates DirRotLeft::move(Posicionable* posicionable, Coordinates direction){
+Coordinates DirRotLeft::move(Posicionable* posicionable, 
+        Coordinates direction){
     Coordinates dirActual = posicionable->get_direction();
     dirActual.rotate(inc);
     posicionable->setDirection(dirActual);

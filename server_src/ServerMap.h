@@ -16,6 +16,7 @@ class Door;
 #include <tuple>
 #include <vector>
 #include <utility>
+#include <string>
 
 class ServerMap{
 private:

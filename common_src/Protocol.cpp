@@ -5,27 +5,32 @@
 
 Protocol::Protocol():
     _action(Protocol::action::NONE), id(0), 
-    _direction(Protocol::direction::STAY), damage(0), _game_id(0), _float_aux(0){
+    _direction(Protocol::direction::STAY), damage(0), _game_id(0), 
+    _float_aux(0){
 }
 
 Protocol::Protocol(int id):
     _action(Protocol::action::NONE), id(id), 
-    _direction(Protocol::direction::STAY), damage(0), _game_id(0), _float_aux(0){
+    _direction(Protocol::direction::STAY), damage(0), _game_id(0), 
+    _float_aux(0){
 }
 
 Protocol::Protocol(int user_id, int map_id):
     _action(Protocol::action::NONE), id(user_id), 
-    _direction(Protocol::direction::STAY), damage(map_id), _game_id(0), _float_aux(0){
+    _direction(Protocol::direction::STAY), damage(map_id), _game_id(0), 
+    _float_aux(0){
 }
 
 Protocol::Protocol(int user_id, int danio, Protocol::action action):
     _action(action), id(user_id), 
-    _direction(Protocol::direction::STAY), damage(danio), _game_id(0), _float_aux(0){
+    _direction(Protocol::direction::STAY), damage(danio), _game_id(0), 
+    _float_aux(0){
 }
 
 Protocol::Protocol(int user_id, int map_id, int game_id):
     _action(Protocol::action::NONE), id(user_id), 
-    _direction(Protocol::direction::STAY), damage(map_id), _game_id(game_id), _float_aux(0){
+    _direction(Protocol::direction::STAY), damage(map_id), _game_id(game_id), 
+    _float_aux(0){
 }
 
 Protocol::Protocol(int id, Protocol::direction direction):
@@ -39,7 +44,8 @@ Protocol::Protocol(int config_number, float config_value):
         _game_id(0), _float_aux(config_value){
 }
 
-Protocol::Protocol(Protocol::action action, int user_id, Protocol::direction direction, int map_id, int pos_x, int pos_y):
+Protocol::Protocol(Protocol::action action, int user_id, 
+            Protocol::direction direction, int map_id, int pos_x, int pos_y):
         _action(action), id(user_id),
         _direction(direction), damage(map_id),
         _game_id(pos_x), _float_aux((float)pos_y){

@@ -32,11 +32,12 @@
 #include <map>
 #include <vector>
 #include <utility>
+#include <queue>
+#include <string>
 
 
 class GameModelClient : public GameModel {
 private:
-
     std::vector<WallGreystone> wallsGreystone;
     std::vector<WallBluestone> wallsBluestone;
     std::vector<WallPurplestone> wallsPurplestone;
@@ -45,7 +46,6 @@ private:
     std::vector<WallMossy> wallsMossy;
     std::vector<WallRedbrick> wallsRedbrick;
     std::vector<WallWood> wallsWood;
-
     std::vector<Door> doors;
 
     Window window;	
@@ -100,7 +100,8 @@ private:
     void openingDoor(const Protocol& protocol);
     void closeDoor(const Protocol& protocol);
     float calculateDistanceBetween(Posicionable* positionable);
-    void playSound(SoundPlayer::sound_type sound_type, Posicionable* positionable);
+    void playSound(SoundPlayer::sound_type sound_type, 
+        Posicionable* positionable);
     void endGame();
     void waitForAction(Protocol::action desired_action);
     void addDeadSprite(Coordinates position, CharacterType a_character_type);
@@ -112,9 +113,12 @@ private:
 	void setDoorState(Coordinates door_pos, State new_state);
 
 public:
-    explicit GameModelClient(int user_id, std::string map_filename, int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
-    std::vector<std::pair<int,int>> &_ordered_players_kills, std::vector<std::pair<int,int>> &_ordered_players_points,\
-    std::vector<std::pair<int,int>> &_ordered_players_bullets);
+    explicit GameModelClient(int user_id, std::string map_filename, 
+        int game_id, int protagonist_id,int &_winner_id, 
+        bool& game_done,\
+        std::vector<std::pair<int,int>> &_ordered_players_kills,\
+        std::vector<std::pair<int,int>> &_ordered_players_points,\
+        std::vector<std::pair<int,int>> &_ordered_players_bullets);
 
     void processProtocol(Protocol& protocol);
     void run();
@@ -122,9 +126,6 @@ public:
     void removeEnemy(int user_id);
     
     void stop();
-    //void push(Protocol protocol);
-    //virtual void processProtocol(Protocol& protocol) = 0;
-
 
     void player_shoot();
 
@@ -151,7 +152,6 @@ public:
     GameModelClient& operator=(const GameModelClient&) = delete;
     GameModelClient& operator=(GameModelClient&& other);
     virtual ~GameModelClient();
-
 };
 
 #endif

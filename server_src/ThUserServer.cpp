@@ -19,7 +19,7 @@ ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
 }
 
 void ThUserServer::sendConfiguration(){
-    for(auto &config : configs){
+    for (auto &config : configs){
         Protocol protocol_config(config.first, config.second);
         socket_peer.send(protocol_config);
     }

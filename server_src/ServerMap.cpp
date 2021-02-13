@@ -151,14 +151,16 @@ void ServerMap::addPlayer(Player* player){
     auto player_dir = std::get<1>(player_data);
     player->setPosition(player_position);
     player->set_direction(player_dir);
-	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(player);
+	mapaJuego[floor(player_position.x)][floor(player_position.y)].
+        push_back(player);
     ++players_added;
 }
 
 void ServerMap::respawnPlayer(Player* player){
     Coordinates player_position = player->get_position(); 
     removePosicionable(player_position);
-	mapaJuego[floor(player_position.x)][floor(player_position.y)].push_back(player);
+	mapaJuego[floor(player_position.x)][floor(player_position.y)].
+        push_back(player);
 }
 
 void ServerMap::addPosicionable(Posicionable* posicionable, 
@@ -166,7 +168,8 @@ void ServerMap::addPosicionable(Posicionable* posicionable,
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return;
 	if(mapaJuego[floor(posicion.x)][floor(posicion.y)].empty()){
-		mapaJuego[floor(posicion.x)][floor(posicion.y)].push_back(posicionable);
+		mapaJuego[floor(posicion.x)][floor(posicion.y)].
+            push_back(posicionable);
 	}else{
 		std::vector<Posicionable*>& vec = 
 		    mapaJuego[floor(posicion.x)][floor(posicion.y)];
@@ -312,7 +315,8 @@ bool ServerMap::playerIn(const Coordinates& posicion) const{
 	if (floor(posicion.x) < 0 || floor(posicion.x) >= alto ||
 	    floor(posicion.y) < 0 || floor(posicion.y) >= ancho) return true;
 	return (!mapaJuego[floor(posicion.x)][floor(posicion.y)].empty() && 
-	typeid(*mapaJuego[floor(posicion.x)][floor(posicion.y)].back()) == typeid(Player));
+	typeid(*mapaJuego[floor(posicion.x)][floor(posicion.y)].back()) == 
+        typeid(Player));
 }
 
 bool ServerMap::doorIn(float x, float y) const{

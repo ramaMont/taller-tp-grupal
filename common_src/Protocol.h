@@ -33,8 +33,10 @@ public:
     explicit Protocol(int user_id, int map_id, int game_id);
     explicit Protocol(int id, Protocol::direction direction);
     explicit Protocol(int config_number, float config_value);
-    explicit Protocol(Protocol::action action, int user_id, Protocol::direction direction, int map_id, int pos_x, int pos_y);
-    explicit Protocol(Protocol::action action, int id, float pos_x, float pos_y);
+    explicit Protocol(Protocol::action action, int user_id, 
+        Protocol::direction direction, int map_id, int pos_x, int pos_y);
+    explicit Protocol(Protocol::action action, int id, 
+        float pos_x, float pos_y);
     Protocol::action getAction();
     Protocol::direction getDirection();
     void moveInDirection(Protocol::direction direction);
@@ -53,6 +55,7 @@ public:
     void setAction(Protocol::action action);
     void setDamage(int danio);
     ~Protocol();
+
 private:
     Protocol::action _action;
     std::uint16_t id;

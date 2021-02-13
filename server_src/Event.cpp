@@ -124,7 +124,6 @@ void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){
     time_t time_now = time(0);
     double seconds = difftime(time_now, _time);
     if (seconds > configs[CONFIG::segundos_cerrar_puerta]){
-        // Protocol, usar pos para mandarle en el protocolo la posicion de la puerta.
         Coordinates door_pos = door->get_position();
         Protocol protocol(Protocol::action::CLOSE, 0,
             Protocol::direction::STAY, 0, door_pos.x, door_pos.y);   

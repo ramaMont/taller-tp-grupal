@@ -21,6 +21,7 @@ private:
     int ancho;
     std::vector<std::vector<Posicionable*>> mapGame;
     Character* player;
+
 public:
     ClientMap();
     explicit ClientMap(int alto, int ancho);
@@ -49,7 +50,8 @@ public:
     void removeAllPositionables(Coordinates position);
 
     //Pre:-
-    // Remueve un sprite donde actualmente se encuentra un personaje, y deja al personaje en el mismo lugar    
+    // Remueve un sprite donde actualmente se encuentra un personaje,
+    // y deja al personaje en el mismo lugar    
     void removeSpriteWithCharacter(Coordinates position, Movable* character);
 
     //Pre:-

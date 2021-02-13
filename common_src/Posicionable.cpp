@@ -29,7 +29,8 @@ void Posicionable::setDirection(Coordinates direction){
 	this->direction = direction;
 }
 
-void Posicionable::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
+void Posicionable::colisioned(Ray* ray,Coordinates coordinates_map,
+		bool first_triangle){
 	throw -1;
 }
 
