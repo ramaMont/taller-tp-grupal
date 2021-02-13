@@ -1,10 +1,11 @@
 #include "GamesAdmin.h"
 
+#include <coordinates.h>
+
 #include "ThGameModelServer.h"
 #include "ServerMap.h"
-#include <ThUser.h>
-#include <coordinates.h>
-#include <Player.h>
+#include "ThUserServer.h"
+#include "Player.h"
 
 #include <map>
 #include <utility>
