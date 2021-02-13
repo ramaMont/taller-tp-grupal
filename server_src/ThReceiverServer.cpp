@@ -58,9 +58,6 @@ void ThReceiverServer::processReception(Protocol& protocol){
                 _gameModel->addPlayer(protocol.getId());
             }
             break;
-        case Protocol::action::REMOVE:
-            _th_user_server->removePlayer(protocol.getUserId());
-            break;
         case Protocol::action::END:
             _th_user_server->push(protocol);
             break;

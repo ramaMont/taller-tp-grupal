@@ -43,7 +43,6 @@ public:
     void sendBotsPositions();
     void push(Protocol protocol);
     int getId();
-    void removePlayer(int user_id);
     ~ThUserServer();
 };
 

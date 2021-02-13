@@ -183,9 +183,6 @@ int ThUserServer::getId(){
     return user_id;
 }
 
-void ThUserServer::removePlayer(int user_id){
-}
-
 ThUserServer::~ThUserServer(){
     socket_peer.shutdown();
     socket_peer.close();
