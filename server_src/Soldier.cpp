@@ -1,5 +1,6 @@
 #include "Soldier.h"
 
+#include "ExceptionServer.h"
 #include "ServerMap.h"
 #include "Player.h"
 #include <ConfigVariable.h>
@@ -9,7 +10,7 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
-#include "ExceptionServer.h"
+
 #define GRADOS_180 180
 #define PI 3.14159265358979323846
 #define PASO 1

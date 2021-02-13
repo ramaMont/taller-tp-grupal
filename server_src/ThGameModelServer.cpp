@@ -1,12 +1,12 @@
 #include "ThGameModelServer.h"
 
-#include <vector>
-#include <map>
-#include <utility>
 #include "ExceptionServer.h"
 
 #include <iostream>
 #include <algorithm>
+#include <vector>
+#include <map>
+#include <utility>
 
 ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
         std::string map_filename, int game_id, int map_id_checksum, int bots_cty):

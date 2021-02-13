@@ -1,10 +1,11 @@
 #include "ParamReaderServer.h"
 
+#include <ConfigVariable.h>
+#include "ExceptionServer.h"
+
 #include <yaml-cpp/yaml.h>
 #include <string>
 #include <iostream>
-#include <ConfigVariable.h>
-#include "ExceptionServer.h"
 
 std::map<int, float> configs;
 

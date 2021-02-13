@@ -3,10 +3,11 @@
 
 class ThGameModelServer;
 #include <ThGameModelServer.h>
-#include <map>
-#include <mutex>
 class ThUserServer;
 #include "ThUserServer.h"
+
+#include <map>
+#include <mutex>
 
 class GamesAdmin{
 private:

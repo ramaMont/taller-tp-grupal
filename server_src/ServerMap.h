@@ -1,9 +1,8 @@
 #ifndef __SERVER_MAP__
 #define __SERVER_MAP__
 
-#include <vector>
-#include <utility>
-#include "Posicionable.h"
+#include <coordinates.h>
+#include <Posicionable.h>
 #include "Player.h"
 class Player;
 #include "Item.h"
@@ -12,10 +11,12 @@ class Object;
 class Door;
 #include "Object.h"
 
-#include "coordinates.h"
+
 #include <yaml-cpp/yaml.h>
 #include <map>
 #include <tuple>
+#include <vector>
+#include <utility>
 
 class ServerMap{
 private:

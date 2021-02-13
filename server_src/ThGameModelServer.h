@@ -1,6 +1,7 @@
 #ifndef __TH_GAME_MODEL_SERVER__
 #define __TH_GAME_MODEL_SERVER__
 
+#include <Thread.h>
 #include <GameModel.h>
 class ThUserServer;
 #include "ThUserServer.h"

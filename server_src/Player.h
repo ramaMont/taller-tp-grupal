@@ -1,12 +1,12 @@
 #ifndef __JUGADOR__
 #define __JUGADOR__
 
-#include "Protocol.h"
-#include "Posicionable.h"
-#include "coordinates.h"
-#include "AtomicCoordinates.h"
+#include <Protocol.h>
+#include <Posicionable.h>
+#include <coordinates.h>
 #include <BlockingQueue.h>
 
+#include "AtomicCoordinates.h"
 #include "ServerMap.h"
 class ServerMap;
 #include <Direction.h>

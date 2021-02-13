@@ -5,8 +5,8 @@
 #include <BlockingQueue.h>
 #include <Protocol.h>
 class Event;
-#include <Event.h>
-#include <ProtectedVector.h>
+#include "Event.h"
+#include "ProtectedVector.h"
 
 class ThGameEvents : public Thread{
     private:

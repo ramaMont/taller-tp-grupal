@@ -1,10 +1,12 @@
 #include "ThUserServer.h"
+
 #include <Protocol.h>
+#include <ConfigVariable.h>
+#include <MapLoader.h>
+
 #include <iostream>
 #include <exception>
 #include <vector>
-#include <ConfigVariable.h>
-#include <MapLoader.h>
 
 ThUserServer::ThUserServer(int user_id, Socket&& socket_peer,
         GamesAdmin& games_admin):

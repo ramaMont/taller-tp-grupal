@@ -11,6 +11,7 @@ class GamesAdmin;
 #include "GamesAdmin.h"
 class ThGameModelServer;
 #include "ThGameModelServer.h"
+
 #include <vector>
 
 class ThUserServer : public Thread{

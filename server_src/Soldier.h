@@ -1,13 +1,15 @@
 #ifndef __SOLDIER__H_
 #define __SOLDIER__H_
 
+#include <coordinates.h>
+#include <BlockingQueue.h>
+#include <Protocol.h>
+
 #include <set>
 #include <vector>
 #include <atomic>
 #include <map>
-#include "coordinates.h"
-#include "BlockingQueue.h"
-#include "Protocol.h"
+
 class ServerMap;
 class Player;
 
