@@ -2,9 +2,9 @@
 #define __CHARACTER__
 
 class Movable;
-#include <Movable.h>
+#include "Movable.h"
 
-#include "coordinates.h"
+#include <coordinates.h>
 class ClientMap;
 #include "ClientMap.h"
 class Direction;

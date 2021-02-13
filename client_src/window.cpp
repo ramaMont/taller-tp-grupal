@@ -2,9 +2,11 @@
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_mixer.h>
+
+#include <iostream>
+
 #include "exception.h"
 #include "window.h"
-#include <iostream>
 
 #include <ConfigVariable.h>
 

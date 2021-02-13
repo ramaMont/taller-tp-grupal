@@ -2,13 +2,12 @@
 #define __MOVABLE__
 
 #include <Posicionable.h>
-
-#include "coordinates.h"
-class ClientMap;
-#include "ClientMap.h"
+#include <coordinates.h>
 class Direction;
 #include <Direction.h>
 
+class ClientMap;
+#include "ClientMap.h"
 class Ray;
 #include "ray.h"
 

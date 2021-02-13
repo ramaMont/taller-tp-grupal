@@ -1,12 +1,10 @@
 #include "texture.h"
+
 #include <SDL2/SDL_image.h>
-#include <string>
-
 #include <SDL2/SDL.h>
+#include <string>
 #include <cmath>
-
 #include <iostream>
-#include<string>
 
 #include "SpriteValues.h"
 

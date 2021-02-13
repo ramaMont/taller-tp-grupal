@@ -1,4 +1,5 @@
 #include "GameModelClient.h"
+
 #include <tuple>
 #include <yaml-cpp/yaml.h>
 #include <cmath>

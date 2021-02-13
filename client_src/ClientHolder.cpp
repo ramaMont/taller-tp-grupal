@@ -1,14 +1,16 @@
 #include "ClientHolder.h"
 
-#include "Posicionable.h"
+#include <Posicionable.h>
+#include <ThSender.h>
+#include <ConfigVariable.h>
 
 #include "ThReceiverClient.h"
-#include <ThSender.h>
-#include <UserClient.h>
-#include <QApplication>
-#include <LoginWindow.h>
+#include "UserClient.h"
 
-#include <ConfigVariable.h>
+#include <QApplication>
+#include "LoginWindow.h"
+
+
 std::map<int, float> configs;
 
 #include <iostream>

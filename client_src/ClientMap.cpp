@@ -1,8 +1,10 @@
 #include "ClientMap.h"
+
 #include "Movable.h"
 #include "Character.h"
 #include "Player.h"
 #include "Enemy.h"
+
 #include <iostream>
 #include <utility>
 #include <cmath>

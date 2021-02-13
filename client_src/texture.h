@@ -1,10 +1,10 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
-#include <string>
 
 #include "window.h"
 #include <vector>
 #include <map>
+#include <string>
 
 #include <SDL2/SDL_ttf.h>
 

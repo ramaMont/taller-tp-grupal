@@ -5,19 +5,16 @@
 #include <chrono>
 
 #include <Posicionable.h>
-
-#include "coordinates.h"
-class ClientMap;
-#include "ClientMap.h"
+#include <coordinates.h>
 class Direction;
 #include <Direction.h>
 
+class ClientMap;
+#include "ClientMap.h"
 class Character;
-#include <Character.h>
-
+#include "Character.h"
 class GunType;
 #include "GunType.h"
-
 #include "SoundPlayer.h"
 
 class Player final : public Character{

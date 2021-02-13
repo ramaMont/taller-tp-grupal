@@ -5,7 +5,6 @@
 #include <string>
 #include <SDL2/SDL_mixer.h>
 
-
 class Sound{
 private:
     std::unique_ptr<Mix_Chunk, void (*)(Mix_Chunk *)> mix_chunk;

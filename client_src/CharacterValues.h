@@ -6,5 +6,4 @@
 
 enum CharacterType { dog, guard, ss, officer, mutant};
 
-
 #endif

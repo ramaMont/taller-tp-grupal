@@ -11,7 +11,6 @@ class Raycasting;
 
 class Posicionable;
 #include <Posicionable.h>
-
 #include <coordinates.h>
 
 // Obtiene la informacion necesaria para dibujar sprites, tanto sprites comunes como enemigos

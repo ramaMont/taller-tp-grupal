@@ -15,8 +15,9 @@
 class Texture;
 #include "texture.h"
 
-#include <Player.h>
-#include <ClientMap.h>
+#include "Player.h"
+#include "ClientMap.h"
+
 #include <coordinates.h>
 
 //Implementa el raycasting

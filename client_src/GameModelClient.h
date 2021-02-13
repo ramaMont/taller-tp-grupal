@@ -1,42 +1,38 @@
 #ifndef __GAME_MODEL_CLIENT__
 #define __GAME_MODEL_CLIENT__
 
-#include "UserClient.h"
 #include <Protocol.h>
+#include <BlockingQueue.h>
+#include <Protocol.h>
+#include <Posicionable.h>
+#include <GameModel.h>
+#include <coordinates.h>
+#include <Direction.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "UserClient.h"
 #include "ClientMap.h"
-#include "Protocol.h"
 #include "Player.h"
-#include "BlockingQueue.h"
+#include "window.h"
+#include "Screen.h"
+#include "texture.h"
+#include "ClientMap.h"
+#include "Character.h"
+#include "Wall.h"
+#include "Door.h"
+#include "SpriteHolder.h"
+#include "Enemy.h"
+#include "Rocket.h"
+#include "SoundPlayer.h"
+#include "CharacterValues.h"
 
 #include <atomic>
 #include <map>
 #include <vector>
 #include <utility>
 
-#include <Posicionable.h>
-
-#include "window.h"
-#include "Screen.h"
-#include "texture.h"
-
-#include <ClientMap.h>
-#include <coordinates.h>
-#include <Character.h>
-#include <Player.h>
-#include <Direction.h>
-#include <Wall.h>
-#include <Door.h>
-#include <SpriteHolder.h>
-#include <Enemy.h>
-#include <Rocket.h>
-#include "SoundPlayer.h"
-
-#include "CharacterValues.h"
-#include <GameModel.h>
 
 class GameModelClient : public GameModel {
 private:

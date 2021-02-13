@@ -4,18 +4,17 @@
 #include <iostream>
 #include <exception>
 #include <algorithm>
+
 #include "window.h"
 #include "camera.h"
-
 class SpriteHolder;
-#include <SpriteHolder.h>
-
+#include "SpriteHolder.h"
 class Rocket;
-#include <Rocket.h>
+#include "Rocket.h"
 class Enemy;
-#include <Enemy.h>
-#include <Player.h>
-#include <ClientMap.h>
+#include "Enemy.h"
+#include "Player.h"
+#include "ClientMap.h"
 
 
 // Administra la visualizacion de todos los objetos visibles: sprites, enemigos, paredes, armas y raycasting

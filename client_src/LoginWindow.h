@@ -1,8 +1,12 @@
 #ifndef GREETER_H
 #define GREETER_H
 
+#include "ClientHolder.h"
+
 #include <string>
 #include <iostream>
+#include <map>
+
 #include <QApplication>
 #include <QMouseEvent>
 #include <QtWidgets>
@@ -13,14 +17,13 @@
 #include <QMimeData>
 #include <QPainter>
 #include <QDrag>
-#include <map>
 #include <QGridLayout>
 #include <QStandardItemModel>
 #include <QVariant>
 #include <QScrollArea>
 #include <QMessageBox>
 #include <QBoxLayout>
-#include "ClientHolder.h"
+
 
 class LoginWindow : public QWidget {
 public:

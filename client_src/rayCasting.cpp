@@ -10,9 +10,6 @@
 Raycasting::Raycasting(Player &a_player,ClientMap &a_map, int n_rays)
     : player(a_player), map(a_map),n_rays(n_rays){}
 
-
-
-
 void Raycasting::calculateRayCasting(Camera &camera,std::vector<float> &distances){
 
     Coordinates player_position = player.get_position();

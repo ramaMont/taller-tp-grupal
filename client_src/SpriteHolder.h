@@ -4,15 +4,14 @@
 #include <iostream>
 #include <vector>
 
+#include "SpriteDrawer.h"
 class Raycasting;
 #include "rayCasting.h"
-
-#include <Player.h>
-#include <Movable.h>
+#include "Player.h"
+#include "Movable.h"
 
 #include <Posicionable.h>
 
-#include <SpriteDrawer.h>
 
 //Almacena multiples texturas de sprites y, en algunos casos, un personaje
 class SpriteHolder : public Posicionable, public SpriteDrawer{

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <utility>
+
 class Posicionable;
 //#include "Posicionable.h"
 class Character;
@@ -10,7 +11,7 @@ class Movable;
 class Player;
 //#include "Player.h"
 class Enemy;
-#include "coordinates.h"
+#include <coordinates.h>
 
 
 //ServerMap del cliente

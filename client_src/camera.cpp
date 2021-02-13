@@ -1,10 +1,9 @@
-
-#include <string>
-#include "coordinates.h"
-#include <math.h>
-
 #include "camera.h"
 
+#include <coordinates.h>
+#include <math.h>
+
+#include <string>
 
 Camera::Camera(const Coordinates &player_position,const Coordinates &player_direction):
 	player_position(player_position)

@@ -4,7 +4,7 @@
 #include <dirent.h>
 #include <vector>
 #include <iostream>
-#include "string.h"
+//#include "string.h"
 #include "SDL2/SDL_mixer.h"
 
 const int BACK_MUSIC_CHANNEL = 1;

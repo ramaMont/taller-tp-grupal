@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "texture.h"
+
 #include <ConfigVariable.h>
 
 #include <math.h>

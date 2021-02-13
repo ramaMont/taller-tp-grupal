@@ -40,11 +40,6 @@ void SoundPlayer::playSoundAtDistance(SoundPlayer::sound_type sound_type,
 int SoundPlayer::calculateVolume(float distance){
     if (distance <= 0)
         return 100;
-// Regresion lineal
-//    return (int)std::floor(101.456 - 1.456 * distance);
-// Regresion logaritmica
-//    return (int)std::floor(103.1033 - 20.2861 * std::log(distance));
-// Regresion exponencial
     return (int)std::floor(std::exp(5.2539 - 0.1188 * distance));
 }
 

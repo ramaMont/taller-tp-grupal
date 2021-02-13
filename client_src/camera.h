@@ -1,9 +1,10 @@
 #ifndef CAMERA_H
 #define CAMERA_H
-#include <string>
-#include "coordinates.h"
-#include <math.h>
 
+#include <coordinates.h>
+
+#include <math.h>
+#include <string>
 
 // "Camara" representativa para calcular la distancia de cada rayo en raycasting
 class Camera {

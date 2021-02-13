@@ -1,5 +1,5 @@
 #include "Wall.h"
-#include "../client_src/texture.h"
+#include "texture.h"
 
 Wall::Wall(Coordinates posicion): 
     Posicionable(posicion){}

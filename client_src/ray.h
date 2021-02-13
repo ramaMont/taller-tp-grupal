@@ -10,21 +10,20 @@
 #include <string>
 #include <vector>
 
+class Posicionable;
+#include <Posicionable.h>
+
 #include "coordinates.h"
 //#include "sprite.h"
 
 class ClientMap;
-#include <ClientMap.h>
-class Posicionable;
-#include <Posicionable.h>
+#include "ClientMap.h"
 
 class Wall;
 class Door;
 
 // Implementa un único rayo del raycasting
 class Ray {
-
-
 	private:
 		const Coordinates &player_direction;
 		const Coordinates &player_position;

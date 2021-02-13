@@ -1,19 +1,17 @@
 #ifndef __ENEMY__
 #define __ENEMY__
 
-#include "Posicionable.h"
-
-#include "coordinates.h"
-class ClientMap;
-#include "ClientMap.h"
+#include <Posicionable.h>
+#include <coordinates.h>
 class Direccion;
 #include <Direction.h>
 
+class ClientMap;
+#include "ClientMap.h"
+
 class Character;
-#include <Character.h>
-
+#include "Character.h"
 #include "SpriteDrawer.h"
-
 #include "EnemyType.h"
 
 // Es tanto un Movible como un sprite, dado que su metodo para dibujar es el mismo que el de los sprites

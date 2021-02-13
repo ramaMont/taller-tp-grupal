@@ -1,5 +1,5 @@
 #include "Door.h"
-#include "../client_src/texture.h"
+#include "texture.h"
 #include "ray.h"
 
 #include "Enemy.h"

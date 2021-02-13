@@ -2,8 +2,9 @@
 #define __CLIENT__HOLDER__
 
 #include <string>
+
 #include <Protocol.h>
-#include "Socket.h"
+#include <Socket.h>
 class ThReceiverClient;
 #include "ThReceiverClient.h"
 #include "GameModelClient.h"
