@@ -61,34 +61,10 @@ void ThReceiverServer::processReception(Protocol& protocol){
         case Protocol::action::END:
             _th_user_server->push(protocol);
             break;
-        case Protocol::action::MOVE:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::SHOOT:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::SHOOTED:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::DIE:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::RESURRECT:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::OPEN:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::OPENING:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::CLOSE:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::SWITCH_GUN:
-            _gameModel->push(protocol);
-            break;
+        // En el caso de: MOVE, SHOOT, SHOOTED, DIE, RESURRECT, OPEN, OPENING,
+        // CLOSE y SWITCH_GUN:
         default:
+            _gameModel->push(protocol);
             break;
     }
 }
