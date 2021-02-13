@@ -11,7 +11,6 @@
 enum Colors { black, white};
 
 class Texture {
-
 private:
     SDL_Renderer* renderer;
     std::vector<SDL_Texture*> wall_textures;
@@ -29,7 +28,6 @@ private:
     int height;
     int width;
     SDL_Rect showableTexture;
-
     TTF_Font* wolfensteinFont;
 
     // Carga todas las texturas de paredes
@@ -91,8 +89,7 @@ private:
     void destoyVectorTextures(std::vector<SDL_Texture*> &texture_vector);
 
 public:
-
-    Texture(const Window& window);
+    explicit Texture(const Window& window);
 
     Texture(const Texture&) = delete;
     Texture(Texture&& other) = delete;

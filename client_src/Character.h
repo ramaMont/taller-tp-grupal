@@ -22,7 +22,8 @@ protected:
     Coordinates initial_position;
     Coordinates initial_direction;
 public:
-    explicit Character(Coordinates posicion,Coordinates direction ,ClientMap& map, int id);
+    explicit Character(Coordinates posicion, Coordinates direction, 
+        ClientMap& map, int id);
 
     //Pre: el personaje intentó moverse directamente y chocó contra un objeto
     // separa la direccion de movimiento en sus ejes X e Y e intenta moverse individualmente por cada uno

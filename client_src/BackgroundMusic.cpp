@@ -13,11 +13,12 @@ BackgroundMusic::BackgroundMusic(): paused(false){
     const std::string BACK_MUSIC_PATH = "../data/background_music/";
     struct dirent *d;
     DIR *dr;
+    // Reservo 2 canales para la musica de fondo
     int reserved_count = Mix_ReserveChannels(2);
     if (reserved_count != 2) {
-        std::cout << "8 channels were not reserved!\n"; 
+        std::cout << "2 channels were not reserved!\n"; 
         // this might be a critical error... 
-        throw ("Critical error initializing sound");
+        throw ("Critical error initializing sound\n");
     } 
     dr = opendir(BACK_MUSIC_PATH.c_str());
     if (dr == NULL){

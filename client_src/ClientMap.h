@@ -23,6 +23,7 @@ private:
     Character* player;
 
 public:
+    //TODO: Inicializar player en el constructor
     ClientMap();
     explicit ClientMap(int alto, int ancho);
 

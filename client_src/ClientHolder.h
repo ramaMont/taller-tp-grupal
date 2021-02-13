@@ -46,8 +46,9 @@ public:
     void run();
     void crearPartida(const std::string& map_filename, 
         int bots_cty, int& game_id);
-    void unirseAPartida(std::string& id_partida);
-    void logged(std::string& puerto, std::string& servidor, int& user_id);
+    void unirseAPartida(const std::string& id_partida);
+    void logged(const std::string& puerto, const std::string& servidor,
+        int& user_id);
     // Se cierra todo lo correspondiente a qt y se setea en true el 
     // booleano ready to play
     void startGame();

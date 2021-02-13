@@ -16,8 +16,10 @@ protected:
 	int frames_per_shot;
 	bool allows_continuous_shooting;
 	CharacterType enemy_type;
+
 public:
-	GunType(Texture *texture_drawer, int frames_per_shot, bool allows_continuous_shooting, CharacterType enemy_type);
+	explicit GunType(Texture *texture_drawer, int frames_per_shot, 
+		bool allows_continuous_shooting, CharacterType enemy_type);
 
 	CharacterType getType();
 
@@ -37,7 +39,7 @@ public:
 
 class Knife : public GunType{
 public:
-	Knife(Texture *texture_drawer);
+	explicit Knife(Texture *texture_drawer);
 	virtual void callDrawer(int frame) override;
 	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
 		float distance) override;
@@ -46,7 +48,7 @@ public:
 
 class Gun : public GunType{
 public:
-	Gun(Texture *texture_drawer);
+	explicit Gun(Texture *texture_drawer);
 	virtual void callDrawer(int frame) override;
 	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
 		float distance) override;
@@ -55,7 +57,7 @@ public:
 
 class MachineGun : public GunType{
 public:
-	MachineGun(Texture *texture_drawer);
+	explicit MachineGun(Texture *texture_drawer);
 	virtual void callDrawer(int frame) override;
 	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
 		float distance) override;
@@ -64,7 +66,7 @@ public:
 
 class ChainGun : public GunType{
 public:
-	ChainGun(Texture *texture_drawer);
+	explicit ChainGun(Texture *texture_drawer);
 	virtual void callDrawer(int frame) override;
 	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
 		float distance) override;
@@ -73,7 +75,7 @@ public:
 
 class RocketLauncher : public GunType{
 public:
-	RocketLauncher(Texture *texture_drawer);
+	explicit RocketLauncher(Texture *texture_drawer);
 	virtual void callDrawer(int frame) override;
 	virtual void playWeaponSound(SoundPlayer& soundPlayer, 
 		float distance) override;

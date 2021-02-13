@@ -5,7 +5,6 @@
 #include "ray.h"
 
 class Wall : public Posicionable{
-
 public:
     explicit Wall(Coordinates posicion);
 
@@ -20,77 +19,55 @@ public:
 };
 
 class WallGreystone final : public Wall{
-
 public:
-	WallGreystone(Coordinates posicion);
-
+	explicit WallGreystone(Coordinates posicion);
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 };
 
 class WallBluestone final : public Wall{
-
 public:
-	WallBluestone(Coordinates posicion);
-
+	explicit WallBluestone(Coordinates posicion);
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
-
 };
 
 class WallPurplestone final : public Wall{
-
 public:
-	WallPurplestone(Coordinates posicion);
-
+	explicit WallPurplestone(Coordinates posicion);
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
-
 };
 
 
 class WallColorstone final : public Wall{
-
 public:
-	WallColorstone(Coordinates posicion);
-
+	explicit WallColorstone(Coordinates posicion);
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 
 };
 
 class WallEagle final : public Wall{
-
 public:
-	WallEagle(Coordinates posicion);
-
+	explicit WallEagle(Coordinates posicion);
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
 
 };
 
 class WallMossy final : public Wall{
-
 public:
-	WallMossy(Coordinates posicion);
-
+	explicit WallMossy(Coordinates posicion);
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
-
 };
 
 
 class WallRedbrick final : public Wall{
-
 public:
-	WallRedbrick(Coordinates posicion);
-
+	explicit WallRedbrick(Coordinates posicion);
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
-
 };
 
 class WallWood final : public Wall{
-
 public:
-	WallWood(Coordinates posicion);
-
+	explicit WallWood(Coordinates posicion);
 	void draw(int ray, float distance, int number_line_texture,bool wall_side_y) override;
-
 };
-
 
 #endif

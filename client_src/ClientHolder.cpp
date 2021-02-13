@@ -18,13 +18,11 @@
 
 std::map<int, float> configs;
 
-
-
-
 ClientHolder::ClientHolder(): 
     user_id(-1), socket(nullptr), _game_model(nullptr), 
     _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false),
-    _game_id(-1), _map_id_checksum(-1), _user_client(nullptr){
+    _game_id(-1), _map_id_checksum(-1), _user_client(nullptr), _winner_id(-1),
+    game_done(false){
 }
 
 void ClientHolder::crearPartida(const std::string& map_filename,
@@ -45,7 +43,7 @@ void ClientHolder::crearPartida(const std::string& map_filename,
     _cl_th_receiver->start();
 }
 
-void ClientHolder::unirseAPartida(std::string& id_partida) {
+void ClientHolder::unirseAPartida(const std::string& id_partida) {
     int game_id = std::stoi(id_partida);
     Protocol protocol_send(game_id);
     protocol_send.setAction(Protocol::action::JOIN_GAME);
@@ -53,8 +51,8 @@ void ClientHolder::unirseAPartida(std::string& id_partida) {
     addLoggedUsers();
 }
 
-void ClientHolder::logged(std::string& puerto, std::string& servidor, 
-        int& user_id){
+void ClientHolder::logged(const std::string& puerto, 
+        const std::string& servidor, int& user_id){
     _port = puerto;
     _host_dns = servidor;
     Protocol protocol;
