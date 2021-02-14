@@ -4,8 +4,7 @@
 
 Rocket::Rocket(Coordinates posicion,Coordinates direction,\
                     ClientMap& map, Player &player):
-    Movable(posicion,direction,map),SpriteDrawer(this,player),
-   	player(player){	
+    Movable(posicion,direction,map),SpriteDrawer(this,player){	
 }
 
 

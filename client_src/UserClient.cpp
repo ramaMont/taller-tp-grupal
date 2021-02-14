@@ -97,8 +97,7 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event,
 
     if (keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
         if (frames_till_next_shot==0){
-        	if ((shoot_key_pressed and 
-                    player.gunAllowsContinuousShooting())){
+        	if(!shoot_key_pressed or player.gunAllowsContinuousShooting()){
 	        	frames_till_next_shot = player.getFramesPerShot();
 	            protocol.setAction(Protocol::action::SHOOT);
 	            th_sender.push(protocol);

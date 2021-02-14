@@ -18,7 +18,6 @@ class Character;
 metodo para dibujar es el mismo que el de los sprites*/
 class Enemy : public Character, public SpriteDrawer{
 private:
-	Player &player;	
 	bool is_moving;
 	int moved_frames_continued;
 	EnemyType* enemy_type;

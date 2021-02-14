@@ -3,7 +3,14 @@
 #include <vector> 
 
 SpriteDrawer::SpriteDrawer(Posicionable *posicionable, Player &player): 
-posicionable(posicionable), player(player) {}   
+posicionable(posicionable), player(player) {
+	located = false;
+	player_distance = 0;
+	relative_angle_to_player = 0;
+	lowest_ray_distance = 0;
+	center_ray = 0;
+	cant_rays = 0;
+}   
 
 void SpriteDrawer::setRelativeAngleToPlayer(){
     Coordinates player_position = player.get_position();

@@ -17,7 +17,6 @@ class Character;
  para dibujar es el mismo que el de los sprites*/
 class Rocket : public Movable, public SpriteDrawer{
 private:
-	Player &player;	
 
 public:
 	explicit Rocket(Coordinates posicion,Coordinates direction,\

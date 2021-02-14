@@ -12,6 +12,7 @@ Player::Player(ClientMap& map):
         max_health(configs[CONFIG::vida_maxima]), 
         init_bullets(configs[CONFIG::balas_iniciales]), 
         shot_frame(0), gun_type(nullptr),shooting(false),
+        frames_per_shot(0), current_shoot_frame(0), 
         score(0), lives(configs[CONFIG::cantidad_de_vidas]),
         health(max_health), ammo(configs[CONFIG::balas_iniciales]),
         has_key_1(false), has_key_2(false){}

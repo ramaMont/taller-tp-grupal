@@ -46,7 +46,7 @@ static int get_num_texture(Coordinates enemy_position,\
 Enemy::Enemy(Coordinates posicion, Coordinates direction,\
 							 ClientMap& map, Player &player ,int id):
     Character(posicion,direction,map,id),SpriteDrawer(this,player),
-   	player(player), is_moving(false),
+   	is_moving(false),
     moved_frames_continued(0), enemy_type(nullptr){
 	   this->initial_position = posicion;
 	   this->initial_direction = direction;    	
