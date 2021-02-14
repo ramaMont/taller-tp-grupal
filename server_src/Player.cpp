@@ -136,9 +136,9 @@ bool Player::hurt(int damage){
 	Protocol protocol(player_id, health, Protocol::action::SHOOTED);
 	_game_model_queue.push(protocol);
 	if (health <= 0){
-		Protocol protocol(player_id);
-		protocol.setAction(Protocol::action::DIE);
-		_game_model_queue.push(protocol);
+		Protocol protocol_die(player_id);
+		protocol_die.setAction(Protocol::action::DIE);
+		_game_model_queue.push(protocol_die);
 		return true;
 	}
 	return false;

@@ -10,7 +10,7 @@
 
 #include "SpriteValues.h"
 
-GameModelClient::GameModelClient(int user_id, std::string map_filename,\
+GameModelClient::GameModelClient(int user_id, const  std::string& map_filename,\
             int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
             std::vector<std::pair<int,int>> &_ordered_players_kills,\
             std::vector<std::pair<int,int>> &_ordered_players_points,\
@@ -65,7 +65,7 @@ void GameModelClient::addWallsToMap(){
     }
 }
 
-void GameModelClient::createWall(std::string elemento, Coordinates position){
+void GameModelClient::createWall(const  std::string& elemento, Coordinates position){
     if (elemento == "_greystone"){ 
         wallsGreystone.push_back(WallGreystone(position));
     } else if (elemento == "_bluestone"){
@@ -81,7 +81,7 @@ void GameModelClient::createWall(std::string elemento, Coordinates position){
     }
 }
 
-static bool is_sprite(std::string elemento){
+static bool is_sprite(const  std::string& elemento){
     return ((elemento == "barrel") or(elemento == "pillar") or\
         (elemento == "greenlight") or(elemento == "trophie") or\
         (elemento == "rocket_launcher") or(elemento == "medicine") or\
@@ -90,17 +90,17 @@ static bool is_sprite(std::string elemento){
         (elemento == "bullets") or(elemento == "table"));
 }
 
-void GameModelClient::initMap(std::string map_filename){
-	std::string MAPS_PATH = "../data/maps/";
+void GameModelClient::initMap(const  std::string& map_filename){
+	const std::string MAPS_PATH = "../data/maps/";
     YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
     int alto = map_node["filas"].as<int>();
     int ancho = map_node["columnas"].as<int>();
     map.resize(ancho, alto);
     YAML::Node map_elements = map_node["elementos"];
-    std::string position="pos_";
+    std::string pos="pos_";
     for (int i=0; i<alto; i++){
         for (int j=0; j<ancho; j++){
-            std::string actual_position = position + std::to_string(i) + "_" +
+            std::string actual_position = pos + std::to_string(i) + "_" +
                 std::to_string(j);
             std::string elemento = map_elements[actual_position].\
                 as<std::string>();
@@ -455,9 +455,8 @@ void GameModelClient::processRocket(Protocol& protocol){
         // (%f,%f)\n",position.x,position.y);
         bool found = false;
         unsigned int i = 0;
-        Rocket* rocket;
         while (i<rockets.size() and !found){
-            rocket = rockets[i];
+            Rocket* rocket = rockets[i];
             //printf("Pero en realidad está en: (%f,%f)\n",
             // rocket->getPosicion().x,rocket->getPosicion().y );
             if (position==rocket->getPosicion()){
@@ -488,10 +487,9 @@ void GameModelClient::processExplosion(Protocol& protocol){
 	Coordinates position(protocol.getFloatPosition());
     bool found = false;
     unsigned int i = 0;
-    Rocket* rocket;
     printf("posicion recibida: (%f,%f)\n",position.x,position.y);
     while (i<rockets.size() and !found){
-        rocket = rockets[i];
+        Rocket* rocket = rockets[i];
         printf("posicion de mi rockett: (%f,%f)\n",rocket->getPosicion().x,
             rocket->getPosicion().y);
         //printf("Pero en realidad está en: (%f,%f)\n",rocket->getPosicion().
@@ -507,8 +505,6 @@ void GameModelClient::processExplosion(Protocol& protocol){
         }
         i++;
     }
-
-
     //auto rocket_pos = rockets[0]->get_position();
 	//map.removePositionable(rockets[0]->get_position());
 }

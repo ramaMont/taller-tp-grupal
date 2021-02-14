@@ -19,10 +19,10 @@
 // -2 lugar ocupado
 
 void ServerMap::initMap(ServerMap& map, YAML::Node map_node){
-    std::string position="pos_";
+    std::string pos="pos_";
     for (int i=0; i<alto; i++){
         for (int j=0; j<ancho; j++){
-            std::string actual_position = position + std::to_string(i) + "_" +
+            std::string actual_position = pos + std::to_string(i) + "_" +
                 std::to_string(j);
             std::string elemento = map_node[actual_position].as<std::string>();
             std::string parsed_element;
@@ -101,7 +101,8 @@ void ServerMap::initMap(ServerMap& map, YAML::Node map_node){
                 map.addItem(posicionable, position);
             } else if (elemento == "rocket_launcher"){
                 Coordinates position((float)i,(float)j);
-                RocketLauncher* posicionable = new RocketLauncher(position);
+                RocketLauncher* posicionable = \
+                    new RocketLauncher(position);
                 map.addItem(posicionable, position);
             } else if (elemento == "barrel" || elemento == "pillar" ||
                        elemento == "table"){
@@ -113,7 +114,7 @@ void ServerMap::initMap(ServerMap& map, YAML::Node map_node){
     }
 }
 
-ServerMap::ServerMap(std::string map_filename): players_added(0){
+ServerMap::ServerMap(const std::string& map_filename): players_added(0){
 	std::string MAPS_PATH = "../data/maps/";
     YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
     alto = map_node["filas"].as<int>();
@@ -253,7 +254,7 @@ Object* ServerMap::getNearestPassage(Coordinates& position){
     return nearest;
 }
 
-Door* ServerMap::getDoor(Coordinates& position){
+Door* ServerMap::getDoor(const Coordinates& position){
     for (Object* passage: passages){
         if (passage->getPosicion() == position &&
             typeid(*passage) == typeid(Door)){
@@ -286,6 +287,7 @@ ServerMap::ServerMap(ServerMap&& other){
     this->alto = other.alto;
     this->ancho = other.ancho;
     this->mapaJuego.swap(other.mapaJuego);
+    this->players_added = other.players_added;
 }
 
 ServerMap& ServerMap::operator=(ServerMap&& other){
@@ -295,6 +297,7 @@ ServerMap& ServerMap::operator=(ServerMap&& other){
     this->alto = other.alto;
     this->ancho = other.ancho;
     this->mapaJuego.swap(other.mapaJuego);
+    this->players_added = other.players_added;
     return *this;
 }
 

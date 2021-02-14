@@ -31,7 +31,7 @@ private:
     void initItems();
 
 public:
-    explicit ServerMap(std::string map_filename);
+    explicit ServerMap(const std::string& map_filename);
     explicit ServerMap(int alto, int ancho);
     
     // Agrega un jugador al mapa
@@ -65,7 +65,7 @@ public:
     Object* getNearestPassage(Coordinates& position);
     
     // Retorna la puerta ubicada en la posicion 
-    Door* getDoor(Coordinates& position);
+    Door* getDoor(const Coordinates& position);
     
     // Mueve al jugador de una posicion del mapa a otra
     void moveme(Player* player, const Coordinates& posicion);

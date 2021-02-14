@@ -11,7 +11,7 @@ protected:
 
 public:
     explicit ThReceiver(Socket *socket);
-    virtual void run() = 0;
+    virtual void run() override = 0 ;
     virtual void stop() override;
 //    void setGameModel(GameModel* gameModel);
     virtual void processReception(Protocol& protocol) = 0;

@@ -76,15 +76,15 @@ private:
 
     void addWallsToMap();
 
-    void createWall(std::string type, Coordinates position);
+    void createWall(const  std::string& type, Coordinates position);
 
-    void addWall(std::string type, Coordinates position);
+    void addWall(const  std::string& type, Coordinates position);
 
     void updateEvent();
     void move(int player_id);
     void shoot();
     void processMove(Protocol& protocol);
-    void initMap(std::string map_filename);
+    void initMap(const  std::string& map_filename);
     void initDirections();
     void cleanDirections();
 
@@ -113,7 +113,7 @@ private:
 	void setDoorState(Coordinates door_pos, State new_state);
 
 public:
-    explicit GameModelClient(int user_id, std::string map_filename, 
+    explicit GameModelClient(int user_id, const  std::string& map_filename, 
         int game_id, int protagonist_id,int &_winner_id, 
         bool& game_done,\
         std::vector<std::pair<int,int>> &_ordered_players_kills,\

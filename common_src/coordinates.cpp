@@ -32,7 +32,7 @@ Coordinates::Coordinates(Protocol::direction direction){
     }
 }
 
-Coordinates::Coordinates(std::string direction){
+Coordinates::Coordinates(const std::string& direction){
     if (direction == "front"){
         this->x = 1;
         this->y = 0;

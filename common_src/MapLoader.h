@@ -9,7 +9,7 @@ private:
     uint16_t checksum;
     std::string executeProgram(std::string program);
 public:
-    explicit MapLoader(std::string path);
+    explicit MapLoader(const std::string& path);
     explicit MapLoader(uint16_t map_id_checksum);
     uint16_t getChecksum();
     std::string getFileName();

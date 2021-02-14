@@ -8,7 +8,7 @@
 
 const std::string MAPS_PATH("../data/maps/");
 
-MapLoader::MapLoader(std::string file) : file_name(file){
+MapLoader::MapLoader(const std::string& file) : file_name(file){
     std::string command = "md5sum " + MAPS_PATH + file;
     std::string result = executeProgram(command);
     std::string std_checksum = result.substr(28,4);

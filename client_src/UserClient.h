@@ -47,7 +47,7 @@ public:
         std::vector<std::pair<int,int>> &_ordered_players_bullets);
     void play();
     void stop();
-    void showPlayersInfo(Player& player);
+    void showPlayersInfo();
     ~UserClient();
 };
 

@@ -21,7 +21,7 @@ public:
     
     explicit Coordinates(Protocol::direction direction);
 
-    explicit Coordinates(std::string direction);
+    explicit Coordinates(const std::string& direction);
 
     explicit Coordinates(double a_x, double a_y);
     
