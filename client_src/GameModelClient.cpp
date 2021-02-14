@@ -267,11 +267,22 @@ void GameModelClient::addSpriteOn(Coordinates position, int sprite_value){
         i++;
     }
     if (!position_has_sprite_already){
-        SpriteHolder *posicionable = 
-            new SpriteHolder(position,sprite_value,player);
-        posicionable->set_texture(&texture);
-        sprites.push_back(posicionable);  
-        map.addPositionable(posicionable,position);  
+    	bool position_has_door = false;
+    	i=0;
+    	int cant_doors = doors.size();
+    	while(i<cant_doors){
+    		if(doors[i].get_position()==position){
+    			position_has_door = true;
+    		}
+    		i++;
+    	}
+    	if(!position_has_door){
+	        SpriteHolder *posicionable = 
+	            new SpriteHolder(position,sprite_value,player);
+	        posicionable->set_texture(&texture);
+	        sprites.push_back(posicionable);  
+	        map.addPositionable(posicionable,position);  
+	    }
     }
 }
 
