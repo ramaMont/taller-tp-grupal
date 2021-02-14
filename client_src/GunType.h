@@ -34,7 +34,7 @@ public:
     bool allowsContinuousShooting();
 
 	virtual void playWeaponSound(SoundPlayer& soundPlayer, float distance) = 0;
-    virtual ~GunType(){};
+    virtual ~GunType(){}
 };
 
 class Knife : public GunType{

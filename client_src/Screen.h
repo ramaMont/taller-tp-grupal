@@ -16,12 +16,13 @@ class Enemy;
 #include "Player.h"
 #include "ClientMap.h"
 
+#include <utility>
+#include <vector> 
 
-// Administra la visualizacion de todos los objetos visibles: sprites, enemigos, paredes, armas y raycasting
+/* Administra la visualizacion de todos los objetos
+ visibles: raycasting y sprites(enemigos, paredes, armas)*/
 class Screen{
-
 	private:
-
 		int n_rays;
 		std::vector<Rocket*> &rockets;
 		std::vector<Enemy*> &enemies;
@@ -40,10 +41,15 @@ class Screen{
 		// Obtiene los sprites(enemigos incluidos) vistos en el frame actual
 		void getSpottedSprites(std::vector<SpriteDrawer*> &spotted_sprites);
 
-		// Realiza los calculos necesarios para la correcta visualizacion de los sprites: distancia al jugador, etc
-		void initialiceSpottedSprites(std::vector<SpriteDrawer*> &spotted_sprites,Camera &camera);
+		/* Realiza los calculos necesarios para la correcta 
+		visualizacion de los sprites: distancia al jugador, etc*/
+		void initialiceSpottedSprites(Camera &camera,\
+					 std::vector<SpriteDrawer*> &spotted_sprites);
+
 	public:
-		Screen(std::vector<Rocket*> &rockets, std::vector<Enemy*> &enemies,std::vector<SpriteHolder*> &sprites, Player &player, ClientMap &map,Texture &texture, Window &window);
+		Screen(std::vector<Rocket*> &rockets, std::vector<Enemy*> &enemies, \
+				std::vector<SpriteHolder*> &sprites, Player &player,\
+				 ClientMap &map,Texture &texture, Window &window);
 
     	Screen(const Screen&) = delete;
     	Screen(Screen&& other) = delete;
@@ -53,7 +59,9 @@ class Screen{
 		// Llama a los metodos correspondientes para la correcta visualizacion
 		void show();
 
-		void showEndgame(bool player_won, int winnder_id, bool game_done, std::vector<std::pair<int,int>> &ordered_players_kills,\
-	std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
+		void showEndgame(bool player_won, int winnder_id, bool game_done, \
+			std::vector<std::pair<int,int>> &ordered_players_kills,\
+			std::vector<std::pair<int,int>> &ordered_players_points,\
+			std::vector<std::pair<int,int>> &ordered_players_bullets);
 };
 #endif

@@ -2,13 +2,14 @@
 
 #include <math.h>
 
-Rocket::Rocket(Coordinates posicion, Coordinates direction,ClientMap& map, Player &player):
+Rocket::Rocket(Coordinates posicion,Coordinates direction,\
+                    ClientMap& map, Player &player):
     Movable(posicion,direction,map),SpriteDrawer(this,player),
    	player(player){	
 }
 
 
-void Rocket::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
+void Rocket::colisioned(Ray* ray,Coordinates coordinates_map,bool first_tr){
     spottedSprite();
     ray->spriteColided(coordinates_map);
 }
@@ -26,8 +27,10 @@ void Rocket::move(){
 }
 
 
-void Rocket::callDrawer(int first_sigted_ray,int first_num_pixel,int last_sigted_ray,int last_num_pixel,float player_distance){
-	texture_drawer->showSprite(first_sigted_ray,first_num_pixel,last_sigted_ray,last_num_pixel,player_distance ,12);
+void Rocket::callDrawer(int first_sigted_ray,int first_num_pixel,\
+				int last_sigted_ray,int last_num_pixel,float player_distance){
+	texture_drawer->showSprite(first_sigted_ray,first_num_pixel,
+				last_sigted_ray,last_num_pixel,player_distance ,12);
 }
 
 

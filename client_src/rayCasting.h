@@ -21,16 +21,13 @@ class Texture;
 
 //Implementa el raycasting
 class Raycasting {
-
 private:
-
 	Player &player;
 	ClientMap &map;
 	int n_rays;
 
 public:
     Raycasting(Player &a_player, ClientMap &map, int n_rays);
-
 
     //Llama a Ray por cada rayo nuevo, y una vez obtenido, lo dibuja
     void calculateRayCasting(Camera &camera,std::vector<float> &distances);
