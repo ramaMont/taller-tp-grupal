@@ -610,4 +610,9 @@ GameModelClient::~GameModelClient(){
 	for (auto& enemie : enemies){
 		delete enemie;
 	}
+
+	for (auto& sprite : sprites){
+		delete sprite;
+	}
+
 }
