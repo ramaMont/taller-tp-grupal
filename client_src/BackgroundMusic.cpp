@@ -39,7 +39,8 @@ BackgroundMusic::BackgroundMusic(): paused(false){
 
 void BackgroundMusic::playMusic(){
     if (Mix_Playing(BACK_MUSIC_CHANNEL) == 0 && !paused){
-        int rand_track_number = rand() % _music_sound_files.size();
+        unsigned int seed = 0;
+        int rand_track_number = rand_r(&seed) % _music_sound_files.size();
         _music_sound_files.at(rand_track_number)->play(75, BACK_MUSIC_CHANNEL);
     }
 }

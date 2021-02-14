@@ -133,7 +133,8 @@ void Soldier::tryShoot(Player* player,
 
 bool Soldier::fireBullet(Player *player, float precision, int angle, 
 		Player* enemy){
-	int n_rand = rand() % PORCENTAJE;
+	unsigned int seed = 0;
+	int n_rand = rand_r(&seed) % PORCENTAJE;
 	if ((n_rand / PORCENTAJE) > precision)	// Falla el tiro
 		return true;
 
@@ -162,12 +163,13 @@ bool Soldier::crashes(ServerMap& map, const Coordinates& start,
 }
 
 void Soldier::atack(Player *player, Player* enemy, float precision, int angle){
+	unsigned int seed = 0;
 	double distance = player->calculateDistance(enemy);
 
     float damage = precision - 
                   distance * configs[CONFIG::baja_precision_distancia];
 	damage -= angle/(int)configs[CONFIG::rango_de_disparo];
-	int n_rand = rand() % (int)configs[CONFIG::maximo_danio] + 1;
+	int n_rand = rand_r(&seed) % (int)configs[CONFIG::maximo_danio] + 1;
 	damage *= n_rand;
 	bool die = enemy->hurt(std::ceil(damage));
 	if (die)
@@ -196,7 +198,8 @@ int Dog::shoot(Player *player, std::map<int, Player*>& enemies){
 void Dog::bite(Player *player, std::set<std::pair<int, Player*>>& enemies){
 	for (std::pair<int, Player*> e: enemies){
 		if (player->calculateDistance(e.second) < DISTANCIA_CUCHILLO){
-			int damage = rand() % (int)configs[CONFIG::maximo_danio] + 1;
+			unsigned int seed = 0;
+			int damage = rand_r(&seed) % (int)configs[CONFIG::maximo_danio] + 1;
 			bool die = e.second->hurt(damage);
 			if (die)
 				player->addKilledEnemy();

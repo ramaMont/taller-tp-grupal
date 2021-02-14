@@ -1293,7 +1293,6 @@ threading_list = (
     ('gmtime(', 'gmtime_r('),
     ('localtime(', 'localtime_r('),
     ('rand(', 'rand_r('),
-    ('readdir(', 'readdir_r('),
     ('strtok(', 'strtok_r('),
     ('ttyname(', 'ttyname_r('),
     )
@@ -3279,7 +3278,7 @@ def CheckLanguage(filename, clean_lines, linenum, file_extension, include_state,
   # Check that we're not using RTTI outside of testing code.
   if Search(r'\bdynamic_cast<', line) and not _IsTestFilename(filename):
     error(filename, linenum, 'runtime/rtti', 5,
-          'Do not use dynamic_cast<>.  If you need to cast within a class '
+          'Do not use static_cast<>.  If you need to cast within a class '
           "hierarchy, use static_cast<> to upcast.  Google doesn't support "
           'RTTI.')
 
