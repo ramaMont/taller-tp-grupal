@@ -20,6 +20,7 @@ MapWidget::MapWidget(QWidget *parent,
     gridLayout->setHorizontalSpacing(0);
     gridLayout->setVerticalSpacing(0);
     highlightedLabel = nullptr;
+    originLabel = nullptr;
     this->setLayout(gridLayout);
     setAcceptDrops(true);
     map = nullptr;
@@ -412,7 +413,6 @@ void MapWidget::constructMap(const int& flag) {
         for (int k=0; k < columns; k++) {
             // Creo un label visual, que guarda la imagen del recurso
             // y un label oculto, que guarda el name del element.
-            bool error = false;
             QLabel* label = new QLabel(this);
             QLabel* hidden_label = new QLabel(this);
             hidden_label->setVisible(false);
@@ -426,6 +426,7 @@ void MapWidget::constructMap(const int& flag) {
                 std::string element, imagen;
                 map->getElement(pos, element);
                 if (element != "empty") {
+                    bool error = false;
                     try {
                         imagen = resourcesMap.at(element);
                     } catch(...) {
@@ -488,7 +489,7 @@ void MapWidget::saveMap() {
         return;
     }
     map->saveMap();
-    std::string message = "ServerMap guardado con éxito!";
+    std::string message = "Mapa guardado con éxito!";
     showWarning(QString::fromStdString(message), QMessageBox::Information);
 }
 

@@ -26,7 +26,7 @@ void EditableMap::loadExistentMap() {
 
     if ((!map["nombre"] || !map["filas"]) |
         (!map["columnas"] || !map["elementos"])) {
-        throw MapException("ServerMap inválido!");
+        throw MapException("Mapa inválido!");
         return;
     }
 
@@ -166,7 +166,7 @@ void EditableMap::validateDoors() {
                 std::string element_next_row = map[next_row];
                 std::string element_previous_column = map[previous_column];
                 std::string element_next_column = map[next_column];
-                if (!((element_previous_row.rfind("wall", 0) == 0) & (element_next_row.rfind("wall", 0) == 0)) & 
+                if (!((element_previous_row.rfind("wall", 0) == 0) & (element_next_row.rfind("wall", 0) == 0)) && 
                     !((element_previous_column.rfind("wall", 0) == 0) & (element_next_column.rfind("wall", 0) == 0))) {
                     throw MapException("Las puertas deben estar rodeadas de paredes!");
                 }
