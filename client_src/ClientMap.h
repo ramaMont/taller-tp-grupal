@@ -14,7 +14,7 @@ class Enemy;
 #include <coordinates.h>
 
 
-//ServerMap del cliente
+//Mapa del cliente
 class ClientMap{
 private:
     int alto;
