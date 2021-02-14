@@ -21,9 +21,7 @@ public:
         GameModelClient* game_model_client);
     virtual void run() override;
     virtual void stop() override;
-    void setGameModel(GameModelClient* gameModel);
     virtual void processReception(Protocol& protocol) override;
-    GameModelClient* getGameModel();
     ~ThReceiverClient();
 };
 

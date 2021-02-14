@@ -104,9 +104,6 @@ void LoginWindow::crearPartidaScreen() {
 
     QFormLayout* form = new QFormLayout(partidaScreen);
 
-    // Mapas para mostrar como opciones.
-    std::map<std::string, std::string> mapas;
-
     // Resolucion
     combo_resolution = new QComboBox();
     combo_resolution->addItem("320:200");
@@ -192,7 +189,7 @@ bool LoginWindow::validarCampos() {
         return false;
     }
 
-    this->_user_id = _user_id;
+//    this->_user_id = _user_id;
 
     return true;
 }
@@ -299,7 +296,7 @@ void LoginWindow::crearPartida(){
     waitUntilLaunch(game_id);
 }
 
-void LoginWindow::waitUntilLaunch(int& game_id) {
+void LoginWindow::waitUntilLaunch(int game_id) {
     std::string message = "ID de Partida: " + std::to_string(game_id);
     message += "     Tu Nº de Jugador: " + std::to_string(_user_id) + "\n";
     message += "Presione OK para lanzar la partida";

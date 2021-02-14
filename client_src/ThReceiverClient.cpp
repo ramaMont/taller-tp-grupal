@@ -119,13 +119,5 @@ void ThReceiverClient::processReception(Protocol& protocol){
     }
 }
 
-void ThReceiverClient::setGameModel(GameModelClient* gameModel){
-    _gameModel = gameModel;
-}
-
-GameModelClient* ThReceiverClient::getGameModel(){
-    return _gameModel;
-}
-
 ThReceiverClient::~ThReceiverClient(){
 }

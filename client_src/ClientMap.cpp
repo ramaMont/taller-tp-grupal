@@ -14,11 +14,11 @@
 // -1 lugar no encontrado
 // -2 lugar ocupado
 
-ClientMap::ClientMap(): alto(0), ancho(0){
+ClientMap::ClientMap(): alto(0), ancho(0), player(nullptr){
 }
 
 ClientMap::ClientMap(int alto, int ancho):alto(alto), ancho(ancho),
-        mapGame(ancho, std::vector<Posicionable*>(alto)){
+        mapGame(ancho, std::vector<Posicionable*>(alto)), player(nullptr){
     for (int i=0; i<ancho; i++){
         for (int j=0; j<alto; j++){
             mapGame[i][j]=nullptr;
