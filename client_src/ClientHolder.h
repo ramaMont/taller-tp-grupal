@@ -45,7 +45,8 @@ public:
     ClientHolder();
     void run();
     void crearPartida(const std::string& map_filename, 
-        int bots_cty, int& game_id);
+        int bots_cty, int& game_id, std::string& resolution,
+        bool fullscreen);
     void unirseAPartida(const std::string& id_partida);
     void logged(const std::string& puerto, const std::string& servidor,
         int& user_id);

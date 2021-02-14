@@ -26,7 +26,8 @@ ClientHolder::ClientHolder():
 }
 
 void ClientHolder::crearPartida(const std::string& map_filename,
-            int bots_cty ,int& game_id){
+            int bots_cty ,int& game_id, std::string& resolution,
+            bool fullscreen){
     _map_filename = map_filename;
     MapLoader mapLoader(map_filename);
     int map_id_checksum = mapLoader.getChecksum();

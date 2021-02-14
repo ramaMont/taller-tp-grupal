@@ -218,7 +218,7 @@ void LoginWindow::crearPartida(){
 
     // Nombre del mapa
     QComboBox combo_mapa;
-    QString label_mapa = QString("ServerMap");
+    QString label_mapa = QString("Mapa");
     form.addRow(label_mapa, &combo_mapa);
     cargarMapasDisponibles(combo_mapa, mapas);
 
@@ -230,7 +230,24 @@ void LoginWindow::crearPartida(){
     combo_bots.addItem("3");
     combo_bots.addItem("4");
     QString label_bots = QString("Bots");
+    combo_bots.setMaximumWidth(50);
     form.addRow(label_bots, &combo_bots);
+
+    // Resolucion
+    QComboBox combo_resolution;
+    combo_resolution.addItem("320:200");
+    combo_resolution.addItem("640:400");
+    QString label_resolution = QString("Resolucion");
+    combo_resolution.setMaximumWidth(200);
+    form.addRow(label_resolution, &combo_resolution);
+
+    // Fullscreen
+    QComboBox combo_fullscreen;
+    combo_fullscreen.addItem("Si");
+    combo_fullscreen.addItem("No");
+    QString label_fullscreen = QString("Fullscreen");
+    combo_fullscreen.setMaximumWidth(50);
+    form.addRow(label_fullscreen, &combo_fullscreen);
 
     // Botones
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
@@ -246,9 +263,13 @@ void LoginWindow::crearPartida(){
         std::string nombre_mapa = combo_mapa.currentText().toStdString();
         std::string archivo_mapa = mapas[nombre_mapa];
         int cantidad_bots = combo_bots.currentText().toInt();
+        std::string resolution = combo_resolution.currentText().toStdString();
+        std::string fullscreen_str = combo_fullscreen.currentText().toStdString();
+        bool fullscreen = (fullscreen_str == "Si") ? true : false;
 
         try {
-            client_holder.crearPartida(archivo_mapa, cantidad_bots, game_id);
+            client_holder.crearPartida(archivo_mapa, cantidad_bots, game_id,
+                                       resolution, fullscreen);
         } catch (SocketException& sockt_exc) {
             //TODO: Mandar a la pantalla de inicio, para volver a conectarse
             mostrarWarning(QString(sockt_exc.what()),
