@@ -18,7 +18,10 @@ Window::Window() :
         width(640), height(400), //Resolucion()
         info_bar_height(height/5) {
     int state = SDL_CreateWindowAndRenderer(
-        INITIAL_WIDTH_SIZE, INITIAL_HEIGHT_SIZE, SDL_RENDERER_ACCELERATED  | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN, //Tamaño de la ventana
+        INITIAL_WIDTH_SIZE, INITIAL_HEIGHT_SIZE, 
+        			SDL_RENDERER_ACCELERATED  | 
+        			SDL_WINDOW_RESIZABLE | 
+        			SDL_WINDOW_HIDDEN,
         &this->window, &this->renderer);
     if (state) {
         throw Exception("Error al crear ventana\n");
@@ -39,11 +42,11 @@ void Window::showWindow(){
 
 void Window::disableResizable(){
     SDL_SetWindowResizable(this->window,SDL_FALSE);
-
 }
 
 void Window::resizeWindow(int new_width_size, int new_height_size){
-    SDL_RenderSetScale(this->renderer,new_width_size/(float)width ,new_height_size/(float)height);
+    SDL_RenderSetScale(this->renderer,new_width_size/(float)width,
+    									new_height_size/(float)height);
 }
 
 void Window::hideWindow(){
