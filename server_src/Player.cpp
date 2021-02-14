@@ -84,6 +84,7 @@ void Player::mover(Direction* _direction){
         }
     }
     atomic_pos(posicion);
+    atomic_dir(this->direction);
 }
 
 Coordinates Player::get_coordinates(){

@@ -6,6 +6,7 @@ local bot = {
     enemies = {},
     enemigo_actual = false,
     abriPuerta = 0,
+    dispare = false,
     aux = {}
 }
 
@@ -119,8 +120,32 @@ function bot.abrePuerta(next_pos_x, next_pos_y)
 end
 
 
-function bot.tengoEnemigoAdelante(next_pos_x, next_pos_y)
-    return bot.map[next_pos_x][next_pos_y] == ENEMIGO 
+function bot.distance(ini_x, ini_y, fin_x, fin_y)
+    new_x = fin_x - ini_x
+    new_y = fin_y - ini_y
+    return math.sqrt(new_x * new_x + new_y * new_y)
+end
+
+
+function bot.tengoEnemigoAdelante(next_pos_x, next_pos_y, pos_x, pos_y)
+    if bot.map[next_pos_x][next_pos_y] ~= ENEMIGO then
+        return false, NADA
+    end
+    if bot.dispare then 
+        bot.dispare = false
+        return true, NADA
+    end
+    for i = 1, #bot.enemies do
+        x = bot.enemies[i].x
+        y = bot.enemies[i].y
+        if next_pos_x == math.floor(x) and
+           next_pos_y == math.floor(y) and
+           bot.distance(pos_x, pos_y, x, y) < 1.5 then
+            bot.dispare = true
+            return true, DISPARAR
+        end
+    end
+    return true, ADELANTE
 end
 
 
@@ -193,20 +218,23 @@ end
 function bot.agregarEnemigosAlMapa(...)
     local arg = {...}
     for i = 1, #arg/2 do
-        bot.enemies[i] = {x = math.floor(arg[i+i-1]) + 1,
-		           y = math.floor(arg[i*2]) + 1}
-        if bot.map[bot.enemies[i].x][bot.enemies[i].y] == PUERTA then    
+        ene_x = arg[i+i-1] + 1
+        ene_y = arg[i*2] + 1
+        bot.enemies[i] = {x = ene_x, y = ene_y}
+        floor_x = math.floor(ene_x)
+        floor_y = math.floor(ene_y)
+        if bot.map[floor_x][floor_y] == PUERTA then    
             -- Para guardar el valor anterior
-            table.insert(bot.aux, 1, {bot.enemies[i].x, bot.enemies[i].y, PUERTA})
+            table.insert(bot.aux, 1, {floor_x, floor_y, PUERTA})
         end
-        bot.map[bot.enemies[i].x][bot.enemies[i].y] = ENEMIGO
+        bot.map[floor_x][floor_y] = ENEMIGO
     end 
 end
 
 -- Borra las posiciones de los enemigos del mapa
 function bot.borrarEnemigosAnterioresDelMapa()
     for i = 1, #bot.enemies do
-        bot.map[bot.enemies[i].x][bot.enemies[i].y] = VACIO
+        bot.map[math.floor(bot.enemies[i].x)][math.floor(bot.enemies[i].y)] = VACIO
     end
     for i = 1, #bot.aux do
         elemento = bot.aux[i]
@@ -235,13 +263,9 @@ function bot.generarEvento(n_arma, pos_x, pos_y, dir_x, dir_y, ...)
     if n_arma ~= 0 then
 	    return CAMBIAR_ARMA_CUCHILLO
 	end
-	
+
     next_pos_x = math.floor(pos_x + dir_x) + 1
     next_pos_y = math.floor(pos_y + dir_y) + 1
-    pos_x = math.floor(pos_x) + 1
-    pos_y = math.floor(pos_y) + 1
-    dir_x = math.ceil(dir_x - 0.5)
-    dir_y = math.ceil(dir_y - 0.5)
     
     if bot.abrePuerta(next_pos_x, next_pos_y) then
         return ABRIR_PUERTA
@@ -249,10 +273,15 @@ function bot.generarEvento(n_arma, pos_x, pos_y, dir_x, dir_y, ...)
    
     bot.borrarEnemigosAnterioresDelMapa();
     bot.agregarEnemigosAlMapa(...)
-
-    if bot.tengoEnemigoAdelante(next_pos_x, next_pos_y) then
-        return DISPARAR
-    end
+    
+    result, action = bot.tengoEnemigoAdelante(next_pos_x, next_pos_y, pos_x+1, pos_y+1)
+    
+    if result then return action end
+    
+    pos_x = math.floor(pos_x) + 1
+    pos_y = math.floor(pos_y) + 1
+    dir_x = math.ceil(dir_x - 0.5)
+    dir_y = math.ceil(dir_y - 0.5)
     
     res, x, y = bot.tengoEnemigoAlrededor(pos_x, pos_y)
     if res then

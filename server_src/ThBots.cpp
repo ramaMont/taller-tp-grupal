@@ -6,6 +6,7 @@
 #include <chrono>
 #include <iostream>
 #include <map>
+#include <sys/time.h>
 
 #define TIME_SLEEP 200
 
@@ -26,16 +27,27 @@ ThBots::ThBots(ThGameModelServer* th_game_model,
 void ThBots::run(){
     if (number_of_bots <= 0)
         return;
-
+    
+    time_t rate = TIME_SLEEP;
+    struct timeval time_now{};
+    gettimeofday(&time_now, nullptr);
+    
     while (is_running){
-        std::this_thread::sleep_for(std::chrono::milliseconds(TIME_SLEEP));
+        gettimeofday(&time_now, nullptr);
+        time_t time = (time_now.tv_usec / 1000);
+
         for (auto it = bots.begin(); it != bots.end() && is_running; ++it){
             try{
                 Player* player = players[it->first];
                 Bot::Event event = it->second->getEvent(player, players);
                 makeEvent(it->first, event);
             } catch(...) { }
-        }
+        }        
+        
+        gettimeofday(&time_now, nullptr);
+        time_t new_time = (time_now.tv_usec / 1000);
+        time_t rest = new_time - time;
+        std::this_thread::sleep_for(std::chrono::milliseconds(rate - rest));
     }
 }
 
