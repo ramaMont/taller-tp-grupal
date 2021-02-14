@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <utility>
 
 #include <SDL2/SDL_ttf.h>
 
@@ -63,28 +64,39 @@ private:
     
     void addKeyTexture();
 
-    //Grafica los pixeles solicitados de la textura recibida en la posicion recibida
-    void genericShow(SDL_Texture* texture, int first_x_pixel, int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\
-        int windows_x_pos, int length_x, int windows_y_pos, int lenght_y);
+    /*Grafica los pixeles solicitados de la 
+    textura recibida en la posicion recibida*/
+    void genericShow(SDL_Texture* texture, int first_x_pixel, \
+    				int cant_x_pixels, int first_y_pixel, int cant_y_pixel,\
+        			int windows_x_pos, int length_x, int windows_y_pos, int lenght_y);
 
-    //configura los parametros y llama al generic_show para graficar toda el arma
+    /*configura los parametros y llama al 
+    generic_show para graficar toda el arma*/
     void showWeapon(int frame_gun, int current_gun);
 
     // Muestra el texto de la barra de estado
-    void showText(Colors selected_color, std::string text, int letter_width, int letter_height, int x_pos, int y_pos);
+    void showText(Colors selected_color, std::string text, \
+    				int letter_width, int letter_height, int x_pos, int y_pos);
 
-    //configura los parametros y llama al generic_show para graficar una unica linea de pixeles de la pared
-    void showWall(SDL_Texture* texture,int x_pixel,float distance_player_plane, int number_line_texture);
+    /*configura los parametros y llama al generic_
+    show para graficar una unica linea de pixeles de la pared*/
+    void showWall(SDL_Texture* texture,int x_pixel, \
+    				float distance_player_plane, int number_line_texture);
 
-    //configura los parametros y llama al generic_show para graficar la parte visible del enemigo
-    void showEnemy(int num_enemy,int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
+    /*configura los parametros y llama al generic_show
+     para graficar la parte visible del enemigo*/
+    void showEnemy(int num_enemy,int first_x_pixel, \
+    				int first_number_line_texture,int last_x_pixel, \
+    				int last_number_line_texture,float distance_player_plane, \
+    				int frame, int state, bool shooting);
 
     void showFaceHealth(int portion_health);
     
     void showKeys(bool has_key_1, bool has_key_2);
 
     void showRanking(std::vector<std::pair<int,int>> &ordered_players_kills, \
-    std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
+    					std::vector<std::pair<int,int>> &ordered_players_points, \
+    					std::vector<std::pair<int,int>> &ordered_players_bullets);
 
     void destoyVectorTextures(std::vector<SDL_Texture*> &texture_vector);
 
@@ -97,52 +109,75 @@ public:
     Texture& operator=(Texture&& other);
 
     //Muestra la barra de vida
-    void showLifeBar(int id, unsigned int score, int lives, int health, int portion_health, int ammo, bool has_key_1, bool has_key_2);
+    void showLifeBar(int id, unsigned int score, int lives, int health, \
+    						int portion_health, int ammo, bool has_key_1, bool has_key_2);
 
-    //configura los parametros y llama al generic_show para graficar la parte visible del sprite
-    void showSprite(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int texture);
+    /*configura los parametros y llama al 
+    generic_show para graficar la parte visible del sprite*/
+    void showSprite(int first_x_pixel,int first_number_line_texture, \
+    						int last_x_pixel, int last_number_line_texture, \
+    						float distance_player_plane,int texture);
 
     //llama al show enemy con la textura del perro
-	void showDog(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
+	void showDog(int first_x_pixel,int first_number_line_texture, \
+							int last_x_pixel, int last_number_line_texture, \
+							float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show enemy con la textura del guardia
-	void showGuard(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
+	void showGuard(int first_x_pixel,int first_number_line_texture, \
+							int last_x_pixel, int last_number_line_texture, \
+							float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show enemy con la textura del oficial
-	void showOfficer(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
+	void showOfficer(int first_x_pixel,int first_number_line_texture, \
+							int last_x_pixel, int last_number_line_texture, \
+							float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show enemy con la textura del ss
-	void showSs(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
+	void showSs(int first_x_pixel,int first_number_line_texture, \
+							int last_x_pixel, int last_number_line_texture, \
+							float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show enemy con la textura del mutante
-	void showMutant(int first_x_pixel,int first_number_line_texture,int last_x_pixel, int last_number_line_texture,float distance_player_plane,int frame, int state, bool shooting);
+	void showMutant(int first_x_pixel,int first_number_line_texture, \
+							int last_x_pixel, int last_number_line_texture, \
+							float distance_player_plane,int frame, int state, bool shooting);
 
     //llama al show wall con la textura de la pared gris
-	void showWallGreystone(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
+	void showWallGreystone(int pos_x,float distance_player_plane, \
+							int number_line_texture, bool wall_side_y);
 
     //llama al show wall con la textura de la pared azul
-	void showWallBluestone(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
+	void showWallBluestone(int pos_x,float distance_player_plane, \
+							int number_line_texture, bool wall_side_y);
 
     //llama al show wall con la textura de la pared purplestone
-	void showWallPurplestone(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
+	void showWallPurplestone(int pos_x,float distance_player_plane, \
+							int number_line_texture, bool wall_side_y);
 
     //llama al show wall con la textura de la pared de colores
-	void showWallColorstone(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
+	void showWallColorstone(int pos_x,float distance_player_plane, \
+							int number_line_texture, bool wall_side_y);
 
     //llama al show wall con la textura de la pared agila
-	void showWallEagle(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
+	void showWallEagle(int pos_x,float distance_player_plane, \
+							int number_line_texture, bool wall_side_y);
 
     //llama al show wall con la textura de la pared mohosa
-	void showWallMossy(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
+	void showWallMossy(int pos_x,float distance_player_plane, \
+							int number_line_texture, bool wall_side_y);
 
     //llama al show wall con la textura de la pared de ladrillo
-	void showWallRedbrick(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
+	void showWallRedbrick(int pos_x,float distance_player_plane, \
+							int number_line_texture, bool wall_side_y);
 
     //llama al show wall con la textura de la pared de madera
-	void showWallWood(int pos_x,float distance_player_plane, int number_line_texture, bool wall_side_y);
+	void showWallWood(int pos_x,float distance_player_plane,\
+							int number_line_texture, bool wall_side_y);
 
     //llama al show wall con la textura de la puerta azul
-    void showDoor(int x_pixel,float distance_player_plane, int number_line_texture, bool wall_side_y);
+    void showDoor(int x_pixel,float distance_player_plane, \
+    						int number_line_texture, bool wall_side_y);
 
     //llama al show weapon con la textura del cuchillo
 	void showKnife(int frame_gun);
@@ -159,11 +194,15 @@ public:
 	//llama al show weapon con la textura del lanza misiles
 	void showRocketLauncher(int frame_gun);
 
-    void showWinningScreen(std::vector<std::pair<int,int>> &ordered_players_kills, \
-    std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
+    void showWinningScreen( \
+    	std::vector<std::pair<int,int>> &ordered_players_kills, \
+    	std::vector<std::pair<int,int>> &ordered_players_points, \
+    	std::vector<std::pair<int,int>> &ordered_players_bullets);
 
-    void showLoosingScreen(int winnder_id, std::vector<std::pair<int,int>> &ordered_players_kills, \
-    std::vector<std::pair<int,int>> &ordered_players_points,std::vector<std::pair<int,int>> &ordered_players_bullets);
+    void showLoosingScreen(int winnder_id, \
+    	std::vector<std::pair<int,int>> &ordered_players_kills, \
+    	std::vector<std::pair<int,int>> &ordered_players_points, \
+    	std::vector<std::pair<int,int>> &ordered_players_bullets);
 
     void showDisconnectedScreen();
 
