@@ -47,6 +47,10 @@ private:
     QWidget* loginScreen;
     QWidget* partidaScreen;
     QLabel* labelId;
+    QLabel* label_resolution;
+    QLabel* label_fullscreen;
+    QComboBox* combo_fullscreen;
+    QComboBox* combo_resolution;
     ClientHolder& client_holder;
     int _user_id;
 };

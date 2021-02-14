@@ -44,7 +44,9 @@ void ClientHolder::crearPartida(const std::string& map_filename,
     _cl_th_receiver->start();
 }
 
-void ClientHolder::unirseAPartida(const std::string& id_partida) {
+void ClientHolder::unirseAPartida(const std::string& id_partida,
+                                  std::string& resolution,
+                                  bool fullscreen) {
     int game_id = std::stoi(id_partida);
     Protocol protocol_send(game_id);
     protocol_send.setAction(Protocol::action::JOIN_GAME);
