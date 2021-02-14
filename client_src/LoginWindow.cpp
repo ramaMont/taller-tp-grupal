@@ -90,7 +90,7 @@ void LoginWindow::crearLogInScreen() {
 
 void LoginWindow::login() {
     if (!validarCampos()) return;
-    std::string msg = "Tu ID: " + std::to_string(_user_id);
+    std::string msg = "Tu Nº de jugador: " + std::to_string(_user_id);
     labelId->setText(QString::fromStdString(msg));
     loginScreen->hide();
     partidaScreen->show();
@@ -102,9 +102,34 @@ void LoginWindow::crearPartidaScreen() {
     partidaScreen->setStyleSheet(
     "background-image: url(invalid);");
 
-    // Creo un dialog con un form
-    QHBoxLayout* hlayout = new QHBoxLayout(partidaScreen);
+    QFormLayout* form = new QFormLayout(partidaScreen);
 
+    // Mapas para mostrar como opciones.
+    std::map<std::string, std::string> mapas;
+
+    // Resolucion
+    combo_resolution = new QComboBox();
+    combo_resolution->addItem("320:200");
+    combo_resolution->addItem("640:400");
+    label_resolution = new QLabel(partidaScreen);
+    label_resolution->setStyleSheet("background-color: brown;");
+    label_resolution->setText("Resolución");
+    label_resolution->setFixedWidth(100);
+    label_resolution->setAlignment(Qt::AlignCenter);
+    combo_resolution->setMaximumWidth(200);
+
+    // Fullscreen
+    combo_fullscreen = new QComboBox();
+    combo_fullscreen->addItem("Si");
+    combo_fullscreen->addItem("No");
+    label_fullscreen = new QLabel(partidaScreen);
+    label_fullscreen->setStyleSheet("background-color: brown;");
+    label_fullscreen->setText("Fullscreen");
+    label_fullscreen->setFixedWidth(100);
+    label_fullscreen->setAlignment(Qt::AlignCenter);
+    combo_fullscreen->setMaximumWidth(50);
+
+    // Botones
     QPushButton* botonCrear = new QPushButton(partidaScreen);
     botonCrear->setStyleSheet("background-color: brown;");
     botonCrear->setText("Crear Partida");
@@ -120,10 +145,10 @@ void LoginWindow::crearPartidaScreen() {
     labelId->setFixedHeight(25);
     labelId->setAlignment(Qt::AlignCenter);
 
-    hlayout->addWidget(labelId);
-    hlayout->addWidget(botonCrear);
-    hlayout->addWidget(botonUnirse);
-    hlayout->setAlignment(botonCrear, Qt::AlignHCenter);
+    form->addRow(labelId);
+    form->addRow(label_resolution, combo_resolution);
+    form->addRow(label_fullscreen, combo_fullscreen);
+    form->addRow(botonCrear, botonUnirse);
 
     layout->addWidget(partidaScreen, Qt::AlignCenter);
 
@@ -233,22 +258,6 @@ void LoginWindow::crearPartida(){
     combo_bots.setMaximumWidth(50);
     form.addRow(label_bots, &combo_bots);
 
-    // Resolucion
-    QComboBox combo_resolution;
-    combo_resolution.addItem("320:200");
-    combo_resolution.addItem("640:400");
-    QString label_resolution = QString("Resolucion");
-    combo_resolution.setMaximumWidth(200);
-    form.addRow(label_resolution, &combo_resolution);
-
-    // Fullscreen
-    QComboBox combo_fullscreen;
-    combo_fullscreen.addItem("Si");
-    combo_fullscreen.addItem("No");
-    QString label_fullscreen = QString("Fullscreen");
-    combo_fullscreen.setMaximumWidth(50);
-    form.addRow(label_fullscreen, &combo_fullscreen);
-
     // Botones
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
                             Qt::Horizontal, &dialog);
@@ -263,8 +272,8 @@ void LoginWindow::crearPartida(){
         std::string nombre_mapa = combo_mapa.currentText().toStdString();
         std::string archivo_mapa = mapas[nombre_mapa];
         int cantidad_bots = combo_bots.currentText().toInt();
-        std::string resolution = combo_resolution.currentText().toStdString();
-        std::string fullscreen_str = combo_fullscreen.currentText().toStdString();
+        std::string resolution = combo_resolution->currentText().toStdString();
+        std::string fullscreen_str = combo_fullscreen->currentText().toStdString();
         bool fullscreen = (fullscreen_str == "Si") ? true : false;
 
         try {
@@ -292,7 +301,7 @@ void LoginWindow::crearPartida(){
 
 void LoginWindow::waitUntilLaunch(int& game_id) {
     std::string message = "ID de Partida: " + std::to_string(game_id);
-    message += "     ID de Jugador: " + std::to_string(_user_id) + "\n";
+    message += "     Tu Nº de Jugador: " + std::to_string(_user_id) + "\n";
     message += "Presione OK para lanzar la partida";
     mostrarWarning(QString::fromStdString(message),
                    QMessageBox::Information, true);
@@ -346,9 +355,12 @@ void LoginWindow::unirseAPartida() {
     if (dialog.exec() == QDialog::Accepted) {
         // TODO: usar el id partida
         std::string id_partida = lineEditIdPartida.text().toStdString();
+        std::string resolution = combo_resolution->currentText().toStdString();
+        std::string fullscreen_str = combo_fullscreen->currentText().toStdString();
+        bool fullscreen = (fullscreen_str == "Si") ? true : false;
         //QCoreApplication::exit();
         try {
-            client_holder.unirseAPartida(id_partida);
+            client_holder.unirseAPartida(id_partida, resolution, fullscreen);
         } catch (SocketException& e) {
             mostrarWarning(QString(e.what()),
                         QMessageBox::Warning, true);

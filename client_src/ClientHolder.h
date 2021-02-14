@@ -47,7 +47,8 @@ public:
     void crearPartida(const std::string& map_filename, 
         int bots_cty, int& game_id, std::string& resolution,
         bool fullscreen);
-    void unirseAPartida(const std::string& id_partida);
+    void unirseAPartida(const std::string& id_partida, std::string& resolution,
+                        bool fullscreen);
     void logged(const std::string& puerto, const std::string& servidor,
         int& user_id);
     // Se cierra todo lo correspondiente a qt y se setea en true el 
