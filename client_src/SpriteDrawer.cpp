@@ -1,5 +1,7 @@
 #include "SpriteDrawer.h"
 
+#include <vector> 
+
 SpriteDrawer::SpriteDrawer(Posicionable *posicionable, Player &player): 
 posicionable(posicionable), player(player) {}   
 
@@ -13,8 +15,10 @@ void SpriteDrawer::setRelativeAngleToPlayer(){
 	relative_player_pos.x = sprite_position.x - player_position.x;
 	relative_player_pos.y = sprite_position.y - player_position.y;
 
-	double dist = player_direction.x*relative_player_pos.x + player_direction.y*relative_player_pos.y;
-	double det = player_direction.x*relative_player_pos.y - player_direction.y*relative_player_pos.x;
+	double dist = player_direction.x*relative_player_pos.x;
+	dist += player_direction.y*relative_player_pos.y;
+	double det = player_direction.x*relative_player_pos.y;
+	det -= player_direction.y*relative_player_pos.x;
 
 	relative_angle_to_player = atan2(det, dist);
 }
@@ -30,7 +34,10 @@ void SpriteDrawer::updateDistanceToClosestRay(int i,int n_rays){
 
 
 void SpriteDrawer::setDistance(int half_pixels,Coordinates camera_plane){
-	player_distance = (posicionable->get_position()).calculate_distance_to_vector(camera_plane,player.get_position());
+	Coordinates pos = posicionable->get_position();
+	Coordinates player_pos = player.get_position();
+	player_distance = pos.calculate_distance_to_vector(camera_plane,
+																player_pos);
 	if(player_distance<0.5)
 		player_distance=0.5;
 	//360 si tengo 640 de resolucion, 180 si tengo 320-> resolucion/2?
@@ -63,19 +70,16 @@ void SpriteDrawer::draw(const std::vector<float> &distances, int n_rays){
 	for(int i=0 ; i<cant_rays ; i++){
 		int num_pixel = i*64/cant_rays;
 		int current_ray = first_ray + i+ n_rays;
-		if((current_ray)>0 and (current_ray)<2*n_rays){
+		if((current_ray)>0 and(current_ray)<2*n_rays){
 			if(distances[current_ray]>player_distance){
 				cant_spotted_rays++;
-
 				if(first_ray_already_sigted){
 					last_sigted_ray = first_ray + i + n_rays;
 					last_num_pixel = num_pixel;
-				}
-				else{
+				}else{
 					first_sigted_ray = first_ray + i + n_rays;
 					first_num_pixel = num_pixel;
 				}
-
 				first_ray_already_sigted = true;
 			}
 		}
@@ -86,9 +90,10 @@ void SpriteDrawer::draw(const std::vector<float> &distances, int n_rays){
 		last_num_pixel = first_num_pixel;
 	}
 
-	callDrawer(first_sigted_ray,first_num_pixel,last_sigted_ray,last_num_pixel,player_distance);
+	callDrawer(first_sigted_ray,first_num_pixel,
+		last_sigted_ray,last_num_pixel,player_distance);
 }
 
 float SpriteDrawer::getDistancePlayerPlane() const {
 	return player_distance;
-}		    
+}	

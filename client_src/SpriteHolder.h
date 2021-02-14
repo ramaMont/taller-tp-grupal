@@ -23,8 +23,9 @@ protected:
 public:
     explicit SpriteHolder(Coordinates posicion, int texture, Player &player);
 
-    //Pre:-
-    // Setea al sprite como "colisionable", de manera que no pueda ser atravesado por los personajes
+    /*Pre:-
+    Setea al sprite como "colisionable", de manera 
+    que no pueda ser atravesado por los personajes*/
     void isColidable();
 
     //Pre:-
@@ -57,8 +58,7 @@ public:
 
     //Pre:-
     // Llamo a su dibujador de texturas
-    void callDrawer(int first_sigted_ray,int first_num_pixel,int last_sigted_ray,int last_num_pixel,float player_distance) override;
-
+    void callDrawer(int first_sigted_ray,int first_num_pixel,\
+    	int last_sigted_ray,int last_num_pixel,float player_distance) override;
 };
-
 #endif

@@ -9,13 +9,15 @@
 
 Player::Player(ClientMap& map):
         Character(Coordinates(4,4),Coordinates(1,0),map,0), 
-        max_health(configs[CONFIG::vida_maxima]), init_bullets(configs[CONFIG::balas_iniciales]), 
+        max_health(configs[CONFIG::vida_maxima]), 
+        init_bullets(configs[CONFIG::balas_iniciales]), 
         shot_frame(0), gun_type(nullptr),shooting(false),
         score(0), lives(configs[CONFIG::cantidad_de_vidas]),
         health(max_health), ammo(configs[CONFIG::balas_iniciales]),
         has_key_1(false), has_key_2(false){}
 
-void Player::complete(Coordinates initial_position,Coordinates initial_direction,int player_id){
+void Player::complete(Coordinates initial_position,\
+				Coordinates initial_direction,int player_id){
     this->initial_position = initial_position;
     this->initial_direction = initial_direction;
     this->posicion = initial_position;
@@ -39,11 +41,11 @@ void Player::newGunType(int new_gun_type){
         delete gun_type;
    	if(new_gun_type==0)
         gun_type = new Knife(texture_drawer);
-   	else if(new_gun_type==1)
+   	else if (new_gun_type==1)
         gun_type = new Gun(texture_drawer);
-   	else if(new_gun_type==2)
+   	else if (new_gun_type==2)
         gun_type = new MachineGun(texture_drawer);
-   	else if(new_gun_type==3)
+   	else if (new_gun_type==3)
         gun_type = new ChainGun(texture_drawer);
     else
     	gun_type = new RocketLauncher(texture_drawer);
@@ -70,18 +72,20 @@ CharacterType Player::getType(){
 }
 
 void Player::updateShots(){
-    if(shooting){
+    if (shooting){
         current_shoot_frame++;
-        if(current_shoot_frame>frames_per_shot){
+        if (current_shoot_frame>frames_per_shot){
             current_shoot_frame=0;
             shooting=false;
         }
     }
 }
 
+ //portion_health:Cual de las 8 caras muestro en la barra de vida
 void Player::draw(){
-    float portion_health =  ((float)health*8.0)/(float)max_health ; //Cual de las 8 caras muestro en la barra de vida
-    texture_drawer->showLifeBar(id, score, lives,health, ceil(portion_health), ammo, has_key_1, has_key_2);
+    float portion_health = ((float)health*8.0)/(float)max_health;
+    texture_drawer->showLifeBar(id, score, lives,health,
+    				 ceil(portion_health), ammo, has_key_1, has_key_2);
     gun_type->callDrawer(current_shoot_frame);
 }
 
@@ -113,8 +117,7 @@ void Player::updateKeys(int amount){
     }
 }
 
-
 Player::~Player(){
-    if(gun_type!=nullptr)
+    if (gun_type!=nullptr)
         delete gun_type;
 }

@@ -14,10 +14,11 @@ class Ray;
 //Jugadores o enemigos
 class Movable : public Posicionable{
 protected:
-
     ClientMap &map;
+
 public:
-    explicit Movable(Coordinates posicion, Coordinates direction ,ClientMap& map);
+    explicit Movable(Coordinates posicion,\
+    		Coordinates direction ,ClientMap& map);
 
     ~Movable();  
 };
