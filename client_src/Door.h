@@ -17,9 +17,10 @@ private:
 	int current_frame;
 	State state;
 	Movable* character;
+    bool requires_key;
 
 public:
-    explicit Door(Coordinates posicion);
+    explicit Door(Coordinates posicion, bool requires_key);
 
     /*Pre:-
     Almacena a un personaje mientras este 

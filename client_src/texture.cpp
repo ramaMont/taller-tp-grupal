@@ -90,6 +90,15 @@ void Texture::addDoorTextures(){
 	SDL_FreeSurface(loadedSurface);			
 }
 
+void Texture::addKeyDoorTexture(){
+	std::string texture_store = "../data/textures/key_door_client.png";
+    SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
+    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
+	key_door = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+	SDL_FreeSurface(loadedSurface);			
+}
+
 void Texture::addLifeBarTexture(std::string new_texture){
 	std::string texture_store = "../data/textures/bar_textures/";
 	texture_store += new_texture+".png";
@@ -178,6 +187,7 @@ Texture::Texture(const Window& window):
 		addGunTexture("guns");
 
 		addDoorTextures();
+		addKeyDoorTexture();
 
 		addLifeBarTexture("life_bar");
 
@@ -592,6 +602,10 @@ void Texture::showDoor(int x_pixel,float distance_player_plane,\
 	showWall(door, x_pixel, distance_player_plane, number_line_texture);
 }
 
+void Texture::showKeyDoor(int x_pixel,float distance_player_plane,\
+						 int number_line_texture, bool wall_side_y){
+	showWall(key_door, x_pixel, distance_player_plane, number_line_texture);
+}
 
 void Texture::showSprite(int first_x_pixel,int first_number_line_texture, \
 				int last_x_pixel, int last_number_line_texture, \
@@ -733,6 +747,7 @@ Texture::~Texture() {
 	SDL_DestroyTexture(face_health);
 	SDL_DestroyTexture(guns);
 	SDL_DestroyTexture(door);
+	SDL_DestroyTexture(key_door);
 	SDL_DestroyTexture(life_bar);
 	SDL_DestroyTexture(key);
 	SDL_DestroyTexture(ending_background);

@@ -5,12 +5,12 @@ Posicionable::Posicionable():
 }
 
 Posicionable::Posicionable(Coordinates posicion):
-    posicion(posicion){
+	posicion(posicion), texture_drawer(nullptr){
 	this->esObstaculo = true;
 }
 
 Posicionable::Posicionable(Coordinates posicion, Coordinates direction):
-    posicion(posicion), direction(direction){
+    posicion(posicion),texture_drawer(nullptr), direction(direction){
 	this->esObstaculo = true;
 }
 

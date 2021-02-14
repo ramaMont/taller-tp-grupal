@@ -22,6 +22,7 @@ private:
     SDL_Texture* face_health;
     SDL_Texture* guns;
     SDL_Texture* door;
+    SDL_Texture* key_door;
     SDL_Texture* life_bar;
     SDL_Texture* key;
     SDL_Texture* ending_background;
@@ -50,7 +51,9 @@ private:
     void addGunTexture(std::string new_texture);
 
     // Carga todas las texturas de las puertas
-    void addDoorTextures();   
+    void addDoorTextures();  
+
+    void addKeyDoorTexture(); 
 
     // Carga todas las texturas de la barra de vidas
     void addLifeBarTexture(std::string new_texture);
@@ -178,6 +181,10 @@ public:
     //llama al show wall con la textura de la puerta azul
     void showDoor(int x_pixel,float distance_player_plane, \
     						int number_line_texture, bool wall_side_y);
+
+    //llama al show wall con la textura de la puerta con llave
+    void showKeyDoor(int x_pixel,float distance_player_plane, \
+                            int number_line_texture, bool wall_side_y);
 
     //llama al show weapon con la textura del cuchillo
 	void showKnife(int frame_gun);

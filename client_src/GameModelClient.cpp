@@ -110,9 +110,9 @@ void GameModelClient::initMap(const  std::string& map_filename){
             } else if ("passage" == elemento.substr(0,7)){
                 createWall(elemento.substr(4), position);
             } else if (elemento == "door"){
-                doors.push_back(Door(position));  
+                doors.push_back(Door(position,false));  
             } else if (elemento == "key_door"){//Cambiarle la textura
-                doors.push_back(Door(position));  
+                doors.push_back(Door(position,true));  
             } else if (is_sprite(elemento)){
                 position.x+=0.5;
                 position.y+=0.5;

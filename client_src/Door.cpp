@@ -4,9 +4,10 @@
 
 #include "Enemy.h"
 
-Door::Door(Coordinates posicion): 
+Door::Door(Coordinates posicion, bool requires_key): 
     Posicionable(posicion), current_frame(0),
-    		 state(closed), character(nullptr){}
+    		 state(closed), character(nullptr),
+    		 requires_key(requires_key){}
 
 void Door::colisioned(Ray* ray,Coordinates coordinates_map,bool first_triangle){
 	ray->doorColided(coordinates_map,first_triangle,this);
@@ -51,5 +52,10 @@ int Door::getLimitWall(){
 
 void Door::draw(int ray, float distance,\
 				 int number_line_texture,bool wall_side_y){
-	texture_drawer->showDoor(ray,distance,number_line_texture,wall_side_y);
+	if(requires_key){
+		texture_drawer->showKeyDoor(ray,distance,number_line_texture,wall_side_y);
+	}else{
+		texture_drawer->showDoor(ray,distance,number_line_texture,wall_side_y);
+	}
+
 }
