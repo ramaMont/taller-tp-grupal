@@ -176,9 +176,11 @@ void ServerMap::addPosicionable(Posicionable* posicionable,
 		    mapaJuego[floor(posicion.x)][floor(posicion.y)];
 		if (!vec.back() || vec.back()->atravesable()){
 			vec.push_back(posicionable);
-		}else{
-			throw -2;//Quiero guardar algo donde ya hay otra cosa
+            return;
 		}
+        if (typeid(*vec.back()) == typeid(Rocket))
+            static_cast<Rocket*>(vec.back())->explode(true);
+        throw -2;//Quiero guardar algo donde ya hay otra cosa
 	}
 }
 
@@ -274,9 +276,9 @@ void ServerMap::moveme(Player* player, const Coordinates& posicion){
         return;
     }
     try {
+        addPosicionable(player, posicion);
         if (items[floor(posicion.x)][floor(posicion.y)])
             player->use(items[floor(posicion.x)][floor(posicion.y)]);
-        addPosicionable(player, posicion);
         removePosicionable(posPlayer);
     } catch(int e){
         throw;

@@ -192,7 +192,7 @@ void ThGameModelServer::processRocket(Protocol& protocol){
     Coordinates pos(protocol.getPosition());
     try {
         Rocket* rocket = static_cast<Rocket*>(map.getPosicionableIn(pos));
-        rocket->move(*this);
+        rocket->move();
     } catch(...) {}
 }
 

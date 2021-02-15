@@ -82,19 +82,17 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
     Player* player, std::map<int, Player*>& enemies,
     ThGameModelServer& game_model):
     Object(position), direction(dir), player(player), enemies(enemies),
-    map(player->getMap()){
+    map(player->getMap()), game_model(game_model){
     exploded = false;
-    Coordinates position_aux = posicion;
-    posicion.increment_on_direction(direction, 1.1);
+    Coordinates new_pos = posicion;
+    new_pos.increment_on_direction(direction, 1.1);
     try {
-        map.addPosicionable(this, posicion);
+        map.addPosicionable(this, new_pos);
     } catch(...) {
-        Protocol protocol(Protocol::action::EXPLOSION, player->getId(), 
-            position_aux.x, position_aux.y);
-        game_model.echoProtocol(protocol);
-        explode();
+        explode(false);
         return;
     }
+    posicion = new_pos;
     posicion.x = roundTwoDecimals(posicion.x);
     posicion.y = roundTwoDecimals(posicion.y);
     Protocol protocol(Protocol::action::ROCKET, player->getId(), 
@@ -102,23 +100,36 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
     game_model.echoProtocol(protocol);
 }
 
-void Rocket::move(ThGameModelServer& game_model){
-    map.removePosicionable(posicion);
-    Coordinates position_aux = posicion;
-    posicion.increment_on_direction(direction, ROCKET_STEP);
-    if (map.obstacleIn(posicion) || map.playerIn(posicion)){
-        Protocol protocol(Protocol::action::EXPLOSION, player->getId(), 
-            std::floor(position_aux.x), std::floor(position_aux.y));
-        game_model.echoProtocol(protocol);
-        return explode();
+void Rocket::move(){
+    Coordinates new_position = posicion;
+    new_position.increment_on_direction(direction, ROCKET_STEP);
+    if ((posicion != new_position) && 
+        (map.obstacleIn(new_position) || map.playerIn(new_position))){
+        return explode(true);
     }
-    map.addPosicionable(this, posicion);
+    if (posicion != new_position){
+        map.removePosicionable(posicion);
+        map.addPosicionable(this, new_position);
+    }
     Protocol p(Protocol::action::MOVE_ROCKET, player->getId(), 
-        std::floor(position_aux.x), std::floor(position_aux.y));
+        std::floor(posicion.x), std::floor(posicion.y));
     game_model.echoProtocol(p);
+    posicion = new_position;
 }
 
-void Rocket::explode(){
+void Rocket::explode(bool remove){
+    if (exploded)
+        return;
+    if (remove)
+        map.removePosicionable(posicion);
+    Protocol protocol(Protocol::action::EXPLOSION, player->getId(), 
+        std::floor(posicion.x), std::floor(posicion.y));
+    game_model.echoProtocol(protocol);
+    hurtEnemies();
+    exploded = true;
+}
+
+void Rocket::hurtEnemies(){
     for (auto it = enemies.begin(); it != enemies.end(); ++it){
         auto* enemy = it->second;
         double distance = posicion.calculate_distance(enemy->getPosicion());
@@ -134,7 +145,6 @@ void Rocket::explode(){
         if (is_dead)
             player->addKilledEnemy();
     }
-    exploded = true;
 }
 
 bool Rocket::hasExploded(){

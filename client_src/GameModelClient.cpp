@@ -489,7 +489,7 @@ void GameModelClient::processRocket(Protocol& protocol){
         Rocket* rocket = new Rocket(position, direction, map, player);
         rocket->set_texture(&texture);
         rockets.push_back(rocket);
-        map.addPositionable(rocket,position);  
+        map.addMovable(rocket,position);
         //printf("cree uno nuevo en: (%f,%f)\n\n", position.x,position.y);
     }
 }
@@ -509,7 +509,7 @@ void GameModelClient::processExplosion(Protocol& protocol){
             printf("aa\n");
             found = true;
             playSound(SoundPlayer::sound_type::ROCKET_EXPLOTION, rocket);
-            map.removePositionable(position);
+            map.removeMovable(position);
             rockets.erase(rockets.begin() + i);
             //printf("le cambie la posicion, ahora es: (%f,%f)\n\n",
                 //rocket->getPosicion().x,rocket->getPosicion().y);
