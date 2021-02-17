@@ -633,10 +633,10 @@ void Texture::showRanking(
     int position = 0;
     for (auto& player : ordered_players_kills){
     	std::string player_kills = std::to_string(player.first).c_str();
-    	std::string player_id = std::to_string(player.second).c_str();
-		showText(black, player_kills,width/16,distante_to_bar*0.17,
+    	std::string player_id = std::to_string((int16_t)player.second).c_str();
+		showText(black, player_id,width/16,distante_to_bar*0.17,
 								width*0.13, height*0.39 + position*height*0.14);
-	    showText(black, player_id,width/16,distante_to_bar*0.17,
+	    showText(black, player_kills,width/16,distante_to_bar*0.17,
 	    						width*0.23, height*0.39 + position*height*0.14);
         ++position;
     }
@@ -644,7 +644,7 @@ void Texture::showRanking(
     for (auto& player : ordered_players_points){
     	int points = player.first;
     	std::string player_points = std::to_string(player.first).c_str();
-    	std::string player_id = std::to_string(player.second).c_str();
+    	std::string player_id = std::to_string((int16_t)player.second).c_str();
     	int x_pos = width/16;
     	if(points>=100){ //Tiene 3 digitos
     		x_pos = width*3/64;
@@ -659,8 +659,8 @@ void Texture::showRanking(
     for (auto& player : ordered_players_bullets){
     	int bullets = player.first;
     	std::string player_bullets = std::to_string(player.first);
-    	std::string player_id = std::to_string(player.second);
-		int x_pos = width/64;
+    	std::string player_id = std::to_string((int16_t)player.second);
+		int x_pos = width/16;
     	if(bullets>=100){ //Tiene 3 digitos    	
     		x_pos = width*3/64;
     	}

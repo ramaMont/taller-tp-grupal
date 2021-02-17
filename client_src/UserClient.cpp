@@ -17,7 +17,8 @@ UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model,\
         _winner_id(_winner_id), game_done(game_done),
         _ordered_players_kills(_ordered_players_kills),
         _ordered_players_points(_ordered_players_points),
-        _ordered_players_bullets(_ordered_players_bullets){
+        _ordered_players_bullets(_ordered_players_bullets),
+        game_canceled(false){
     game_done = false;
 }
 
@@ -26,6 +27,7 @@ void UserClient::pollEvents(SDL_Event& event, Window& window){
         switch (event.type) {
             case SDL_QUIT: {
                 game_done = SDL_TRUE;
+                game_canceled = true;
             }
             case SDL_WINDOWEVENT:{
                 if (event.window.event == SDL_WINDOWEVENT_RESIZED){
@@ -51,16 +53,22 @@ void UserClient::endGame(SDL_Event& event, Screen& screen, Player& player,
         Window& window){
     bool player_won = (player.getId() == _winner_id);
     window.disableResizable();
-    screen.showEndgame(player_won,_winner_id, game_done, 
+    screen.showEndgame(player_won,_winner_id, game_done, game_canceled,
         _ordered_players_kills, _ordered_players_points, 
         _ordered_players_bullets);
-    game_done = false;
+    bool leave_ending_screen = false;
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
-    while (!game_done){
+    while (!leave_ending_screen){
         if (keys[SDL_SCANCODE_ESCAPE]){
-            game_done = SDL_TRUE;
+            leave_ending_screen = SDL_TRUE;
         }
-        pollEvents(event,window);
+	    while (SDL_PollEvent(&event)) { 
+	        switch (event.type) {
+	            case SDL_QUIT: {
+	                leave_ending_screen = true;
+	            }
+	        }
+	    }
     }
 }
 
@@ -145,6 +153,7 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event,
     }
     if (keys[SDL_SCANCODE_ESCAPE]){
         game_done = SDL_TRUE;
+        game_canceled = true;
     }
     pollEvents(event, window);
 }

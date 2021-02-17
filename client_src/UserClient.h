@@ -28,6 +28,8 @@ private:
     std::vector<std::pair<int,int>> &_ordered_players_points;
     std::vector<std::pair<int,int>> &_ordered_players_bullets;
 
+    bool game_canceled;
+
     void pollEvents(SDL_Event& event, Window& window);
 
     void getKeys(const Uint8 *keys, SDL_Event &event, Protocol &protocol, 
