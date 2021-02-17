@@ -9,11 +9,12 @@ private:
     int width; //Resolucion de ancho 
     int height; //Resolucion de alto
     int info_bar_height;
+    bool fullscreen;
     SDL_Window* window;
     SDL_Renderer* renderer;
 
 public:
-    Window();
+    Window(int resolution_width, int resolution_height, bool fullscreen);
 
     Window(const Window&) = delete;
     Window(Window&& other) = delete;
@@ -25,6 +26,7 @@ public:
     int getWidth() const;
     int getHeight() const;
 
+    void disableFullscreen();
     void disableResizable();
 
     void resizeWindow(int newWidth, int newHeight);

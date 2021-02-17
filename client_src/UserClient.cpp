@@ -152,8 +152,7 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event,
         th_sender.push(protocol);
     }
     if (keys[SDL_SCANCODE_ESCAPE]){
-        game_done = SDL_TRUE;
-        game_canceled = true;
+        window.disableFullscreen();
     }
     pollEvents(event, window);
 }

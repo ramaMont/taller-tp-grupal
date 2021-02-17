@@ -25,9 +25,21 @@ ClientHolder::ClientHolder():
     game_done(false){
 }
 
+void ClientHolder::setGameConfig(std::string& resolution, bool _fullscreen){
+    if(resolution == "320:200"){
+        this->resolution_width = 320;
+        this->resolution_height = 200;
+    }else{
+        this->resolution_width = 640;
+        this->resolution_height = 400;
+    }
+    this->fullscreen = _fullscreen;
+}
+
 void ClientHolder::crearPartida(const std::string& map_filename,
             int bots_cty ,int& game_id, std::string& resolution,
             bool fullscreen){
+    setGameConfig(resolution,fullscreen);
     _map_filename = map_filename;
     MapLoader mapLoader(map_filename);
     int map_id_checksum = mapLoader.getChecksum();
@@ -47,6 +59,7 @@ void ClientHolder::crearPartida(const std::string& map_filename,
 void ClientHolder::unirseAPartida(const std::string& id_partida,
                                   std::string& resolution,
                                   bool fullscreen) {
+    setGameConfig(resolution,fullscreen);
     int game_id = std::stoi(id_partida);
     Protocol protocol_send(game_id);
     protocol_send.setAction(Protocol::action::JOIN_GAME);
@@ -150,7 +163,8 @@ void ClientHolder::createGameModel(std::string map_filename,\
         int id_user_protocol, int game_id){
     _game_model = new GameModelClient(id_user_protocol, map_filename,\
         game_id, user_id, _winner_id, game_done, _ordered_players_kills,\
-        _ordered_players_points, _ordered_players_bullets);
+        _ordered_players_points, _ordered_players_bullets,\
+         resolution_width, resolution_height, fullscreen);
 }
 
 void ClientHolder::startGame(){

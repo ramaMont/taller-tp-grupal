@@ -114,11 +114,11 @@ private:
 
 public:
     explicit GameModelClient(int user_id, const  std::string& map_filename, 
-        int game_id, int protagonist_id,int &_winner_id, 
-        bool& game_done,\
+        int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
         std::vector<std::pair<int,int>> &_ordered_players_kills,\
         std::vector<std::pair<int,int>> &_ordered_players_points,\
-        std::vector<std::pair<int,int>> &_ordered_players_bullets);
+        std::vector<std::pair<int,int>> &_ordered_players_bullets,\
+        int resolution_width, int resolution_height, bool fullscreen);
 
     void processProtocol(Protocol& protocol);
     void run();

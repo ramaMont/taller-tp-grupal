@@ -14,8 +14,11 @@ GameModelClient::GameModelClient(int user_id, const  std::string& map_filename,\
             int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
             std::vector<std::pair<int,int>> &_ordered_players_kills,\
             std::vector<std::pair<int,int>> &_ordered_players_points,\
-            std::vector<std::pair<int,int>> &_ordered_players_bullets) : 
-    	GameModel(game_id), window(), texture(window), map(),\
+            std::vector<std::pair<int,int>> &_ordered_players_bullets,\
+            int resolution_width, int resolution_height, bool fullscreen) : 
+    	GameModel(game_id),\
+         window(resolution_width, resolution_height, fullscreen),\
+         texture(window), map(),\
         added_player(false),player(map),\
         screen(rockets,enemies,sprites,player,map,texture,window),\
         protagonist_id(protagonist_id),is_running(true),\

@@ -14,19 +14,27 @@ static const int INITIAL_WIDTH_SIZE = 640;
 static const int INITIAL_HEIGHT_SIZE = 400;
 
 //anchoPantalla
-Window::Window() :
-        width(640), height(400), //Resolucion()
+Window::Window(int resolution_width, int resolution_height, bool fullscreen) :
+        width(resolution_width), height(resolution_height), //Resolucion()
         info_bar_height(height/5) {
+
+
     int state = SDL_CreateWindowAndRenderer(
         INITIAL_WIDTH_SIZE, INITIAL_HEIGHT_SIZE, 
         			SDL_RENDERER_ACCELERATED  | 
         			SDL_WINDOW_RESIZABLE | 
         			SDL_WINDOW_HIDDEN,
         &this->window, &this->renderer);
+
     if (state) {
         throw Exception("Error al crear ventana\n");
+    }else{
+        if(fullscreen){
+            SDL_SetWindowFullscreen(this->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+        }else{
+            resizeWindow(INITIAL_WIDTH_SIZE,INITIAL_HEIGHT_SIZE);
+        }
     }
-    resizeWindow(INITIAL_WIDTH_SIZE,INITIAL_HEIGHT_SIZE);
     // Inicializacion de audio
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
         throw Exception("Error al inicializar audio\n");
@@ -34,6 +42,11 @@ Window::Window() :
 
     // Cantidad de sonidos sonando a la vez: por ahora 32
     Mix_AllocateChannels(32);
+}
+
+void Window::disableFullscreen(){
+    SDL_SetWindowFullscreen(this->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    SDL_SetWindowFullscreen(this->window, 0);
 }
 
 void Window::showWindow(){
