@@ -25,6 +25,7 @@ class MapWidget : public QFrame
                        const std::map<std::string, std::string>& resourcesMap);
     ~MapWidget();
     bool createdMap();
+    bool savedMap();
     void constructMap(const int& flag);
     void saveMap();
     void createNewMap(const std::string& name,
@@ -50,6 +51,7 @@ class MapWidget : public QFrame
     QLabel* highlightedLabel;
     QLabel* originLabel;
     bool mapCreated;
+    bool mapSaved;
     void pointAndClick(QLabel* visual_label, QLabel* element_label);
     void showOptionsMenu(QMouseEvent *event, QLabel* visual_label,
                                QLabel* element_label);

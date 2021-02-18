@@ -12,6 +12,7 @@ MapWidget::MapWidget(QWidget *parent,
                      const std::map<std::string, std::string>& resourcesMap)
     : QFrame(parent), resourcesMap(resourcesMap) {
     mapCreated = false;
+    mapSaved = false;
     this->setObjectName(QStringLiteral("mapWidget"));
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     gridLayout = new QGridLayout(this);
@@ -28,6 +29,10 @@ MapWidget::MapWidget(QWidget *parent,
 
 bool MapWidget::createdMap() {
     return mapCreated;
+}
+
+bool MapWidget::savedMap() {
+    return mapSaved;
 }
 
 void MapWidget::dragEnterEvent(QDragEnterEvent *event) {
@@ -57,6 +62,7 @@ void MapWidget::dragMoveEvent(QDragMoveEvent *event) {
             highlightedLabel->setStyleSheet("QWidget { background-color : #D9FAC5; }");
             event->setDropAction(Qt::MoveAction);
             event->accept();
+            mapSaved = false;
         } else {
             event->acceptProposedAction();
         }
@@ -309,21 +315,27 @@ void MapWidget::showOptionsMenu(QMouseEvent *event, QLabel* visual_label,
     int column = std::stoi(token);
     contextMenu.addAction("Insertar columna a la izquierda", this, [=] {
         addCoumnFrom(column);
+        mapSaved = false;
     });
     contextMenu.addAction("Insertar columna a la derecha", this, [=] {
         addCoumnFrom(column+1);
+        mapSaved = false;
     });
     contextMenu.addAction("Insertar fila arriba", this, [=] {
         addRowFrom(row);
+        mapSaved = false;
     });
     contextMenu.addAction("Insertar fila abajo", this, [=] {
         addRowFrom(row+1);
+        mapSaved = false;
     });
     contextMenu.addAction("Eliminar fila", this, [=] {
         deleteRow(row+1);
+        mapSaved = false;
     });
     contextMenu.addAction("Eliminar columna", this, [=] {
         deleteColumn(column+1);
+        mapSaved = false;
     });
     QPoint globalPos = mapToGlobal(event->pos());
     contextMenu.exec(globalPos);
@@ -394,6 +406,7 @@ void MapWidget::mousePressEvent(QMouseEvent *event) {
         return;
     } else {
         // Si es click izquierdo, se intentara mover elementos.
+        mapSaved = false;
         if (QApplication::clipboard()->mimeData()->hasText()) {
             // Si habia algo en el clipboard, quiere decir que este click
             // tiene como objetivo pintar, y no hacer el drag & drop.
@@ -471,6 +484,7 @@ void MapWidget::createNewMap(const std::string& name,
 void MapWidget::loadMapFromFile(const std::string& map_file) {
     cleanGridAndMap();
     map = new EditableMap(LOAD_FROM_FILE, "", map_file, 0, 0);
+    mapSaved = true;
     constructMap(LOAD_FROM_FILE);
 }
 
@@ -489,6 +503,7 @@ void MapWidget::saveMap() {
         return;
     }
     map->saveMap();
+    mapSaved = true;
     std::string message = "Mapa guardado con éxito!";
     showWarning(QString::fromStdString(message), QMessageBox::Information);
 }
@@ -514,6 +529,7 @@ void MapWidget::cleanGridAndMap() {
             gridLayout->itemAt(i)->widget()->deleteLater();
         }
         mapCreated = false;
+        mapSaved = false;
         highlightedLabel = nullptr;
     }
 }

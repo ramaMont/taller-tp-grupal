@@ -364,3 +364,22 @@ bool Editor::eventFilter(QObject *obj, QEvent *event) {
     }
     return false;
 }
+
+void Editor::closeEvent(QCloseEvent *event) {
+    if(mapWidget->createdMap() && !mapWidget->savedMap()){
+        // Consulto si desea cerrar y perder cambios.
+        QMessageBox::StandardButton answer = QMessageBox::question(
+            this,
+            tr("Cerrar editor"),
+            tr("Está seguro que desea cerrar el editor? Hay cambios sin guardar y se perderán."),
+            QMessageBox::Yes | QMessageBox::No);
+        if(answer == QMessageBox::Yes){
+            event->accept();
+        } else {
+            event->ignore();
+        }
+    } else {
+        // Si el mapa ya estaba guardado, cierro
+        event->accept();
+    }
+}
