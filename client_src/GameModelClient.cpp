@@ -230,13 +230,13 @@ void  GameModelClient::updateFrameAnimations(){
     for (unsigned int i=0; i<explosions.size(); i++){
         SpriteHolder* explosion = explosions[i];
         explosion->updateExplosion();
-        if(explosion->explosionComplete() and !explosion->hasTextures()){ //Si terminé la animacion de explosion y no almacena otro sprite, lo borro
+        if (explosion->explosionComplete() and !explosion->hasTextures()){ //Si terminé la animacion de explosion y no almacena otro sprite, lo borro
             unsigned int j=0;
             bool founded = false;
             Coordinates explosion_pos = explosion->get_position();
             while(j<sprites.size() and !founded){
                 Coordinates sprites_pos = sprites[j]->get_position();
-                if(explosion_pos==sprites_pos){
+                if (explosion_pos==sprites_pos){
                     map.removePositionable(explosion->get_position());
                     explosions.erase(explosions.begin() + i);
                     sprites.erase(sprites.begin() + j);
@@ -283,7 +283,7 @@ void GameModelClient::addSpriteOn(Coordinates position, int sprite_value, bool a
     while (i<cant_sprites and !position_has_sprite_already){
         if (sprites[i]->get_position()==position){
             position_has_sprite_already=true;
-            if(add_explosion){
+            if (add_explosion){
                 sprites[i]->addExplosion();
                 explosions.push_back(sprites[i]);
             }else{
@@ -297,15 +297,15 @@ void GameModelClient::addSpriteOn(Coordinates position, int sprite_value, bool a
         i=0;
         int cant_doors = doors.size();
         while(i<cant_doors){
-            if(doors[i].get_position()==position){
+            if (doors[i].get_position()==position){
                 position_has_door = true;
             }
             i++;
         }
-        if(!position_has_door){
+        if (!position_has_door){
             SpriteHolder *posicionable = 
                 new SpriteHolder(position,player);
-            if(add_explosion){
+            if (add_explosion){
                 posicionable->addExplosion();
                 explosions.push_back(posicionable);
             }else{

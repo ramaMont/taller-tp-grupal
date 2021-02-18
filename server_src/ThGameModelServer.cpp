@@ -362,7 +362,6 @@ void ThGameModelServer::processMove(Protocol& protocol){
 }
 
 void ThGameModelServer::push(Protocol protocol){
-    std::lock_guard<std::mutex> lck(m);
     operations.push(protocol);
 }
 

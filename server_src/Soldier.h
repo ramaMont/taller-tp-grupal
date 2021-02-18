@@ -50,7 +50,7 @@ protected:
     bool fireBullet(Player* player, float precision, int angle, Player* enemy);
     
     
-    public:
+public:
     explicit Soldier(int &bullets): bullets(bullets), gun(true) { }
     
     // El soldado intenta disparar a sus enemigos
@@ -68,6 +68,8 @@ protected:
 	
     // Retorna true si el soldado no tenia arma y la agrega
     bool addGun();
+
+	virtual ~Soldier() {}
 };
 
 

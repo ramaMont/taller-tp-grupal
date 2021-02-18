@@ -30,8 +30,6 @@ private:
     int map_id_checksum;
     int _bots_cty;
 
-    std::mutex m;
-
     void processMove(Protocol& protocol);
     void processShoot(Protocol protocol);
     void processShooted(Protocol protocol);

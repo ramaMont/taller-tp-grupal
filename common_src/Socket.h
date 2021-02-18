@@ -23,7 +23,7 @@ public:
     Socket(Socket&& other);
     Socket& operator=(const Socket&) = delete;
     Socket& operator=(Socket&& other);
-    ~Socket();
+    virtual ~Socket();
 };
 
 class SocketClient : public Socket{
