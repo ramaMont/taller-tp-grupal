@@ -374,10 +374,6 @@ void ThGameModelServer::addPlayer(int player_id){
     }
 }
 
-void ThGameModelServer::addPlayer(Protocol& protocol){
-    throw -1;
-}
-
 Player& ThGameModelServer::getPlayer(int user_id){
     return *players.at(user_id);
 }

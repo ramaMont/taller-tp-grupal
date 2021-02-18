@@ -26,10 +26,10 @@ ClientHolder::ClientHolder():
 }
 
 void ClientHolder::setGameConfig(std::string& resolution, bool _fullscreen){
-    if(resolution == "320:200"){
+    if (resolution == "320:200"){
         this->resolution_width = 320;
         this->resolution_height = 200;
-    }else{
+    } else {
         this->resolution_width = 640;
         this->resolution_height = 400;
     }

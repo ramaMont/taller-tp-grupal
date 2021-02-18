@@ -133,8 +133,7 @@ public:
 
     void hideWindow();
 
-    virtual void addPlayer(Protocol& protocol) override;
-    virtual void addPlayer(int player_id) override;
+    void addPlayer(Protocol& protocol);
 
     Player& getPlayer();
     Window& getWindow();

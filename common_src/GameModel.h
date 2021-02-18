@@ -19,8 +19,8 @@ public:
 
     virtual void push(Protocol protocol) = 0;
     // virtual void processProtocol(Protocol& protocol) = 0;
-    virtual void addPlayer(int player_id) = 0;
-    virtual void addPlayer(Protocol& protocol) = 0;
+    // virtual void addPlayer(int player_id) = 0;
+    // virtual void addPlayer(Protocol& protocol) = 0;
 
 
     // GameModel(const GameModel&) = delete;

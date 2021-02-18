@@ -68,7 +68,8 @@ void GameModelClient::addWallsToMap(){
     }
 }
 
-void GameModelClient::createWall(const  std::string& elemento, Coordinates position){
+void GameModelClient::createWall(const  std::string& elemento,\
+        Coordinates position){
     if (elemento == "_greystone"){ 
         wallsGreystone.push_back(WallGreystone(position));
     } else if (elemento == "_bluestone"){
@@ -180,10 +181,6 @@ void GameModelClient::addPlayer(Protocol& protocol){ //Playeres O enemigos
         } catch(...){
         }        
     }
-}
-
-void GameModelClient::addPlayer(int player_id){
-    throw -1;
 }
 
 void GameModelClient::removeEnemy(int id){
@@ -617,5 +614,4 @@ GameModelClient::~GameModelClient(){
 	for (auto& sprite : sprites){
 		delete sprite;
 	}
-
 }

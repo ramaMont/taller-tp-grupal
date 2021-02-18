@@ -57,5 +57,4 @@ void Door::draw(int ray, float distance,\
 	}else{
 		texture_drawer->showDoor(ray,distance,number_line_texture,wall_side_y);
 	}
-
 }

@@ -69,8 +69,7 @@ public:
     int getBotsCty();
     void showPlayersInfo();
 
-    virtual void addPlayer(int player_id) override;
-    virtual void addPlayer(Protocol& protocol) override;
+    void addPlayer(int player_id);
     Player& getPlayer(int user_id);
     ServerMap& getMap();
     int getId();
