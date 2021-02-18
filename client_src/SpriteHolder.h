@@ -18,15 +18,25 @@ class SpriteHolder : public Posicionable, public SpriteDrawer{
 protected:
 	std::vector<int> sprites_textures;
     Movable* character;
+    bool has_explosion;
+    int explosion_frame;
     bool colidable;
 
 public:
-    explicit SpriteHolder(Coordinates posicion, int texture, Player &player);
+    explicit SpriteHolder(Coordinates posicion, Player &player);
 
     /*Pre:-
     Setea al sprite como "colisionable", de manera 
     que no pueda ser atravesado por los personajes*/
     void isColidable();
+
+    void addExplosion();
+
+    void updateExplosion();
+
+    bool explosionComplete();
+
+    bool hasTextures();
 
     //Pre:-
     // Agrega otra textura de sprite a dibujar

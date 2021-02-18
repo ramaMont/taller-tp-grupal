@@ -19,6 +19,7 @@ private:
     std::vector<SDL_Texture*> enemies;
     std::vector<SDL_Texture*> shooting_effect;
     std::vector<SDL_Texture*> bar_guns;
+    SDL_Texture* rocket_explosion;
     SDL_Texture* face_health;
     SDL_Texture* guns;
     SDL_Texture* door;
@@ -48,12 +49,7 @@ private:
     void addDeadEnemyTexture(std::string new_texture);
 
     // Carga todas las texturas de las armas
-    void addGunTexture(std::string new_texture);
-
-    // Carga todas las texturas de las puertas
-    void addDoorTextures();  
-
-    void addKeyDoorTexture(); 
+    void addTexture(SDL_Texture** texture,std::string new_texture,int r, int g, int b);
 
     // Carga todas las texturas de la barra de vidas
     void addLifeBarTexture(std::string new_texture);
@@ -120,6 +116,13 @@ public:
     void showSprite(int first_x_pixel,int first_number_line_texture, \
     						int last_x_pixel, int last_number_line_texture, \
     						float distance_player_plane,int texture);
+
+
+    /*configura los parametros y llama al 
+    generic_show para graficar la explosion del misil*/
+    void showExplosion(int first_x_pixel,int first_number_line_texture, \
+                            int last_x_pixel, int last_number_line_texture, \
+                            float distance_player_plane,int texture);
 
     //llama al show enemy con la textura del perro
 	void showDog(int first_x_pixel,int first_number_line_texture, \

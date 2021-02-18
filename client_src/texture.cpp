@@ -72,31 +72,15 @@ void Texture::addDeadEnemyTexture(std::string new_texture){
 	SDL_FreeSurface(loadedSurface);		
 }
 
-void Texture::addGunTexture(std::string new_texture){
+void Texture::addTexture(SDL_Texture** texture,std::string new_texture,int r, int g, int b){
 	std::string texture_store = "../data/textures/" + new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
-    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
-	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
-	guns = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    if(r!=-1){
+	    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
+		SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
+	}
+	*texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);		
-}
-
-void Texture::addDoorTextures(){
-	std::string texture_store = "../data/textures/door.png";
-    SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
-    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
-	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
-	door = SDL_CreateTextureFromSurface(renderer, loadedSurface);
-	SDL_FreeSurface(loadedSurface);			
-}
-
-void Texture::addKeyDoorTexture(){
-	std::string texture_store = "../data/textures/key_door_client.png";
-    SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
-    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
-	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
-	key_door = SDL_CreateTextureFromSurface(renderer, loadedSurface);
-	SDL_FreeSurface(loadedSurface);			
 }
 
 void Texture::addLifeBarTexture(std::string new_texture){
@@ -184,10 +168,10 @@ Texture::Texture(const Window& window):
 		addShootingEffectTexture("ss_shooting");
 		addShootingEffectTexture("ss_shooting"); //Acá despues va el de mutant
 
-		addGunTexture("guns");
-
-		addDoorTextures();
-		addKeyDoorTexture();
+		addTexture(&guns,"guns",152, 0, 136);
+		addTexture(&rocket_explosion,"explosions",152, 0, 136);
+		addTexture(&door,"door",152, 0, 136);
+		addTexture(&key_door,"key_door_client",152, 0, 136);
 
 		addLifeBarTexture("life_bar");
 
@@ -625,6 +609,26 @@ void Texture::showSprite(int first_x_pixel,int first_number_line_texture, \
 		length_texture,0,64, x_initial_pos,cant_pixels,
 		initial_position_y,height_ray);
 }
+
+void Texture::showExplosion(int first_x_pixel,int first_number_line_texture, \
+				int last_x_pixel, int last_number_line_texture, \
+				float distance_player_plane,int texture){
+	sortValues(first_x_pixel,last_x_pixel);
+	sortValues(first_number_line_texture,last_number_line_texture);
+
+	float lineHeight = (this->height / distance_player_plane);
+	int initial_position_y =  -lineHeight/2 + height/2;
+	float pixel_length = lineHeight/64;
+	int x_initial_pos = first_x_pixel;
+	int height_ray = (int)ceil((pixel_length)*64);
+	
+	int length_texture = last_number_line_texture - first_number_line_texture;
+	int cant_pixels = last_x_pixel - first_x_pixel;
+	genericShow(this->rocket_explosion,first_number_line_texture + 64*texture, 
+		length_texture,0,64, x_initial_pos,cant_pixels,
+		initial_position_y,height_ray);
+}
+
 void Texture::showRanking(
 				std::vector<std::pair<int,int>> &ordered_players_kills, \
     			std::vector<std::pair<int,int>> &ordered_players_points, \

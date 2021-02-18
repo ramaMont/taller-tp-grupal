@@ -121,7 +121,8 @@ void GameModelClient::initMap(const  std::string& map_filename){
                 position.x+=0.5;
                 position.y+=0.5;
                 SpriteHolder *posicionable = new 
-                    SpriteHolder(position,texture_values.at(elemento),player);
+                    SpriteHolder(position,player);
+                posicionable->addSprite(texture_values.at(elemento));
                 posicionable->set_texture(&texture);
                 if ((elemento == "barrel") or (elemento == "pillar") or\
                         (elemento == "table")){
@@ -225,6 +226,26 @@ void  GameModelClient::updateFrameAnimations(){
     for (auto& door : doors){
         door.updateFrame();
     }
+
+    for (unsigned int i=0; i<explosions.size(); i++){
+        SpriteHolder* explosion = explosions[i];
+        explosion->updateExplosion();
+        if(explosion->explosionComplete() and !explosion->hasTextures()){ //Si terminé la animacion de explosion y no almacena otro sprite, lo borro
+            unsigned int j=0;
+            bool founded = false;
+            Coordinates explosion_pos = explosion->get_position();
+            while(j<sprites.size() and !founded){
+                Coordinates sprites_pos = sprites[j]->get_position();
+                if(explosion_pos==sprites_pos){
+                    map.removePositionable(explosion->get_position());
+                    explosions.erase(explosions.begin() + i);
+                    sprites.erase(sprites.begin() + j);
+                    delete explosion;
+                }
+                j++;
+            }
+        }
+    }  
 }
 
 void GameModelClient::showWindow(){
@@ -255,34 +276,45 @@ GameModelClient& GameModelClient::operator=(GameModelClient&& other){
     return *this;
 }
 
-void GameModelClient::addSpriteOn(Coordinates position, int sprite_value){
+void GameModelClient::addSpriteOn(Coordinates position, int sprite_value, bool add_explosion){
   bool position_has_sprite_already = false;
   int cant_sprites = sprites.size();
   int i=0;
     while (i<cant_sprites and !position_has_sprite_already){
         if (sprites[i]->get_position()==position){
             position_has_sprite_already=true;
-            sprites[i]->addSprite(sprite_value);
+            if(add_explosion){
+                sprites[i]->addExplosion();
+                explosions.push_back(sprites[i]);
+            }else{
+                sprites[i]->addSprite(sprite_value);
+            }
         }
         i++;
     }
     if (!position_has_sprite_already){
-    	bool position_has_door = false;
-    	i=0;
-    	int cant_doors = doors.size();
-    	while(i<cant_doors){
-    		if(doors[i].get_position()==position){
-    			position_has_door = true;
-    		}
-    		i++;
-    	}
-    	if(!position_has_door){
-	        SpriteHolder *posicionable = 
-	            new SpriteHolder(position,sprite_value,player);
-	        posicionable->set_texture(&texture);
-	        sprites.push_back(posicionable);  
-	        map.addPositionable(posicionable,position);  
-	    }
+        bool position_has_door = false;
+        i=0;
+        int cant_doors = doors.size();
+        while(i<cant_doors){
+            if(doors[i].get_position()==position){
+                position_has_door = true;
+            }
+            i++;
+        }
+        if(!position_has_door){
+            SpriteHolder *posicionable = 
+                new SpriteHolder(position,player);
+            if(add_explosion){
+                posicionable->addExplosion();
+                explosions.push_back(posicionable);
+            }else{
+                posicionable->addSprite(sprite_value);
+            }
+            posicionable->set_texture(&texture);
+            sprites.push_back(posicionable);  
+            map.addPositionable(posicionable,position);  
+        }
     }
 }
 
@@ -290,15 +322,15 @@ void GameModelClient::addDeadSprite(Coordinates position,
         CharacterType character_type){
   //printf("El personaje muerto es: %i \n", a_character_type);
     if (character_type==dog){
-        addSpriteOn(position,texture_values.at("dead_dog")); 
+        addSpriteOn(position,texture_values.at("dead_dog"), false); 
     } else if (character_type==guard){
-        addSpriteOn(position,texture_values.at("dead_guard"));
+        addSpriteOn(position,texture_values.at("dead_guard"), false);
     } else if (character_type==officer){
-        addSpriteOn(position,texture_values.at("dead_officer"));
+        addSpriteOn(position,texture_values.at("dead_officer"), false);
     } else if (character_type==ss){
-        addSpriteOn(position,texture_values.at("dead_ss"));
+        addSpriteOn(position,texture_values.at("dead_ss"), false);
     } else {
-        addSpriteOn(position,texture_values.at("dead_mutant"));
+        addSpriteOn(position,texture_values.at("dead_mutant"), false);
     }
 }
 
@@ -442,7 +474,8 @@ void GameModelClient::processPickup(Protocol& protocol){ //Ver bien este
 void GameModelClient::processThrow(Protocol& protocol){
     Coordinates position(protocol.getPosition());
     SpriteHolder *posicionable = new 
-        SpriteHolder(position,protocol.getId(),player);
+        SpriteHolder(position,player);
+    posicionable->addSprite(protocol.getId());
     posicionable->set_texture(&texture);
     sprites.push_back(posicionable);
     map.addPositionable(posicionable,position);
@@ -495,29 +528,32 @@ void GameModelClient::processRocket(Protocol& protocol){
 }
 
 void GameModelClient::processExplosion(Protocol& protocol){
-	Coordinates position(protocol.getFloatPosition());
+    Coordinates position(protocol.getFloatPosition());
     bool found = false;
     unsigned int i = 0;
     printf("posicion recibida: (%f,%f)\n",position.x,position.y);
     while (i<rockets.size() and !found){
         Rocket* rocket = rockets[i];
-        printf("posicion de mi rockett: (%f,%f)\n",rocket->getPosicion().x,
-            rocket->getPosicion().y);
+        Coordinates rocket_position = rocket->getPosicion();
+        printf("posicion de mi rockett: (%f,%f)\n",rocket_position.x,
+            rocket_position.y);
         //printf("Pero en realidad está en: (%f,%f)\n",rocket->getPosicion().
         //x,rocket->getPosicion().y );
-        if (position==rocket->getPosicion()){
+        if (position==rocket_position){
             printf("aa\n");
             found = true;
             playSound(SoundPlayer::sound_type::ROCKET_EXPLOTION, rocket);
             map.removeMovable(position);
             rockets.erase(rockets.begin() + i);
+            delete rocket;
+            addSpriteOn(rocket_position,0, true);
             //printf("le cambie la posicion, ahora es: (%f,%f)\n\n",
                 //rocket->getPosicion().x,rocket->getPosicion().y);
         }
         i++;
     }
     //auto rocket_pos = rockets[0]->get_position();
-	//map.removePositionable(rockets[0]->get_position());
+    //map.removePositionable(rocketsd[0]->get_position());
 }
 
 void GameModelClient::processKey(Protocol& protocol){

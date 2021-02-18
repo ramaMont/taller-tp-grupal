@@ -61,6 +61,7 @@ private:
     std::vector<SpriteHolder*> sprites;
     std::vector<Enemy*> enemies;
     std::vector<Rocket*> rockets;
+    std::vector<SpriteHolder*> explosions;
 
 	bool is_running;
     SoundPlayer _sound_player;
@@ -108,7 +109,7 @@ private:
 
     void removeCharacterFromMap(int id);
 
-    void addSpriteOn(Coordinates position, int sprite_value);
+    void addSpriteOn(Coordinates position, int sprite_value, bool add_explosion);
 
 	void setDoorState(Coordinates door_pos, State new_state);
 
