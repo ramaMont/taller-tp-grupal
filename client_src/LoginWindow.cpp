@@ -17,7 +17,7 @@ LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) :
         QWidget(parent), client_holder(client_holder), _user_id(-1) {
 
     // Tamaño y titulo de la ventana
-    this->resize(900, 900);
+    this->resize(770, 900);
     this->setWindowTitle(QString("Wolfenstein 3D"));
 
     this->setStyleSheet(
@@ -297,7 +297,7 @@ void LoginWindow::crearPartida(){
 }
 
 void LoginWindow::waitUntilLaunch(int game_id) {
-    std::string message = "ID de Partida: " + std::to_string(game_id);
+    std::string message = "Clave Secreta: " + std::to_string(game_id);
     message += "     Tu Nº de Jugador: " + std::to_string(_user_id) + "\n";
     message += "Presione OK para lanzar la partida";
     mostrarWarning(QString::fromStdString(message),
@@ -335,7 +335,7 @@ void LoginWindow::unirseAPartida() {
 
     // Nombre del mapa
     QLineEdit lineEditIdPartida(&dialog);
-    QString labelIdPartida = QString("ID Partida");
+    QString labelIdPartida = QString("Clave Secreta");
     form.addRow(labelIdPartida, &lineEditIdPartida);
     fields << &lineEditIdPartida;
 
