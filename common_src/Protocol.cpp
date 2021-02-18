@@ -52,7 +52,8 @@ Protocol::Protocol(Protocol::action action, int user_id,
 }
 
 Protocol::Protocol(Protocol::action action, int _id, float pos_x, float pos_y):
-        _action(action), id(_id){
+        _action(action), id(_id), _direction(Protocol::direction::STAY),\
+        damage(0){
     _game_id = pos_x * DECIMALS;
     _float_aux = pos_y * DECIMALS;
 }
