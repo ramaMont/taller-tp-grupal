@@ -54,6 +54,7 @@ public:
     std::tuple<float, float> getFloatPosition() const;
     void setAction(Protocol::action action);
     void setDamage(int danio);
+    void setPosition(int pos_x, int pos_y);
     ~Protocol();
 
 private:

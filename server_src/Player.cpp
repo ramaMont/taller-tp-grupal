@@ -238,16 +238,20 @@ void Player::die(){
     }
 }
 
-bool Player::revive(){
+Coordinates Player::revive(){
     this->posicion = posicion_inicial;
     this->direction = initial_direction;
+    if (map.playerIn(this->posicion)){
+        Coordinates new_pos = map.getEmptyPosition(this->posicion);
+        this->posicion = new_pos;
+    }
     map.respawnPlayer(this);
     health = (int)configs[CONFIG::vida_maxima];
     bullets = (int)configs[CONFIG::balas_iniciales];
     soldier.rechargeBullets();
     atomic_dir(this->direction);
     atomic_pos(this->posicion);
-    return true;
+    return this->posicion;
 }
 bool Player::isAlive(){
 	return is_alive;

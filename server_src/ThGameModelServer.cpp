@@ -125,7 +125,8 @@ void ThGameModelServer::processShooted(Protocol protocol){
 
 void ThGameModelServer::processResurrect(Protocol& protocol){
     Player* player = players.at(protocol.getId());
-    player->revive();
+    Coordinates res_coords = player->revive();
+    protocol.setPosition(res_coords.x, res_coords.y);
     echoProtocol(protocol);
 }
 

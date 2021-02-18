@@ -158,8 +158,7 @@ void ServerMap::addPlayer(Player* player){
 }
 
 void ServerMap::respawnPlayer(Player* player){
-    Coordinates player_position = player->get_position(); 
-    removePosicionable(player_position);
+    Coordinates player_position = player->get_position();
 	mapaJuego[floor(player_position.x)][floor(player_position.y)].
         push_back(player);
 }

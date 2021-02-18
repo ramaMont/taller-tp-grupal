@@ -54,10 +54,10 @@ void Character::setInitialPosition(Coordinates initial_position){
     this->initial_position = initial_position;
 }
 
-void Character::resurrect(){
-    posicion = initial_position;
-    direction = initial_direction;
-	map.addMovable(this, this->initial_position);
+void Character::resurrect(const Coordinates& res_pos){
+    this->posicion = res_pos;
+    this->direction = initial_direction;
+	map.addMovable(this, this->posicion);
 }
 
 Character::~Character(){

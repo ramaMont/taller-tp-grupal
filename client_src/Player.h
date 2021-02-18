@@ -68,7 +68,7 @@ public:
     /*Pre:-
     Se agrega a si mismo al mapa, vuelve a setear su
      posicion y direccion a las iniciales, y resetea su vida al maximo*/
-    void resurrect() override;
+    virtual void resurrect(const Coordinates& res_pos) override;
 
     // Llamo a la funcion correspondiente para que dibuje el arma
     void draw();

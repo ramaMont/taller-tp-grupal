@@ -119,7 +119,7 @@ public:
     void die();
     
     // Revive, se reestablecen los valores iniciales del jugador
-    bool revive();
+    Coordinates revive();
     
     // Retorna true si el jugador esta vivo
     bool isAlive();

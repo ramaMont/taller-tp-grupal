@@ -1,6 +1,7 @@
 #include "Protocol.h"
 #include<arpa/inet.h>
 #include <tuple>
+
 #define DECIMALS 100
 
 Protocol::Protocol():
@@ -137,6 +138,11 @@ void Protocol::setAction(Protocol::action action){
 
 void Protocol::setDamage(int danio){
     damage = danio;
+}
+
+void Protocol::setPosition(int pos_x, int pos_y){
+    _game_id = pos_x;
+    _float_aux = (float)pos_y;
 }
 
 Protocol::~Protocol(){

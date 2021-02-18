@@ -47,7 +47,7 @@ public:
 
     /* Se agrega a si mismo al mapa y vuelve a 
     setear su posicion y direccion a las iniciales */
-    virtual void resurrect();
+    virtual void resurrect(const Coordinates& res_pos);
 
     Coordinates getDirection() const;
 

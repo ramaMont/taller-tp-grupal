@@ -26,15 +26,15 @@ void Player::complete(Coordinates initial_position,\
     this->id = player_id;
 }
 
-void Player::resurrect(){
+void Player::resurrect(const Coordinates& res_pos){
   //TODO: Resetear vida y demas atributos
-    posicion = initial_position;
+    posicion = res_pos;
     direction = initial_direction;
     lives--;
     health = max_health;
     has_key_1 = false;
     has_key_2 = false;
-    map.addMovable(this, this->initial_position);
+    map.addMovable(this, this->posicion);
 }
 
 void Player::newGunType(int new_gun_type){

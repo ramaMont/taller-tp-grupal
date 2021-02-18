@@ -362,7 +362,8 @@ void GameModelClient::processProtocol(Protocol& protocol){
         }
         case Protocol::action::RESURRECT:{
             auto character = characters.at(protocol.getId());
-            character->resurrect();
+            Coordinates res_pos(protocol.getPosition());
+            character->resurrect(res_pos);
             break;
         }
         case Protocol::action::REMOVE:
