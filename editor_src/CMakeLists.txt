@@ -9,9 +9,6 @@ set(SOURCES ${SOURCES})
 
 add_executable(${BINARY}_run ${SOURCES})
 
-file(COPY imgs/
-        DESTINATION imgs/)
-
 # Si incluyo los source en la lib, explota por alguna razon, no encuentra 
 # las cosas de Qt.
 add_library(${BINARY}_lib)

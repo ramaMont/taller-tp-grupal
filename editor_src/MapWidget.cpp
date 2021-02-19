@@ -1,4 +1,5 @@
 #include "MapWidget.h"
+#include "EnvVariablesGetter.h"
 #include <iostream>
 #include <QObject>
 #include <QtCore/QFile>
@@ -542,8 +543,10 @@ void MapWidget::cleanGridAndMap() {
 
 void MapWidget::showWarning(QString message, QMessageBox::Icon icon) {
     QMessageBox messageBox(this);
+    EnvVariablesGetter envVariablesGetter;
+    std::string img_path = envVariablesGetter.getDataPath() + "fondo_sangre.jpg";
     messageBox.setStyleSheet(
-        "QWidget {background-image: url(imgs/fondo3.png) }"
+        "QWidget {background-image: url(" + QString::fromStdString(img_path) + ") }"
     "QLabel { color : white; }"
     "QMenuBar {color: white;}"
     "QMenu::item {color: white;}"

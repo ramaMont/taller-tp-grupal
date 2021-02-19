@@ -1,4 +1,5 @@
 #include "Editor.h"
+#include "EnvVariablesGetter.h"
 #include <QCoreApplication>
 #include <QFileDialog>
 #include <QScrollBar>
@@ -15,8 +16,12 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     this->setWindowTitle(QString("Editor de Mapas - Wolfenstein 3D"));
     createMenu();
 
+    EnvVariablesGetter envVariablesGetter;
+    std::string background_image = envVariablesGetter.getDataPath()
+        + "fondo_sangre.jpg";
     this->setStyleSheet(
-    "QWidget {background-image: url(../data/fondo_sangre.jpg) }"
+    "QWidget {background-image: url(" +
+    QString::fromStdString(background_image) + ") }"
     "QLabel { color : white; }"
     "QMenuBar {color: white;}"
     "QMenu::item {color: white;}"
@@ -53,14 +58,14 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
 
     mapWidget = new MapWidget(this, gameResources);
     mapWidget->setStyleSheet(
-        "QWidget {background-image: url(../data/textures/fondo32.png) }");
+        "QWidget {background-image: url(invalid) }");
     scrollMapArea->setWidget(mapWidget);
     scrollMapArea->show();
 
     // Creo un widget para los recursos con los que armaremos el mapa.
     resourcesWidget = new ResourcesWidget(this, gameResources, mapWidget);
     resourcesWidget->setStyleSheet(
-        "QWidget {background-image: url(../data/textures/fondo33.png) }");
+        "QWidget {background-image: url(invalid) }");
 
     // Agrego una barra de scroll por si los elementos son muchos.
     scrollResourcesArea = new QScrollArea(this);
@@ -317,59 +322,61 @@ std::map<std::string, std::string> Editor::getResourcesMap() {
     // Aprovechando que map ordena por las keys, agrego iniciales
     // que caracterizen el tipo de objeto.
     // Armas y jugadores.
+    EnvVariablesGetter envVariablesGetter;
+    std::string textures_path = envVariablesGetter.getTexturesPath();
     insertInResourcesMap(map, "player_front",
-                         "../data/textures/player_front.png");
+                         textures_path + "player_front.png");
     insertInResourcesMap(map, "player_left",
-                         "../data/textures/player_left.png");
+                         textures_path + "player_left.png");
     insertInResourcesMap(map, "player_right",
-                         "../data/textures/player_right.png");
+                         textures_path + "player_right.png");
     insertInResourcesMap(map, "player_back",
-                         "../data/textures/player_back.png");
+                         textures_path + "player_back.png");
     insertInResourcesMap(map, "g_machine_gun",
-                         "../data/textures/machine_gun.png");
+                         textures_path + "machine_gun.png");
     insertInResourcesMap(map, "g_fire_canon",
-                         "../data/textures/fire_canon.png");
+                         textures_path + "fire_canon.png");
     insertInResourcesMap(map, "g_rocket_launcher",
-                         "../data/textures/rocket_launcher.png");
+                         textures_path + "rocket_launcher.png");
     // Pickeables
-    insertInResourcesMap(map, "i_key", "../data/textures/key.png");
-    insertInResourcesMap(map, "i_medicine", "../data/textures/medicine.png");
-    insertInResourcesMap(map, "i_trophie", "../data/textures/trophie.png");
-    insertInResourcesMap(map, "i_bullets", "../data/textures/bullets.png");
-    insertInResourcesMap(map, "i_food", "../data/textures/food.png");
+    insertInResourcesMap(map, "i_key", textures_path + "key.png");
+    insertInResourcesMap(map, "i_medicine", textures_path + "medicine.png");
+    insertInResourcesMap(map, "i_trophie", textures_path + "trophie.png");
+    insertInResourcesMap(map, "i_bullets", textures_path + "bullets.png");
+    insertInResourcesMap(map, "i_food", textures_path + "food.png");
     // Decoraciones
-    insertInResourcesMap(map, "m_water", "../data/textures/water.png");
-    insertInResourcesMap(map, "m_barrel", "../data/textures/barrel.png");
-    insertInResourcesMap(map, "m_pillar", "../data/textures/pillar_editor.png");
-    insertInResourcesMap(map, "m_table", "../data/textures/table.png");
+    insertInResourcesMap(map, "m_water", textures_path + "water.png");
+    insertInResourcesMap(map, "m_barrel", textures_path + "barrel.png");
+    insertInResourcesMap(map, "m_pillar", textures_path + "pillar_editor.png");
+    insertInResourcesMap(map, "m_table", textures_path + "table.png");
     insertInResourcesMap(map, "m_greenlight",
-                         "../data/textures/greenlight_editor.png");
+                         textures_path + "greenlight_editor.png");
 
     // Paredes y puertas
     insertInResourcesMap(map, "wall_bluestone",
-                         "../data/textures/wall_bluestone_editor.png");
+                         textures_path + "wall_bluestone_editor.png");
     insertInResourcesMap(map, "wall_greystone",
-                         "../data/textures/wall_greystone_editor.png");
+                         textures_path + "wall_greystone_editor.png");
     insertInResourcesMap(map, "wall_colorstone",
-                         "../data/textures/wall_colorstone_editor.png");
+                         textures_path + "wall_colorstone_editor.png");
     insertInResourcesMap(map, "wall_redbrick",
-                         "../data/textures/wall_redbrick_editor.png");
+                         textures_path + "wall_redbrick_editor.png");
     insertInResourcesMap(map, "wall_purplestone",
-                         "../data/textures/wall_purplestone_editor.png");
+                         textures_path + "wall_purplestone_editor.png");
     insertInResourcesMap(map, "passage_bluestone",
-                         "../data/textures/passage_bluestone.png");
+                         textures_path + "passage_bluestone.png");
     insertInResourcesMap(map, "passage_colorstone",
-                         "../data/textures/passage_colorstone.png");
+                         textures_path + "passage_colorstone.png");
     insertInResourcesMap(map, "passage_greystone",
-                         "../data/textures/passage_greystone.png");
+                         textures_path + "passage_greystone.png");
     insertInResourcesMap(map, "passage_purplestone",
-                         "../data/textures/passage_purplestone.jpg");
+                         textures_path + "passage_purplestone.jpg");
     insertInResourcesMap(map, "passage_redbrick",
-                         "../data/textures/passage_redbrick.jpg");
+                         textures_path + "passage_redbrick.jpg");
     insertInResourcesMap(map, "v_door",
-                         "../data/textures/door_editor.png");
+                         textures_path + "door_editor.png");
     insertInResourcesMap(map, "v_key_door",
-                         "../data/textures/key_door.png");
+                         textures_path + "key_door.png");
     return map;
 }
 

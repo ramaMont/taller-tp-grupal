@@ -1,4 +1,5 @@
 #include "EditableMap.h"
+#include "EnvVariablesGetter.h"
 #include <algorithm>
 #include <utility>
 #include "yaml-cpp/yaml.h"
@@ -17,7 +18,9 @@ EditableMap::EditableMap(const int& flag,
             rows < MIN_Rc || columns < MIN_Rc)
             throw MapException("El número de rows y columns "
                 "debe estar entre 10 y 40");
-        this->mapfile = "../data/maps/" + name + ".yaml";
+        EnvVariablesGetter envVariablesGetter;
+        std::string maps_path = envVariablesGetter.getMapsPath();
+        this->mapfile = maps_path + name + ".yaml";
     }
 }
 
