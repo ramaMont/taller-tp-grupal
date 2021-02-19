@@ -598,12 +598,12 @@ void Texture::showWallWood(int x_pixel,float distance_player_plane, \
 }
 
 void Texture::showDoor(int x_pixel,float distance_player_plane,\
-						 int number_line_texture, bool wall_side_y){
+						 int number_line_texture){
 	showWall(door, x_pixel, distance_player_plane, number_line_texture);
 }
 
 void Texture::showKeyDoor(int x_pixel,float distance_player_plane,\
-						 int number_line_texture, bool wall_side_y){
+						 int number_line_texture){
 	showWall(key_door, x_pixel, distance_player_plane, number_line_texture);
 }
 

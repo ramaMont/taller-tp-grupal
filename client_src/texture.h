@@ -188,11 +188,11 @@ public:
 
     //llama al show wall con la textura de la puerta azul
     void showDoor(int x_pixel,float distance_player_plane, \
-    						int number_line_texture, bool wall_side_y);
+    						int number_line_texture);
 
     //llama al show wall con la textura de la puerta con llave
     void showKeyDoor(int x_pixel,float distance_player_plane, \
-                            int number_line_texture, bool wall_side_y);
+                            int number_line_texture);
 
     //llama al show weapon con la textura del cuchillo
 	void showKnife(int frame_gun);

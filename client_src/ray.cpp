@@ -118,7 +118,7 @@ void Ray::wallColided(Coordinates coordinates_map,bool first_triangle,Wall *obje
 
 
 void Ray::xDoorColided(Coordinates coordinates_map,\
-									bool first_triangle,Door *object){
+									bool first_triangle,Door *door){
 	bool second_triangle = false;
 	Coordinates next_coordinates = getCoordinatesToNextBlock(coordinates_map, second_triangle);
 	Coordinates coordinates_elements = next_coordinates;
@@ -140,14 +140,13 @@ void Ray::xDoorColided(Coordinates coordinates_map,\
 		coordinates_map.y+= ray_direction.y*n;
 		float coordinates_colided_side = coordinates_map.x;
 		int position = floor(getDecimalPart(coordinates_colided_side)*64);
-		float limit_wall = object->getLimitWall();
+		float limit_wall = door->getLimitWall();
 		if(position<limit_wall){
 			double distance_player_plane = getDistanceToPlayerPlane(coordinates_map,first_triangle);
 			distances.push_back(distance_player_plane);
 			int num_texture = limit_wall - position;
 			int num_pixel = num_ray + n_rays;
-			object->draw(num_pixel, distance_player_plane,\
-										num_texture, first_triangle);
+			door->draw(num_pixel, distance_player_plane,num_texture);
 		}else{
 			searchObject(coordinates_map);
 		}
@@ -156,7 +155,7 @@ void Ray::xDoorColided(Coordinates coordinates_map,\
 
 
 void Ray::yDoorColided(Coordinates coordinates_map,\
-									bool first_triangle,Door *object){
+									bool first_triangle,Door *door){
 	bool second_triangle = false;
 	Coordinates next_coordinates = getCoordinatesToNextBlock(coordinates_map, second_triangle);
 	Coordinates coordinates_elements = next_coordinates;
@@ -178,7 +177,7 @@ void Ray::yDoorColided(Coordinates coordinates_map,\
 		coordinates_map.y+= ray_direction.y*n;
 		float coordinates_colided_side = coordinates_map.y;
 		int position = floor(getDecimalPart(coordinates_colided_side)*64);
-		int limit_wall = object->getLimitWall();
+		int limit_wall = door->getLimitWall();
 		if(position<limit_wall){
 			double distance_player_plane;
 			distance_player_plane = getDistanceToPlayerPlane(coordinates_map,
@@ -186,8 +185,7 @@ void Ray::yDoorColided(Coordinates coordinates_map,\
 			distances.push_back(distance_player_plane);
 			int num_texture = limit_wall - position;
 			int num_pixel = num_ray + n_rays;
-			object->draw(num_pixel,distance_player_plane,
-										num_texture, first_triangle);
+			door->draw(num_pixel,distance_player_plane,num_texture);
 		}else{
 			searchObject(coordinates_map);
 		}
@@ -195,14 +193,14 @@ void Ray::yDoorColided(Coordinates coordinates_map,\
 }
 
 void Ray::doorColided(Coordinates coordinates_map,\
-									bool first_triangle,Door *object){
+									bool first_triangle,Door *door){
 
-	object->spottedMovable();
+	door->spottedMovable();
 	if(player_alive){//Solo muestro las paredes si estoy vivo
 		if(first_triangle)
-			yDoorColided(coordinates_map,first_triangle,object);
+			yDoorColided(coordinates_map,first_triangle,door);
 		else
-			xDoorColided(coordinates_map,first_triangle,object);
+			xDoorColided(coordinates_map,first_triangle,door);
 	}else{
 		searchObject(coordinates_map);
 	}

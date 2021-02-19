@@ -55,8 +55,7 @@ public:
 
     //Pre:-
     // Llama a su respectivo dibujador de texturas
-	void draw(int ray, float distance, \
-        int number_line_texture,bool wall_side_y);
+	void draw(int ray, float distance, int number_line_texture);
 };
 
 #endif

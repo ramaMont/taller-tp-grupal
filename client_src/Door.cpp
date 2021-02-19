@@ -50,11 +50,10 @@ int Door::getLimitWall(){
 	return TEXTURE_LENGTH-(current_frame*TEXTURE_LENGTH/CANT_FRAMES_ANIMATION);
 }
 
-void Door::draw(int ray, float distance,\
-				 int number_line_texture,bool wall_side_y){
+void Door::draw(int ray, float distance,int number_line_texture){
 	if(requires_key){
-		texture_drawer->showKeyDoor(ray,distance,number_line_texture,wall_side_y);
+		texture_drawer->showKeyDoor(ray,distance,number_line_texture);
 	}else{
-		texture_drawer->showDoor(ray,distance,number_line_texture,wall_side_y);
+		texture_drawer->showDoor(ray,distance,number_line_texture);
 	}
 }
