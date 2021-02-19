@@ -366,12 +366,9 @@ void ThGameModelServer::push(Protocol protocol){
 }
 
 void ThGameModelServer::addPlayer(int player_id){
-    try{
-        Player* player = new Player(map, player_id, operations);
-        players.insert(std::pair<int, Player*>(player_id, player));
-        id_insertion_order.push_back(player_id);
-    } catch(...){
-    }
+    Player* player = new Player(map, player_id, operations);
+    players.insert(std::pair<int, Player*>(player_id, player));
+    id_insertion_order.push_back(player_id);
 }
 
 Player& ThGameModelServer::getPlayer(int user_id){
