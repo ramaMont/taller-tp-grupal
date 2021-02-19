@@ -36,6 +36,8 @@ class Ray {
 		int num_ray;
 		int n_rays;
 
+		bool player_alive;
+
 		/* Incrementa las coordenas a ver en el mapa
 		 según cual de las dos posiciones es entera*/
 		void incrementCoordinates(Coordinates &coordinates,\
@@ -81,7 +83,7 @@ class Ray {
 		Ray(const double &ray_angle,const Coordinates &ray_direction,\
 				std::vector<float> &distances,const Coordinates &player_position,\
 				const Coordinates &player_direction, ClientMap &map,\
-				int num_ray, int _n_rays);
+				int num_ray, int _n_rays, bool player_alive);
 
 		/*Llama a la funcion recursiva que encuentra al objeto con 
 		el que choca el rayo, partiendo de la posicion inicial, player_position*/

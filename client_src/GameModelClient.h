@@ -73,6 +73,8 @@ private:
     std::vector<std::pair<int,int>> &_ordered_players_points;
     std::vector<std::pair<int,int>> &_ordered_players_bullets;
 
+    bool& player_alive;
+
     void addPositionableToMap(Posicionable& posicionable);
 
     void addWallsToMap();
@@ -119,7 +121,8 @@ public:
         std::vector<std::pair<int,int>> &_ordered_players_kills,\
         std::vector<std::pair<int,int>> &_ordered_players_points,\
         std::vector<std::pair<int,int>> &_ordered_players_bullets,\
-        int resolution_width, int resolution_height, bool fullscreen);
+        int resolution_width, int resolution_height, bool fullscreen,\
+        bool& player_alive);
 
     void processProtocol(Protocol& protocol);
     void run();

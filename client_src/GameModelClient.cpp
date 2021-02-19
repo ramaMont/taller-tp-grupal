@@ -15,7 +15,8 @@ GameModelClient::GameModelClient(int user_id, const  std::string& map_filename,\
             std::vector<std::pair<int,int>> &_ordered_players_kills,\
             std::vector<std::pair<int,int>> &_ordered_players_points,\
             std::vector<std::pair<int,int>> &_ordered_players_bullets,\
-            int resolution_width, int resolution_height, bool fullscreen) : 
+            int resolution_width, int resolution_height, bool fullscreen,\
+            bool& player_alive) : 
     	GameModel(game_id),\
          window(resolution_width, resolution_height, fullscreen),\
          texture(window), map(),\
@@ -25,7 +26,8 @@ GameModelClient::GameModelClient(int user_id, const  std::string& map_filename,\
         _sound_player(), _has_ended(false), _winner_id(_winner_id),\
         game_done(game_done),_ordered_players_kills(_ordered_players_kills),\
         _ordered_players_points(_ordered_players_points),\
-        _ordered_players_bullets(_ordered_players_bullets){
+        _ordered_players_bullets(_ordered_players_bullets),
+        player_alive(player_alive){
     _winner_id = -1;
     player.set_texture(&texture);
     player.newGunType(1);
@@ -358,6 +360,12 @@ void GameModelClient::processProtocol(Protocol& protocol){
             removeCharacterFromMap(protocol.getId());
             addDeadSprite(position,character_type);
             playSound(SoundPlayer::sound_type::DYING, character);
+            if(character->getId()==player.getId()){
+                player.removeLive();
+                if(!player.hasLivesLeft()){
+                    player_alive=false;
+                }
+            }
             break;
         }
         case Protocol::action::RESURRECT:{

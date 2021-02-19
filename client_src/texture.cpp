@@ -83,11 +83,13 @@ void Texture::addTexture(SDL_Texture** texture,std::string new_texture,int r, in
 	SDL_FreeSurface(loadedSurface);		
 }
 
-void Texture::addLifeBarTexture(std::string new_texture){
+void Texture::addLifeBarTexture(SDL_Texture** texture,std::string new_texture){
 	std::string texture_store = "../data/textures/bar_textures/";
 	texture_store += new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
-	life_bar = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+	Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
+	*texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);		
 }
 
@@ -173,7 +175,8 @@ Texture::Texture(const Window& window):
 		addTexture(&door,"door",152, 0, 136);
 		addTexture(&key_door,"key_door_client",152, 0, 136);
 
-		addLifeBarTexture("life_bar");
+		addLifeBarTexture(&life_bar,"life_bar");
+		addLifeBarTexture(&dead_bar,"dead_bar");
 
 		addBarGuns("knife");
 		addBarGuns("gun");
@@ -290,6 +293,19 @@ void Texture::showLifeBar(int id, unsigned int score, int lives,int health, \
 	    showFaceHealth(portion_health);
         
         showKeys(has_key_1, has_key_2);
+}
+
+
+void Texture::showDeadBar(int id, unsigned int score){
+	    genericShow(dead_bar,0,1097,0,127,0,width,height,info_bar_height);
+	    //Ancho,alto,pos_x,pos_y
+	    int distante_to_bar = height+info_bar_height*0.28;
+	    std::string id_text = std::to_string(id).c_str();
+	    std::string score_text = std::to_string(score).c_str();	
+	    showText(white, id_text,width/16,
+					distante_to_bar*0.2,width*0.1,distante_to_bar);
+	    showText(white, score_text,width/16,
+	    			distante_to_bar*0.2,width*0.3,distante_to_bar);
 }
 
 void Texture::showText(Colors selected_color, std::string text, \
@@ -748,10 +764,13 @@ Texture::~Texture() {
 		SDL_DestroyTexture(sprites[i]);
 	}
 
+
+	SDL_DestroyTexture(rocket_explosion);
 	SDL_DestroyTexture(face_health);
 	SDL_DestroyTexture(guns);
 	SDL_DestroyTexture(door);
 	SDL_DestroyTexture(key_door);
+	SDL_DestroyTexture(dead_bar);
 	SDL_DestroyTexture(life_bar);
 	SDL_DestroyTexture(key);
 	SDL_DestroyTexture(ending_background);

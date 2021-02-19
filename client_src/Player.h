@@ -33,6 +33,8 @@ private:
     bool has_key_1;
     bool has_key_2;
 
+    bool alive;
+
 public:
     explicit Player(ClientMap& map);
 
@@ -45,6 +47,12 @@ public:
     // Completo los datos iniciales del jugador
     void complete(Coordinates initial_position,\
     		Coordinates initial_direction,int player_id);
+
+    void removeLive();
+
+    bool hasLivesLeft();
+
+    void moveDeadPosition(Direction* direccion);
 
     // Cambio el arma actual del jugador
     void newGunType(int new_gun_type);

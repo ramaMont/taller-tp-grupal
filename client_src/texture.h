@@ -24,6 +24,7 @@ private:
     SDL_Texture* guns;
     SDL_Texture* door;
     SDL_Texture* key_door;
+    SDL_Texture* dead_bar;
     SDL_Texture* life_bar;
     SDL_Texture* key;
     SDL_Texture* ending_background;
@@ -52,7 +53,7 @@ private:
     void addTexture(SDL_Texture** texture,std::string new_texture,int r, int g, int b);
 
     // Carga todas las texturas de la barra de vidas
-    void addLifeBarTexture(std::string new_texture);
+    void addLifeBarTexture(SDL_Texture** texture,std::string new_texture);
 
     // Carga las caras de la vida
     void addFaceHealth();
@@ -110,6 +111,10 @@ public:
     //Muestra la barra de vida
     void showLifeBar(int id, unsigned int score, int lives, int health, \
     						int portion_health, int ammo, bool has_key_1, bool has_key_2);
+
+
+    //Muestra la barra cuando está muerto
+    void showDeadBar(int id, unsigned int score);
 
     /*configura los parametros y llama al 
     generic_show para graficar la parte visible del sprite*/

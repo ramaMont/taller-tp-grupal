@@ -18,7 +18,7 @@ void Raycasting::calculateRayCasting(Camera &camera,\
 		Coordinates ray_direction = camera.calculateRayDirection(i,n_rays);
 		float ray_angle = atan(std::abs((float)i/(float)n_rays));
 		Ray ray(ray_angle, ray_direction,distances,
-				player_position,player_direction,map,i,n_rays);
+				player_position,player_direction,map,i,n_rays, player.hasLivesLeft());
 		ray.drawRay();
 	}
 }

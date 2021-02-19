@@ -11,7 +11,7 @@ static const int Y_SIDE = 2;
 Ray::Ray(const double &ray_angle,const Coordinates &ray_direction,\
 	std::vector<float> &distances,const Coordinates &player_position,\
 	const Coordinates &player_direction,\
-	ClientMap &map, int num_ray, int _n_rays):
+	ClientMap &map, int num_ray, int _n_rays, bool player_alive):
 	player_direction(player_direction),
 	player_position(player_position), 
 	ray_direction(ray_direction), 
@@ -19,7 +19,8 @@ Ray::Ray(const double &ray_angle,const Coordinates &ray_direction,\
 	distances(distances),
 	map(map),
 	num_ray(num_ray),
-	n_rays(_n_rays) {}
+	n_rays(_n_rays),
+	player_alive(player_alive) {}
 
 void Ray::incrementCoordinates(Coordinates &whole_coordinates,\
 													int inc_x, int inc_y){
@@ -195,12 +196,16 @@ void Ray::yDoorColided(Coordinates coordinates_map,\
 
 void Ray::doorColided(Coordinates coordinates_map,\
 									bool first_triangle,Door *object){
-	object->spottedMovable();
 
-	if(first_triangle)
-		yDoorColided(coordinates_map,first_triangle,object);
-	else
-		xDoorColided(coordinates_map,first_triangle,object);
+	object->spottedMovable();
+	if(player_alive){//Solo muestro las paredes si estoy vivo
+		if(first_triangle)
+			yDoorColided(coordinates_map,first_triangle,object);
+		else
+			xDoorColided(coordinates_map,first_triangle,object);
+	}else{
+		searchObject(coordinates_map);
+	}
 }
 
 void Ray::spriteColided(Coordinates coordinates_map){

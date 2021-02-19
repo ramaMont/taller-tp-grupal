@@ -12,13 +12,14 @@ UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model,\
     int &_winner_id, bool& game_done,\
     std::vector<std::pair<int,int>> &_ordered_players_kills,\
     std::vector<std::pair<int,int>> &_ordered_players_points,\
-    std::vector<std::pair<int,int>> &_ordered_players_bullets):
+    std::vector<std::pair<int,int>> &_ordered_players_bullets,\
+    bool& player_alive):
         th_sender(th_sender), _game_model(game_model), _background_music(),
         _winner_id(_winner_id), game_done(game_done),
         _ordered_players_kills(_ordered_players_kills),
         _ordered_players_points(_ordered_players_points),
         _ordered_players_bullets(_ordered_players_bullets),
-        game_canceled(false){
+        player_alive(player_alive), game_canceled(false){
     game_done = false;
 }
 
@@ -72,9 +73,9 @@ void UserClient::endGame(SDL_Event& event, Screen& screen, Player& player,
     }
 }
 
-void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, 
+void UserClient::getKeysToServer(const Uint8 *keys, SDL_Event &event, 
         Protocol &protocol, Player& player, int &frames_till_next_shot,
-        bool &shoot_key_pressed, int &repetition_key_delay,Window& window){
+        bool &shoot_key_pressed){
     if (keys[SDL_SCANCODE_RIGHT]){
         protocol.moveInDirection(
             Protocol::direction::ROTATE_RIGHT);
@@ -95,25 +96,17 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event,
             Protocol::direction::BACKWARD);
         th_sender.push(protocol);
     }
-    if (keys[SDL_SCANCODE_M] and !repetition_key_delay){
-        _background_music.togglePause();
-        repetition_key_delay = 5;
-    } else {
-    	if (repetition_key_delay>0)
-    	repetition_key_delay--;
-    }
-
     if (keys[SDL_SCANCODE_RCTRL] or keys[SDL_SCANCODE_LCTRL]){
         if (frames_till_next_shot==0){
-        	if(!shoot_key_pressed or player.gunAllowsContinuousShooting()){
-	        	frames_till_next_shot = player.getFramesPerShot();
-	            protocol.setAction(Protocol::action::SHOOT);
-	            th_sender.push(protocol);
-	        }
+            if(!shoot_key_pressed or player.gunAllowsContinuousShooting()){
+                frames_till_next_shot = player.getFramesPerShot();
+                protocol.setAction(Protocol::action::SHOOT);
+                th_sender.push(protocol);
+            }
         }
         shoot_key_pressed = true;
     } else {
-    	shoot_key_pressed = false;
+        shoot_key_pressed = false;
     }
     if (keys[SDL_SCANCODE_SPACE]){
         protocol.setAction(
@@ -151,6 +144,50 @@ void UserClient::getKeys(const Uint8 *keys, SDL_Event &event,
         protocol.setDamage(4);
         th_sender.push(protocol);
     }
+}
+
+void UserClient::getKeysPlayerDead(const Uint8 *keys, Player& player){
+    if (keys[SDL_SCANCODE_RIGHT]){
+        Direction* direction = new DirRotRight();
+        player.moveDeadPosition(direction);
+        delete direction;
+    }
+    if (keys[SDL_SCANCODE_LEFT]){
+        Direction* direction = new DirRotLeft();
+        player.moveDeadPosition(direction);
+        delete direction;
+    }
+    if (keys[SDL_SCANCODE_UP]){
+        Direction* direction = new DirForward();
+        player.moveDeadPosition(direction);
+        delete direction;
+    }
+    if (keys[SDL_SCANCODE_DOWN]){
+        Direction* direction = new DirBackward();
+        player.moveDeadPosition(direction);
+        delete direction;
+    }
+}
+
+void UserClient::getKeys(const Uint8 *keys, SDL_Event &event, 
+        Protocol &protocol, Player& player, int &frames_till_next_shot,
+        bool &shoot_key_pressed, int &repetition_key_delay,Window& window){
+
+    if(player_alive){
+        getKeysToServer(keys, event, protocol, player, 
+            frames_till_next_shot,shoot_key_pressed);
+    }else{
+        getKeysPlayerDead(keys, player);
+    }
+
+    if (keys[SDL_SCANCODE_M] and !repetition_key_delay){
+        _background_music.togglePause();
+        repetition_key_delay = 5;
+    } else {
+    	if (repetition_key_delay>0)
+    	repetition_key_delay--;
+    }
+
     if (keys[SDL_SCANCODE_ESCAPE]){
         window.disableFullscreen();
     }

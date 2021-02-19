@@ -15,7 +15,7 @@ Player::Player(ClientMap& map):
         frames_per_shot(0), current_shoot_frame(0), 
         score(0), lives(configs[CONFIG::cantidad_de_vidas]),
         health(max_health), ammo(configs[CONFIG::balas_iniciales]),
-        has_key_1(false), has_key_2(false){}
+        has_key_1(false), has_key_2(false), alive(true){}
 
 void Player::complete(Coordinates initial_position,\
 				Coordinates initial_direction,int player_id){
@@ -26,11 +26,40 @@ void Player::complete(Coordinates initial_position,\
     this->id = player_id;
 }
 
+void Player::removeLive(){
+    lives--;
+    if(!hasLivesLeft()){
+        alive=false;
+    }
+}
+
+bool Player::hasLivesLeft(){
+    return lives>0;
+}
+
+void Player::moveDeadPosition(Direction* direccion){
+    Coordinates nuevaPos = direccion->move(this,direction);
+    if(map.isInside(nuevaPos)){
+        this->posicion = nuevaPos;    
+    }else{
+        Coordinates movimiento_unidireccional;
+        movimiento_unidireccional.x = nuevaPos.x;
+        movimiento_unidireccional.y = this->posicion.y;
+        if(map.isInside(movimiento_unidireccional)){
+            this->posicion = movimiento_unidireccional;
+        }
+        movimiento_unidireccional.x = this->posicion.x;
+        movimiento_unidireccional.y = nuevaPos.y;
+        if(map.isInside(movimiento_unidireccional)){
+            this->posicion = movimiento_unidireccional;
+        }
+    }
+}
+
 void Player::resurrect(const Coordinates& res_pos){
   //TODO: Resetear vida y demas atributos
     posicion = res_pos;
     direction = initial_direction;
-    lives--;
     health = max_health;
     has_key_1 = false;
     has_key_2 = false;
@@ -84,10 +113,14 @@ void Player::updateShots(){
 
  //portion_health:Cual de las 8 caras muestro en la barra de vida
 void Player::draw(){
-    float portion_health = ((float)health*8.0)/(float)max_health;
-    texture_drawer->showLifeBar(id, score, lives,health,
-    				 ceil(portion_health), ammo, has_key_1, has_key_2);
-    gun_type->callDrawer(current_shoot_frame);
+    if(alive){
+        float portion_health = ((float)health*8.0)/(float)max_health;
+        texture_drawer->showLifeBar(id, score, lives,health,
+        				 ceil(portion_health), ammo, has_key_1, has_key_2);
+        gun_type->callDrawer(current_shoot_frame);
+    }else{
+        texture_drawer->showDeadBar(id, score);
+    }
 }
 
 void Player::updateHealth(int amount){

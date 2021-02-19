@@ -35,7 +35,7 @@ private:
     std::vector<std::pair<int,int>> _ordered_players_kills;
     std::vector<std::pair<int,int>> _ordered_players_points;
     std::vector<std::pair<int,int>> _ordered_players_bullets;    
-    
+    bool player_alive;
 
     void setGameConfig(std::string& resolution, bool _fullscreen);
     void setId(Protocol& protocol);

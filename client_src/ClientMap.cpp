@@ -99,5 +99,13 @@ void ClientMap::resize(int ancho, int alto){
     mapGame.resize(alto, std::vector<Posicionable*>(ancho));
 }
 
+bool ClientMap::isInside(const Coordinates& coordinates){
+    bool inside_x_axis = coordinates.x>1.1 
+            and coordinates.x<alto-1.1;
+    bool inside_y_axis = coordinates.y>1.1 
+            and coordinates.y<ancho-1.1;
+    return (inside_x_axis and inside_y_axis);
+}
+
 ClientMap::~ClientMap(){
 }

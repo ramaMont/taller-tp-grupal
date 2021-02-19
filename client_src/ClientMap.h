@@ -67,6 +67,8 @@ public:
     // Modifica el ancho y el alto del mapa    
     void resize(int ancho, int alto);
 
+    bool isInside(const Coordinates& coordinates);
+
     ~ClientMap();
 };
 
