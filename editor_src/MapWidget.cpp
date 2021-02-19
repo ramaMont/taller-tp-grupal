@@ -12,6 +12,7 @@ MapWidget::MapWidget(QWidget *parent,
                      const std::map<std::string, std::string>& resourcesMap)
     : QFrame(parent), resourcesMap(resourcesMap) {
     mapCreated = false;
+    mapSaved = false;
     this->setObjectName(QStringLiteral("mapWidget"));
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     gridLayout = new QGridLayout(this);
@@ -28,6 +29,10 @@ MapWidget::MapWidget(QWidget *parent,
 
 bool MapWidget::createdMap() {
     return mapCreated;
+}
+
+bool MapWidget::savedMap() {
+    return mapSaved;
 }
 
 void MapWidget::dragEnterEvent(QDragEnterEvent *event) {
@@ -51,12 +56,15 @@ void MapWidget::dragMoveEvent(QDragMoveEvent *event) {
             QLabel* child_label = qobject_cast<QLabel *>(child);
             if (child_label == originLabel) return;
             if (highlightedLabel != nullptr) {
-                highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+                highlightedLabel->setStyleSheet(
+                    "QWidget:hover{background-color:#D9FAC5;}");
             }
             highlightedLabel = child_label;
-            highlightedLabel->setStyleSheet("QWidget { background-color : #D9FAC5; }");
+            highlightedLabel->setStyleSheet(
+                "QWidget { background-color : #D9FAC5; }");
             event->setDropAction(Qt::MoveAction);
             event->accept();
+            mapSaved = false;
         } else {
             event->acceptProposedAction();
         }
@@ -91,7 +99,8 @@ void MapWidget::dropEvent(QDropEvent *event) {
         }
 
         if (highlightedLabel != nullptr) {
-            highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+            highlightedLabel->setStyleSheet(
+                "QWidget:hover{background-color:#D9FAC5;}");
         }
 
         if (event->source() == this) {
@@ -309,27 +318,34 @@ void MapWidget::showOptionsMenu(QMouseEvent *event, QLabel* visual_label,
     int column = std::stoi(token);
     contextMenu.addAction("Insertar columna a la izquierda", this, [=] {
         addCoumnFrom(column);
+        mapSaved = false;
     });
     contextMenu.addAction("Insertar columna a la derecha", this, [=] {
         addCoumnFrom(column+1);
+        mapSaved = false;
     });
     contextMenu.addAction("Insertar fila arriba", this, [=] {
         addRowFrom(row);
+        mapSaved = false;
     });
     contextMenu.addAction("Insertar fila abajo", this, [=] {
         addRowFrom(row+1);
+        mapSaved = false;
     });
     contextMenu.addAction("Eliminar fila", this, [=] {
         deleteRow(row+1);
+        mapSaved = false;
     });
     contextMenu.addAction("Eliminar columna", this, [=] {
         deleteColumn(column+1);
+        mapSaved = false;
     });
     QPoint globalPos = mapToGlobal(event->pos());
     contextMenu.exec(globalPos);
 
     if (highlightedLabel != nullptr) {
-        highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+        highlightedLabel->setStyleSheet(
+            "QWidget:hover{background-color:#D9FAC5;}");
     }
 }
 
@@ -394,6 +410,7 @@ void MapWidget::mousePressEvent(QMouseEvent *event) {
         return;
     } else {
         // Si es click izquierdo, se intentara mover elementos.
+        mapSaved = false;
         if (QApplication::clipboard()->mimeData()->hasText()) {
             // Si habia algo en el clipboard, quiere decir que este click
             // tiene como objetivo pintar, y no hacer el drag & drop.
@@ -437,7 +454,8 @@ void MapWidget::constructMap(const int& flag) {
                     }
                     if (!error) {
                         hidden_label->setText(QString::fromStdString(element));
-                        label->setPixmap(QPixmap(QString::fromStdString(imagen)));
+                        label->setPixmap(
+                            QPixmap(QString::fromStdString(imagen)));
                     } else {
                         hidden_label->setText(QString::fromStdString("empty"));
                     }
@@ -471,11 +489,13 @@ void MapWidget::createNewMap(const std::string& name,
 void MapWidget::loadMapFromFile(const std::string& map_file) {
     cleanGridAndMap();
     map = new EditableMap(LOAD_FROM_FILE, "", map_file, 0, 0);
+    mapSaved = true;
     constructMap(LOAD_FROM_FILE);
 }
 
 void MapWidget::updateWindowName() {
-    QWidget* window = static_cast<QWidget*> (this->parent()->parent()->parent());
+    QWidget* window = static_cast<QWidget*>
+        (this->parent()->parent()->parent());
     window->setWindowTitle(QString::fromStdString(map->getName()));
 }
 
@@ -489,6 +509,7 @@ void MapWidget::saveMap() {
         return;
     }
     map->saveMap();
+    mapSaved = true;
     std::string message = "Mapa guardado con éxito!";
     showWarning(QString::fromStdString(message), QMessageBox::Information);
 }
@@ -514,6 +535,7 @@ void MapWidget::cleanGridAndMap() {
             gridLayout->itemAt(i)->widget()->deleteLater();
         }
         mapCreated = false;
+        mapSaved = false;
         highlightedLabel = nullptr;
     }
 }
@@ -544,10 +566,14 @@ void MapWidget::paintWalls(QString object_name) {
         std::string pos_primera_fila = "pos_0_" + std::to_string(c);
         std::string pos_ultima_fila = "pos_" + std::to_string(rows-1)
             + "_" + std::to_string(c);
-        QLabel* label_primera_fila = findChild<QLabel*>(QString::fromStdString(pos_primera_fila));
-        QLabel* label_ultima_fila = findChild<QLabel*>(QString::fromStdString(pos_ultima_fila));
-        QLabel* label_primera_fila_e = findChild<QLabel*>(QString::fromStdString(pos_primera_fila + "_element"));
-        QLabel* label_ultima_fila_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_fila + "_element"));
+        QLabel* label_primera_fila = findChild<QLabel*>
+            (QString::fromStdString(pos_primera_fila));
+        QLabel* label_ultima_fila = findChild<QLabel*>
+            (QString::fromStdString(pos_ultima_fila));
+        QLabel* label_primera_fila_e = findChild<QLabel*>
+            (QString::fromStdString(pos_primera_fila + "_element"));
+        QLabel* label_ultima_fila_e = findChild<QLabel*>
+            (QString::fromStdString(pos_ultima_fila + "_element"));
         label_primera_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
         label_primera_fila_e->setText(object_name);
         label_ultima_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
@@ -558,10 +584,14 @@ void MapWidget::paintWalls(QString object_name) {
         std::string pos_primera_columna = "pos_" + std::to_string(f) + "_0";
         std::string pos_ultima_columna = "pos_" + std::to_string(f)
             + "_" + std::to_string(columns-1);
-        QLabel* label_primera_fila = findChild<QLabel*>(QString::fromStdString(pos_primera_columna));
-        QLabel* label_ultima_fila = findChild<QLabel*>(QString::fromStdString(pos_ultima_columna));
-        QLabel* label_primera_fila_e = findChild<QLabel*>(QString::fromStdString(pos_primera_columna + "_element"));
-        QLabel* label_ultima_fila_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_columna + "_element"));
+        QLabel* label_primera_fila = findChild<QLabel*>
+            (QString::fromStdString(pos_primera_columna));
+        QLabel* label_ultima_fila = findChild<QLabel*>
+            (QString::fromStdString(pos_ultima_columna));
+        QLabel* label_primera_fila_e = findChild<QLabel*>
+            (QString::fromStdString(pos_primera_columna + "_element"));
+        QLabel* label_ultima_fila_e = findChild<QLabel*>
+            (QString::fromStdString(pos_ultima_columna + "_element"));
         label_primera_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
         label_primera_fila_e->setText(object_name);
         label_ultima_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
@@ -571,8 +601,10 @@ void MapWidget::paintWalls(QString object_name) {
 
 void MapWidget::cleanHighlightedLabel() {
     if (highlightedLabel != nullptr) {
-        highlightedLabel->setStyleSheet("QWidget { background-color : transparent; }");
-        highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+        highlightedLabel->setStyleSheet(
+            "QWidget { background-color : transparent; }");
+        highlightedLabel->setStyleSheet(
+            "QWidget:hover{background-color:#D9FAC5;}");
     }
 }
 

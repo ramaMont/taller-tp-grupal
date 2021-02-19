@@ -47,6 +47,7 @@ private:
     void setScrollBarStyle(QScrollArea* scrollArea);
     void insertInResourcesMap(std::map<std::string, std::string>& map,
                               std::string key, std::string value);
+    void closeEvent(QCloseEvent *event);
     std::map<std::string, std::string> getResourcesMap();
 };
 
