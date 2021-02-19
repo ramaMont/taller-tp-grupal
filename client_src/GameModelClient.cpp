@@ -482,6 +482,8 @@ void GameModelClient::processPickup(Protocol& protocol){ //Ver bien este
 
 void GameModelClient::processThrow(Protocol& protocol){
     Coordinates position(protocol.getPosition());
+    position.x+=0.5;
+    position.y+=0.5;
     SpriteHolder *posicionable = new 
         SpriteHolder(position,player);
     posicionable->addSprite(protocol.getId());
