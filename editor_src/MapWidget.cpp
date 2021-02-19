@@ -56,10 +56,12 @@ void MapWidget::dragMoveEvent(QDragMoveEvent *event) {
             QLabel* child_label = qobject_cast<QLabel *>(child);
             if (child_label == originLabel) return;
             if (highlightedLabel != nullptr) {
-                highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+                highlightedLabel->setStyleSheet(
+                    "QWidget:hover{background-color:#D9FAC5;}");
             }
             highlightedLabel = child_label;
-            highlightedLabel->setStyleSheet("QWidget { background-color : #D9FAC5; }");
+            highlightedLabel->setStyleSheet(
+                "QWidget { background-color : #D9FAC5; }");
             event->setDropAction(Qt::MoveAction);
             event->accept();
             mapSaved = false;
@@ -97,7 +99,8 @@ void MapWidget::dropEvent(QDropEvent *event) {
         }
 
         if (highlightedLabel != nullptr) {
-            highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+            highlightedLabel->setStyleSheet(
+                "QWidget:hover{background-color:#D9FAC5;}");
         }
 
         if (event->source() == this) {
@@ -341,7 +344,8 @@ void MapWidget::showOptionsMenu(QMouseEvent *event, QLabel* visual_label,
     contextMenu.exec(globalPos);
 
     if (highlightedLabel != nullptr) {
-        highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+        highlightedLabel->setStyleSheet(
+            "QWidget:hover{background-color:#D9FAC5;}");
     }
 }
 
@@ -450,7 +454,8 @@ void MapWidget::constructMap(const int& flag) {
                     }
                     if (!error) {
                         hidden_label->setText(QString::fromStdString(element));
-                        label->setPixmap(QPixmap(QString::fromStdString(imagen)));
+                        label->setPixmap(
+                            QPixmap(QString::fromStdString(imagen)));
                     } else {
                         hidden_label->setText(QString::fromStdString("empty"));
                     }
@@ -489,7 +494,8 @@ void MapWidget::loadMapFromFile(const std::string& map_file) {
 }
 
 void MapWidget::updateWindowName() {
-    QWidget* window = static_cast<QWidget*> (this->parent()->parent()->parent());
+    QWidget* window = static_cast<QWidget*>
+        (this->parent()->parent()->parent());
     window->setWindowTitle(QString::fromStdString(map->getName()));
 }
 
@@ -560,10 +566,14 @@ void MapWidget::paintWalls(QString object_name) {
         std::string pos_primera_fila = "pos_0_" + std::to_string(c);
         std::string pos_ultima_fila = "pos_" + std::to_string(rows-1)
             + "_" + std::to_string(c);
-        QLabel* label_primera_fila = findChild<QLabel*>(QString::fromStdString(pos_primera_fila));
-        QLabel* label_ultima_fila = findChild<QLabel*>(QString::fromStdString(pos_ultima_fila));
-        QLabel* label_primera_fila_e = findChild<QLabel*>(QString::fromStdString(pos_primera_fila + "_element"));
-        QLabel* label_ultima_fila_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_fila + "_element"));
+        QLabel* label_primera_fila = findChild<QLabel*>
+            (QString::fromStdString(pos_primera_fila));
+        QLabel* label_ultima_fila = findChild<QLabel*>
+            (QString::fromStdString(pos_ultima_fila));
+        QLabel* label_primera_fila_e = findChild<QLabel*>
+            (QString::fromStdString(pos_primera_fila + "_element"));
+        QLabel* label_ultima_fila_e = findChild<QLabel*>
+            (QString::fromStdString(pos_ultima_fila + "_element"));
         label_primera_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
         label_primera_fila_e->setText(object_name);
         label_ultima_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
@@ -574,10 +584,14 @@ void MapWidget::paintWalls(QString object_name) {
         std::string pos_primera_columna = "pos_" + std::to_string(f) + "_0";
         std::string pos_ultima_columna = "pos_" + std::to_string(f)
             + "_" + std::to_string(columns-1);
-        QLabel* label_primera_fila = findChild<QLabel*>(QString::fromStdString(pos_primera_columna));
-        QLabel* label_ultima_fila = findChild<QLabel*>(QString::fromStdString(pos_ultima_columna));
-        QLabel* label_primera_fila_e = findChild<QLabel*>(QString::fromStdString(pos_primera_columna + "_element"));
-        QLabel* label_ultima_fila_e = findChild<QLabel*>(QString::fromStdString(pos_ultima_columna + "_element"));
+        QLabel* label_primera_fila = findChild<QLabel*>
+            (QString::fromStdString(pos_primera_columna));
+        QLabel* label_ultima_fila = findChild<QLabel*>
+            (QString::fromStdString(pos_ultima_columna));
+        QLabel* label_primera_fila_e = findChild<QLabel*>
+            (QString::fromStdString(pos_primera_columna + "_element"));
+        QLabel* label_ultima_fila_e = findChild<QLabel*>
+            (QString::fromStdString(pos_ultima_columna + "_element"));
         label_primera_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
         label_primera_fila_e->setText(object_name);
         label_ultima_fila->setPixmap(QPixmap(QString::fromStdString(imagen)));
@@ -587,8 +601,10 @@ void MapWidget::paintWalls(QString object_name) {
 
 void MapWidget::cleanHighlightedLabel() {
     if (highlightedLabel != nullptr) {
-        highlightedLabel->setStyleSheet("QWidget { background-color : transparent; }");
-        highlightedLabel->setStyleSheet("QWidget:hover{background-color:#D9FAC5;}");
+        highlightedLabel->setStyleSheet(
+            "QWidget { background-color : transparent; }");
+        highlightedLabel->setStyleSheet(
+            "QWidget:hover{background-color:#D9FAC5;}");
     }
 }
 

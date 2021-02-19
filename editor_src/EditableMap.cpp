@@ -94,7 +94,8 @@ void EditableMap::getElement(const std::string& position,
 void EditableMap::addCategory(std::string& element) {
     // Algunos elementos, corresponden a categorias especificas.
     std::string guns[3] = {"machine_gun", "fire_canon", "rocket_launcher"};
-    std::string mapable[5] = {"water", "barrel", "pillar", "table", "greenlight"};
+    std::string mapable[5] = {"water", "barrel", "pillar",
+                              "table", "greenlight"};
     std::string vis[2] = {"door", "key_door"};
     std::string items[5] = {"key", "medicine", "trophie", "bullets", "food"};
     if (std::find(guns, guns + 3, element) != guns + 3)
@@ -105,7 +106,6 @@ void EditableMap::addCategory(std::string& element) {
         element = "v_" + element;
     if (std::find(items, items + 5, element) != items + 5)
         element = "i_" + element;
-
 }
 
 void EditableMap::loadElement(const std::string& position,
@@ -155,20 +155,28 @@ void EditableMap::validateWalls() {
 void EditableMap::validateDoors() {
     for (int i=1; i < rows-1; i++) {
         for (int k=1; k < columns-1; k++) {
-            std::string pos = "pos_" + std::to_string(i) + "_" + std::to_string(k);
+            std::string pos = "pos_" + std::to_string(i) + "_" +
+                std::to_string(k);
             std::string element = map[pos];
             if (element.rfind("door", 0) == 0) {
-                std::string previous_row = "pos_" + std::to_string(i-1) + "_" + std::to_string(k);
-                std::string next_row = "pos_" + std::to_string(i+1) + "_" + std::to_string(k);
-                std::string previous_column = "pos_" + std::to_string(i) + "_" + std::to_string(k-1);
-                std::string next_column = "pos_" + std::to_string(i) + "_" + std::to_string(k+1);
+                std::string previous_row = "pos_" + std::to_string(i-1) +
+                    "_" + std::to_string(k);
+                std::string next_row = "pos_" + std::to_string(i+1) +
+                    "_" + std::to_string(k);
+                std::string previous_column = "pos_" + std::to_string(i) +
+                    "_" + std::to_string(k-1);
+                std::string next_column = "pos_" + std::to_string(i) +
+                    "_" + std::to_string(k+1);
                 std::string element_previous_row = map[previous_row];
                 std::string element_next_row = map[next_row];
                 std::string element_previous_column = map[previous_column];
                 std::string element_next_column = map[next_column];
-                if (!((element_previous_row.rfind("wall", 0) == 0) & (element_next_row.rfind("wall", 0) == 0)) && 
-                    !((element_previous_column.rfind("wall", 0) == 0) & (element_next_column.rfind("wall", 0) == 0))) {
-                    throw MapException("Las puertas deben estar rodeadas de paredes!");
+                if (!((element_previous_row.rfind("wall", 0) == 0) &&
+                      (element_next_row.rfind("wall", 0) == 0)) && 
+                    !((element_previous_column.rfind("wall", 0) == 0) &&
+                     (element_next_column.rfind("wall", 0) == 0))) {
+                    throw MapException(
+                        "Las puertas deben estar rodeadas de paredes!");
                 }
             }
         }
@@ -179,7 +187,8 @@ void EditableMap::validatePlayers() {
     bool hasPlayer = false;
     for (int i=1; i < rows-1; i++) {
         for (int k=1; k < columns-1; k++) {
-            std::string pos = "pos_" + std::to_string(i) + "_" + std::to_string(k);
+            std::string pos = "pos_" + std::to_string(i) + "_" +
+                std::to_string(k);
             std::string element = map[pos];
             if (element.rfind("player", 0) == 0) {
                 hasPlayer = true;

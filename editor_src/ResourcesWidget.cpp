@@ -39,8 +39,9 @@ void ResourcesWidget::mousePressEvent(QMouseEvent *event) {
 
     QString object_name = child->objectName();
 
-    if ((event->button() == Qt::RightButton) && (object_name.startsWith("wall"))) {
-        // Si es click derecho y era una pared tengo que mostrar la opt de pintar bordes.
+    if ((event->button() == Qt::RightButton) &&
+        (object_name.startsWith("wall"))) {
+        // Si es click der y es una pared mostrar la opt de pintar bordes.
         QMenu contextMenu;
         contextMenu.addAction("Pared principal", this, [=] {
             map->paintWalls(object_name);

@@ -10,13 +10,13 @@
 
 
 Editor::Editor(QWidget *parent) : QWidget(parent) {
-
     // Tamaño y titulo de la ventana
     this->resize(1050, 800);
     this->setWindowTitle(QString("Editor de Mapas - Wolfenstein 3D"));
     createMenu();
 
-    this->setStyleSheet("QWidget {background-image: url(../data/fondo_sangre.jpg) }"
+    this->setStyleSheet(
+    "QWidget {background-image: url(../data/fondo_sangre.jpg) }"
     "QLabel { color : white; }"
     "QMenuBar {color: white;}"
     "QMenu::item {color: white;}"
@@ -52,13 +52,15 @@ Editor::Editor(QWidget *parent) : QWidget(parent) {
     scrollMapArea->setGeometry(QRect(230, 60, 750, 700));
 
     mapWidget = new MapWidget(this, gameResources);
-    mapWidget->setStyleSheet("QWidget {background-image: url(../data/textures/fondo32.png) }");
+    mapWidget->setStyleSheet(
+        "QWidget {background-image: url(../data/textures/fondo32.png) }");
     scrollMapArea->setWidget(mapWidget);
     scrollMapArea->show();
 
     // Creo un widget para los recursos con los que armaremos el mapa.
     resourcesWidget = new ResourcesWidget(this, gameResources, mapWidget);
-    resourcesWidget->setStyleSheet("QWidget {background-image: url(../data/textures/fondo33.png) }");
+    resourcesWidget->setStyleSheet(
+        "QWidget {background-image: url(../data/textures/fondo33.png) }");
 
     // Agrego una barra de scroll por si los elementos son muchos.
     scrollResourcesArea = new QScrollArea(this);
@@ -150,8 +152,7 @@ void Editor::setScrollBarStyle(QScrollArea* scrollArea) {
     ""
     " QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {"
     "     background: none;"
-    " }"
-    ));
+    " }"));
 }
 
 void Editor::createNewMap() {
@@ -316,13 +317,20 @@ std::map<std::string, std::string> Editor::getResourcesMap() {
     // Aprovechando que map ordena por las keys, agrego iniciales
     // que caracterizen el tipo de objeto.
     // Armas y jugadores.
-    insertInResourcesMap(map, "player_front", "../data/textures/player_front.png");
-    insertInResourcesMap(map, "player_left", "../data/textures/player_left.png");
-    insertInResourcesMap(map, "player_right", "../data/textures/player_right.png");
-    insertInResourcesMap(map, "player_back", "../data/textures/player_back.png");
-    insertInResourcesMap(map, "g_machine_gun", "../data/textures/machine_gun.png");
-    insertInResourcesMap(map, "g_fire_canon", "../data/textures/fire_canon.png");
-    insertInResourcesMap(map, "g_rocket_launcher", "../data/textures/rocket_launcher.png");
+    insertInResourcesMap(map, "player_front",
+                         "../data/textures/player_front.png");
+    insertInResourcesMap(map, "player_left",
+                         "../data/textures/player_left.png");
+    insertInResourcesMap(map, "player_right",
+                         "../data/textures/player_right.png");
+    insertInResourcesMap(map, "player_back",
+                         "../data/textures/player_back.png");
+    insertInResourcesMap(map, "g_machine_gun",
+                         "../data/textures/machine_gun.png");
+    insertInResourcesMap(map, "g_fire_canon",
+                         "../data/textures/fire_canon.png");
+    insertInResourcesMap(map, "g_rocket_launcher",
+                         "../data/textures/rocket_launcher.png");
     // Pickeables
     insertInResourcesMap(map, "i_key", "../data/textures/key.png");
     insertInResourcesMap(map, "i_medicine", "../data/textures/medicine.png");
@@ -334,21 +342,34 @@ std::map<std::string, std::string> Editor::getResourcesMap() {
     insertInResourcesMap(map, "m_barrel", "../data/textures/barrel.png");
     insertInResourcesMap(map, "m_pillar", "../data/textures/pillar_editor.png");
     insertInResourcesMap(map, "m_table", "../data/textures/table.png");
-    insertInResourcesMap(map, "m_greenlight", "../data/textures/greenlight_editor.png");
+    insertInResourcesMap(map, "m_greenlight",
+                         "../data/textures/greenlight_editor.png");
 
     // Paredes y puertas
-    insertInResourcesMap(map, "wall_bluestone", "../data/textures/wall_bluestone_editor.png");
-    insertInResourcesMap(map, "wall_greystone", "../data/textures/wall_greystone_editor.png");
-    insertInResourcesMap(map, "wall_colorstone", "../data/textures/wall_colorstone_editor.png");
-    insertInResourcesMap(map, "wall_redbrick", "../data/textures/wall_redbrick_editor.png");
-    insertInResourcesMap(map, "wall_purplestone", "../data/textures/wall_purplestone_editor.png");
-    insertInResourcesMap(map, "passage_bluestone", "../data/textures/passage_bluestone.png");
-    insertInResourcesMap(map, "passage_colorstone", "../data/textures/passage_colorstone.png");
-    insertInResourcesMap(map, "passage_greystone", "../data/textures/passage_greystone.png");
-    insertInResourcesMap(map, "passage_purplestone", "../data/textures/passage_purplestone.jpg");
-    insertInResourcesMap(map, "passage_redbrick", "../data/textures/passage_redbrick.jpg");
-    insertInResourcesMap(map, "v_door", "../data/textures/door_editor.png");
-    insertInResourcesMap(map, "v_key_door", "../data/textures/key_door.png");
+    insertInResourcesMap(map, "wall_bluestone",
+                         "../data/textures/wall_bluestone_editor.png");
+    insertInResourcesMap(map, "wall_greystone",
+                         "../data/textures/wall_greystone_editor.png");
+    insertInResourcesMap(map, "wall_colorstone",
+                         "../data/textures/wall_colorstone_editor.png");
+    insertInResourcesMap(map, "wall_redbrick",
+                         "../data/textures/wall_redbrick_editor.png");
+    insertInResourcesMap(map, "wall_purplestone",
+                         "../data/textures/wall_purplestone_editor.png");
+    insertInResourcesMap(map, "passage_bluestone",
+                         "../data/textures/passage_bluestone.png");
+    insertInResourcesMap(map, "passage_colorstone",
+                         "../data/textures/passage_colorstone.png");
+    insertInResourcesMap(map, "passage_greystone",
+                         "../data/textures/passage_greystone.png");
+    insertInResourcesMap(map, "passage_purplestone",
+                         "../data/textures/passage_purplestone.jpg");
+    insertInResourcesMap(map, "passage_redbrick",
+                         "../data/textures/passage_redbrick.jpg");
+    insertInResourcesMap(map, "v_door",
+                         "../data/textures/door_editor.png");
+    insertInResourcesMap(map, "v_key_door",
+                         "../data/textures/key_door.png");
     return map;
 }
 
@@ -366,14 +387,15 @@ bool Editor::eventFilter(QObject *obj, QEvent *event) {
 }
 
 void Editor::closeEvent(QCloseEvent *event) {
-    if(mapWidget->createdMap() && !mapWidget->savedMap()){
+    if (mapWidget->createdMap() && !mapWidget->savedMap()){
         // Consulto si desea cerrar y perder cambios.
         QMessageBox::StandardButton answer = QMessageBox::question(
             this,
             tr("Cerrar editor"),
-            tr("Está seguro que desea cerrar el editor? Hay cambios sin guardar y se perderán."),
+            tr("Está seguro que desea cerrar el editor?"
+            "Hay cambios sin guardar y se perderán."),
             QMessageBox::Yes | QMessageBox::No);
-        if(answer == QMessageBox::Yes){
+        if (answer == QMessageBox::Yes){
             event->accept();
         } else {
             event->ignore();
