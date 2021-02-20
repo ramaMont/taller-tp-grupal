@@ -35,20 +35,21 @@ public:
     // Agrega al resto de posicionables al mapa    
     void addPositionable(Posicionable* positionable, Coordinates position);
 
-    //Pre:-
-    // Asigna una nueva posicion al personaje
+    /*Pre:-
+    Asigna una nueva posicion a un movible, se diferencia de addPositionable 
+    porque, en caso de que la posicion esté ocupada, intenta agregarlo igual
+    en caso de que en esa posicion haya un sprite o una puerta abierta*/
     void addMovable(Movable* _character, Coordinates posicion);
 
 
+    //Pre:-
+    // Remueve todo lo que hay en una posicion.
     void removePositionable(Coordinates position);
 
     //Pre:-
     // Remueve a un personaje de su posicion
     void removeMovable(Coordinates position);
 
-    //Pre:-
-    // Remueve todos los punteros de su posicion
-    void removeAllPositionables(Coordinates position);
 
     //Pre:-
     // Remueve un sprite donde actualmente se encuentra un personaje,

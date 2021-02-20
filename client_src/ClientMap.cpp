@@ -63,10 +63,6 @@ void ClientMap::removeMovable(Coordinates position){
     }
 }
 
-void ClientMap::removeAllPositionables(Coordinates position){
-    mapGame[floor(position.x)][floor(position.y)]=nullptr;
-}
-
 void ClientMap::removeSpriteWithCharacter(Coordinates position,
         Movable* character){
     mapGame[floor(position.x)][floor(position.y)]=character;
