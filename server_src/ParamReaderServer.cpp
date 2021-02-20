@@ -58,8 +58,6 @@ void ParamReaderServer::getConfiguration(){
 	    config["distancia_explosion_cohete"].as<float>();
 	configs[CONFIG::rango_de_disparo] = 
 	    config["rango_de_disparo"].as<float>();
-	configs[CONFIG::baja_precision_distancia] = 
-	    config["baja_de_precision_por_distancia"].as<float>();
 	configs[CONFIG::maximo_danio] = 
 	    config["maximo_danio"].as<int>();
 	configs[CONFIG::frecuencia_ametralladora] = 

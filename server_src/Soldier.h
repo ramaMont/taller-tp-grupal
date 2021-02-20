@@ -31,7 +31,8 @@ protected:
     // Obtiene los enemigos que estan en su rango de disparo y los guarda
     // en el parametro 'players'
     void getCloserEnemies(std::map<int, Player*>& enemies,
-       Player* player, std::set<std::pair<int, Player*>>& players);
+        Player* player, std::set<std::pair<int, Player*>>& players,
+        float precision);
        
     // Intenta dispar a sus enemigos, lo logra si no los intercepta ningun
 	// objeto

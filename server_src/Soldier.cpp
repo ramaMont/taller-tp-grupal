@@ -20,6 +20,7 @@
 #define ROTACION_45 0.7071
 #define PORCENTAJE 100
 #define DISTANCIA_CUCHILLO 2
+#define K_DISTANCE_PRECISION 5
 
 #define TEXTURE_MACHINE_GUN 6
 #define TEXTURE_CANON_GUN 9
@@ -111,14 +112,15 @@ void SoldierState::rechargeBullets(){
 // Soldado
 
 void Soldier::getCloserEnemies(std::map<int, Player*>& enemies,
-    Player* player, std::set<std::pair<int, Player*>>& players){
+    Player* player, std::set<std::pair<int, Player*>>& players,
+    float precision){
     for (auto it = enemies.begin(); it != enemies.end(); ++it){
         auto enemy = it->second;
 		if (enemy == player)
 			continue;
 		float angle = player->calculateAngle(enemy);
 		int degrees = angle * GRADOS_180 / PI;
-		if (degrees <= configs[CONFIG::rango_de_disparo])
+		if (degrees <= configs[CONFIG::rango_de_disparo] * precision)
 		    players.insert(std::pair<int,Player*>(degrees, enemy));
 	}
 }
@@ -166,8 +168,10 @@ void Soldier::atack(Player *player, Player* enemy, float precision, int angle){
 	unsigned int seed = 0;
 	double distance = player->calculateDistance(enemy);
 
-    float damage = precision - 
-                  distance * configs[CONFIG::baja_precision_distancia];
+    if (distance * (1 - precision) >= K_DISTANCE_PRECISION)
+        return;
+        
+    float damage = 1 - (distance * (1 - precision)) / (int)configs[CONFIG::maximo_danio];
 	damage -= angle/(int)configs[CONFIG::rango_de_disparo];
 	int n_rand = rand_r(&seed) % (int)configs[CONFIG::maximo_danio] + 1;
 	damage *= n_rand;
@@ -190,7 +194,7 @@ Dog::Dog(int& n): Soldier(n){
 
 int Dog::shoot(Player *player, std::map<int, Player*>& enemies){
 	std::set<std::pair<int, Player*>> set_players;
-	getCloserEnemies(enemies, player, set_players);
+	getCloserEnemies(enemies, player, set_players, 1);
 	bite(player, set_players);
 	return 0;
 }
@@ -228,7 +232,8 @@ Guard::Guard(int& bullets): Soldier(bullets){
 
 int Guard::shoot(Player *player, std::map<int, Player*>& enemies){
 	std::set<std::pair<int, Player*>> set_players;
-	getCloserEnemies(enemies, player, set_players);
+	getCloserEnemies(enemies, player, set_players,
+        configs[CONFIG::precision_pistola]);
 	tryShoot(player, set_players, configs[CONFIG::precision_pistola]);
 	bullets --;
 	return 0;
@@ -255,7 +260,8 @@ SS::SS(int &bullets): Soldier(bullets){
 
 int SS::shoot(Player *player, std::map<int, Player*>& enemies){
 	std::set<std::pair<int, Player*>> set_players;
-	getCloserEnemies(enemies, player, set_players);
+	getCloserEnemies(enemies, player, set_players,
+        configs[CONFIG::precision_ametralladora]);
 
 	for (int i = 0; (i < configs[CONFIG::balas_rafaga_ametralladora]) 
 	    && (bullets > 0); i++){
@@ -289,7 +295,8 @@ Officer::Officer(int &bullets): Soldier(bullets){
 
 int Officer::shoot(Player *player, std::map<int, Player*>& enemies){
 	std::set<std::pair<int, Player*>> set_players;
-	getCloserEnemies(enemies, player, set_players);
+	getCloserEnemies(enemies, player, set_players,
+        configs[CONFIG::precision_canion]);
 	tryShoot(player, set_players, configs[CONFIG::precision_canion]);
 	bullets --;	
 	return 0;

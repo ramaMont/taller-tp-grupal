@@ -20,7 +20,6 @@ enum CONFIG{
 	balas_gastadas_lanzacohetes,
 	distancia_explosion_cohete,
 	rango_de_disparo,
-	baja_precision_distancia,
 	maximo_danio,
 	frecuencia_ametralladora,
 	frecuencia_canion,
