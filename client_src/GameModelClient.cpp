@@ -661,4 +661,9 @@ GameModelClient::~GameModelClient(){
 	for (auto& sprite : sprites){
 		delete sprite;
 	}
+
+    for (auto& rocket : rockets){
+        delete rocket;
+    }
+
 }
