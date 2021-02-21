@@ -39,8 +39,10 @@ void ThBots::run(){
         for (auto it = bots.begin(); it != bots.end() && is_running; ++it){
             try{
                 Player* player = players[it->first];
-                Bot::Event event = it->second->getEvent(player, players);
-                makeEvent(it->first, event);
+                if (player->isAlive()){
+                    Bot::Event event = it->second->getEvent(player, players);
+                    makeEvent(it->first, event);
+                }
             } catch(...) { }
         }        
         
