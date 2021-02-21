@@ -229,26 +229,15 @@ void  GameModelClient::updateFrameAnimations(){
         door.updateFrame();
     }
 
-    for (unsigned int i=0; i<explosions.size(); i++){
-        SpriteHolder* explosion = explosions[i];
-        explosion->updateExplosion();
-        if (explosion->explosionComplete() and !explosion->hasTextures()){ //Si terminé la animacion de explosion y no almacena otro sprite, lo borro
-            unsigned int j=0;
-            bool founded = false;
-            Coordinates explosion_pos = explosion->get_position();
-            while(j<sprites.size() and !founded){
-                Coordinates sprites_pos = sprites[j]->get_position();
-                if (explosion_pos==sprites_pos){
-                    founded = true;
-                    map.removePositionable(explosion->get_position());
-                    explosions.erase(explosions.begin() + i);
-                    sprites.erase(sprites.begin() + j);
-                    delete explosion;
-                }
-                j++;
-            }
-        }
-    }  
+	for (unsigned int i=0; i<sprites.size(); i++){
+		SpriteHolder* sprite = sprites[i];
+		sprite->updateExplosion();
+		if (sprite->explosionComplete() and !sprite->hasTextures()){
+			map.removePositionable(sprite->get_position());//Ojo si hay otra cosa en ese sprite al removerlo
+            sprites.erase(sprites.begin() + i);
+            delete sprite;
+		}
+	}  
 }
 
 void GameModelClient::showWindow(){
@@ -288,7 +277,6 @@ void GameModelClient::addSpriteOn(Coordinates position, int sprite_value, bool a
             position_has_sprite_already=true;
             if (add_explosion){
                 sprites[i]->addExplosion();
-                explosions.push_back(sprites[i]);
             }else{
                 sprites[i]->addSprite(sprite_value);
             }
@@ -310,7 +298,6 @@ void GameModelClient::addSpriteOn(Coordinates position, int sprite_value, bool a
                 new SpriteHolder(position,player);
             if (add_explosion){
                 posicionable->addExplosion();
-                explosions.push_back(posicionable);
             }else{
                 posicionable->addSprite(sprite_value);
             }
@@ -481,6 +468,16 @@ void GameModelClient::processPickup(Protocol& protocol){ //Ver bien este
       map.removeSpriteWithCharacter(position,character);
     } else{
       map.removePositionable(position);
+    }
+    unsigned int i=0;
+    bool founded = false;
+    while(i<sprites.size() and !founded){
+    	if(sprites[i]->get_position()==position){
+    		founded = true;
+    		delete sprites[i];
+    		sprites.erase(sprites.begin() + i);
+    	}
+    	i++;
     }
 }
 
