@@ -488,12 +488,7 @@ void GameModelClient::processThrow(Protocol& protocol){
     Coordinates position(protocol.getPosition());
     position.x+=0.5;
     position.y+=0.5;
-    SpriteHolder *posicionable = new 
-        SpriteHolder(position,player);
-    posicionable->addSprite(protocol.getId());
-    posicionable->set_texture(&texture);
-    sprites.push_back(posicionable);
-    map.addPositionable(posicionable,position);
+    addSpriteOn(position, protocol.getId(), false);
 }
 
 void GameModelClient::processGunSwitch(Protocol& protocol){
