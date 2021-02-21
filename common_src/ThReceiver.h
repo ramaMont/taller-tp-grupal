@@ -16,7 +16,7 @@ public:
 //    void setGameModel(GameModel* gameModel);
     virtual void processReception(Protocol& protocol) = 0;
 //    GameModel* getGameModel();
-    ~ThReceiver();
+    virtual ~ThReceiver();
 };
 
 #endif

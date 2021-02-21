@@ -19,19 +19,19 @@ public:
 
     struct __attribute__((packed)) NetworkProtocol {
         Protocol::action _action;
-        std::uint16_t id;
+        std::uint16_t _id_botCty;
         Protocol::direction _direction;
-        std::uint16_t damage;
-        std::uint16_t _game_id;
+        std::uint16_t _damage_mapId_life;
+        std::uint16_t _game_id_posX;
         float _float_aux;
     };
     
     Protocol();
-    explicit Protocol(int id);
+    explicit Protocol(int _id_botCty);
     explicit Protocol(int user_id, int map_id);
     explicit Protocol(int user_id, int danio, Protocol::action action);
     explicit Protocol(int user_id, int map_id, int game_id);
-    explicit Protocol(int id, Protocol::direction direction);
+    explicit Protocol(int _id_botCty, Protocol::direction direction);
     explicit Protocol(int config_number, float config_value);
     explicit Protocol(Protocol::action action, int user_id, 
         Protocol::direction direction, int map_id, int pos_x, int pos_y);
@@ -51,7 +51,6 @@ public:
     int getRocketId();
     float getConfiguration();
     std::tuple<int, int> getPosition() const;
-    std::tuple<float, float> getFloatPosition() const;
     void setAction(Protocol::action action);
     void setDamage(int danio);
     void setPosition(int pos_x, int pos_y);
@@ -59,10 +58,10 @@ public:
 
 private:
     Protocol::action _action;
-    std::uint16_t id;
+    std::uint16_t _id_botCty;
     Protocol::direction _direction;
-    std::uint16_t damage;
-    std::uint16_t _game_id;
+    std::uint16_t _damage_mapId_life;
+    std::uint16_t _game_id_posX;
     float _float_aux;
 };
 

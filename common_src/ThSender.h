@@ -17,7 +17,7 @@ public:
     int getId();
     void push(Protocol protocol);
     virtual void stop() override;
-    ~ThSender();
+    virtual ~ThSender();
 };
 
 #endif
