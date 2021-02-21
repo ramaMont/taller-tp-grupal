@@ -24,11 +24,13 @@ private:
     std::map<int,Player*> players;
 
     std::map<int,ThSender *> users_sender;
+    std::map<int, Rocket*> rockets;
     std::atomic<bool> launched;
     ThGameEvents th_game_events;
     ThBots th_bots;
     int map_id_checksum;
     int _bots_cty;
+    int rocket_ids;
 
     void processMove(Protocol& protocol);
     void processShoot(Protocol protocol);
@@ -39,7 +41,7 @@ private:
     void processOpening(Protocol& protocol);
     void processClose(Protocol& protocol);
     void processGunSwitch(Protocol& protocol);
-    void processRocket(Protocol& protocol);
+    void processMoveRocket(Protocol& protocol);
     void processTopFiveEnd();
     void sendPlayerProtocol(Protocol& protocol);
     void convertToTopFive(std::vector<std::pair<int,int>>& points_vector);

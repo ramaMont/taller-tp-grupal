@@ -70,22 +70,26 @@ class Rocket: public Object{
     ServerMap& map;
     std::atomic<bool> exploded;
     ThGameModelServer& game_model;
+    int id;
     
     // Hiere a los enemigos cercanos
     void hurtEnemies();
 
     public:
     explicit Rocket(Coordinates position, Coordinates dir,Player* player,
-        std::map<int, Player*>& enemies, ThGameModelServer& game_model);
+        std::map<int, Player*>& enemies, ThGameModelServer& game_model, int id);
         
     // Mueve el cohete hacia adelante
-    void move();
+    bool move();
     
     // Hace explotar el cohete
     void explode(bool remove);
     
     // Retorna true en caso de que haya explotado el cohete
     bool hasExploded();
+
+    // Retorna el id
+    int getId();
     
     // Retorna true si hay un objeto entre las posiciones start y end del mapa
     bool crashes(const Coordinates& start, const Coordinates& end);

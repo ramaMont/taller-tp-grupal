@@ -17,10 +17,11 @@ class Character;
  para dibujar es el mismo que el de los sprites*/
 class Rocket : public Movable, public SpriteDrawer{
 private:
+    int rocket_id;
 
 public:
 	explicit Rocket(Coordinates posicion,Coordinates direction,\
-					ClientMap& map, Player &player);
+					ClientMap& map, Player &player, int rocket_id);
 
     //Pre:-
     // Le indico al rayo que colisionó con un enemigo y setea al 
@@ -34,6 +35,10 @@ public:
 	void callDrawer(int first_sigted_ray,int first_num_pixel,\
 				int last_sigted_ray,int last_num_pixel,\
 						float player_distance) override;
+                        
+     //Pre:-
+    // Retorna el id del rocket                     
+    int getRocketId();
 
     //Pre:-
     // Libero la memoria del tipo de enemigo
