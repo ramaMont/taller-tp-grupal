@@ -61,7 +61,6 @@ private:
     std::vector<SpriteHolder*> sprites;
     std::vector<Enemy*> enemies;
     std::vector<Rocket*> rockets;
-    std::vector<SpriteHolder*> explosions;
 
 	bool is_running;
     SoundPlayer _sound_player;

@@ -52,11 +52,11 @@ public:
 
     //Pre:-
     // devuelve si está almacenando o no un personaje
-    bool hasCharacter();
+    bool hasMovable();
 
     //Pre:-
     // Devuelve el puntero al personaje
-    Movable* getCharacter();
+    Movable* getMovable();
 
     //Pre:-
     // Agrega un personaje

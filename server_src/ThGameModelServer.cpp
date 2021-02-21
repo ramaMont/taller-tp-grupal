@@ -401,6 +401,11 @@ ThGameModelServer::~ThGameModelServer(){
     // Todos los jugadores son limpiados en la funcion 
     // removePlayer la cual es llamada cada vez que un jugador
     // se desconecta o se frena la ejecucion de un ThUserServer
+    // Pero si tengo que liberar la memoria de los player bots.
+    for (auto& player : players){
+        delete player.second;
+    }
+
     if (launched){
         th_game_events.stop();
         th_game_events.join();
