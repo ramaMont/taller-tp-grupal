@@ -61,9 +61,18 @@ public:
     virtual void stop() override;
     virtual void push(Protocol protocol) override;
     void addThSender(ThSender* th_sender);
+    
+    // Envia el protocolo pasado por parametro a todos
+    // los usuarios que se encuentren conectados a esta partida.
     void echoProtocol(Protocol protocol);
+
+    // Elimina al jugador cuyo id coincida con el valor pasado por parametro
+    // lo saca tanto del mapa de juego como del vector de ThSenders.
     void removePlayer(int user_id);
     virtual bool isDone() override;
+
+    // Retorna verdadero si la partida está corriendo como thread 
+    // o falso en caso contrario
     bool wasLaunched();
     int getMapIdChecksum();
     int getBotsCty();
