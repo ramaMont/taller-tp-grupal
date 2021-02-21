@@ -64,11 +64,11 @@ void SpriteHolder::remove(){
 }
 
 
-bool SpriteHolder::hasCharacter(){
+bool SpriteHolder::hasMovable(){
 	return (character!=nullptr);
 }
 
-Movable* SpriteHolder::getCharacter(){
+Movable* SpriteHolder::getMovable(){
 	return character;
 }
 

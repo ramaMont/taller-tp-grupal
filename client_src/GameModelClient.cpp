@@ -232,8 +232,13 @@ void  GameModelClient::updateFrameAnimations(){
 	for (unsigned int i=0; i<sprites.size(); i++){
 		SpriteHolder* sprite = sprites[i];
 		sprite->updateExplosion();
-		if (sprite->explosionComplete() and !sprite->hasTextures()){
-			map.removePositionable(sprite->get_position());//Ojo si hay otra cosa en ese sprite al removerlo
+		if (sprite->explosionComplete() and !sprite->hasTextures()){//Si no tiene nada, lo borro
+			if(sprite->hasMovable()){
+		      Movable* movable = sprite->getMovable();
+		      map.removeSpriteWithCharacter(sprite->get_position(),movable);
+			}else{
+				map.removePositionable(sprite->get_position());
+			}
             sprites.erase(sprites.begin() + i);
             delete sprite;
 		}
@@ -463,9 +468,9 @@ void GameModelClient::processPickup(Protocol& protocol){ //Ver bien este
     Coordinates position(protocol.getPosition());
     SpriteHolder* sprite = static_cast<SpriteHolder*>
         (map.getPositionableIn(position));
-    if (sprite->hasCharacter()){
-      Movable* character = sprite->getCharacter();
-      map.removeSpriteWithCharacter(position,character);
+    if (sprite->hasMovable()){
+      Movable* movable = sprite->getMovable();
+      map.removeSpriteWithCharacter(position,movable);
     } else{
       map.removePositionable(position);
     }
