@@ -93,7 +93,8 @@ void ClientHolder::logginScreen(){
 
 void ClientHolder::run(){
     logginScreen();
-
+    //Tiempo de espera hasta que el servidor procese el ingreso del cliente
+    std::this_thread::sleep_for(std::chrono::milliseconds(150));
     if (!ready_to_play) 
         return;
     // Comienzo el juego luego del setup inicial   

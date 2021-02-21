@@ -217,7 +217,8 @@ public:
     void showLoosingScreen(int winnder_id, \
     	std::vector<std::pair<int,int>> &ordered_players_kills, \
     	std::vector<std::pair<int,int>> &ordered_players_points, \
-    	std::vector<std::pair<int,int>> &ordered_players_bullets);
+    	std::vector<std::pair<int,int>> &ordered_players_bullets,\
+        bool have_winner);
 
     void showDisconnectedScreen();
 

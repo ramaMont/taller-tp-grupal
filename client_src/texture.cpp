@@ -718,7 +718,8 @@ void Texture::showWinningScreen(
 void Texture::showLoosingScreen(int winner_id,\
 		std::vector<std::pair<int,int>> &ordered_players_kills, \
     	std::vector<std::pair<int,int>> &ordered_players_points, \
-    	std::vector<std::pair<int,int>> &ordered_players_bullets){
+    	std::vector<std::pair<int,int>> &ordered_players_bullets,\
+		bool have_winner){
 	int first_x_pixel = 0;
 	int cant_x_pixels = 913;
 	int first_y_pixel = 0;
@@ -733,7 +734,9 @@ void Texture::showLoosingScreen(int winner_id,\
 				cant_y_pixels,windows_x_pos,length_x,windows_y_pos,lenght_y);
 
 	std::string id_text = std::to_string((int16_t)winner_id);
-	std::string winner_letter= "Winner id: " + id_text;
+	std::string winner_letter = "Times Up    ";
+	if (have_winner)
+		winner_letter= "Winner id: " + id_text;
 
 	showText(black, winner_letter,width*2/64,
 						height/8, width*0.72, height/10);
