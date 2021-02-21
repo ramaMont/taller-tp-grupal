@@ -41,7 +41,7 @@ private:
     void processOpening(Protocol& protocol);
     void processClose(Protocol& protocol);
     void processGunSwitch(Protocol& protocol);
-    void processRocket(Protocol& protocol);
+    void processMoveRocket(Protocol& protocol);
     void processTopFiveEnd();
     void sendPlayerProtocol(Protocol& protocol);
     void convertToTopFive(std::vector<std::pair<int,int>>& points_vector);

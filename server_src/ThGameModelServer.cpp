@@ -71,8 +71,8 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
         case Protocol::action::SWITCH_GUN:
             processGunSwitch(protocol);
             break;
-        case Protocol::action::ROCKET:
-            processRocket(protocol);
+        case Protocol::action::MOVE_ROCKET:
+            processMoveRocket(protocol);
             break;
         case Protocol::action::KEY:
             echoProtocol(protocol);
@@ -194,7 +194,7 @@ void ThGameModelServer::processGunSwitch(Protocol& protocol){
         echoProtocol(protocol);
 }
 
-void ThGameModelServer::processRocket(Protocol& protocol){
+void ThGameModelServer::processMoveRocket(Protocol& protocol){
     int rocket_id = protocol.getRocketId();
     Rocket* rocket = rockets[rocket_id];
     bool exploded = rocket->move();

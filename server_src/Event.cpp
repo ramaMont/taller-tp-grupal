@@ -160,8 +160,7 @@ void RocketEvent::process(BlockingQueue<Protocol>& game_model_queue){
     if (diff < ROCKET_TIME_TO_MOVE)
         return;
     _time = (time_now.tv_usec / 1000);
-    Protocol protocol(Protocol::action::ROCKET, 0,
-        Protocol::direction::STAY, 0, rocket_pos.x, rocket_pos.y);   
+    Protocol protocol(Protocol::action::MOVE_ROCKET, 0, rocket->getId());   
     game_model_queue.push(protocol);
     rocket_pos.increment_on_direction(rocket_dir, ROCKET_STEP);
 }

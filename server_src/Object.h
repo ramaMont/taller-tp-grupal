@@ -87,6 +87,9 @@ class Rocket: public Object{
     
     // Retorna true en caso de que haya explotado el cohete
     bool hasExploded();
+
+    // Retorna el id
+    int getId();
     
     // Retorna true si hay un objeto entre las posiciones start y end del mapa
     bool crashes(const Coordinates& start, const Coordinates& end);

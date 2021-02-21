@@ -533,10 +533,10 @@ void GameModelClient::processRocket(Protocol& protocol){
         while (position == new_pos){
             new_pos.increment_on_direction(direction, 0.5);
         }
-        Rocket* rocket = new Rocket(position, direction, map, player, rocket_id);
+        Rocket* rocket = new Rocket(new_pos, direction, map, player, rocket_id);
         rocket->set_texture(&texture);
         rockets.push_back(rocket);
-        map.addMovable(rocket,position);
+        map.addMovable(rocket,new_pos);
         //printf("cree uno nuevo en: (%f,%f)\n\n", position.x,position.y);
     }
 }

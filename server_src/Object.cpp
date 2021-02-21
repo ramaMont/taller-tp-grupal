@@ -148,6 +148,10 @@ bool Rocket::hasExploded(){
     return exploded;
 }
 
+int Rocket::getId(){
+    return id;
+}
+
 bool Rocket::crashes(const Coordinates& start, const Coordinates& end){
 	if (start == end) return false;
 	Coordinates direction(end.x - start.x, end.y - start.y);
