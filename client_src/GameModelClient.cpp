@@ -343,6 +343,8 @@ void GameModelClient::removeCharacterFromMap(int id){
 }
 
 void GameModelClient::processProtocol(Protocol& protocol){
+    std::cout << "protocolo:\n";
+    std::cout << protocol.getAction() << std::endl;
     switch (protocol.getAction()){
         case Protocol::action::MOVE:
             processMove(protocol);
