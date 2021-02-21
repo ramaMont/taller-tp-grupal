@@ -70,22 +70,19 @@ bool KeyDoor::open(Player *player){
     return false;
 }
 	
-    
-float roundTwoDecimals(double x){
-    return (std::floor(x * DECIMALS)) / DECIMALS;
-}
-
 
 // Rocket
 
 Rocket::Rocket(Coordinates position, Coordinates dir,
     Player* player, std::map<int, Player*>& enemies,
-    ThGameModelServer& game_model):
+    ThGameModelServer& game_model, int id):
     Object(position), direction(dir), player(player), enemies(enemies),
-    map(player->getMap()), game_model(game_model){
+    map(player->getMap()), game_model(game_model), id(id){
     exploded = false;
     Coordinates new_pos = posicion;
-    new_pos.increment_on_direction(direction, 1.1);
+    while (posicion == new_pos){
+        new_pos.increment_on_direction(direction, 0.5);
+    }
     try {
         map.addPosicionable(this, new_pos);
     } catch(...) {
@@ -93,38 +90,36 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
         return;
     }
     posicion = new_pos;
-    posicion.x = roundTwoDecimals(posicion.x);
-    posicion.y = roundTwoDecimals(posicion.y);
-    Protocol protocol(Protocol::action::ROCKET, player->getId(), 
-        posicion.x, posicion.y);
+    Protocol protocol(Protocol::action::ROCKET, player->getId(), id);
     game_model.echoProtocol(protocol);
 }
 
-void Rocket::move(){
+bool Rocket::move(){
     Coordinates new_position = posicion;
     new_position.increment_on_direction(direction, ROCKET_STEP);
     if ((posicion != new_position) && 
         (map.obstacleIn(new_position) || map.playerIn(new_position))){
-        return explode(true);
+        explode(true);
+        return true;
     }
     if (posicion != new_position){
         map.removePosicionable(posicion);
         map.addPosicionable(this, new_position);
     }
-    Protocol p(Protocol::action::MOVE_ROCKET, player->getId(), 
-        std::floor(posicion.x), std::floor(posicion.y));
+    Protocol p(Protocol::action::MOVE_ROCKET, player->getId(), id);
     game_model.echoProtocol(p);
     posicion = new_position;
+    return false;
 }
 
 void Rocket::explode(bool remove){
     if (exploded)
         return;
-    if (remove)
+    if (remove){
         map.removePosicionable(posicion);
-    Protocol protocol(Protocol::action::EXPLOSION, player->getId(), 
-        std::floor(posicion.x), std::floor(posicion.y));
-    game_model.echoProtocol(protocol);
+        Protocol protocol(Protocol::action::EXPLOSION, player->getId(), id);
+        game_model.echoProtocol(protocol);
+    }
     hurtEnemies();
     exploded = true;
 }
@@ -136,11 +131,13 @@ void Rocket::hurtEnemies(){
 
         if (distance > (int)configs[CONFIG::distancia_explosion_cohete])
             continue;
-        if (crashes(posicion, enemy->getPosicion()))
+        if (distance > 1 && crashes(posicion, enemy->getPosicion())){
             continue;
+        }
 			
         float damage = (int)configs[CONFIG::maximo_danio] * 
         (1 - distance /(int)configs[CONFIG::distancia_explosion_cohete]);
+        
         bool is_dead = enemy->hurt(std::ceil(damage));
         if (is_dead)
             player->addKilledEnemy();

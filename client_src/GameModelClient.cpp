@@ -504,7 +504,8 @@ void GameModelClient::processGunSwitch(Protocol& protocol){
 
 void GameModelClient::processRocket(Protocol& protocol){
     //Por ahora pruebo con un solo rocket
-    Coordinates position(protocol.getFloatPosition());
+    //Coordinates position(protocol.getFloatPosition());
+    int rocket_id = protocol.getRocketId();
     if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
         //printf("x cambiarle la posicion, supuestamente está en: 
         // (%f,%f)\n",position.x,position.y);
@@ -514,7 +515,8 @@ void GameModelClient::processRocket(Protocol& protocol){
             Rocket* rocket = rockets[i];
             //printf("Pero en realidad está en: (%f,%f)\n",
             // rocket->getPosicion().x,rocket->getPosicion().y );
-            if (position==rocket->getPosicion()){
+            //if (position==rocket->getPosicion()){
+            if (rocket->getRocketId()==rocket_id){
                 found = true;
                 rocket->move();
                 //printf("le cambie la posicion, ahora es: 
@@ -524,13 +526,14 @@ void GameModelClient::processRocket(Protocol& protocol){
             i++;
         }
     } else{ //Creo el misil
-        Coordinates direction;
-        if (protagonist_id == protocol.getId()){
-            direction = player.getDirection();
-        } else {
-            direction =characters[protocol.getId()]->getDirection();
+        Coordinates direction = characters[protocol.getId()]->getDirection();
+        Coordinates position = characters[protocol.getId()]->getPosicion();
+        
+        Coordinates new_pos = position;
+        while (position == new_pos){
+            new_pos.increment_on_direction(direction, 0.5);
         }
-        Rocket* rocket = new Rocket(position, direction, map, player);
+        Rocket* rocket = new Rocket(position, direction, map, player, rocket_id);
         rocket->set_texture(&texture);
         rockets.push_back(rocket);
         map.addMovable(rocket,position);
@@ -539,22 +542,23 @@ void GameModelClient::processRocket(Protocol& protocol){
 }
 
 void GameModelClient::processExplosion(Protocol& protocol){
-    Coordinates position(protocol.getFloatPosition());
+    int rocket_id = protocol.getRocketId();
     bool found = false;
     unsigned int i = 0;
-    printf("posicion recibida: (%f,%f)\n",position.x,position.y);
+    //printf("posicion recibida: (%f,%f)\n",position.x,position.y);
     while (i<rockets.size() and !found){
         Rocket* rocket = rockets[i];
-        Coordinates rocket_position = rocket->getPosicion();
-        printf("posicion de mi rockett: (%f,%f)\n",rocket_position.x,
-            rocket_position.y);
+        //Coordinates rocket_position = rocket->getPosicion();
+        //printf("posicion de mi rockett: (%f,%f)\n",rocket_position.x,
+        //    rocket_position.y);
         //printf("Pero en realidad está en: (%f,%f)\n",rocket->getPosicion().
         //x,rocket->getPosicion().y );
-        if (position==rocket_position){
+        if (rocket->getRocketId()==rocket_id){
+            Coordinates rocket_position = rocket->getPosicion();
             printf("aa\n");
             found = true;
             playSound(SoundPlayer::sound_type::ROCKET_EXPLOTION, rocket);
-            map.removeMovable(position);
+            map.removeMovable(rocket_position);
             rockets.erase(rockets.begin() + i);
             delete rocket;
             addSpriteOn(rocket_position,0, true);

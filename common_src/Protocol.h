@@ -35,8 +35,7 @@ public:
     explicit Protocol(int config_number, float config_value);
     explicit Protocol(Protocol::action action, int user_id, 
         Protocol::direction direction, int map_id, int pos_x, int pos_y);
-    explicit Protocol(Protocol::action action, int id, 
-        float pos_x, float pos_y);
+    explicit Protocol(Protocol::action action, int player_id, int rocket_id);
     Protocol::action getAction();
     Protocol::direction getDirection();
     void moveInDirection(Protocol::direction direction);
@@ -49,6 +48,7 @@ public:
     int getDamage();
     int getConfId();
     int getBotsCty();
+    int getRocketId();
     float getConfiguration();
     std::tuple<int, int> getPosition() const;
     std::tuple<float, float> getFloatPosition() const;

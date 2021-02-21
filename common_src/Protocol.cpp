@@ -52,11 +52,9 @@ Protocol::Protocol(Protocol::action action, int user_id,
         _game_id(pos_x), _float_aux((float)pos_y){
 }
 
-Protocol::Protocol(Protocol::action action, int _id, float pos_x, float pos_y):
-        _action(action), id(_id), _direction(Protocol::direction::STAY),\
-        damage(0){
-    _game_id = pos_x * DECIMALS;
-    _float_aux = pos_y * DECIMALS;
+Protocol::Protocol(Protocol::action action, int player_id, int rocket_id):
+        _action(action), id(player_id), _direction(Protocol::direction::STAY),\
+        damage(0), _game_id(rocket_id), _float_aux(0){
 }
 
 Protocol::action Protocol::getAction(){
@@ -93,6 +91,10 @@ int Protocol::getBotsCty(){
 
 float Protocol::getConfiguration(){
     return _float_aux;
+}
+
+int Protocol::getRocketId(){
+    return _game_id;
 }
 
 std::tuple<int, int> Protocol::getPosition() const{

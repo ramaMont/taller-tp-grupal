@@ -15,7 +15,8 @@ ThGameModelServer::ThGameModelServer(ThUserServer& th_user_server,
             GameModel(game_id), Thread(), map(map_filename),launched(false),
             th_game_events(operations),
             th_bots(this, operations, players, map, bots_cty),
-            map_id_checksum(map_id_checksum), _bots_cty(bots_cty){
+            map_id_checksum(map_id_checksum), _bots_cty(bots_cty),
+            rocket_ids(0){
     addThSender(th_user_server.getSender());
     th_user_server.setGameModel(this);
     addPlayer(th_user_server.getId());
@@ -110,9 +111,13 @@ void ThGameModelServer::processShoot(Protocol protocol){
     bool shooted = player->shoot(players);
     if (!shooted) {
         Rocket* rocket = new Rocket(player->get_coordinates(),
-            player->get_direction(), player, players, *this);
-        Event *event = new RocketEvent(rocket);
-        th_game_events.add(event);
+            player->get_direction(), player, players, *this, rocket_ids);
+        if (!rocket->hasExploded()){
+            Event *event = new RocketEvent(rocket);
+            th_game_events.add(event);
+            rockets[rocket_ids] = rocket;
+        }
+        rocket_ids ++;
     }
 }
 
@@ -190,11 +195,16 @@ void ThGameModelServer::processGunSwitch(Protocol& protocol){
 }
 
 void ThGameModelServer::processRocket(Protocol& protocol){
-    Coordinates pos(protocol.getPosition());
+    int rocket_id = protocol.getRocketId();
+    Rocket* rocket = rockets[rocket_id];
+    bool exploded = rocket->move();
+    if (exploded)
+        rockets.erase(rocket_id);
+    /*Coordinates pos(protocol.getPosition());
     try {
         Rocket* rocket = static_cast<Rocket*>(map.getPosicionableIn(pos));
         rocket->move();
-    } catch(...) {}
+    } catch(...) {}*/
 }
 
 void ThGameModelServer::run(){
