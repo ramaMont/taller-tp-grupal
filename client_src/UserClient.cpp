@@ -13,13 +13,14 @@ UserClient::UserClient(ThSender& th_sender, GameModelClient& game_model,\
     std::vector<std::pair<int,int>> &_ordered_players_kills,\
     std::vector<std::pair<int,int>> &_ordered_players_points,\
     std::vector<std::pair<int,int>> &_ordered_players_bullets,\
-    bool& player_alive):
+    bool& player_alive, bool& have_winner):
         th_sender(th_sender), _game_model(game_model), _background_music(),
         _winner_id(_winner_id), game_done(game_done),
         _ordered_players_kills(_ordered_players_kills),
         _ordered_players_points(_ordered_players_points),
         _ordered_players_bullets(_ordered_players_bullets),
-        player_alive(player_alive), game_canceled(false){
+        player_alive(player_alive), game_canceled(false), 
+        _have_winner(have_winner){
     game_done = false;
 }
 

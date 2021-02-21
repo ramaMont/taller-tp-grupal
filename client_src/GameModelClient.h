@@ -123,7 +123,7 @@ public:
         std::vector<std::pair<int,int>> &_ordered_players_points,\
         std::vector<std::pair<int,int>> &_ordered_players_bullets,\
         int resolution_width, int resolution_height, bool fullscreen,\
-        bool& player_alive);
+        bool& player_alive, bool& have_winner);
 
     void processProtocol(Protocol& protocol);
     void run();

@@ -22,7 +22,7 @@ ClientHolder::ClientHolder():
     user_id(-1), socket(nullptr), _game_model(nullptr), 
     _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false),
     _game_id(-1), _map_id_checksum(-1), _user_client(nullptr), _winner_id(-1),
-    game_done(false), player_alive(true){
+    game_done(false), player_alive(true), _have_winner(false){
 }
 
 void ClientHolder::setGameConfig(std::string& resolution, bool _fullscreen){
@@ -99,7 +99,7 @@ void ClientHolder::run(){
     // Comienzo el juego luego del setup inicial   
     _user_client = new UserClient(*_th_sender, *_game_model,_winner_id,\
         game_done, _ordered_players_kills, _ordered_players_points,\
-        _ordered_players_bullets, player_alive);
+        _ordered_players_bullets, player_alive, _have_winner);
     _user_client->play();   
     std::cout << "Finalizada\n";
 }
@@ -164,7 +164,8 @@ void ClientHolder::createGameModel(std::string map_filename,\
     _game_model = new GameModelClient(id_user_protocol, map_filename,\
         game_id, user_id, _winner_id, game_done, _ordered_players_kills,\
         _ordered_players_points, _ordered_players_bullets,\
-         resolution_width, resolution_height, fullscreen,player_alive);
+        resolution_width, resolution_height, fullscreen, player_alive,\
+        _have_winner);
 }
 
 void ClientHolder::startGame(){

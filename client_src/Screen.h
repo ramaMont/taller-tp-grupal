@@ -63,6 +63,7 @@ class Screen{
 			bool game_done, bool game_canceled,\
 			std::vector<std::pair<int,int>> &ordered_players_kills,\
 			std::vector<std::pair<int,int>> &ordered_players_points,\
-			std::vector<std::pair<int,int>> &ordered_players_bullets);
+			std::vector<std::pair<int,int>> &ordered_players_bullets,
+			bool have_winner);
 };
 #endif

@@ -31,6 +31,7 @@ private:
     bool& player_alive;
 
     bool game_canceled;
+    bool& _have_winner;
 
     void pollEvents(SDL_Event& event, Window& window);
 
@@ -55,7 +56,7 @@ public:
         std::vector<std::pair<int,int>> &_ordered_players_kills,\
         std::vector<std::pair<int,int>> &_ordered_players_points,\
         std::vector<std::pair<int,int>> &_ordered_players_bullets,\
-        bool& player_alive);
+        bool& player_alive, bool& have_winner);
     void play();
     void stop();
     void showPlayersInfo();
