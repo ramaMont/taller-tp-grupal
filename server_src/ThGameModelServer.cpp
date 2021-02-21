@@ -407,4 +407,7 @@ ThGameModelServer::~ThGameModelServer(){
         th_bots.stop();
         th_bots.join();
     }
+    for (auto& rocket : rockets){
+        delete rocket.second;
+    }
 }
