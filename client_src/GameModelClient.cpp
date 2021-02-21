@@ -239,6 +239,7 @@ void  GameModelClient::updateFrameAnimations(){
             while(j<sprites.size() and !founded){
                 Coordinates sprites_pos = sprites[j]->get_position();
                 if (explosion_pos==sprites_pos){
+                    founded = true;
                     map.removePositionable(explosion->get_position());
                     explosions.erase(explosions.begin() + i);
                     sprites.erase(sprites.begin() + j);
