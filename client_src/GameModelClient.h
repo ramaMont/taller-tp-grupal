@@ -74,6 +74,7 @@ private:
     std::vector<std::pair<int,int>> &_ordered_players_bullets;
 
     bool& player_alive;
+    bool& _have_winner;
 
     void addPositionableToMap(Posicionable& posicionable);
 

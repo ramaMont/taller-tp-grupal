@@ -16,7 +16,7 @@ GameModelClient::GameModelClient(int user_id, const  std::string& map_filename,\
             std::vector<std::pair<int,int>> &_ordered_players_points,\
             std::vector<std::pair<int,int>> &_ordered_players_bullets,\
             int resolution_width, int resolution_height, bool fullscreen,\
-            bool& player_alive) : 
+            bool& player_alive, bool& have_winner) : 
     	GameModel(game_id),\
          window(resolution_width, resolution_height, fullscreen),\
          texture(window), map(),\
@@ -27,7 +27,7 @@ GameModelClient::GameModelClient(int user_id, const  std::string& map_filename,\
         game_done(game_done),_ordered_players_kills(_ordered_players_kills),\
         _ordered_players_points(_ordered_players_points),\
         _ordered_players_bullets(_ordered_players_bullets),
-        player_alive(player_alive){
+        player_alive(player_alive), _have_winner(have_winner){
     _winner_id = -1;
     player.set_texture(&texture);
     player.newGunType(1);
@@ -435,6 +435,7 @@ void GameModelClient::processProtocol(Protocol& protocol){
                 protocol.getId()));
             break;
         case Protocol::action::WINNER:
+            _have_winner = true;
             _winner_id = protocol.getId();
             break;
         case Protocol::action::ENDGAME:

@@ -56,7 +56,7 @@ void UserClient::endGame(SDL_Event& event, Screen& screen, Player& player,
     window.disableResizable();
     screen.showEndgame(player_won,_winner_id, game_done, game_canceled,
         _ordered_players_kills, _ordered_players_points, 
-        _ordered_players_bullets);
+        _ordered_players_bullets, _have_winner);
     bool leave_ending_screen = false;
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
     while (!leave_ending_screen){

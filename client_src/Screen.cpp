@@ -89,7 +89,8 @@ void Screen::showEndgame(bool player_won, int winner_id, \
 	bool game_done, bool game_canceled, \
 	std::vector<std::pair<int,int>> &ordered_players_kills, \
 	std::vector<std::pair<int,int>> &ordered_players_points, \
-	std::vector<std::pair<int,int>> &ordered_players_bullets){
+	std::vector<std::pair<int,int>> &ordered_players_bullets,\
+	bool have_winner){
 
 	if(game_canceled){
 		window.setColor(62, 62, 62,0xFF);
@@ -99,7 +100,12 @@ void Screen::showEndgame(bool player_won, int winner_id, \
 			window.setColor(0x0e,0x6b,0x0e,0xFF);
 			texture.showWinningScreen(ordered_players_kills,
 				ordered_players_points,ordered_players_bullets);
-		}else{
+		}else if (have_winner){
+			window.setColor(0x54,0x1e,0x1b,0xFF);
+			texture.showLoosingScreen(winner_id,ordered_players_kills,
+				ordered_players_points,ordered_players_bullets);
+		} else {
+			// aca mandarle que no hubo ganador
 			window.setColor(0x54,0x1e,0x1b,0xFF);
 			texture.showLoosingScreen(winner_id,ordered_players_kills,
 				ordered_players_points,ordered_players_bullets);
