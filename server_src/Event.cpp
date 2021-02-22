@@ -139,15 +139,16 @@ DoorEvent::~DoorEvent(){
 // Rocket
 RocketEvent::RocketEvent(Rocket* rocket):
     Event(), rocket(rocket), rocket_pos(rocket->getPosicion()),
-    rocket_dir(rocket->getDirection()){
+    rocket_dir(rocket->getDirection()), rocket_id(rocket->getId()){
     struct timeval time_now{};
     gettimeofday(&time_now, nullptr);
     _time = (time_now.tv_usec / 1000);
 }
 
 void RocketEvent::process(BlockingQueue<Protocol>& game_model_queue){
-    if (rocket->hasExploded()){
-        delete(rocket);
+    if (rocket && rocket->hasExploded()){
+        delete rocket;
+        rocket = nullptr;
         _finished = true;
         return;
     }
@@ -160,7 +161,7 @@ void RocketEvent::process(BlockingQueue<Protocol>& game_model_queue){
     if (diff < ROCKET_TIME_TO_MOVE)
         return;
     _time = (time_now.tv_usec / 1000);
-    Protocol protocol(Protocol::action::MOVE_ROCKET, 0, rocket->getId());   
+    Protocol protocol(Protocol::action::MOVE_ROCKET, 0, rocket_id);   
     game_model_queue.push(protocol);
     rocket_pos.increment_on_direction(rocket_dir, ROCKET_STEP);
 }

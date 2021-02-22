@@ -197,14 +197,12 @@ void ThGameModelServer::processGunSwitch(Protocol& protocol){
 void ThGameModelServer::processMoveRocket(Protocol& protocol){
     int rocket_id = protocol.getRocketId();
     Rocket* rocket = rockets[rocket_id];
-    bool exploded = rocket->move();
-    if (exploded)
-        rockets.erase(rocket_id);
-    /*Coordinates pos(protocol.getPosition());
-    try {
-        Rocket* rocket = static_cast<Rocket*>(map.getPosicionableIn(pos));
+    if (rocket){
         rocket->move();
-    } catch(...) {}*/
+        if (rocket->hasExploded()){
+            rockets.erase(rocket_id);
+        }
+    }
 }
 
 void ThGameModelServer::run(){
@@ -402,9 +400,9 @@ ThGameModelServer::~ThGameModelServer(){
     // removePlayer la cual es llamada cada vez que un jugador
     // se desconecta o se frena la ejecucion de un ThUserServer
     // Pero si tengo que liberar la memoria de los player bots.
-    for (auto& player : players){
+    /*for (auto& player : players){
         delete player.second;
-    }
+    }*/
 
     if (launched){
         th_game_events.stop();
@@ -413,6 +411,9 @@ ThGameModelServer::~ThGameModelServer(){
         th_bots.join();
     }
     for (auto& rocket : rockets){
-        delete rocket.second;
+        if (rocket.second){
+            map.removePosicionable(rocket.second->getPosicion());
+            delete rocket.second;
+        }
     }
 }

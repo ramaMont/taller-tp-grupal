@@ -12,34 +12,34 @@
 #define PLAYER_ARGS 5
 
 enum MapSpot{
-	Empty = 0,
-	Busy,
-	Door
+    Empty = 0,
+    Busy,
+    Door
 };
 
 // Chequea que lua no haya fallado, en ese caso lanza un error
 void checkLua(lua_State *L, int r){
-	if (r != LUA_OK){
-		std::string errormsg = lua_tostring(L, -1);
-		throw std::runtime_error(errormsg);
-	}
+    if (r != LUA_OK){
+        std::string errormsg = lua_tostring(L, -1);
+        throw std::runtime_error(errormsg);
+    }
 }
 
 
 int Bot::luaGetMapObject(lua_State *L){
-	if (lua_gettop(L) != 3) return -1;
-	Bot* bot = static_cast<Bot*>(lua_touserdata(L,1));
-	int x = (int)lua_tonumber(L, 2);
-	int y = (int)lua_tonumber(L, 3);
-	
-	if (!bot->map.obstacleIn(Coordinates(x, y))){
-		lua_pushnumber(L, MapSpot::Empty);
-	} else if (bot->map.doorIn(x, y)){
-		lua_pushnumber(L, MapSpot::Door);
-	} else {
-		lua_pushnumber(L, MapSpot::Busy);
-	}	
-	return 1;
+    if (lua_gettop(L) != 3) return -1;
+    Bot* bot = static_cast<Bot*>(lua_touserdata(L,1));
+    int x = (int)lua_tonumber(L, 2);
+    int y = (int)lua_tonumber(L, 3);
+    
+    if (!bot->map.obstacleIn(Coordinates(x, y))){
+        lua_pushnumber(L, MapSpot::Empty);
+    } else if (bot->map.doorIn(x, y)){
+        lua_pushnumber(L, MapSpot::Door);
+    } else {
+        lua_pushnumber(L, MapSpot::Busy);
+    }	
+    return 1;
 }
 
 

@@ -106,7 +106,7 @@ bool Rocket::move(){
         map.removePosicionable(posicion);
         map.addPosicionable(this, new_position);
     }
-    Protocol p(Protocol::action::MOVE_ROCKET, player->getId(), id);
+    Protocol p(Protocol::action::MOVE_ROCKET, 0, id);
     game_model.echoProtocol(p);
     posicion = new_position;
     return false;
@@ -117,7 +117,7 @@ void Rocket::explode(bool remove){
         return;
     if (remove){
         map.removePosicionable(posicion);
-        Protocol protocol(Protocol::action::EXPLOSION, player->getId(), id);
+        Protocol protocol(Protocol::action::EXPLOSION, 0, id);
         game_model.echoProtocol(protocol);
     }
     hurtEnemies();

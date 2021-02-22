@@ -67,6 +67,7 @@ class RocketEvent: public Event{
     Rocket* rocket;
     Coordinates rocket_pos;
     Coordinates rocket_dir;
+    int rocket_id;
 
     public:
     explicit RocketEvent(Rocket* rocket);

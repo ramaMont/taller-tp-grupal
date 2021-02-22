@@ -171,7 +171,8 @@ void Soldier::atack(Player *player, Player* enemy, float precision, int angle){
     if (distance * (1 - precision) >= K_DISTANCE_PRECISION)
         return;
         
-    float damage = 1 - (distance * (1 - precision)) / (int)configs[CONFIG::maximo_danio];
+    float damage = 1 - 
+        (distance * (1 - precision)) / (int)configs[CONFIG::maximo_danio];
 	damage -= angle/(int)configs[CONFIG::rango_de_disparo];
 	int n_rand = rand_r(&seed) % (int)configs[CONFIG::maximo_danio] + 1;
 	damage *= n_rand;
