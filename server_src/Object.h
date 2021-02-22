@@ -69,7 +69,7 @@ class Rocket: public Object{
     std::map<int, Player*>& enemies;
     ServerMap& map;
     std::atomic<bool> exploded;
-    ThGameModelServer& game_model;
+    BlockingQueue<Protocol>& game_model;
     int id;
     
     // Hiere a los enemigos cercanos
@@ -77,7 +77,8 @@ class Rocket: public Object{
 
     public:
     explicit Rocket(Coordinates position, Coordinates dir,Player* player,
-        std::map<int, Player*>& enemies, ThGameModelServer& game_model, int id);
+        std::map<int, Player*>& enemies, BlockingQueue<Protocol>& game_model,
+        int id);
         
     // Mueve el cohete hacia adelante
     bool move();

@@ -75,7 +75,7 @@ bool KeyDoor::open(Player *player){
 
 Rocket::Rocket(Coordinates position, Coordinates dir,
     Player* player, std::map<int, Player*>& enemies,
-    ThGameModelServer& game_model, int id):
+    BlockingQueue<Protocol>& game_model, int id):
     Object(position), direction(dir), player(player), enemies(enemies),
     map(player->getMap()), game_model(game_model), id(id){
     exploded = false;
@@ -91,7 +91,7 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
     }
     posicion = new_pos;
     Protocol protocol(Protocol::action::ROCKET, player->getId(), id);
-    game_model.echoProtocol(protocol);
+    game_model.push(protocol);
 }
 
 bool Rocket::move(){
@@ -107,7 +107,7 @@ bool Rocket::move(){
         map.addPosicionable(this, new_position);
     }
     Protocol p(Protocol::action::MOVE_ROCKET, 0, id);
-    game_model.echoProtocol(p);
+    game_model.push(p);
     posicion = new_position;
     return false;
 }
@@ -116,9 +116,9 @@ void Rocket::explode(bool remove){
     if (exploded)
         return;
     if (remove){
-        map.removePosicionable(posicion);
+        //map.removePosicionable(posicion);
         Protocol protocol(Protocol::action::EXPLOSION, 0, id);
-        game_model.echoProtocol(protocol);
+        game_model.push(protocol);
     }
     hurtEnemies();
     exploded = true;
