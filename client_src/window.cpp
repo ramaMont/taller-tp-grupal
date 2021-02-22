@@ -18,15 +18,16 @@ Window::Window(int resolution_width, int resolution_height, bool fullscreen) :
         width(resolution_width), height(resolution_height), //Resolucion()
         info_bar_height(height/5) {
 
+    this->window = SDL_CreateWindow("Wolfenstein", SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED, INITIAL_WIDTH_SIZE, INITIAL_HEIGHT_SIZE, 
+        SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
 
-    int state = SDL_CreateWindowAndRenderer(
-        INITIAL_WIDTH_SIZE, INITIAL_HEIGHT_SIZE, 
-        			SDL_RENDERER_ACCELERATED  | 
-        			SDL_WINDOW_RESIZABLE | 
-        			SDL_WINDOW_HIDDEN,
-        &this->window, &this->renderer);
 
-    if (state) {
+    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
+
+
+
+    if (this->window ==  NULL or this->renderer == NULL) {
         throw Exception("Error al crear ventana\n");
     }else{
         if(fullscreen){
