@@ -139,14 +139,16 @@ DoorEvent::~DoorEvent(){
 // Rocket
 RocketEvent::RocketEvent(Rocket* rocket):
     Event(), rocket(rocket), rocket_pos(rocket->getPosicion()),
-    rocket_dir(rocket->getDirection()), rocket_id(rocket->getId()){
+    rocket_dir(rocket->getDirection()), rocket_id(rocket->getId()), 
+    _exploded(false){
+    rocket->setExploded(&_exploded);
     struct timeval time_now{};
     gettimeofday(&time_now, nullptr);
     _time = (time_now.tv_usec / 1000);
 }
 
 void RocketEvent::process(BlockingQueue<Protocol>& game_model_queue){
-    if (rocket == nullptr || rocket->hasExploded()){
+    if (_exploded){
         //delete rocket;
         //rocket = nullptr;
         _finished = true;

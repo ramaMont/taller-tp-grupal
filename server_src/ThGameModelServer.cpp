@@ -125,6 +125,8 @@ void ThGameModelServer::processShoot(Protocol protocol){
             Event *event = new RocketEvent(rocket);
             th_game_events.add(event);
             rockets[rocket_ids] = rocket;
+        } else {
+            delete rocket;
         }
         rocket_ids ++;
     }
@@ -208,9 +210,6 @@ void ThGameModelServer::processTimeRocket(Protocol& protocol){
     Rocket* rocket = rockets[rocket_id];
     if (rocket){
         rocket->move();
-        if (rocket->hasExploded()){
-            rockets.erase(rocket_id);
-        }
     }
 }
 
@@ -220,8 +219,9 @@ void ThGameModelServer::processExplosion(Protocol& protocol){
     if (rocket){
         map.removePosicionable(rocket->getPosicion());
         delete rocket;
-        //rocket = nullptr;
+        rocket = nullptr;
         rockets.erase(rocket_id);
+        //th_game_events.
     }
     echoProtocol(protocol);
 }

@@ -68,6 +68,7 @@ class RocketEvent: public Event{
     Coordinates rocket_pos;
     Coordinates rocket_dir;
     int rocket_id;
+    std::atomic<bool> _exploded;
 
     public:
     explicit RocketEvent(Rocket* rocket);

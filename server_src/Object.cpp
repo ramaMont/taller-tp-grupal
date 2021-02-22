@@ -77,7 +77,8 @@ Rocket::Rocket(Coordinates position, Coordinates dir,
     Player* player, std::map<int, Player*>& enemies,
     BlockingQueue<Protocol>& game_model, int id):
     Object(position), direction(dir), player(player), enemies(enemies),
-    map(player->getMap()), game_model(game_model), id(id){
+    map(player->getMap()), game_model(game_model), id(id),
+    shared_exploded(nullptr){
     exploded = false;
     Coordinates new_pos = posicion;
     while (posicion == new_pos){
@@ -113,7 +114,7 @@ bool Rocket::move(){
 }
 
 void Rocket::explode(bool remove){
-    if (exploded)
+    if (shared_exploded && *shared_exploded)
         return;
     if (remove){
         //map.removePosicionable(posicion);
@@ -121,6 +122,8 @@ void Rocket::explode(bool remove){
         game_model.push(protocol);
     }
     hurtEnemies();
+    if (shared_exploded)
+        *shared_exploded = true;
     exploded = true;
 }
 
@@ -142,6 +145,10 @@ void Rocket::hurtEnemies(){
         if (is_dead)
             player->addKilledEnemy();
     }
+}
+
+void Rocket::setExploded(std::atomic<bool>* exploded){
+    this->shared_exploded = exploded;
 }
 
 bool Rocket::hasExploded(){

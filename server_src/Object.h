@@ -68,9 +68,10 @@ class Rocket: public Object{
     Player* player;
     std::map<int, Player*>& enemies;
     ServerMap& map;
-    std::atomic<bool> exploded;
+    bool exploded;
     BlockingQueue<Protocol>& game_model;
     int id;
+    std::atomic<bool>* shared_exploded;
     
     // Hiere a los enemigos cercanos
     void hurtEnemies();
@@ -88,6 +89,8 @@ class Rocket: public Object{
     
     // Retorna true en caso de que haya explotado el cohete
     bool hasExploded();
+
+    void setExploded(std::atomic<bool>* exploded);
 
     // Retorna el id
     int getId();
