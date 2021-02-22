@@ -197,7 +197,6 @@ void GameModelClient::removeEnemy(int id){
     	}
     }
 	delete removableEnemy;
-    //Y me falta eliminarlos tambien del vector sprites y del vector enemies
 }
 
 // void GameModelClient::player_shoot(){
@@ -299,16 +298,20 @@ void GameModelClient::addSpriteOn(Coordinates position, int sprite_value, bool a
             i++;
         }
         if (!position_has_door){
-            SpriteHolder *posicionable = 
-                new SpriteHolder(position,player);
-            if (add_explosion){
-                posicionable->addExplosion();
-            }else{
-                posicionable->addSprite(sprite_value);
-            }
-            posicionable->set_texture(&texture);
-            sprites.push_back(posicionable);  
-            map.addPositionable(posicionable,position);  
+	        SpriteHolder *posicionable = 
+	            new SpriteHolder(position,player);
+        	try{
+	            if (add_explosion){
+	                posicionable->addExplosion();
+	            }else{
+	                posicionable->addSprite(sprite_value);
+	            }
+	            posicionable->set_texture(&texture); 
+	            map.addPositionable(posicionable,position);  
+	            sprites.push_back(posicionable); 
+	        }catch(int e){
+	        	delete posicionable;
+	        }
         }
     }
 }

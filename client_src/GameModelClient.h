@@ -111,6 +111,9 @@ private:
 
     void removeCharacterFromMap(int id);
 
+    /* Pre:-
+    Al agregar un sprite me fijo si, ya hay uno en esa 
+    posicion, o si hay una puerta(en cuyo caso no puedo)*/
     void addSpriteOn(Coordinates position, int sprite_value, bool add_explosion);
 
 	void setDoorState(Coordinates door_pos, State new_state);
