@@ -10,6 +10,8 @@
 
 #include "SpriteValues.h"
 
+#include "EnvVariablesGetter.h"
+
 static void sortValues(int &first_value, int &second_value){
 	if(first_value>second_value){
 		int temporal_value = first_value;
@@ -19,12 +21,12 @@ static void sortValues(int &first_value, int &second_value){
 }
 
 void Texture::addWallTexture(std::string new_texture){
-	std::string texture_store = "../data/textures/" + new_texture+".png";
+	std::string texture_store = texture_path + new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     wall_textures.push_back(SDL_CreateTextureFromSurface(renderer, 
     														loadedSurface));
 	SDL_FreeSurface(loadedSurface);
-	texture_store="../data/textures/" + new_texture+"_shaded.png";
+	texture_store= texture_path + new_texture+"_shaded.png";
     loadedSurface = IMG_Load(texture_store.c_str());
     wall_textures.push_back(SDL_CreateTextureFromSurface(renderer, 
     														loadedSurface));
@@ -32,7 +34,7 @@ void Texture::addWallTexture(std::string new_texture){
 }
 
 void Texture::addSpriteTexture(std::string new_texture){
-	std::string texture_store = "../data/textures/" + new_texture+".png";
+	std::string texture_store = texture_path + new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 0, 0, 0);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
@@ -43,7 +45,7 @@ void Texture::addSpriteTexture(std::string new_texture){
 }
 
 void Texture::addShootingEffectTexture(std::string new_texture){
-	std::string texture_store = "../data/textures/" + new_texture+".png";
+	std::string texture_store = texture_path + new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
@@ -53,7 +55,7 @@ void Texture::addShootingEffectTexture(std::string new_texture){
 }
 
 void Texture::addEnemyTexture(std::string new_texture){
-	std::string texture_store = "../data/textures/" + new_texture+".png";
+	std::string texture_store = texture_path + new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
@@ -62,7 +64,7 @@ void Texture::addEnemyTexture(std::string new_texture){
 }
 
 void Texture::addDeadEnemyTexture(std::string new_texture){
-	std::string texture_store = "../data/textures/dead_enemies/";
+	std::string texture_store = texture_path + "/dead_enemies/";
 	texture_store += new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
@@ -73,7 +75,7 @@ void Texture::addDeadEnemyTexture(std::string new_texture){
 }
 
 void Texture::addTexture(SDL_Texture** texture,std::string new_texture,int r, int g, int b){
-	std::string texture_store = "../data/textures/" + new_texture+".png";
+	std::string texture_store = texture_path + new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     if(r!=-1){
 	    Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
@@ -84,7 +86,7 @@ void Texture::addTexture(SDL_Texture** texture,std::string new_texture,int r, in
 }
 
 void Texture::addLifeBarTexture(SDL_Texture** texture,std::string new_texture){
-	std::string texture_store = "../data/textures/bar_textures/";
+	std::string texture_store = texture_path + "/bar_textures/";
 	texture_store += new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
 	Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 152, 0, 136);
@@ -94,7 +96,7 @@ void Texture::addLifeBarTexture(SDL_Texture** texture,std::string new_texture){
 }
 
 void Texture::addFaceHealth(){
-	std::string texture_store = "../data/textures/bar_textures/face_health.png";
+	std::string texture_store = texture_path + "/bar_textures/face_health.png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 255, 255, 255);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
@@ -103,7 +105,7 @@ void Texture::addFaceHealth(){
 }
 
 void Texture::addBarGuns(std::string new_texture){
-	std::string texture_store = "../data/textures/bar_textures/";
+	std::string texture_store = texture_path + "/bar_textures/";
 	texture_store += new_texture+".png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     bar_guns.push_back(SDL_CreateTextureFromSurface(renderer, loadedSurface));
@@ -111,14 +113,14 @@ void Texture::addBarGuns(std::string new_texture){
 }
 
 void Texture::addKeyTexture(){
-	std::string texture_store = "../data/textures/bar_textures/key.png";
+	std::string texture_store = texture_path + "/bar_textures/key.png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     key = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);	
 }
 
 void Texture::addEndingBackground(){
-	std::string texture_store = "../data/ending_background.png";
+	std::string texture_store =texture_path + "/ending_background.png";
     SDL_Surface* loadedSurface = IMG_Load(texture_store.c_str());
     Uint32 colorkey = SDL_MapRGB(loadedSurface->format, 255, 255, 255);
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, colorkey);	
@@ -130,6 +132,10 @@ Texture::Texture(const Window& window):
 	renderer(window.getRenderer()), info_bar_height(window.getInfoBarHeight()),
 	height(window.getHeight()-info_bar_height),
 	width(window.getWidth()){
+
+		EnvVariablesGetter envVariablesGetter;
+		texture_path = envVariablesGetter.getTexturesPath();
+
 		addWallTexture("greystone");
 		addWallTexture("bluestone");
 		addWallTexture("purplestone");
@@ -192,7 +198,8 @@ Texture::Texture(const Window& window):
 		if (TTF_Init() < 0) {
 		    printf("error inicializacionnnn\n");
 		}
-		this->wolfensteinFont = TTF_OpenFont("../data/wolfenstein_font.ttf", 24);
+		std::string font_path = envVariablesGetter.getDataPath()+"/wolfenstein_font.ttf";
+		this->wolfensteinFont = TTF_OpenFont(font_path.c_str(), 24);
 		if(!wolfensteinFont){
 			printf("Font no encontrada\n");
 		}

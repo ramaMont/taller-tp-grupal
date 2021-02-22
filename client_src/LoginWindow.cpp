@@ -12,6 +12,7 @@
 #include "yaml-cpp/yaml.h"
 #include <SocketException.hpp>
 
+#include "EnvVariablesGetter.h"
 
 LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) : 
         QWidget(parent), client_holder(client_holder), _user_id(-1) {
@@ -20,8 +21,11 @@ LoginWindow::LoginWindow(ClientHolder& client_holder, QWidget *parent) :
     this->resize(770, 900);
     this->setWindowTitle(QString("Wolfenstein 3D"));
 
+    EnvVariablesGetter envVariablesGetter;
+    QString data_path = QString::fromUtf8(envVariablesGetter.getDataPath().c_str());
+
     this->setStyleSheet(
-    "QWidget {background-image: url(../data/login_background.jpg) }"
+    "QWidget {background-image: url("+data_path+"/login_background.jpg) }"
     "QLabel { color : white; }"
     "QLineEdit { color : white; }"
     "QMenuBar {color: white;}"
@@ -209,7 +213,9 @@ void LoginWindow::connectEvents() {
 
 void LoginWindow::cargarMapasDisponibles(QComboBox& combo_mapa,
         std::map<std::string, std::string>& mapas) {
-    const std::string dir_maps = "../data/maps/";
+
+    EnvVariablesGetter envVariablesGetter;
+    const std::string dir_maps = envVariablesGetter.getMapsPath();
     if (auto dir = opendir(dir_maps.c_str())) {
         while (auto f = readdir(dir)) {
             if (!f->d_name || f->d_name[0] == '.')

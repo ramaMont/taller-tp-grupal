@@ -6,10 +6,14 @@
 #include <dirent.h>
 #include "string.h"
 
-const std::string MAPS_PATH("../data/maps/");
+#include "EnvVariablesGetter.h"
+
+static std::string MAPS_PATH;
 
 MapLoader::MapLoader(const std::string& file) : file_name(file){
-    std::string command = "md5sum " + MAPS_PATH + file;
+    EnvVariablesGetter envVariablesGetter;
+    MAPS_PATH = envVariablesGetter.getMapsPath();
+    std::string command = MAPS_PATH + file;
     std::string result = executeProgram(command);
     std::string std_checksum = result.substr(28,4);
     checksum = stoi(std_checksum, 0, 16);

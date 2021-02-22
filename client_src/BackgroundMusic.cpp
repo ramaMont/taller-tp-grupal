@@ -7,10 +7,14 @@
 #include <string>
 #include "SDL2/SDL_mixer.h"
 
+#include "EnvVariablesGetter.h"
+
 const int BACK_MUSIC_CHANNEL = 1;
 
 BackgroundMusic::BackgroundMusic(): paused(false){
-    const std::string BACK_MUSIC_PATH = "../data/background_music/";
+	EnvVariablesGetter envVariablesGetter;
+
+    const std::string BACK_MUSIC_PATH = envVariablesGetter.getMusicPath();
     struct dirent *d;
     DIR *dr;
     // Reservo 2 canales para la musica de fondo

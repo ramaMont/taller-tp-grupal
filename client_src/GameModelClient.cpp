@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "SpriteValues.h"
+#include "EnvVariablesGetter.h"
 
 GameModelClient::GameModelClient(int user_id, const  std::string& map_filename,\
             int game_id, int protagonist_id,int &_winner_id, bool& game_done,\
@@ -97,8 +98,9 @@ static bool is_sprite(const  std::string& elemento){
 }
 
 void GameModelClient::initMap(const  std::string& map_filename){
-	const std::string MAPS_PATH = "../data/maps/";
-    YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
+	EnvVariablesGetter envVariablesGetter;
+	const std::string maps_path = envVariablesGetter.getMapsPath();
+    YAML::Node map_node = YAML::LoadFile(maps_path + map_filename);
     int alto = map_node["filas"].as<int>();
     int ancho = map_node["columnas"].as<int>();
     map.resize(ancho, alto);
