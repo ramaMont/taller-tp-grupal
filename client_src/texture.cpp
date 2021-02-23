@@ -175,6 +175,7 @@ Texture::Texture(const Window& window):
 		addShootingEffectTexture("officer_shooting");
 		addShootingEffectTexture("ss_shooting");
 		addShootingEffectTexture("ss_shooting"); //Acá despues va el de mutant
+		addShootingEffectTexture("dog_biting"); //Acá despues va el de mutant
 
 		addTexture(&guns,"guns",152, 0, 136);
 		addTexture(&rocket_explosion,"explosions",152, 0, 136);
@@ -520,8 +521,34 @@ void Texture::showMutant(int first_x_pixel,int first_number_line_texture,\
 void Texture::showDog(int first_x_pixel,int first_number_line_texture,\
 							int last_x_pixel, int last_number_line_texture,\
 							float distance_player_plane,int frame, int state, bool shooting){
-	showEnemy(4,first_x_pixel,first_number_line_texture,last_x_pixel,
-					last_number_line_texture,distance_player_plane,frame,state,false);
+
+	sortValues(first_x_pixel,last_x_pixel);
+	sortValues(first_number_line_texture,last_number_line_texture);
+
+
+	float lineHeight = (this->height / distance_player_plane);
+	int initial_position_y =  -lineHeight/2 + height/2;
+	float pixel_length = lineHeight/64;
+	int x_initial_pos = first_x_pixel;
+	int height_ray = (int)ceil((pixel_length)*64);
+
+
+	int first_x_pixel_ = 65*frame + first_number_line_texture;
+	int cant_x_pixels_ = last_number_line_texture - first_number_line_texture;
+	int first_y_pixel_ = state*65;
+	int cant_y_pixels_ = 64;
+
+	int x_width = last_x_pixel - first_x_pixel;
+
+	if(shooting){
+		genericShow(this->shooting_effect[4],first_x_pixel_,
+					cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
+					x_initial_pos,x_width,initial_position_y,height_ray);
+	}else{
+		genericShow(this->enemies[4],first_x_pixel_,
+					 	cant_x_pixels_,first_y_pixel_,cant_y_pixels_,\
+						x_initial_pos,x_width,initial_position_y,height_ray);
+	}
 }
 
 void Texture::showWall(SDL_Texture* texture,int x_pixel, \
