@@ -234,8 +234,10 @@ void Editor::createNewMap() {
 }
 
 bool Editor::showFileDialog() {
+    EnvVariablesGetter envVariablesGetter;
+    std::string MAPS_PATH = envVariablesGetter.getMapsPath();
     QString file_name = QFileDialog::getOpenFileName(this,
-            tr("Editar Mapa"), "",
+            tr("Editar Mapa"), QString::fromStdString(MAPS_PATH),
             tr("Mapas (*.yaml)"));
 
     std::string map_file = file_name.toUtf8().constData();

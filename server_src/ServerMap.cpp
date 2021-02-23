@@ -2,6 +2,7 @@
 
 #include "Event.h"
 #include <ConfigVariable.h>
+#include "EnvVariablesGetter.h"
 
 #include <iostream>
 #include <utility>
@@ -115,7 +116,8 @@ void ServerMap::initMap(ServerMap& map, YAML::Node map_node){
 }
 
 ServerMap::ServerMap(const std::string& map_filename): players_added(0){
-	std::string MAPS_PATH = "../data/maps/";
+    EnvVariablesGetter envVariablesGetter;
+    std::string MAPS_PATH = envVariablesGetter.getMapsPath();
     YAML::Node map_node = YAML::LoadFile(MAPS_PATH + map_filename);
     alto = map_node["filas"].as<int>();
     ancho = map_node["columnas"].as<int>();

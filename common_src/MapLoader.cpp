@@ -8,12 +8,10 @@
 
 #include "EnvVariablesGetter.h"
 
-static std::string MAPS_PATH;
-
 MapLoader::MapLoader(const std::string& file) : file_name(file){
     EnvVariablesGetter envVariablesGetter;
-    MAPS_PATH = envVariablesGetter.getMapsPath();
-    std::string command = MAPS_PATH + file;
+    std::string MAPS_PATH = envVariablesGetter.getMapsPath();
+    std::string command = "md5sum " + MAPS_PATH + file;
     std::string result = executeProgram(command);
     std::string std_checksum = result.substr(28,4);
     checksum = stoi(std_checksum, 0, 16);
@@ -24,6 +22,8 @@ MapLoader::MapLoader(uint16_t map_id_checksum){
     struct dirent *d;
     DIR *dr;
     std::vector<std::string> files;
+    EnvVariablesGetter envVariablesGetter;
+    std::string MAPS_PATH = envVariablesGetter.getMapsPath();
     dr = opendir(MAPS_PATH.c_str());
     if (dr == NULL){
         std::cout<<"Error Occurred!\n";

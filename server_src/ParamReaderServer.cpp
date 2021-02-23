@@ -2,6 +2,7 @@
 
 #include <ConfigVariable.h>
 #include "ExceptionServer.h"
+#include "EnvVariablesGetter.h"
 
 #include <yaml-cpp/yaml.h>
 #include <string>
@@ -19,7 +20,8 @@ ParamReaderServer::ParamReaderServer(int argc, char** argv):
 }
 
 void ParamReaderServer::getConfiguration(){
-	const std::string RUTA_CONFIG = "../data/";
+	EnvVariablesGetter envVariablesGetter;
+    const std::string RUTA_CONFIG = envVariablesGetter.getDataPath();
 	YAML::Node config;
 	try{
 		config = YAML::LoadFile(RUTA_CONFIG + args.at(2));
