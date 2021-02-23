@@ -20,11 +20,9 @@ ParamReaderServer::ParamReaderServer(int argc, char** argv):
 }
 
 void ParamReaderServer::getConfiguration(){
-	EnvVariablesGetter envVariablesGetter;
-    const std::string RUTA_CONFIG = envVariablesGetter.getDataPath();
 	YAML::Node config;
 	try{
-		config = YAML::LoadFile(RUTA_CONFIG + args.at(2));
+		config = YAML::LoadFile(args.at(2));
 	} catch(std::exception& e) {
 		std::string error = e.what();
 		throw ParamReaderException(error + "\n");
