@@ -4,6 +4,7 @@
 #include "ServerMap.h"
 #include "Player.h"
 #include "AtomicCoordinates.h"
+#include "EnvVariablesGetter.h"
 
 #include <string>
 #include <iostream>
@@ -47,7 +48,9 @@ Bot::Bot(const ServerMap& map): map(map){
 	this->script = luaL_newstate();
 	luaL_openlibs(this->script);
 	lua_register(this->script, "getMapObject", luaGetMapObject);
-	checkLua(this->script,luaL_dofile(this->script,"../data/bot/bot.lua"));
+    EnvVariablesGetter envVariablesGetter;
+    std::string LUA_PATH = envVariablesGetter.getDataPath() + "bot/bot.lua";
+	checkLua(this->script,luaL_dofile(this->script, LUA_PATH.c_str()));
     loadMap();
 }
 

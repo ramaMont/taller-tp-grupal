@@ -9,21 +9,26 @@ std::string EnvVariablesGetter::getValue(std::string const &key) {
 }
 
 std::string EnvVariablesGetter::getDataPath() {
-    return "/var/Wolfenstein/data/";
+    std::string home(getenv("HOME"));
+    return home + "/.Wolfenstein/data/";
 }
 
 std::string EnvVariablesGetter::getTexturesPath() {
-    return "/var/Wolfenstein/data/textures/";
+    std::string home(getenv("HOME"));
+    return home + "/.Wolfenstein/data/textures/";
 }
 
 std::string EnvVariablesGetter::getMapsPath() {
-    return "/var/Wolfenstein/data/maps/";
+    std::string home(getenv("HOME"));
+    return home + "/.Wolfenstein/data/maps/";
 }
 
 std::string EnvVariablesGetter::getSoundsPath() {
-    return "/var/Wolfenstein/data/sounds/";
+    std::string home(getenv("HOME"));
+    return home + "/.Wolfenstein/data/sounds/";
 }
 
 std::string EnvVariablesGetter::getMusicPath() {
-    return "/var/Wolfenstein/data/background_music/";
+    std::string home(getenv("HOME"));
+    return home + "/.Wolfenstein/data/background_music/";
 }

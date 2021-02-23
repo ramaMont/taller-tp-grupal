@@ -4,8 +4,13 @@
 #include <map>
 #include <string>
 
+#include "EnvVariablesGetter.h"
+
 SoundPlayer::SoundPlayer(){
-    const std::string SOUNDS_PATH = "../data/sounds/";
+
+    EnvVariablesGetter envVariablesGetter;
+    std::string SOUNDS_PATH = envVariablesGetter.getSoundsPath();
+    
     Sound* dog_bite_sound = new Sound(SOUNDS_PATH+"dog_bite.wav");
     _sounds.insert(std::pair<sound_type, Sound*>\
         (sound_type::DOG_BITE, dog_bite_sound));

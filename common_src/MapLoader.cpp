@@ -6,9 +6,11 @@
 #include <dirent.h>
 #include "string.h"
 
-const std::string MAPS_PATH("../data/maps/");
+#include "EnvVariablesGetter.h"
 
 MapLoader::MapLoader(const std::string& file) : file_name(file){
+    EnvVariablesGetter envVariablesGetter;
+    std::string MAPS_PATH = envVariablesGetter.getMapsPath();
     std::string command = "md5sum " + MAPS_PATH + file;
     std::string result = executeProgram(command);
     std::string std_checksum = result.substr(28,4);
@@ -20,6 +22,8 @@ MapLoader::MapLoader(uint16_t map_id_checksum){
     struct dirent *d;
     DIR *dr;
     std::vector<std::string> files;
+    EnvVariablesGetter envVariablesGetter;
+    std::string MAPS_PATH = envVariablesGetter.getMapsPath();
     dr = opendir(MAPS_PATH.c_str());
     if (dr == NULL){
         std::cout<<"Error Occurred!\n";

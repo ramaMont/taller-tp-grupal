@@ -34,6 +34,8 @@ private:
     SDL_Rect showableTexture;
     TTF_Font* wolfensteinFont;
 
+    std::string texture_path;
+
     // Carga todas las texturas de paredes
     void addWallTexture(std::string new_texture);
 
