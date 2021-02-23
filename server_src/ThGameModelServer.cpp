@@ -174,7 +174,7 @@ void ThGameModelServer::processOpen(Protocol& protocol){
 
 void ThGameModelServer::processOpening(Protocol& protocol){
     Coordinates pos(protocol.getPosition());std::cout <<"GM 1\n";
-    KeyDoor* door = static_cast<KeyDoor*>(map.getDoor(pos));std::cout <<"GM 2\n";
+    KeyDoor* door = (KeyDoor*)map.getDoor(pos);std::cout <<"GM 2\n";
     Event* doorE = new DoorEvent(door);std::cout <<"GM 3\n";
     th_game_events.add(doorE);std::cout <<"GM 4\n";
     // Cambio la accion del protocolo ya que el mismo contiene toda

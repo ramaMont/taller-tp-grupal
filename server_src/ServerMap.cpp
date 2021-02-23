@@ -258,8 +258,9 @@ Object* ServerMap::getNearestPassage(Coordinates& position){
 
 Door* ServerMap::getDoor(const Coordinates& position){
     for (Object* passage: passages){
-        if (passage->getPosicion() == position &&
-            typeid(*passage) == typeid(Door)){
+        if (passage->getPosicion() == position &&    \
+                (typeid(*passage) == typeid(Door) || \
+                typeid(*passage) == typeid(KeyDoor))){
             return static_cast<Door*>(passage);
         }
     }
