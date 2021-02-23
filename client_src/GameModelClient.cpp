@@ -116,7 +116,7 @@ void GameModelClient::initMap(const  std::string& map_filename){
             if ("wall" == elemento.substr(0,4)){
                 createWall(elemento.substr(4), position);
             } else if ("passage" == elemento.substr(0,7)){
-                createWall(elemento.substr(4), position);
+                createWall(elemento.substr(7), position);
             } else if (elemento == "door"){
                 doors.push_back(Door(position,false));  
             } else if (elemento == "key_door"){//Cambiarle la textura
