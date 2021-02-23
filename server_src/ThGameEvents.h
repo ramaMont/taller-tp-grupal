@@ -25,8 +25,6 @@ class ThGameEvents : public Thread{
     // Agrega el evento a la lista de eventos
     void add(Event* event);
     
-    //void endRocketEvent(int rocket_id);
-    
     // Procesa cada evento de la lista de eventos
     void process();
     ~ThGameEvents();

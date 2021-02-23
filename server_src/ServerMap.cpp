@@ -49,6 +49,7 @@ void ServerMap::initMap(ServerMap& map, YAML::Node map_node){
             } else if (elemento == "empty"){
                 // No hace falta hacer nada.
             } else if (elemento == "key_door"){
+                std::cout << "New key door: "<<i <<' '<<j<<'\n';
                 Coordinates position((float)i,(float)j);
                 KeyDoor* posicionable = new KeyDoor(position);
                 map.addPassage(posicionable);
@@ -259,8 +260,9 @@ Object* ServerMap::getNearestPassage(Coordinates& position){
 
 Door* ServerMap::getDoor(const Coordinates& position){
     for (Object* passage: passages){
-        if (passage->getPosicion() == position &&
-            typeid(*passage) == typeid(Door)){
+        if (passage->getPosicion() == position &&    \
+                (typeid(*passage) == typeid(Door) || \
+                typeid(*passage) == typeid(KeyDoor))){
             return static_cast<Door*>(passage);
         }
     }

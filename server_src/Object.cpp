@@ -53,23 +53,38 @@ void Door::close(){
 	has_event = false;
 }
 
-void Door::letPass(){
-    atravesable(true);
-    reopen = true;
+void Door::letPass(){std::cout <<"d 1\n";
+    
+     std::cout <<"Reopen "<<reopen<<'\n';
+    std::cout <<"Atravesable door "<<atravesable()<<'\n';
+    atravesable(true);std::cout <<"d 2\n";
+    reopen = true;std::cout <<"d 3\n";
 }
 
 std::atomic<bool>& Door::getReopen(){
+    std::cout <<"Get reopen\n";
     return reopen;
 }
 
 bool KeyDoor::open(Player *player){
+    std::cout <<"Reopen "<<reopen<<'\n';
+    std::cout <<"Atravesable "<<atravesable()<<'\n';
+    std::cout <<"1\n";
 	if (opened || player->useKey()){
+    std::cout <<"2\n";
         opened = true;
+        //this = dynamic_cast<Door*>(this);
 		return openDoor(player);
     }
+    
+    std::cout <<"3\n";
     return false;
 }
-	
+
+void KeyDoor::letPass(){std::cout <<"d 11\n";
+    atravesable(true);std::cout <<"d 22\n";
+    reopen = true;std::cout <<"d 23\n";
+}
 
 // Rocket
 
