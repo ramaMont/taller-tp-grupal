@@ -205,7 +205,6 @@ void UserClient::gameLoop(SDL_Event& event, Screen& screen,
     struct timeval time_now{};
     gettimeofday(&time_now, nullptr);
     time_t total_time = 0;
-    time_t counter = 0;
     time_t max_time = 0;
 
     const Uint8 *keys = SDL_GetKeyboardState(NULL);    
@@ -239,7 +238,6 @@ void UserClient::gameLoop(SDL_Event& event, Screen& screen,
         if (rest>max_time)
             max_time = rest;
         total_time+=rest;
-        counter++;
         std::this_thread::sleep_for(std::chrono::milliseconds(rate - rest));
     }
 }

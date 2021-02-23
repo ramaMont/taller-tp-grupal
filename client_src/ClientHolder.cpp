@@ -22,7 +22,8 @@ ClientHolder::ClientHolder():
     user_id(-1), socket(nullptr), _game_model(nullptr), 
     _cl_th_receiver(nullptr), _th_sender(nullptr), ready_to_play(false),
     _game_id(-1), _map_id_checksum(-1), _user_client(nullptr), _winner_id(-1),
-    game_done(false), player_alive(true), _have_winner(false){
+    game_done(false), player_alive(true), _have_winner(false), fullscreen(false),\
+    resolution_width(320), resolution_height(200){
 }
 
 void ClientHolder::setGameConfig(std::string& resolution, bool _fullscreen){

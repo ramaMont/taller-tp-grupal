@@ -25,9 +25,6 @@ private:
     int _game_id;
     int _map_id_checksum;
     UserClient* _user_client;
-    int resolution_width;
-    int resolution_height;
-    bool fullscreen;
 
     //Informacion del fin de juego
     int _winner_id;
@@ -37,6 +34,10 @@ private:
     std::vector<std::pair<int,int>> _ordered_players_bullets;    
     bool player_alive;
     bool _have_winner;
+
+    bool fullscreen;
+    int resolution_width;
+    int resolution_height;
 
     void setGameConfig(std::string& resolution, bool _fullscreen);
     void setId(Protocol& protocol);
