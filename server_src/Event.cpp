@@ -32,7 +32,7 @@ OpenEvent::OpenEvent(Player* player, ServerMap& map, ThGameEvents& game_e):
 void OpenEvent::process(ThGameModelServer& game_model){
     Coordinates pos = player->getPosicion();
     Object* p = map.getNearestPassage(pos);
-    if (p && typeid(*p) == typeid(Door)){
+    if (p && (typeid(*p) == typeid(Door) || typeid(*p) == typeid(KeyDoor))){
         Door* puerta = static_cast<Door*>(p);
         if (puerta->open(player)){
             Event* doorE = new DoorOpeningEvent(puerta);
@@ -111,16 +111,22 @@ DoorOpeningEvent::~DoorOpeningEvent(){
 
 // Door 
 DoorEvent::DoorEvent(Door* door): 
-    Event(), door(door), reopen(door->getReopen()){
+    Event(), door(door), reopen(door->getReopen()){std::cout <<"GE 0\n";
+    std::cout <<"reopen event: "<<reopen<<'\n';
+    std::cout << "Type: "<<typeid(door).name()<<'\n';
     door->letPass();
+    /*KeyDoor* k = static_cast<KeyDoor*>(door);
+    if (k)
+        k->letPass();*/
+    std::cout <<"GE 0.1\n";
 }
 
-void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){ 
+void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){ std::cout <<"GE 1\n";
     if (reopen){
         _time = time(0);
         reopen = false;
         return;
-    }
+    }std::cout <<"GE 2\n";
     time_t time_now = time(0);
     double seconds = difftime(time_now, _time);
     if (seconds > configs[CONFIG::segundos_cerrar_puerta]){
