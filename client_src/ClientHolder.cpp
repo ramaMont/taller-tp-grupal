@@ -76,7 +76,6 @@ void ClientHolder::logged(const std::string& puerto,
     socket->recive(protocol);
     setId(protocol);
     user_id = this->user_id;
-    std::cout << "Id del jugador: " << std::to_string(this->user_id);
     receiveConfiguration();
 }
 
@@ -102,7 +101,6 @@ void ClientHolder::run(){
         game_done, _ordered_players_kills, _ordered_players_points,\
         _ordered_players_bullets, player_alive, _have_winner);
     _user_client->play();   
-    std::cout << "Finalizada\n";
 }
 
 void ClientHolder::setId(Protocol& protocol){
@@ -132,8 +130,6 @@ void ClientHolder::processReception(Protocol& protocol){
         }
         case Protocol::action::CREATE_GAME:{
             createGameModel(_map_filename, user_id, _game_id);
-            std::cout << "Partida creada\nId de Partida: " << 
-                _game_id << std::endl;
             _game_model->addPlayer(protocol);
             break;
         }

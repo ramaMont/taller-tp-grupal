@@ -77,7 +77,6 @@ public:
     bool wasLaunched();
     int getMapIdChecksum();
     int getBotsCty();
-    void showPlayersInfo();
 
     void addPlayer(int player_id);
     Player& getPlayer(int user_id);
