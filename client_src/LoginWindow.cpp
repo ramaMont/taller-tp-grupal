@@ -303,7 +303,6 @@ void LoginWindow::waitUntilLaunch(int game_id) {
     message += "Presione OK para lanzar la partida";
     mostrarWarning(QString::fromStdString(message),
                    QMessageBox::Information, true);
-    std::cout << "LANZANDO!!!";
     try {
         client_holder.launchGame();
         QCoreApplication::quit();

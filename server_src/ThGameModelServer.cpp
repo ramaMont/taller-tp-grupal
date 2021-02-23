@@ -45,7 +45,6 @@ void ThGameModelServer::processProtocol(Protocol& protocol){
             break;
         case Protocol::action::OPEN:
             processOpen(protocol);
-            showPlayersInfo();
             break;
         case Protocol::action::OPENING:
             processOpening(protocol);
@@ -280,18 +279,6 @@ int ThGameModelServer::getMapIdChecksum(){
 
 int ThGameModelServer::getBotsCty(){
     return _bots_cty;
-}
-
-void ThGameModelServer::showPlayersInfo(){
-    for (auto& it : players){
-        auto player = it.second;
-        std::cout << "Jugador:   " << player->getId() << std::endl;
-        std::cout << "Posicion:  X: " << player->get_position().x <<
-            " Y: " << player->get_position().y  << std::endl;
-        std::cout << "Direccion: X: " << player->get_direction().x <<
-             " Y: " << player->get_direction().y << std::endl;
-        std::cout << "\n-------------------------------------\n";
-    }
 }
 
 void ThGameModelServer::processTopFiveEnd(){
