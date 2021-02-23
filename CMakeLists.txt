@@ -28,6 +28,9 @@ file(COPY data/
 file(COPY server_src/bot.lua
         DESTINATION data/bot/)
 
+file(COPY suppressions/editor.supp suppressions/editor_valgrind.sh
+        DESTINATION editor_src/)
+
 include(cmake/googletest.cmake)
 fetch_googletest(
     ${PROJECT_SOURCE_DIR}/cmake
