@@ -1,0 +1,1 @@
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=./editor.supp Wolfenstein_editor_run
