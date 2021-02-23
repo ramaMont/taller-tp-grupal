@@ -49,7 +49,6 @@ void ServerMap::initMap(ServerMap& map, YAML::Node map_node){
             } else if (elemento == "empty"){
                 // No hace falta hacer nada.
             } else if (elemento == "key_door"){
-                std::cout << "New key door: "<<i <<' '<<j<<'\n';
                 Coordinates position((float)i,(float)j);
                 KeyDoor* posicionable = new KeyDoor(position);
                 map.addPassage(posicionable);
@@ -126,17 +125,6 @@ ServerMap::ServerMap(const std::string& map_filename): players_added(0){
     items.resize(alto, std::vector<Item*>(ancho));
     initItems();
     initMap(*this, map_node["elementos"]);
-}
-
-ServerMap::ServerMap(int alto, int ancho):
-        alto(alto), ancho(ancho),
-        mapaJuego(alto, std::vector<std::vector<Posicionable*>>(ancho)),
-        items(alto, std::vector<Item*>(ancho)),players_added(0){
-    /*for (int i=0; i<alto; i++){
-        for (int j=0; j<ancho; j++){
-            mapaJuego[i][j]=nullptr;
-        }
-    }*/
 }
 
 void ServerMap::initItems(){

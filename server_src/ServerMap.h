@@ -32,7 +32,6 @@ private:
 
 public:
     explicit ServerMap(const std::string& map_filename);
-    explicit ServerMap(int alto, int ancho);
     
     // Agrega un jugador al mapa
     void addPlayer(Player* player);

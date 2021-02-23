@@ -59,7 +59,6 @@ public:
         bool& player_alive, bool& have_winner);
     void play();
     void stop();
-    void showPlayersInfo();
     ~UserClient();
 };
 

@@ -113,7 +113,6 @@ void UserClient::getKeysToServer(const Uint8 *keys, SDL_Event &event,
         protocol.setAction(
             Protocol::action::OPEN);
         th_sender.push(protocol);
-        showPlayersInfo();
     }
     if (keys[SDL_SCANCODE_0] || keys[SDL_SCANCODE_KP_0]){
         protocol.setAction(
@@ -242,21 +241,6 @@ void UserClient::gameLoop(SDL_Event& event, Screen& screen,
         total_time+=rest;
         counter++;
         std::this_thread::sleep_for(std::chrono::milliseconds(rate - rest));
-    }
-    std::cout<<"El maximo fue: "<<max_time<<std::endl;
-    std::cout<<"El tiempo promedio fue:"<<total_time/counter<<std::endl;
-}
-
-void UserClient::showPlayersInfo(){
-    auto players = _game_model.getCharacters();
-    for (auto& it : players){
-        auto player = it.second;
-        std::cout << "Player:   " << player->getId() << std::endl;
-        std::cout << "Posicion:  X: " << player->get_position().x << " Y: "\
-            << player->get_position().y  << std::endl;
-        std::cout << "Direccion: X: " << player->getDirection().x << " Y: "\
-            << player->getDirection().y << std::endl;
-        std::cout << "\n---------------------------------------------------\n";
     }
 }
 

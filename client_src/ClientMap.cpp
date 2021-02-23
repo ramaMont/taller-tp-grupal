@@ -44,7 +44,6 @@ void ClientMap::addMovable(Movable* _player, Coordinates position){
             mapGame[floor(position.x)][floor(position.y)]=_player;
         } else {
             mapGame[floor(position.x)][floor(position.y)]->add(_player);
-            //throw -2;//Quiero guardar algo donde ya hay otra cosa
         }
 }
 

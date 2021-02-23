@@ -65,7 +65,6 @@ void ThBots::addBots(){
         th_game_model->addPlayer(current_bot_id);
         Bot* bot = new Bot(map);
         bots[current_bot_id] = bot;   
-
         --current_bot_id;
     }
 }

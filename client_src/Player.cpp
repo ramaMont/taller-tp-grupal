@@ -6,7 +6,6 @@
 
 #include <math.h>
 
-
 Player::Player(ClientMap& map):
         Character(Coordinates(4,4),Coordinates(1,0),map,0), 
         max_health(configs[CONFIG::vida_maxima]), 

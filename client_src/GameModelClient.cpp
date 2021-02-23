@@ -201,10 +201,6 @@ void GameModelClient::removeEnemy(int id){
 	delete removableEnemy;
 }
 
-// void GameModelClient::player_shoot(){
-//     player.shoot();
-// }
-
 Player& GameModelClient::getPlayer(){
     return player;
 }
@@ -267,8 +263,6 @@ GameModelClient& GameModelClient::operator=(GameModelClient&& other){
         return *this;        // other is myself!
     }
     this->map = std::move(other.map);
-    //this->is_running = true;
-    //this->players = std::move(other.players);
     this->directions = std::move(other.directions);
     this->game_id = std::move(other.game_id);
     return *this;
@@ -320,7 +314,6 @@ void GameModelClient::addSpriteOn(Coordinates position, int sprite_value, bool a
 
 void GameModelClient::addDeadSprite(Coordinates position, 
         CharacterType character_type){
-  //printf("El personaje muerto es: %i \n", a_character_type);
     if (character_type==dog){
         addSpriteOn(position,texture_values.at("dead_dog"), false); 
     } else if (character_type==guard){
@@ -509,25 +502,15 @@ void GameModelClient::processGunSwitch(Protocol& protocol){
 }
 
 void GameModelClient::processRocket(Protocol& protocol){
-    //Por ahora pruebo con un solo rocket
-    //Coordinates position(protocol.getFloatPosition());
     int rocket_id = protocol.getRocketId();
     if (protocol.getAction() == Protocol::action::MOVE_ROCKET){
-        //printf("x cambiarle la posicion, supuestamente está en: 
-        // (%f,%f)\n",position.x,position.y);
         bool found = false;
         unsigned int i = 0;
         while (i<rockets.size() and !found){
             Rocket* rocket = rockets[i];
-            //printf("Pero en realidad está en: (%f,%f)\n",
-            // rocket->getPosicion().x,rocket->getPosicion().y );
-            //if (position==rocket->getPosicion()){
             if (rocket->getRocketId()==rocket_id){
                 found = true;
                 rocket->move();
-                //printf("le cambie la posicion, ahora es: 
-                // (%f,%f)\n\n",rocket->getPosicion().x,
-                // rocket->getPosicion().y);
             }
             i++;
         }
@@ -543,7 +526,6 @@ void GameModelClient::processRocket(Protocol& protocol){
         rocket->set_texture(&texture);
         rockets.push_back(rocket);
         map.addMovable(rocket,new_pos);
-        //printf("cree uno nuevo en: (%f,%f)\n\n", position.x,position.y);
     }
 }
 
@@ -551,14 +533,8 @@ void GameModelClient::processExplosion(Protocol& protocol){
     int rocket_id = protocol.getRocketId();
     bool found = false;
     unsigned int i = 0;
-    //printf("posicion recibida: (%f,%f)\n",position.x,position.y);
     while (i<rockets.size() and !found){
         Rocket* rocket = rockets[i];
-        //Coordinates rocket_position = rocket->getPosicion();
-        //printf("posicion de mi rockett: (%f,%f)\n",rocket_position.x,
-        //    rocket_position.y);
-        //printf("Pero en realidad está en: (%f,%f)\n",rocket->getPosicion().
-        //x,rocket->getPosicion().y );
         if (rocket->getRocketId()==rocket_id){
             Coordinates rocket_position = rocket->getPosicion();
             printf("aa\n");
@@ -568,13 +544,9 @@ void GameModelClient::processExplosion(Protocol& protocol){
             rockets.erase(rockets.begin() + i);
             delete rocket;
             addSpriteOn(rocket_position,0, true);
-            //printf("le cambie la posicion, ahora es: (%f,%f)\n\n",
-                //rocket->getPosicion().x,rocket->getPosicion().y);
         }
         i++;
     }
-    //auto rocket_pos = rockets[0]->get_position();
-    //map.removePositionable(rocketsd[0]->get_position());
 }
 
 void GameModelClient::processKey(Protocol& protocol){

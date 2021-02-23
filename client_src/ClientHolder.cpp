@@ -150,12 +150,12 @@ void ClientHolder::processReception(Protocol& protocol){
         case Protocol::action::END:
             break;
         case Protocol::action::ERROR:
-            // TODO: algo salio mal.
+            // algo salio mal.
             throw -1;
             break;
         default:
             std::cout << "Nunca deberia entrar acá\n";
-            // TODO: algo salio muy mal.
+            // algo salio muy mal.
             break;
     }
 }
@@ -207,10 +207,6 @@ void ClientHolder::receiveConfiguration(){
 void ClientHolder::connectionLost(){
     if (_user_client != nullptr)
         _user_client->stop();
-    if (socket != nullptr){
-//      TODO: Hacer un stop
-//        socket->stop();
-    }
 }
 
 ClientHolder::~ClientHolder(){

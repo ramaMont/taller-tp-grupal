@@ -32,90 +32,15 @@ void ThReceiverClient::stop(){
 }
 
 void ThReceiverClient::processReception(Protocol& protocol){
-    switch (protocol.getAction()){
-        case Protocol::action::BEGIN:
-            _client_holder.startGame();
-            break;
-        case Protocol::action::ADD_PLAYER:
-            _gameModel->addPlayer(protocol);
-            break;
-        case Protocol::action::REMOVE:
-            _gameModel->removeEnemy(protocol.getUserId());
-            break;
-        case Protocol::action::MOVE:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::SHOOT:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::SHOOTED:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::DIE:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::RESURRECT:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::OPEN:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::OPENING:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::CLOSE:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::ADDPOINTS:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::UPDATE_HEALTH:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::UPDATE_BULLETS:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::PICKUP:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::THROW:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::SWITCH_GUN:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::OPEN_PASSAGE:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::ROCKET:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::MOVE_ROCKET:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::EXPLOSION:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::KEY:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::END_GAME_BULLETS:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::END_GAME_KILLS:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::END_GAME_POINTS:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::WINNER:
-            _gameModel->push(protocol);
-            break;
-        case Protocol::action::ENDGAME:
-            _gameModel->push(protocol);
-            break;
-        default:
-            break;
+    if (protocol.getAction() == Protocol::action::BEGIN){
+        _client_holder.startGame();
+    } else if (protocol.getAction() == Protocol::action::ADD_PLAYER){
+        _gameModel->addPlayer(protocol);
+    } else if (protocol.getAction() == Protocol::action::ADD_PLAYER){
+        _gameModel->removeEnemy(protocol.getUserId());
+    } else {
+        // Cualquier otro tipo de protocolo:
+        _gameModel->push(protocol);
     }
 }
 

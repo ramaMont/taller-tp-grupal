@@ -24,7 +24,6 @@ void Socket::iteroAddrinfo(struct addrinfo *result, struct addrinfo *rp){
     }
     if (rp == NULL) {
         std::string error = "Could not connect\n";
-//        fprintf(stderr, "Could not connect\n");
         freeaddrinfo(result);
         throw SocketException(error);
     }
@@ -39,7 +38,6 @@ void Socket::reUseHost(struct addrinfo *pr){
     if (sErr == -1) {
         std::string er_erno = strerror(errno);
         std::string error = "Error: " + er_erno + "\n";
-//        std::cout << "Error: " << strerror(errno) << "\n";
         ::close(socketFd);
         freeaddrinfo(pr);
         throw SocketException(error);
@@ -49,7 +47,6 @@ void Socket::reUseHost(struct addrinfo *pr){
 void Socket::bindHost(struct addrinfo *pr){
     int sErr = bind(socketFd, pr->ai_addr, pr->ai_addrlen);
     if (sErr == -1) {
-//        std::cout << "Error: " << strerror(errno) << "\n";
         std::string er_erno = strerror(errno);
         std::string error = "Error: " + er_erno + "\n";
         ::close(socketFd);
@@ -194,7 +191,6 @@ void SocketClient::hostOClientConf(struct addrinfo **pr, char *host,
     err = getaddrinfo(host, port, &hints, pr);
     if (err != 0) {
         std::string gai_error = gai_strerror(err);
-//        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(err));
         std::string error = "getaddrinfo: " + gai_error + "\n";
         throw SocketException(error);
     }
@@ -211,7 +207,6 @@ void SocketServer::hostOClientConf(struct addrinfo **pr, char *host,
     err = getaddrinfo(NULL, port, &hints, pr);
     if (err != 0) {
         std::string gai_error = gai_strerror(err);
-//        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(err));
         std::string error = "getaddrinfo: " + gai_error + "\n";
         throw SocketException(error);
     }

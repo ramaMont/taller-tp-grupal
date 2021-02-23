@@ -26,18 +26,15 @@ void Rocket::move(){
     }
 }
 
-
 void Rocket::callDrawer(int first_sigted_ray,int first_num_pixel,\
 				int last_sigted_ray,int last_num_pixel,float player_distance){
 	texture_drawer->showSprite(first_sigted_ray,first_num_pixel,
 				last_sigted_ray,last_num_pixel,player_distance ,12);
 }
 
-
 int Rocket::getRocketId(){
     return rocket_id;
 }
-
 
 Rocket::~Rocket(){
 }

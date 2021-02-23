@@ -111,22 +111,16 @@ DoorOpeningEvent::~DoorOpeningEvent(){
 
 // Door 
 DoorEvent::DoorEvent(Door* door): 
-    Event(), door(door), reopen(door->getReopen()){std::cout <<"GE 0\n";
-    std::cout <<"reopen event: "<<reopen<<'\n';
-    std::cout << "Type: "<<typeid(door).name()<<'\n';
+    Event(), door(door), reopen(door->getReopen()){
     door->letPass();
-    /*KeyDoor* k = static_cast<KeyDoor*>(door);
-    if (k)
-        k->letPass();*/
-    std::cout <<"GE 0.1\n";
 }
 
-void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){ std::cout <<"GE 1\n";
+void DoorEvent::process(BlockingQueue<Protocol>& game_model_queue){
     if (reopen){
         _time = time(0);
         reopen = false;
         return;
-    }std::cout <<"GE 2\n";
+    }
     time_t time_now = time(0);
     double seconds = difftime(time_now, _time);
     if (seconds > configs[CONFIG::segundos_cerrar_puerta]){
@@ -155,8 +149,6 @@ RocketEvent::RocketEvent(Rocket* rocket):
 
 void RocketEvent::process(BlockingQueue<Protocol>& game_model_queue){
     if (_exploded){
-        //delete rocket;
-        //rocket = nullptr;
         _finished = true;
         return;
     }

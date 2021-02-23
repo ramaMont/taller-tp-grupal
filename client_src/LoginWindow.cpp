@@ -159,7 +159,6 @@ void LoginWindow::crearPartidaScreen() {
 
 bool LoginWindow::validarCampos() {
     bool puerto_entero = false;
-    // int puerto;
     QLineEdit* serverEdit = findChild<QLineEdit*>("Server");
     QLineEdit* puertoEdit = findChild<QLineEdit*>("Puerto");
     QString puerto_qstring = puertoEdit->text();
@@ -192,9 +191,6 @@ bool LoginWindow::validarCampos() {
                        QMessageBox::Warning, true);
         return false;
     }
-
-//    this->_user_id = _user_id;
-
     return true;
 }
 
@@ -283,7 +279,6 @@ void LoginWindow::crearPartida(){
             client_holder.crearPartida(archivo_mapa, cantidad_bots, game_id,
                                        resolution, fullscreen);
         } catch (SocketException& sockt_exc) {
-            //TODO: Mandar a la pantalla de inicio, para volver a conectarse
             mostrarWarning(QString(sockt_exc.what()),
                         QMessageBox::Warning, true);
             loginScreen->show();
@@ -309,8 +304,6 @@ void LoginWindow::waitUntilLaunch(int game_id) {
     mostrarWarning(QString::fromStdString(message),
                    QMessageBox::Information, true);
     std::cout << "LANZANDO!!!";
-    // TODO: Poner un try catch aca y llevar a la pantalla 
-    // inicial si se corto la conexion
     try {
         client_holder.launchGame();
         QCoreApplication::quit();
@@ -361,7 +354,6 @@ void LoginWindow::unirseAPartida() {
         std::string resolution = combo_resolution->currentText().toStdString();
         std::string fullscreen_str = combo_fullscreen->currentText().toStdString();
         bool fullscreen = (fullscreen_str == "Si") ? true : false;
-        //QCoreApplication::exit();
         try {
             client_holder.unirseAPartida(id_partida, resolution, fullscreen);
         } catch (SocketException& e) {
