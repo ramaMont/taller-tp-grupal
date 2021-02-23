@@ -96,7 +96,7 @@ int Bot::pushInfoEnemies(Player* j, std::map<int, Player*>& enemies){
     int argc = 0;
     for (auto it = enemies.begin(); it != enemies.end(); ++it){
         auto* enemy = it->second;
-        if (enemy != j){
+        if (enemy != j && enemy->isAlive()){
             AtomicCoordinates& position = enemy->getAtomicPosition();
             lua_pushnumber(this->script, position.x);
             argc ++;

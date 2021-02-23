@@ -167,8 +167,30 @@ void ThGameModelServer::processDie(Protocol protocol){
 
 void ThGameModelServer::processOpen(Protocol& protocol){
     Player* player = players.at(protocol.getId());
-    OpenEvent event(player, map, th_game_events);
-    event.process(*this);
+        Coordinates pos = player->getPosicion();
+    Object* p = map.getNearestPassage(pos);
+    if (p && (typeid(*p) == typeid(Door) || typeid(*p) == typeid(KeyDoor))){
+        Door* door = static_cast<Door*>(p);
+        if (door->open(player)){
+            Event* doorE = new DoorOpeningEvent(door);
+            th_game_events.add(doorE);
+
+            Coordinates door_pos = door->get_position();
+            Protocol protocol(Protocol::action::OPENING, player->getId(),
+                Protocol::direction::STAY, 0, door_pos.x, door_pos.y);
+            echoProtocol(protocol);
+        }
+    }
+    if (p && typeid(*p) == typeid(Passage)){
+        Passage* wall = static_cast<Passage*>(p);
+        if (wall->open(player)){
+            Coordinates position = wall->getPosicion();
+            Protocol protocol(Protocol::action::OPEN_PASSAGE, player->getId(),
+            Protocol::direction::STAY, 0, position.x, position.y);    
+            map.removePassage(position);
+            echoProtocol(protocol);
+        }
+    }
 }
 
 void ThGameModelServer::processOpening(Protocol& protocol){
@@ -220,7 +242,6 @@ void ThGameModelServer::processExplosion(Protocol& protocol){
         delete rocket;
         rocket = nullptr;
         rockets.erase(rocket_id);
-        //th_game_events.
     }
     echoProtocol(protocol);
 }

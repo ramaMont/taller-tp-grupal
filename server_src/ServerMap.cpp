@@ -319,7 +319,8 @@ bool ServerMap::doorIn(float x, float y) const{
 	if (floor(x) < 0 || floor(x) >= alto ||
 	    floor(y) < 0 || floor(y) >= ancho ||
 	    mapaJuego[floor(x)][floor(y)].empty()) return false;
-	return typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Door);
+	return (typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(Door) ||
+            typeid(*mapaJuego[floor(x)][floor(y)].back()) == typeid(KeyDoor));
 }
 
 int ServerMap::getAlto() const{

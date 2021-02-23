@@ -19,19 +19,6 @@ class Event{
 };
 
 
-class OpenEvent{
-    private:
-    Player* player;
-    ServerMap& map;
-    ThGameEvents& th_game_events;
-    
-    public:
-    explicit OpenEvent(Player* player, ServerMap& map, ThGameEvents& game_e);
-    void process(ThGameModelServer& game_model);
-    ~OpenEvent();
-};
-
-
 class FinishGameEvent: public Event{
     public:
     FinishGameEvent();

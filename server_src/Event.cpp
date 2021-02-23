@@ -24,42 +24,6 @@ Event::~Event(){
 }
 
 
-// Open 
-OpenEvent::OpenEvent(Player* player, ServerMap& map, ThGameEvents& game_e):
-    player(player), map(map), th_game_events(game_e){
-}
-
-void OpenEvent::process(ThGameModelServer& game_model){
-    Coordinates pos = player->getPosicion();
-    Object* p = map.getNearestPassage(pos);
-    if (p && (typeid(*p) == typeid(Door) || typeid(*p) == typeid(KeyDoor))){
-        Door* puerta = static_cast<Door*>(p);
-        if (puerta->open(player)){
-            Event* doorE = new DoorOpeningEvent(puerta);
-            th_game_events.add(doorE);
-
-            Coordinates door_pos = puerta->get_position();
-            Protocol protocol(Protocol::action::OPENING, player->getId(),
-                Protocol::direction::STAY, 0, door_pos.x, door_pos.y);
-            game_model.echoProtocol(protocol);
-        }
-    }
-    if (p && typeid(*p) == typeid(Passage)){
-        Passage* wall = static_cast<Passage*>(p);
-        if (wall->open(player)){
-            Coordinates position = wall->getPosicion();
-            Protocol protocol(Protocol::action::OPEN_PASSAGE, player->getId(),
-            Protocol::direction::STAY, 0, position.x, position.y);    
-            game_model.echoProtocol(protocol);
-            map.removePassage(position);
-        }
-    }
-}
-
-OpenEvent::~OpenEvent(){
-}
-
-
 // Finish Game
 FinishGameEvent::FinishGameEvent():
     Event(){

@@ -70,10 +70,6 @@ bool KeyDoor::open(Player *player){
     return false;
 }
 
-void KeyDoor::letPass(){
-    atravesable(true);
-    reopen = true;
-}
 
 // Rocket
 

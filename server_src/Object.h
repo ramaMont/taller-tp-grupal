@@ -43,7 +43,7 @@ class Door: public Object {
 	std::atomic<bool>& getReopen();
     
     // Abre la puerta, permite a los jugadores pasarla
-	virtual void letPass();
+	void letPass();
     
     // Cierra la puerta
 	void close();
@@ -58,10 +58,7 @@ class KeyDoor: public Door {
 	explicit KeyDoor(Coordinates coordinates): Door(coordinates) { }
     
     // Retorna true si el jugador puede abir la puerta
-	virtual bool open(Player *player) override;    
-    
-    // Abre la puerta, permite a los jugadores pasarla
-	void letPass() override;
+	virtual bool open(Player *player) override;
 };
 
 

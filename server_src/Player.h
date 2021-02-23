@@ -33,7 +33,7 @@ private:
     size_t fired_bullets;
     size_t killed_enemies;
     BlockingQueue<Protocol>& _game_model_queue;
-    bool is_alive;
+    std::atomic<bool> is_alive;
     Coordinates initial_direction;
     AtomicCoordinates atomic_dir;
     AtomicCoordinates atomic_pos;
