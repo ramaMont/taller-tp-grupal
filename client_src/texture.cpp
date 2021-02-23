@@ -689,9 +689,9 @@ void Texture::showRanking(
     	std::string player_kills = std::to_string(player.first).c_str();
     	std::string player_id = std::to_string((int16_t)player.second).c_str();
 		showText(black, player_id,width/16,distante_to_bar*0.17,
-								width*0.13, height*0.39 + position*height*0.14);
+								width*0.13, height*0.39 + position*height*0.13);
 	    showText(black, player_kills,width/16,distante_to_bar*0.17,
-	    						width*0.23, height*0.39 + position*height*0.14);
+	    						width*0.23, height*0.39 + position*height*0.13);
         ++position;
     }
     position = 0;
@@ -704,9 +704,9 @@ void Texture::showRanking(
     		x_pos = width*3/64;
     	}
     	showText(black, player_id,width/16,distante_to_bar*0.17,
-    						width*0.45, height*0.39 + position*height*0.14);
+    						width*0.45, height*0.39 + position*height*0.13);
 	    showText(black, player_points,x_pos,distante_to_bar*0.17,
-	    					width*0.60, height*0.39 + position*height*0.14);
+	    					width*0.60, height*0.39 + position*height*0.13);
         ++position;
     }
     position = 0;
@@ -719,9 +719,9 @@ void Texture::showRanking(
     		x_pos = width*3/64;
     	}
 		showText(black, player_id,width/16,distante_to_bar*0.17,
-						width*0.80, height*0.39 + position*height*0.14);
+						width*0.80, height*0.39 + position*height*0.13);
 		showText(black, player_bullets,x_pos,distante_to_bar*0.17,
-						width*0.97, height*0.39 + position*height*0.14);
+						width*0.97, height*0.39 + position*height*0.13);
         ++position;
     }
 }
