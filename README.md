@@ -1,5 +1,9 @@
-# taller-tp-grupal
+# taller-tp-grupal (Wolfenstein 3d Remake)
 Trabajo practico final Taller Fiuba
+
+Video de presentacion: https://www.youtube.com/watch?v=qZ-HH_SZ9NI
+
+### Disclaimer: Si estas cursando Taller de programacion I (75.42) *NO* uses absolutamente nada de este codigo.
 
 # Dependencias
     coreutils
@@ -13,8 +17,8 @@ Trabajo practico final Taller Fiuba
     libyaml-cpp-dev
     libsdl2-mixer-dev
 
-Instalar con el siguiente comando en una terminal:
-sh dependencies.sh
+# Instalacion de dependencias
+    sh dependencies.sh
 
 # Para compilar
     mkdir build
@@ -22,7 +26,9 @@ sh dependencies.sh
     cmake ..
     make
 
-# Cada nueva clase agregada
-    cd build
-    cmake ..
-    make
+# Para Instalar
+    sh install.sh
+    
+# Para Desisntalar
+    sh uninstall.sh
+    
