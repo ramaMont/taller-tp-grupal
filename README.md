@@ -1,5 +1,5 @@
-# taller-tp-grupal (Wolfenstein 3d Remake)
-Trabajo practico final Taller Fiuba
+# Wolfenstein 3d Remake
+Trabajo practico final grupal Taller I (75.42) Fiuba
 
 Video de presentacion: https://www.youtube.com/watch?v=qZ-HH_SZ9NI
 
