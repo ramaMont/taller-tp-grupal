@@ -1,37 +1,18 @@
-## Welcome to GitHub Pages
+## Descripcion
 
-You can use the [editor on GitHub](https://github.com/ramaMont/taller-tp-grupal/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+¿Alguna vez soñaste con jugar los juegos de tu infancia en red con tus amigos? <br/>
+En el taller de programacion de la fiuba les presentamos el  Wolfenstein 3D Remake <br/>
+Creado enteramente por alumnos. Una remake del más que conocido juego de shooter. <br/>
+Revive la experiencia de aventurarte por el castillo Wolfenstein como William Blazkowicz, combatiendo nazis manejados por tus amigos en una serie de combates hasta ser el último hombre en pie. <br/>
+Crea tu propia aventura armando tus propios niveles con el editor de mapas, añade tus armas favoritas y múltiples pasadizos para tener una aventura inolvidable y compartirla con quienes vos quieras. <br/>
+Domina el manejo de las múltiples armas que te puedes encontrar para lograr derrotar a todos tus enemigos y ganar la partida.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qZ-HH_SZ9NI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-### Markdown
+### Link al repositorio
+<p><a href="https://github.com/ramaMont/taller-tp-grupal">Repositorio en github</a></p>
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ramaMont/taller-tp-grupal/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Documentacion
+Link a la documentacion técnica: <a href="https://github.com/andi-carretero/test_page/raw/main/documentacion/Documentacion_Tecnica.pdf" target="_blank">Aqui</a> <br/>
+Link al manual de proyecto: <a href="https://github.com/andi-carretero/test_page/raw/main/documentacion/Manual_de_Proyecto.pdf" target="_blank">Aqui</a> <br/>
+Link al manual de usuario: <a href="https://github.com/andi-carretero/test_page/raw/main/documentacion/Manual_de_usuario.pdf" target="_blank">Aqui</a> <br/>
