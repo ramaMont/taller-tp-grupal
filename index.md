@@ -13,6 +13,6 @@ Domina el manejo de las múltiples armas que te puedes encontrar para lograr der
 <p><a href="https://github.com/ramaMont/taller-tp-grupal">Repositorio en github</a></p>
 
 ### Documentacion
-Link a la documentacion técnica: <a href="https://github.com/ramaMont/taller-tp-grupal/tree/main/documentacion/Documentacion\ Tecnica.pdf" target="_blank">Aqui</a> <br/>
-Link al manual de proyecto: <a href="https://github.com/ramaMont/taller-tp-grupal/tree/main/documentacion/Manual\ de\ Proyecto.pdf" target="_blank">Aqui</a> <br/>
-Link al manual de usuario: <a href="https://github.com/ramaMont/taller-tp-grupal/tree/main/documentacion/Manual\ de\ usuario.pdf" target="_blank">Aqui</a> <br/>
+Link a la documentacion técnica: <a href="https://github.com/ramaMont/taller-tp-grupal/tree/main/documentacion/Documentacion_Tecnica.pdf" target="_blank">Aqui</a> <br/>
+Link al manual de proyecto: <a href="https://github.com/ramaMont/taller-tp-grupal/tree/main/documentacion/Manual_de_Proyecto.pdf" target="_blank">Aqui</a> <br/>
+Link al manual de usuario: <a href="https://github.com/ramaMont/taller-tp-grupal/tree/main/documentacion/Manual_de_usuario.pdf" target="_blank">Aqui</a> <br/>
